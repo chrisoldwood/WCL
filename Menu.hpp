@@ -40,6 +40,7 @@ public:
 	//
 	// General methods.
 	//
+	void InsertCmd(uint nPos, uint iCmdID, const char* pszText);
 	void AppendCmd(uint iCmdID, const char* pszText);
 
 	//
@@ -77,6 +78,11 @@ protected:
 inline HMENU CMenu::Handle() const
 {
 	return m_hMenu;
+}
+
+inline void CMenu::InsertCmd(uint nPos, uint iCmdID, const char* pszText)
+{
+	::InsertMenu(m_hMenu, nPos, MF_BYPOSITION | MF_STRING, iCmdID, pszText);
 }
 
 inline void CMenu::AppendCmd(uint iCmdID, const char* pszText)
