@@ -265,8 +265,8 @@ LRESULT CFrameWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			return CPopupWnd::WndProc(hWnd, iMsg, wParam, lParam);
 	}
 
-	m_bMsgHandled = true;
-	m_lMsgResult  = 0;
+	MsgHandled(true);
+	MsgResult (0);
 
 	return 0;
 }

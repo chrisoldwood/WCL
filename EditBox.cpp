@@ -93,8 +93,8 @@ LRESULT CEditBox::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			if (FilterKey((char)(wParam & 0xFF)))
 			{
 				// Consume message.
-				m_bMsgHandled = true;
-				m_lMsgResult  = 0;
+				MsgHandled(true);
+				MsgResult (0);
 				return 0;
 			}
 			break;

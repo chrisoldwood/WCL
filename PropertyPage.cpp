@@ -78,10 +78,24 @@ BOOL DIALOGPROC PropPageProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			// Get object from property page info.
 			pDialog = (CPropertyPage*)pPage->lParam;
 
-			// Save handle.
-			pDialog->m_hWnd        = hWnd;
-			pDialog->m_bMsgHandled = TRUE;
-			pDialog->m_lMsgResult  = 0;
+			//
+			// This function can be called recursively so we need to use
+			// the program stack to hold the return values for each
+			// message whilst it is being precessed.
+			//
+
+			// Store the return values for this message.
+			bool     bMsgHandled = false;
+			LRESULT  lMsgResult  = 0;
+
+			// Push the existing messages' return values onto the stack.
+			bool*	 pbMsgHandled = pDialog->MsgHandledBuffer(&bMsgHandled);
+			LRESULT* plMsgResult  = pDialog->MsgResultBuffer (&lMsgResult);
+
+			// Save handle/result.
+			pDialog->m_hWnd = hWnd;
+			pDialog->MsgHandled(true);
+			pDialog->MsgResult (0);
 
 			// Setup Window mapping.
 			CWnd::s_WndMap.Add(*pDialog);
@@ -93,7 +107,11 @@ BOOL DIALOGPROC PropPageProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			// Now call initialise method.
 			pDialog->OnCreate(pDialog->ClientRect());
 
-			return pDialog->m_bMsgHandled;
+			// Pop the old messages' return values back off the stack.
+			pDialog->MsgHandledBuffer(pbMsgHandled);
+			pDialog->MsgResultBuffer (plMsgResult);
+
+			return bMsgHandled;
 		}
 		else
 		{
@@ -102,14 +120,32 @@ BOOL DIALOGPROC PropPageProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		}
 	}
 
+	//
+	// This function can be called recursively so we need to use
+	// the program stack to hold the return values for each
+	// message whilst it is being precessed.
+	//
+
+	// Store the return values for this message.
+	bool     bMsgHandled = false;
+	LRESULT  lMsgResult  = 0;
+
+	// Push the existing messages' return values onto the stack.
+	bool*	 pbMsgHandled = pDialog->MsgHandledBuffer(&bMsgHandled);
+	LRESULT* plMsgResult  = pDialog->MsgResultBuffer (&lMsgResult);
+
 	// Call real message handler.
 	pDialog->WndProc(hWnd, iMsg, wParam, lParam);
 
+	// Pop the old messages' return values back off the stack.
+	pDialog->MsgHandledBuffer(pbMsgHandled);
+	pDialog->MsgResultBuffer (plMsgResult);
+
 	// Set the return value.
-	::SetWindowLong(hWnd, DWL_MSGRESULT, pDialog->m_lMsgResult);
+	::SetWindowLong(hWnd, DWL_MSGRESULT, lMsgResult);
 
 	// Return if msg was handled.
-	return pDialog->m_bMsgHandled;
+	return bMsgHandled;
 }
 
 /******************************************************************************

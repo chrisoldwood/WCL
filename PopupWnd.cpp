@@ -202,11 +202,29 @@ LRESULT WINDOWPROC PopupWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lPar
 	// Get the window object.
 	pWnd = (CPopupWnd*) CWnd::s_WndMap.Find(hWnd);
 	ASSERT(pWnd);
+
+	//
+	// This function can be called recursively so we need to use
+	// the program stack to hold the return values for each
+	// message whilst it is being precessed.
+	//
+
+	// Store the return values for this message.
+	bool     bMsgHandled = false;
+	LRESULT  lMsgResult  = 0;
+
+	// Push the existing messages' return values onto the stack.
+	bool*	 pbMsgHandled = pWnd->MsgHandledBuffer(&bMsgHandled);
+	LRESULT* plMsgResult  = pWnd->MsgResultBuffer (&lMsgResult);
 	
 	// Call real message handler.
 	pWnd->WndProc(hWnd, iMsg, wParam, lParam);
 
-	return pWnd->m_lMsgResult;
+	// Pop the old messages' return values back off the stack.
+	pWnd->MsgHandledBuffer(pbMsgHandled);
+	pWnd->MsgResultBuffer (plMsgResult);
+
+	return lMsgResult;
 }
 
 /******************************************************************************
@@ -309,8 +327,8 @@ LRESULT CPopupWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			return CMsgWnd::WndProc(hWnd, iMsg, wParam, lParam);
 	}
 	
-	m_bMsgHandled = true;
-	m_lMsgResult  = 0;
+	MsgHandled(true);
+	MsgResult (0);
 
 	return 0;
 }
@@ -330,8 +348,8 @@ LRESULT CPopupWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 LRESULT CPopupWnd::DefaultWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
-	m_bMsgHandled = true;
-	m_lMsgResult  = DefWindowProc(hWnd, iMsg, wParam, lParam);
+	MsgHandled(true);
+	MsgResult (DefWindowProc(hWnd, iMsg, wParam, lParam));
 
 	return 0;
 }

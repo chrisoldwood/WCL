@@ -23,7 +23,9 @@
 */
 
 CMsgWnd::CMsgWnd()
-	: m_pCtrlMsgTable(NULL)
+	: m_pbMsgHandled(NULL)
+	, m_plMsgResult(NULL)
+	, m_pCtrlMsgTable(NULL)
 {
 }
 
@@ -45,6 +47,9 @@ CMsgWnd::CMsgWnd()
 
 LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
+	ASSERT(m_pbMsgHandled != NULL);
+	ASSERT(m_plMsgResult  != NULL);
+
 	// Decode message.
 	switch(iMsg)
 	{
@@ -62,8 +67,8 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				NMHDR* pMsgHdr = (NMHDR*) lParam;
 				ASSERT(pMsgHdr);
 
-				m_lMsgResult  = OnCtrlMsg(*pMsgHdr);
-				m_bMsgHandled = true;
+				*m_plMsgResult  = OnCtrlMsg(*pMsgHdr);
+				*m_pbMsgHandled = true;
 				return 0;
 			}
 			break;
@@ -72,8 +77,8 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		case WM_ERASEBKGND:
 			{
 				// Assume the message will be handled.
-				m_bMsgHandled = true;
-				m_lMsgResult  = TRUE;
+				*m_pbMsgHandled = true;
+				*m_plMsgResult  = TRUE;
 
 				// Construct a device and call the method.
 				CScreenDC	DC((HDC) wParam);
@@ -182,8 +187,8 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			return DefaultWndProc(hWnd, iMsg, wParam, lParam);
 	}
 	
-	m_bMsgHandled = true;
-	m_lMsgResult  = 0;
+	*m_pbMsgHandled = true;
+	*m_plMsgResult  = 0;
 
 	return 0;
 }

@@ -64,8 +64,6 @@ protected:
 	//
 	// Members.
 	//
-	bool		m_bMsgHandled;
-	LRESULT		m_lMsgResult;
 	CTRLMSG*	m_pCtrlMsgTable;
 	
 	//
@@ -99,6 +97,22 @@ protected:
 	// Access to window data.
 	//
     WNDPROC	WindowProc(WNDPROC lpfnWndProc);
+
+	//
+	// Access to message result members.
+	//
+	void MsgHandled(bool    bHandled);
+	void MsgResult (LRESULT lResult);
+
+	bool*    MsgHandledBuffer(bool*    pbBuffer);
+	LRESULT* MsgResultBuffer (LRESULT* plBuffer);
+
+private:
+	//
+	// Members.
+	//
+	bool*		m_pbMsgHandled;		// Was message handled?
+	LRESULT*	m_plMsgResult;		// Message result code.
 };
 
 /******************************************************************************
@@ -157,6 +171,38 @@ inline void CMsgWnd::VertScrollRange(int iMin, int iMax, bool bRepaint)
 inline WNDPROC CMsgWnd::WindowProc(WNDPROC lpfnWndProc)
 {
 	return (WNDPROC) ::SetWindowLong(m_hWnd, GWL_WNDPROC, (LONG)lpfnWndProc);
+}
+
+inline void CMsgWnd::MsgHandled(bool bHandled)
+{
+	ASSERT(m_pbMsgHandled != NULL);
+
+	*m_pbMsgHandled = bHandled;
+}
+
+inline void CMsgWnd::MsgResult(LRESULT lResult)
+{
+	ASSERT(m_plMsgResult != NULL);
+
+	*m_plMsgResult = lResult;
+}
+
+inline bool* CMsgWnd::MsgHandledBuffer(bool* pbBuffer)
+{
+	bool* pbOldBuffer = m_pbMsgHandled;
+
+	m_pbMsgHandled = pbBuffer;
+
+	return pbOldBuffer;
+}
+
+inline LRESULT* CMsgWnd::MsgResultBuffer (LRESULT* plBuffer)
+{
+	LRESULT* plOldBuffer = m_plMsgResult;
+
+	m_plMsgResult = plBuffer;
+
+	return plOldBuffer;
 }
 
 #endif //MSGWND_HPP

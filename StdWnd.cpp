@@ -76,8 +76,8 @@ LRESULT CStdWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	}
 
 	// Call the controls' real handler.
-	m_bMsgHandled = false;
-	m_lMsgResult  = ::CallWindowProc(m_lpfnOldWndProc, hWnd, iMsg, wParam, lParam);
+	MsgHandled(false);
+	MsgResult (::CallWindowProc(m_lpfnOldWndProc, hWnd, iMsg, wParam, lParam));
 
 	return 0;
 }
