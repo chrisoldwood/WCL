@@ -31,8 +31,8 @@ public:
 	//
 	// Methods.
 	//
-	virtual void Lock();
-	virtual void Unlock();
+	virtual void Aquire();
+	virtual void Release();
 	
 protected:
 	//
@@ -47,15 +47,5 @@ protected:
 **
 *******************************************************************************
 */
-
-inline void CCriticalSection::Lock()
-{
-	::EnterCriticalSection(&m_oLock);
-}
-
-inline void CCriticalSection::Unlock()
-{
-	::LeaveCriticalSection(&m_oLock);
-}
 
 #endif // CRITICALSECTION_HPP
