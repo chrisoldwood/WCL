@@ -375,6 +375,11 @@ LRESULT CPopupWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			OnChar((WORD)wParam, lParam);
 			break;
 
+		// Menu item selected.
+		case WM_MENUSELECT:
+			OnSelectMenu(HIWORD(wParam), LOWORD(wParam), (HMENU)lParam);
+			break;
+
 		// Window being destroyed.
 		case WM_NCDESTROY:
 			// Restore WndProc.
@@ -535,4 +540,154 @@ void CPopupWnd::OnKeyUp(WORD /*wKey*/, DWORD /*dwFlags*/)
 
 void CPopupWnd::OnChar(WORD /*wKey*/, DWORD /*dwFlags*/)
 {
+}
+
+/******************************************************************************
+** Method:		OnSelectMenu()
+**
+** Description:	Decode the menu item being shown and display a hint for it. The
+**				strings IDs are the same as the item IDs, except for popup
+**				menus where they are a multiple of 25; in which case it looks
+**				as the first item to determine the hint ID.
+**
+** Parameters:	iFlags		The menu item flags.
+**				iItemID		The menu ID.
+**				hMenu		The menu handle.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CPopupWnd::OnSelectMenu(uint iFlags, uint iItemID, HMENU hMenu)
+{
+	// Is a popup menu?
+	if (iFlags & MF_POPUP)
+	{
+		// Menu item selected?
+		if (iFlags == 0xFFFF)
+		{
+			OnShowDefaultMenuHint();
+		}
+		// System popup menu?
+		else if (iFlags & MF_SYSMENU)
+		{
+			OnShowSystemMenuHint();
+		}
+		// Popup menu.
+		else 
+		{
+			OnShowMenuPopupHint(GetSubMenu(hMenu, iItemID));
+		}
+	}
+	// Menu item.
+	else
+	{
+		// Is a separator?
+		if (iFlags & MF_SEPARATOR)
+		{
+			OnShowDefaultMenuHint();
+		}
+		// Menu item.
+		else 
+		{
+			OnShowMenuItemHint(iItemID);
+		}
+	}
+}
+
+
+/******************************************************************************
+** Method:		OnShowMenuItemHint()
+**
+** Description:	Display a hint for the selected menu item. This method is
+**				virtual and can be overriden.
+**
+** Parameters:	iItemID		The menu ID.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CPopupWnd::OnShowMenuItemHint(uint iItemID)
+{
+	// Get the applications status bar.
+	CStatusBar* pStatusBar = CApp::This().m_rMainWnd.StatusBar();
+
+	// Display hint from command controller.
+	if (pStatusBar)
+		pStatusBar->Hint(CApp::This().m_rCmdControl.CmdHintStr(iItemID));
+}
+
+/******************************************************************************
+** Method:		OnShowMenuPopupHint()
+**
+** Description:	Display a hint for the selected popup menu. This method is
+**				virtual and can be overriden, by defualt it loads the hint from
+**				resource file and displays it. It looks at the first item in
+**				the submenu and uses modulo 10 to find the hint for it.
+**
+** Parameters:	hMenu		The menu handle
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CPopupWnd::OnShowMenuPopupHint(HMENU hMenu)
+{
+	// Get ID of first item in menu.
+	int iFirstID = GetMenuItemID(hMenu, 0);
+    
+    // Menu not empty?
+    if (iFirstID != -1)
+		OnShowMenuItemHint(iFirstID - (iFirstID % 10));
+	else
+		OnShowDefaultMenuHint();
+}
+
+/******************************************************************************
+** Method:		OnShowSystemMenuHint()
+**
+** Description:	Displays a hint for the system popup menu.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CPopupWnd::OnShowSystemMenuHint()
+{
+	// Get the applications status bar.
+	CStatusBar* pStatusBar = CApp::This().m_rMainWnd.StatusBar();
+
+	// Display hint.
+	if (pStatusBar != NULL)
+		pStatusBar->Hint("System Menu");
+}
+
+/******************************************************************************
+** Method:		OnShowDefaultMenuHint()
+**
+** Description:	Displays the default menu hint. This is used when over a
+**				separator or empty popup menu.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CPopupWnd::OnShowDefaultMenuHint()
+{
+	// Get the applications status bar.
+	CStatusBar* pStatusBar = CApp::This().m_rMainWnd.StatusBar();
+
+	// Remove previous hint.
+	if (pStatusBar != NULL)
+		pStatusBar->Hint("");
 }

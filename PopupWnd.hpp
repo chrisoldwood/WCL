@@ -84,6 +84,12 @@ protected:
 	virtual void OnKeyDown(WORD wKey, DWORD dwFlags);
 	virtual void OnKeyUp(WORD wKey, DWORD dwFlags);
 	virtual void OnChar(WORD wKey, DWORD dwFlags);
+	virtual void OnSelectMenu(uint iFlags, uint iItemID, HMENU hMenu);
+
+	virtual void OnShowMenuItemHint(uint iItemID);
+	virtual void OnShowMenuPopupHint(HMENU hMenu);
+	virtual void OnShowSystemMenuHint();
+	virtual void OnShowDefaultMenuHint();
 };
 
 /******************************************************************************
