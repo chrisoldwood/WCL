@@ -1015,6 +1015,10 @@ SOURCE=.\WorkerThread.hpp
 # End Group
 # Begin Source File
 
+SOURCE=.\ReadMe.txt
+# End Source File
+# Begin Source File
+
 SOURCE=.\TODO.Txt
 # End Source File
 # End Target
