@@ -10,6 +10,18 @@
 
 #include "wcl.hpp"
 
+#ifdef _DEBUG
+// For memory leak detection.
+#define new DBGCRT_NEW
+#endif
+
+/******************************************************************************
+**
+** Local variables.
+**
+*******************************************************************************
+*/
+
 // Width of border around child windows.
 const int BORDER_SIZE = 3;
 
@@ -136,7 +148,10 @@ void CStatusBar::OnCreate(const CRect& rcClient)
 
 void CStatusBar::OnPaint(CDC& rDC)
 {
-	if (!m_bSizeGrip)
+	ASSERT(m_pParent != NULL);
+
+	// Ignore, if no size grip OR frame window is maximised.
+	if ( (!m_bSizeGrip) || (::IsZoomed(m_pParent->Handle())) )
 		return;
 
 	// Get window dimensions.
