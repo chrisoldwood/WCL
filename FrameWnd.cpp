@@ -241,16 +241,29 @@ LRESULT CFrameWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 
-		// Can Windows terminate?
+		// Can Windows shutdown?
 		case WM_QUERYENDSESSION:
 			if (OnQueryClose())
-				break;
-			else
+			{
+				MsgHandled(true);
+				MsgResult (TRUE);
 				return 0;
+			}
+			break;
 
 		// Application requesting termination.
 		case WM_CLOSE:
 			if (OnQueryClose())
+			{
+				// Detach menu.
+				::SetMenu(m_hWnd, NULL);
+
+				Destroy();
+			}
+			break;
+
+		// Windows shutting down.
+		case WM_ENDSESSION:
 			{
 				// Detach menu.
 				::SetMenu(m_hWnd, NULL);
