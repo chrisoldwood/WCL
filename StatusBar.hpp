@@ -66,6 +66,7 @@ protected:
 	virtual void OnCreate(const CRect& rcClient);
 	virtual void OnPaint(CDC& rDC);
 	virtual void OnResize(int iFlag, const CSize& rNewSize);
+	virtual void OnHitTest(const CPoint& ptCursor);
 };
 
 /******************************************************************************

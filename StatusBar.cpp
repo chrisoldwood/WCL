@@ -195,7 +195,7 @@ void CStatusBar::OnPaint(CDC& rDC)
 *******************************************************************************
 */
 
-void CStatusBar::OnResize(int iFlag, const CSize& rNewSize)
+void CStatusBar::OnResize(int /*iFlag*/, const CSize& rNewSize)
 {
 	ASSERT(m_HintBar.Handle());
 //	ASSERT(m_ProgressBar.Handle());
@@ -283,4 +283,45 @@ void CStatusBar::Hint(const char* pszHint)
 
 	ActivateWnd(&m_HintBar);
 	m_HintBar.Hint(pszHint);
+}
+
+/******************************************************************************
+** Method:		OnHitTest()
+**
+** Description:	Checks if the mouse is on the sizing grip.
+**
+** Parameters:	ptCursor	The mouse position in screen coordinates.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CStatusBar::OnHitTest(const CPoint& ptCursor)
+{
+	// Have sizing grip AND not maximised?
+	if ( (m_bSizeGrip) && (!::IsZoomed(m_pParent->Handle())) )
+	{
+		CPoint ptClient = ptCursor;
+
+		// Convert mouse coordinates to client.
+		::ScreenToClient(m_hWnd, &ptClient);
+
+		// Calculate grip rectangle.
+		CRect rcGrip = ClientRect();
+
+		rcGrip.left = rcGrip.right  - 12;
+		rcGrip.top  = rcGrip.bottom - 12;
+
+		// Is in sizing grip rect?
+		if (ptClient.IsIn(rcGrip))
+		{
+			MsgHandled(true);
+			MsgResult (HTBOTTOMRIGHT);
+			return;
+		}
+	}
+
+	// Handle in base class.
+	CCtrlWnd::OnHitTest(ptCursor);
 }
