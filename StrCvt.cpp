@@ -73,6 +73,36 @@ CString CStrCvt::FormatDouble(double dValue)
 }
 
 /******************************************************************************
+** Method:		FormatDate/DateTime()
+**
+** Description:	Convert a time_t value to a string.
+**
+** Parameters:	tValue		The value.
+**
+** Returns:		The value as a string.
+**
+*******************************************************************************
+*/
+
+CString CStrCvt::FormatDate(time_t tValue)
+{
+	char szValue[100];
+
+	strftime(szValue, 100, "%Y-%m-%d", localtime(&tValue));
+
+	return szValue;
+}
+
+CString CStrCvt::FormatDateTime(time_t tValue)
+{
+	char szValue[100];
+
+	strftime(szValue, 100, "%Y-%m-%d %H:%M:%S", localtime(&tValue));
+
+	return szValue;
+}
+
+/******************************************************************************
 ** Method:		ParseInt()
 **
 ** Description:	Convert a string to an integer value.

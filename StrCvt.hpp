@@ -25,9 +25,11 @@ public:
 	//
 	// Formatting methods.
 	//
-	static CString FormatInt   (int    nValue);
-	static CString FormatLong  (long   lValue);
-	static CString FormatDouble(double dValue);
+	static CString FormatInt     (int    nValue);
+	static CString FormatLong    (long   lValue);
+	static CString FormatDouble  (double dValue);
+	static CString FormatDate    (time_t tValue);
+	static CString FormatDateTime(time_t tValue);
 
 	//
 	// Parsing methods.
