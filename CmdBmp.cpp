@@ -73,6 +73,11 @@ void CCmdBitmap::LoadRsc(uint iRscID)
 	CSize BmpSize = bmpCmds.Size();
 	m_iCmdSize = BmpSize.cy;
 	
+	// Create brushes.
+	CBrush	FaceBrush(::GetSysColor(COLOR_BTNFACE));
+	CBrush	LightBrush(::GetSysColor(COLOR_BTNHIGHLIGHT));
+	CBrush	DarkBrush(::GetSysColor(COLOR_BTNSHADOW));
+
 	// Setup DCs.
 	CScreenDC	ScnDC;
 	CMemDC		ButtonsDC(ScnDC);
@@ -80,11 +85,6 @@ void CCmdBitmap::LoadRsc(uint iRscID)
 	CMemDC		DisabledDC(ScnDC);
 	CMemDC		MaskDC(ScnDC);
 	CMemDC		Mask2DC(ScnDC);
-
-	// Create brushes.
-	CBrush	FaceBrush(::GetSysColor(COLOR_BTNFACE));
-	CBrush	LightBrush(::GetSysColor(COLOR_BTNHIGHLIGHT));
-	CBrush	DarkBrush(::GetSysColor(COLOR_BTNSHADOW));
 
 	// Allocate the final bitmaps.
 	m_EnabledBmp.Create(BmpSize, ScnDC);
