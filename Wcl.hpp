@@ -111,6 +111,7 @@
 #include "PrinterDC.hpp"
 #include "ScreenDC.hpp"
 #include "CmdBmp.hpp"
+#include "Cursor.hpp"
 
 // Base window classes.
 #include "Wnd.hpp"
@@ -144,6 +145,7 @@
 #include "StatusBar.hpp"
 #include "ToolBar.hpp"
 #include "TabWndHost.hpp"
+#include "URLLabel.hpp"
 
 // Special dialog classes.
 #include "PropertyPage.hpp"
