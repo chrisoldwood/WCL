@@ -48,6 +48,9 @@ public:
     void Enable(bool bEnable = true);
     bool IsEnabled();
 
+	bool IsMinimised() const;
+	bool IsMaximised() const;
+
 	void Focus();
 
     //
@@ -177,6 +180,16 @@ inline void CWnd::Enable(bool bEnable)
 inline bool CWnd::IsEnabled()
 {
 	return ::IsWindowEnabled(m_hWnd);
+}
+
+inline bool CWnd::IsMinimised() const
+{
+	return ::IsIconic(m_hWnd);
+}
+
+inline bool CWnd::IsMaximised() const
+{
+	return ::IsZoomed(m_hWnd);
 }
 
 inline void CWnd::Focus()
