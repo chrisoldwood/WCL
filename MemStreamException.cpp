@@ -56,7 +56,7 @@ CMemStreamException::CMemStreamException(int eErrCode)
 
 		// Shouldn't happen!
 		default:
-			ASSERT(false);
+			ASSERT_FALSE();
 			break;
 	}
 }

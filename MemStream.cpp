@@ -246,7 +246,7 @@ ulong CMemStream::Seek(ulong lPos, uint nFrom)
 		case FILE_BEGIN:	m_lPos  = lPos;				break;
 		case FILE_CURRENT:	m_lPos += lPos;				break;
 		case FILE_END:		m_lPos  = m_lEOF - lPos;	break;
-		default:			ASSERT(false);				break;
+		default:			ASSERT_FALSE();				break;
 	}
 		   
 	// Seeked to invalid position?

@@ -72,7 +72,7 @@ CFileException::CFileException(int eErrCode, const CFile& rFile)
 
 		// Shouldn't happen!
 		default:
-			ASSERT(false);
+			ASSERT_FALSE();
 			break;
 	}
 }

@@ -176,7 +176,7 @@ int CList::InsertAfter(CListItem* pPosItem, CListItem& rNewItem)
 	if (*pPosItem == *m_pTail)
 		return AddToTail(rNewItem);
 
-	ASSERT(false);
+	ASSERT_FALSE();
 
 	// Update length;
 	m_nLength++;
