@@ -124,7 +124,7 @@ void CToolBar::GetCreateParams(WNDCREATE& rParams)
 *******************************************************************************
 */
 
-void CToolBar::OnCreate(const CRect& rcClient)
+void CToolBar::OnCreate(const CRect& /*rcClient*/)
 {
 	// Create the tool tip control.
 	m_oToolTip.Create(*this, TOOLTIP_ID, CRect());
@@ -197,7 +197,7 @@ void CToolBar::OnPaint(CDC& rDC)
 *******************************************************************************
 */
 
-void CToolBar::OnCtrlMsg(uint iID, uint iMsg, HWND hControl)
+void CToolBar::OnCtrlMsg(uint iID, uint iMsg, HWND /*hControl*/)
 {
 	// Forward to frame window.
 	if (iMsg == BN_CLICKED)

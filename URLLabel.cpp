@@ -109,7 +109,7 @@ LRESULT CURLLabel::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 *******************************************************************************
 */
 
-void CURLLabel::OnSetCursor(HWND hWnd, uint nHitCode, uint nMouseMsg)
+void CURLLabel::OnSetCursor(HWND /*hWnd*/, uint /*nHitCode*/, uint /*nMouseMsg*/)
 {
 	// Hand cursor needs loading?
 	if (m_oCursor.Handle() == NULL)
@@ -156,10 +156,8 @@ void CURLLabel::OnClick()
 *******************************************************************************
 */
 
-HBRUSH CURLLabel::OnReflectedCtlClr(uint nCtlClrMsg, HDC hDC)
+HBRUSH CURLLabel::OnReflectedCtlClr(uint /*nCtlClrMsg*/, HDC hDC)
 {
-	ASSERT(nCtlClrMsg == WM_CTLCOLORSTATIC);
-
 	// Created underlined font, if not already.
 	if (m_oFont.Handle() == NULL)
 	{
