@@ -506,7 +506,7 @@ CRect CFrameWnd::ClientRect() const
 *******************************************************************************
 */
 
-void CFrameWnd::OnActivateApp(bool bActivating)
+void CFrameWnd::OnActivateApp(bool /*bActivating*/)
 {
 }
 
@@ -566,6 +566,6 @@ bool CFrameWnd::ProcessMsg(MSG& rMsg)
 *******************************************************************************
 */
 
-void CFrameWnd::OnDropFile(int nFile, const char* pszPath)
+void CFrameWnd::OnDropFile(int /*nFile*/, const char* /*pszPath*/)
 {
 }
