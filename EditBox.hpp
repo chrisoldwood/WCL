@@ -36,6 +36,8 @@ public:
 	void Select(int iFirstChar = 0, int iLastChar = -1) const;
 	void Selected(int& nStart, int& nEnd) const;
 	void Text(const char* pszText);
+	void ReplaceSel(const char* pszText, bool bCanUndo = true);
+	void Append(const char* pszText);
 	int  TextLength() const;
 	CString Text() const;
 
@@ -88,7 +90,7 @@ inline void CEditBox::ReadOnly(bool bReadOnly) const
 
 inline void	CEditBox::Select(int iFirstChar, int iLastChar) const
 {
-	SendMessage(EM_SETSEL, 0, MAKELONG(iFirstChar, iLastChar));
+	SendMessage(EM_SETSEL, iFirstChar, iLastChar);
 }
 
 inline void CEditBox::Selected(int& nStart, int& nEnd) const
@@ -104,6 +106,11 @@ inline void CEditBox::Selected(int& nStart, int& nEnd) const
 inline void CEditBox::Text(const char* pszText)
 {
 	Title(pszText);
+}
+
+inline void CEditBox::ReplaceSel(const char* pszText, bool bCanUndo)
+{
+	SendMessage(EM_REPLACESEL, bCanUndo, (LPARAM)pszText);
 }
 
 inline int CEditBox::TextLength() const

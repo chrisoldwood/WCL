@@ -228,3 +228,23 @@ bool CEditBox::FilterKey(char cChar)
 	// Filter set AND key disallowed?
 	return ( (m_pFilter != NULL) && (m_pFilter[cChar] == false) );
 }
+
+/******************************************************************************
+** Method:		Append()
+**
+** Description:	Appends text to the edit box.
+**
+** Parameters:	pszText		The text to append.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CEditBox::Append(const char* pszText)
+{
+	int n = TextLength();
+
+	Select(n, n);
+	ReplaceSel(pszText, false);
+}
