@@ -45,11 +45,13 @@ public:
 	//
 	CRect PageArea() const;
 	CRect PrintableArea() const;
+	int   PageNum() const;
 	
 protected:
 	//
 	// Members.
 	//
+	int	m_nPage;
 };
 
 /******************************************************************************
@@ -59,5 +61,10 @@ protected:
 *******************************************************************************
 */
 
+
+inline int CPrinterDC::PageNum() const
+{
+	return m_nPage;
+}
 
 #endif //PRINTERDC_HPP

@@ -23,6 +23,7 @@
 */
 
 CPrinterDC::CPrinterDC(const CPrinter& rPrinter)
+	: m_nPage(0)
 {
 	// Try and create it.
 	m_hDC = ::CreateDC(rPrinter.m_strDriver, rPrinter.m_strName, rPrinter.m_strPort, NULL);
@@ -156,6 +157,8 @@ bool CPrinterDC::End()
 bool CPrinterDC::StartPage()
 {
 	ASSERT(m_hDC);
+
+	m_nPage++;
 
 	int iError = ::StartPage(m_hDC);
 

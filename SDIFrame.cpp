@@ -77,7 +77,7 @@ void CSDIFrame::OnCreate(const CRect& rcClient)
 
 void CSDIFrame::OnDestroy()
 {
-	// Register for drag'n'drop support.
+	// Unregister for drag'n'drop support.
 	::DragAcceptFiles(m_hWnd, FALSE);
 
 	CFrameWnd::OnDestroy();
