@@ -50,6 +50,8 @@ public:
 	//
 	void     Insert(int nPos, const char* pszString);
 	void     Delete(int nFirst, int nCount = 1);
+	void     Replace(char cOldChar, char cNewChar);
+	void     Replace(char cChar, const char* pszString);
 	CString& Trim(bool bLeft = true, bool bRight = true);
 	CString& ToLower();
 	CString& ToUpper();
@@ -60,6 +62,7 @@ public:
 	int Find(char cChar, int nStart = 0) const;
 	int Find(const char* pszStr, int nStart = 0) const;
 	int Count(char cChar) const;
+	int Count(char cChar, int nStart, int nEnd) const;
 
 	//
 	// Extraction.

@@ -544,6 +544,42 @@ int CString::Count(char cChar) const
 }
 
 /******************************************************************************
+** Method:		Count()
+**
+** Description:	Counts the number of times the specified character occurs in
+**				part of the string.
+**
+** Parameters:	cChar	The character to count.
+**				nStart	The start character.
+**				nEnd	The end character + 1.
+**
+** Returns:		The number of occurrences.
+**
+*******************************************************************************
+*/
+
+int CString::Count(char cChar, int nStart, int nEnd) const
+{
+	ASSERT(nStart >= 0);
+	ASSERT(nEnd   <= Length());
+	ASSERT(nStart <= nEnd);
+
+	int         nMatches = 0;
+	const char* pszStart = m_pszData+nStart;
+	const char* pszEnd   = m_pszData+nEnd;
+
+	while (pszStart < pszEnd)
+	{
+		if (*pszStart == cChar)
+			nMatches++;
+
+		pszStart++;
+	}
+
+	return nMatches;
+}
+
+/******************************************************************************
 ** Method:		Left()
 **
 ** Description:	Extracts a substring based on the leftmost n characters.
@@ -737,6 +773,65 @@ void CString::Delete(int nFirst, int nCount)
 
 	// Move string contents down.
 	strcpy(pszDst, pszSrc);
+}
+
+/******************************************************************************
+** Method:		Replace()
+**
+** Description:	Replaces a character with another character.
+**
+** Parameters:	cOldChar	The character to replace.
+**				cNewChar	The character to replace it with.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CString::Replace(char cOldChar, char cNewChar)
+{
+	char* psz = m_pszData;
+
+	while (*psz != '\0')
+	{
+		if (*psz == cOldChar)
+			*psz = cNewChar;
+
+		psz++;
+	}
+}
+
+/******************************************************************************
+** Method:		Replace()
+**
+** Description:	Replaces a character with a string.
+**
+** Parameters:	cChar		The character to replace.
+**				pszString	The string to replace it with.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CString::Replace(char cChar, const char* pszString)
+{
+	ASSERT(pszString != NULL);
+
+	CString     str;
+	const char* psz = m_pszData;
+
+	while (*psz != '\0')
+	{
+		if (*psz == cChar)
+			str += pszString;
+		else
+			str += *psz;
+
+		psz++;
+	}
+
+	Copy(str);
 }
 
 /******************************************************************************
