@@ -65,6 +65,7 @@ public:
 	CMainThread		m_MainThread;
 	CString			m_strCmdLine;
 	int				m_iCmdShow;
+	CComCtl32*		m_pComCtl32;
 
 protected:
 	//

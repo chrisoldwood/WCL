@@ -48,7 +48,10 @@ CApp::CApp(CFrameWnd& rFrameWnd, CCmdControl& rCmdControl)
 	: m_rMainWnd(rFrameWnd)
 	, m_rCmdControl(rCmdControl)
 	, m_iCmdShow(SW_SHOW)
+	, m_pComCtl32(NULL)
 {
+	m_pComCtl32 = new CComCtl32();
+
 	pThis = this;
 }
 
@@ -67,6 +70,8 @@ CApp::CApp(CFrameWnd& rFrameWnd, CCmdControl& rCmdControl)
 CApp::~CApp()
 {
 	pThis = NULL;
+
+	delete m_pComCtl32;
 
 #ifdef _DEBUG
 	_CrtDumpMemoryLeaks();
@@ -106,18 +111,34 @@ CApp& CApp::This()
 
 bool CApp::Open()
 {
-	m_strTitle = "";
+	// Default title to app filename.ext.
+	m_strTitle = CPath::Application().FileName().ToUpper();
 
-	// Initialise COMCTL32.DLL classes.
-	INITCOMMONCONTROLSEX ComCtrls;
+	const DWORD dwMinMajor = 4;
+	const DWORD dwMinMinor = 71;
 
-	ComCtrls.dwSize = sizeof(INITCOMMONCONTROLSEX);
-	ComCtrls.dwICC  = ICC_DATE_CLASSES   | ICC_LISTVIEW_CLASSES
-					| ICC_PROGRESS_CLASS | ICC_TAB_CLASSES;
+	DWORD dwMajor, dwMinor;
 
-	if (!InitCommonControlsEx(&ComCtrls))
+	// Get COMCTL32.DLL version.
+	if (!m_pComCtl32->IsLoaded() || !m_pComCtl32->GetVersion(dwMajor, dwMinor))
 	{
-		AlertMsg("Failed to initialise COMCTL32.DLL");
+		FatalMsg("This application requires at least v%u.%u of COMCTL32.DLL.", dwMinMajor, dwMinMinor);
+		return false;
+	}
+
+	// Check COMCTL32.DLL version.
+	if ( (dwMajor < dwMinMajor) || ((dwMajor == dwMinMajor) && (dwMinor < dwMinMinor)) )
+	{
+		FatalMsg("This application requires at least v%u.%u of COMCTL32.DLL.", dwMinMajor, dwMinMinor);
+		return false;
+	}
+
+	DWORD dwICC = ICC_DATE_CLASSES | ICC_LISTVIEW_CLASSES | ICC_PROGRESS_CLASS | ICC_TAB_CLASSES;
+
+	// Initialise COMCTL32.DLL window classes.
+	if (!m_pComCtl32->Initialise(dwICC))
+	{
+		FatalMsg("Failed to initialise COMCTL32.DLL");
 		return false;
 	}
 
@@ -210,68 +231,56 @@ bool CApp::OnClose()
 
 int CApp::AlertMsg(const char* pszMsg, ...) const
 {
-	int		nMsgLen = strlen(pszMsg);
 	CString strMsg;
-
-	strMsg.BufferSize(nMsgLen > 256 ? nMsgLen : 256);
 
 	// Setup arguments.
 	va_list	args;
 	va_start(args, pszMsg);
 	
-	// Form message.
-	vsprintf((char*)(const char *)strMsg, pszMsg, args);
+	// Format message.
+	strMsg.FormatEx(pszMsg, args);
 	
 	return MessageBox(NULL, strMsg, m_strTitle, MB_OK | MB_ICONEXCLAMATION | MB_TASKMODAL);
 }
 
 int CApp::NotifyMsg(const char* pszMsg, ...) const
 {
-	int		nMsgLen = strlen(pszMsg);
 	CString strMsg;
-
-	strMsg.BufferSize(nMsgLen > 256 ? nMsgLen : 256);
 
 	// Setup arguments.
 	va_list	args;
 	va_start(args, pszMsg);
 	
-	// Form message.
-	vsprintf((char*)(const char *)strMsg, pszMsg, args);
+	// Format message.
+	strMsg.FormatEx(pszMsg, args);
 	
 	return MessageBox(NULL, strMsg, m_strTitle, MB_OK | MB_ICONINFORMATION | MB_TASKMODAL);
 }
 
 int CApp::QueryMsg(const char* pszMsg, ...) const
 {
-	int		nMsgLen = strlen(pszMsg);
 	CString strMsg;
-
-	strMsg.BufferSize(nMsgLen > 256 ? nMsgLen : 256);
 
 	// Setup arguments.
 	va_list	args;
 	va_start(args, pszMsg);
 	
-	// Form message.
-	vsprintf((char*)(const char *)strMsg, pszMsg, args);
+	// Format message.
+	strMsg.FormatEx(pszMsg, args);
 	
 	return MessageBox(NULL, strMsg, m_strTitle, MB_YESNOCANCEL | MB_ICONQUESTION | MB_TASKMODAL);
 }
 
 int CApp::FatalMsg(const char* pszMsg, ...) const
 {
-	int		nMsgLen = strlen(pszMsg);
 	CString strMsg;
-
-	strMsg.BufferSize(nMsgLen > 256 ? nMsgLen : 256);
 
 	// Setup arguments.
 	va_list	args;
 	va_start(args, pszMsg);
 	
-	// Form message.
-	vsprintf((char*)(const char *)strMsg, pszMsg, args);
+	// Format message.
+	strMsg.FormatEx(pszMsg, args);
 	
 	return MessageBox(NULL, strMsg, m_strTitle, MB_OK | MB_ICONSTOP | MB_TASKMODAL);
 }
