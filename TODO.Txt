@@ -11,3 +11,5 @@
 - Fix Bug in select computer method.
 
 - Two phase save support.
+
+- Replace CPath implementations for GetCWD() etc with Win32 functions.
