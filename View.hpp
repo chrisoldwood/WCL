@@ -32,7 +32,7 @@ protected:
 	//
 	// Members.
 	//
-	CDoc	m_Doc;	// The views' data.
+	CDoc&	m_Doc;	// The views' data.
 
 	//
 	// Window creation template methods.
