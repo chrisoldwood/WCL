@@ -28,6 +28,7 @@
 #include <string.h>
 #include <commctrl.h>
 #include <time.h>
+#include <malloc.h>
 
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC
@@ -133,6 +134,7 @@
 #include "ProgressBar.hpp"
 #include "UpDownBtns.hpp"
 #include "TabCtrl.hpp"
+#include "ToolTip.hpp"
 
 // Custom controls classes.
 #include "CmdBtn.hpp"
@@ -142,6 +144,10 @@
 #include "StatusBar.hpp"
 #include "ToolBar.hpp"
 #include "TabWndHost.hpp"
+
+// Special dialog classes.
+#include "PropertyPageDlg.hpp"
+#include "PropertyDlg.hpp"
 
 // View window classes.
 #include "MainDlg.hpp"
@@ -161,7 +167,11 @@
 #include "MsgThread.hpp"
 #include "Library.hpp"
 #include "CmdCtrl.hpp"
+
+// Module classes.
+#include "Module.hpp"
 #include "App.hpp"
+#include "Dll.hpp"
 
 // SDI app classes.
 #include "SDIDoc.hpp"
