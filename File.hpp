@@ -68,7 +68,7 @@ public:
 	static bool  Move(const char* pszSrc, const char* pszDst);
 	static bool  Delete(const char* pszPath);
 
-	static bool  CreateFolder(const char* pszPath);
+	static bool  CreateFolder(const char* pszPath, bool bCreatePath = false);
 	static bool  DeleteFolder(const char* pszPath);
 
 	static bool  CreateShortcut(const char* pszLink, const char* pszTarget, const char* pszDesc = NULL);

@@ -445,11 +445,28 @@ bool CFile::Delete(const char* pszPath)
 *******************************************************************************
 */
 
-bool CFile::CreateFolder(const char* pszPath)
+bool CFile::CreateFolder(const char* pszPath, bool bCreatePath)
 {
 	ASSERT(pszPath != NULL);
 
-	return (::CreateDirectory(pszPath, NULL) != 0);
+	// Try and create it.
+	if (::CreateDirectory(pszPath, NULL) != 0)
+		return true;
+
+	if (bCreatePath)
+	{
+		CPath strPath(pszPath);
+
+		// Recursively create parent folders.
+		if (!CreateFolder(strPath.Directory(), true))
+			return false;
+	
+		// Try and create it again.
+		if (::CreateDirectory(pszPath, NULL) != 0)
+			return true;
+	}
+
+	return false;
 }
 
 /******************************************************************************
