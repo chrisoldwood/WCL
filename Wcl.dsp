@@ -242,6 +242,10 @@ SOURCE=.\Icon.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\IconCtrl.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ImageList.cpp
 # End Source File
 # Begin Source File
@@ -419,6 +423,10 @@ SOURCE=.\StreamException.cpp
 # Begin Source File
 
 SOURCE=.\String.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\StrTok.cpp
 # End Source File
 # Begin Source File
 
@@ -666,6 +674,10 @@ SOURCE=.\Icon.hpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\IconCtrl.hpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ImageList.hpp
 # End Source File
 # Begin Source File
@@ -883,6 +895,10 @@ SOURCE=.\String.hpp
 # Begin Source File
 
 SOURCE=.\StrPtrMap.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\StrTok.hpp
 # End Source File
 # Begin Source File
 

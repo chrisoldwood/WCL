@@ -132,6 +132,7 @@
 
 // Built-in controls classes
 #include "StaticCtrl.hpp"
+#include "IconCtrl.hpp"
 #include "Label.hpp"
 #include "ListBox.hpp"
 #include "ComboBox.hpp"
@@ -175,6 +176,7 @@
 #include "MRUList.hpp"
 #include "SysInfo.hpp"
 #include "TrayIcon.hpp"
+#include "StrTok.hpp"
 
 // Threading classes.
 #include "IThreadLock.hpp"
