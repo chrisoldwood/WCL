@@ -409,7 +409,7 @@ int CALLBACK CPath::BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPAR
 bool CPath::SelectComputer(const CWnd& rParent, const char* pszTitle)
 {
 	BROWSEINFO   oInfo;
-	char         szDir[MAX_PATH];
+	char         szComputer[MAX_PATH];
 	LPITEMIDLIST pItemIDList;
 	LPMALLOC     pMalloc;
 	HRESULT      hResult;
@@ -424,9 +424,10 @@ bool CPath::SelectComputer(const CWnd& rParent, const char* pszTitle)
 
 	// Intialise info structure to browse for only folders.
 	memset(&oInfo, 0, sizeof(oInfo));
-	oInfo.hwndOwner = rParent.Handle();
-	oInfo.lpszTitle = pszTitle;
-	oInfo.ulFlags   = BIF_BROWSEFORCOMPUTER;
+	oInfo.hwndOwner      = rParent.Handle();
+	oInfo.pszDisplayName = szComputer;
+	oInfo.lpszTitle      = pszTitle;
+	oInfo.ulFlags        = BIF_BROWSEFORCOMPUTER;
 
 	// Prompt the user.
 	pItemIDList = ::SHBrowseForFolder(&oInfo);
@@ -434,8 +435,7 @@ bool CPath::SelectComputer(const CWnd& rParent, const char* pszTitle)
 	if (pItemIDList != NULL)
 	{
 		// Convert the standard path.
-		if (::SHGetPathFromIDList(pItemIDList, szDir))
-			Copy(szDir);
+		Copy(szComputer);
 
 		pMalloc->Free(pItemIDList);
 	}
