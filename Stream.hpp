@@ -55,6 +55,7 @@ public:
 	virtual void operator >>(CDate&     rBuffer);
 	virtual void operator >>(CTime&     rBuffer);
 	virtual void operator >>(CDateTime& rBuffer);
+	virtual void operator >>(CBuffer&   rBuffer);
 
 	virtual void operator <<(const bool&      rBuffer);
 	virtual void operator <<(const int8&      rBuffer);
@@ -68,6 +69,7 @@ public:
 	virtual void operator <<(const CDate&     rBuffer);
 	virtual void operator <<(const CTime&     rBuffer);
 	virtual void operator <<(const CDateTime& rBuffer);
+	virtual void operator <<(const CBuffer&   rBuffer);
 	
 	//
 	// Text specific operations.
@@ -155,6 +157,17 @@ inline void CStream::operator >>(CDateTime& rBuffer)
 	rBuffer << *this;
 }
 
+inline void CStream::operator >>(CBuffer& rBuffer)
+{
+	uint32 nSize;
+
+	Read(&nSize, sizeof(uint32));
+
+	rBuffer.Size(nSize);
+
+	Read(rBuffer.Buffer(), nSize);
+}
+
 inline void CStream::operator <<(const bool&  rBuffer)
 {
 	Write((void*) &rBuffer, sizeof(bool));
@@ -218,6 +231,14 @@ inline void CStream::operator <<(const CTime& rBuffer)
 inline void CStream::operator <<(const CDateTime& rBuffer)
 {
 	rBuffer >> *this;
+}
+
+inline void CStream::operator <<(const CBuffer& rBuffer)
+{
+	uint32 nSize = rBuffer.Size();
+
+	Write(&nSize, sizeof(uint32));
+	Write(rBuffer.Buffer(), nSize);
 }
 
 inline uint32 CStream::Format() const
