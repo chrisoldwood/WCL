@@ -305,6 +305,7 @@ bool CPath::Select(const CWnd& rParent, DlgMode eMode, const char* pszExts,
 **
 ** Parameters:	pParent		The dialogs parent.
 **				pszTitle	The hint displayed above the view.
+**				pszDir		The initial directory.
 **
 ** Returns:		true		If user pressed OK.
 **				false		If user pressed Cancel.
@@ -312,7 +313,7 @@ bool CPath::Select(const CWnd& rParent, DlgMode eMode, const char* pszExts,
 *******************************************************************************
 */
 
-bool CPath::SelectDir(const CWnd& rParent, const char* pszTitle)
+bool CPath::SelectDir(const CWnd& rParent, const char* pszTitle, const char* pszDir)
 {
 	BROWSEINFO   oInfo;
 	char         szDir[MAX_PATH];
@@ -332,7 +333,9 @@ bool CPath::SelectDir(const CWnd& rParent, const char* pszTitle)
 	memset(&oInfo, 0, sizeof(oInfo));
 	oInfo.hwndOwner = rParent.Handle();
 	oInfo.lpszTitle = pszTitle;
-	oInfo.ulFlags   = BIF_RETURNONLYFSDIRS | BIF_STATUSTEXT | BIF_EDITBOX;
+	oInfo.ulFlags   = BIF_RETURNONLYFSDIRS | BIF_STATUSTEXT;
+	oInfo.lpfn      = BrowseCallbackProc;
+	oInfo.lParam    = (LPARAM)pszDir;
 
 	// Prompt the user.
 	pItemIDList = ::SHBrowseForFolder(&oInfo);
@@ -350,6 +353,43 @@ bool CPath::SelectDir(const CWnd& rParent, const char* pszTitle)
 	pMalloc->Release();
      
 	return pItemIDList != NULL;
+}
+
+/******************************************************************************
+** Method:		BrowseCallbackProc()
+**
+** Description:	Callback proc used by SelectDir to set the inital directory.
+**
+** Parameters:	See SHBrowseForFolder().
+**
+** Returns:		See SHBrowseForFolder().
+**
+*******************************************************************************
+*/
+
+int CALLBACK CPath::BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPARAM lpData)
+{
+	switch(uMsg)
+	{
+		case BFFM_INITIALIZED:
+		{
+			// Set initial directory, if specified.
+			if (lpData != NULL)
+				::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, lpData);
+		}
+		break;
+
+		case BFFM_SELCHANGED:
+		{
+			char szDir[MAX_PATH];
+
+			if (::SHGetPathFromIDList((LPITEMIDLIST) lParam, szDir))
+				::SendMessage(hWnd, BFFM_SETSTATUSTEXT, 0, (LPARAM)szDir);
+		}
+		break;
+	}
+
+	return 0;
 }
 
 /******************************************************************************
@@ -405,38 +445,3 @@ bool CPath::SelectComputer(const CWnd& rParent, const char* pszTitle)
      
 	return pItemIDList != NULL;
 }
-
-/******************************************************************************
-** Method:		Rename()
-**
-** Description:	Rename the file.
-**
-** Parameters:	pszPath		The path to rename it to.
-**
-** Returns:		true or false.
-**
-*******************************************************************************
-*/
-/*
-bool CPath::Rename(const char* pszPath)
-{
-	return (rename(*this, pszPath) == 0);
-}
-*/
-/******************************************************************************
-** Method:		Delete()
-**
-** Description:	Delete the path.
-**
-** Parameters:	None.
-**
-** Returns:		true or false.
-**
-*******************************************************************************
-*/
-/*
-bool CPath::Delete()
-{
-	return (_unlink(*this) == 0);
-}
-*/

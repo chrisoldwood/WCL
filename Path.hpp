@@ -52,13 +52,6 @@ public:
 	CString FileExt() const;
 
 	//
-	// Operations.
-	// TODO: Move to CFile.
-/*	//
-	bool RenameFile(const char* pszPath);
-	bool DeleteFile();
-*/
-	//
 	// File Open dialog.
 	enum DlgMode
 	{
@@ -69,7 +62,7 @@ public:
     
 	bool Select(const CWnd& rParent, DlgMode eMode, const char* pszExts,
 				const char* pszDefExt, const char* pszDir = NULL);
-	bool SelectDir(const CWnd& rParent, const char* pszTitle);
+	bool SelectDir(const CWnd& rParent, const char* pszTitle, const char* pszDir = NULL);
 	bool SelectComputer(const CWnd& rParent, const char* pszTitle);
 
 	//
@@ -88,6 +81,12 @@ public:
 	const CPath& operator=(const char* pszBuffer);
 	
 	void operator+=(const char* pszPath);
+
+protected:
+	//
+	// Internal methods.
+	//
+	static int CALLBACK BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPARAM lpData);
 };
 
 /******************************************************************************
