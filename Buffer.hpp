@@ -52,6 +52,7 @@ public:
 	//
 	HGLOBAL ToGlobal() const;
 	CString ToString() const;
+	CString ToString(uint nChars) const;
 
 protected:
 	//
@@ -85,7 +86,14 @@ inline void* CBuffer::Buffer()
 
 inline CString CBuffer::ToString() const
 {
-	return CString((char*)m_pBuffer, m_nSize);
+	return ToString(m_nSize);
+}
+
+inline CString CBuffer::ToString(uint nChars) const
+{
+	ASSERT(nChars <= m_nSize);
+
+	return CString((char*)m_pBuffer, nChars);
 }
 
 #endif // BUFFER_HPP
