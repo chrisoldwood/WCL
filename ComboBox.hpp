@@ -34,6 +34,8 @@ public:
 	int Count() const;
 	void TextLimit(int iLimit) const;
 	int Add(const char* pszText) const;
+	int Add(const char* pszText, LPARAM lData) const;
+	int Add(const char* pszText, void*  pData) const;
 	int Insert(const char* pszText, int iPos) const;
 	int Delete(int iItem) const;
 	int Find(const char* pszText, int iFirst = -1) const;
@@ -91,6 +93,24 @@ inline void CComboBox::TextLimit(int iLimit) const
 inline int CComboBox::Add(const char* pszText) const
 {
 	return (int)SendMessage(CB_ADDSTRING, 0, (LPARAM)(LPCSTR) pszText);
+}
+
+inline int CComboBox::Add(const char* pszText, LPARAM lData) const
+{
+	int nPos = Add(pszText);
+
+	ItemData(nPos, lData);
+
+	return nPos;
+}
+
+inline int CComboBox::Add(const char* pszText, void*  pData) const
+{
+	int nPos = Add(pszText);
+
+	ItemPtr(nPos, pData);
+
+	return nPos;
 }
 
 inline int CComboBox::Insert(const char* pszText, int iPos) const
