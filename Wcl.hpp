@@ -61,8 +61,7 @@
 
 // Core collection classes.
 #include "Array.hpp"
-#include "IntArray.hpp"
-#include "PtrArray.hpp"
+#include "TArray.hpp"
 #include "StrArray.hpp"
 #include "List.hpp"
 #include "PtrList.hpp"
@@ -70,10 +69,7 @@
 #include "HandleMap.hpp"
 #include "IntPtrMap.hpp"
 #include "StrPtrMap.hpp"
-#include "Tree.hpp"
-
-// Template collection classes.
-#include "TPtrArray.hpp"
+#include "TTree.hpp"
 
 // Exception classes.
 #include "Exception.hpp"
@@ -86,6 +82,7 @@
 #include "MsgFilter.hpp"
 
 // Persistance classes.
+#include "FileFinder.hpp"
 #include "IniFile.hpp"
 #include "Stream.hpp"
 #include "File.hpp"
