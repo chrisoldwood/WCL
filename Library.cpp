@@ -23,8 +23,26 @@
 */
 
 CLibrary::CLibrary()
+	: m_hInstance(NULL)
 {
-	m_hInstance = NULL;
+}
+
+/******************************************************************************
+** Method:		Constructor
+**
+** Description:	.
+**
+** Parameters:	pszPath		The DLL path.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+CLibrary::CLibrary(const char* pszPath)
+	: m_hInstance(NULL)
+	, m_strPath(pszPath)
+{
 }
 
 /******************************************************************************
@@ -58,7 +76,7 @@ CLibrary::~CLibrary()
 
 bool CLibrary::Load()
 {
-	m_hInstance = LoadLibrary(m_Path);
+	m_hInstance = ::LoadLibrary(m_strPath);
 	
 	return (m_hInstance != NULL);
 }
@@ -77,9 +95,9 @@ bool CLibrary::Load()
 
 void CLibrary::Free()
 {
-	if (m_hInstance)
+	if (m_hInstance != NULL)
 	{
-		FreeLibrary(m_hInstance);
+		::FreeLibrary(m_hInstance);
 		m_hInstance = NULL;
 	}
 }

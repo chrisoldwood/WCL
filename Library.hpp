@@ -26,25 +26,31 @@ public:
 	// Constructors/Destructor.
 	//
 	CLibrary();
+	CLibrary(const char* pszPath);
 	~CLibrary();
 
+	//
+	// Methods.
+	//
 	bool Load();
 	void Free();
 
 	bool IsLoaded() const;
-	
+
+	FARPROC GetProcAddress(const char* pszName) const;
+
 	//
-	// Member access.
+	// Accessors.
 	//
-	HINSTANCE Handle() const;
-	CPath& Path();
+	HINSTANCE    Handle() const;
+	const CPath& Path() const;
 
 protected:
 	//
 	// Members
 	//
 	HINSTANCE	m_hInstance;
-	CPath		m_Path;
+	CPath		m_strPath;
 };
 
 /******************************************************************************
@@ -59,14 +65,21 @@ inline HINSTANCE CLibrary::Handle() const
 	return m_hInstance;
 }
 
-inline CPath& CLibrary::Path()
+inline const CPath& CLibrary::Path() const
 {
-	return m_Path;
+	return m_strPath;
 }
 
 inline bool CLibrary::IsLoaded() const
 {
 	return (m_hInstance != NULL);
+}
+
+inline FARPROC CLibrary::GetProcAddress(const char* pszName) const
+{
+	ASSERT(IsLoaded());
+
+	return ::GetProcAddress(m_hInstance, pszName);
 }
 
 #endif //LIBRARY_HPP
