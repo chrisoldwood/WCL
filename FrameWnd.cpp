@@ -251,11 +251,13 @@ LRESULT CFrameWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 
-		// Application requesting termination.
+		// Application shutting down.
 		case WM_CLOSE:
 			if (OnQueryClose())
 			{
-				// Detach menu.
+				OnClose();
+
+				// Detach menu first
 				::SetMenu(m_hWnd, NULL);
 
 				Destroy();
@@ -264,8 +266,11 @@ LRESULT CFrameWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 		// Windows shutting down.
 		case WM_ENDSESSION:
+			if (wParam == TRUE)
 			{
-				// Detach menu.
+				OnClose();
+
+				// Detach menu first
 				::SetMenu(m_hWnd, NULL);
 
 				Destroy();
@@ -450,7 +455,7 @@ void CFrameWnd::OnShowMenuPopupHint(HMENU hMenu)
 /******************************************************************************
 ** Method:		OnQueryClose()
 **
-** Description:	Ask if the main window can close.
+** Description:	Queries if the main window can close.
 **
 ** Parameters:	None.
 **
@@ -462,6 +467,23 @@ void CFrameWnd::OnShowMenuPopupHint(HMENU hMenu)
 bool CFrameWnd::OnQueryClose()
 {
 	return true;
+}
+
+/******************************************************************************
+** Method:		OnClose()
+**
+** Description:	The main window is closing.
+**				NB: Called from WM_CLOSE or WM_ENDSESSION.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CFrameWnd::OnClose()
+{
 }
 
 /******************************************************************************

@@ -91,6 +91,7 @@ protected:
 	//
 	virtual void OnActivateApp(bool bActivating);
 	virtual bool OnQueryClose();
+	virtual void OnClose();
 			void OnSelectMenu(uint iFlags, uint iItemID, HMENU hMenu);
 	virtual void OnShowMenuItemHint(uint iItemID);
 	virtual void OnShowMenuPopupHint(HMENU hMenu);
