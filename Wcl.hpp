@@ -170,6 +170,7 @@
 // Threading classes.
 #include "IThreadLock.hpp"
 #include "CriticalSection.hpp"
+#include "Event.hpp"
 #include "AutoThreadLock.hpp"
 #include "Thread.hpp"
 #include "MsgThread.hpp"
@@ -183,6 +184,7 @@
 #include "CmdCtrl.hpp"
 
 // Module classes.
+#include "ComCtl32.hpp"
 #include "Module.hpp"
 #include "App.hpp"
 #include "Dll.hpp"

@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /W4 /WX /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX"wcl.hpp" /FD /c
+# ADD CPP /nologo /MT /W4 /WX /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX"wcl.hpp" /FD /c
 # ADD BASE RSC /l 0x809 /d "NDEBUG"
 # ADD RSC /l 0x809 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -64,7 +64,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /W4 /WX /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX"wcl.hpp" /FD /GZ /c
+# ADD CPP /nologo /MTd /W4 /WX /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX"wcl.hpp" /FD /GZ /c
 # SUBTRACT CPP /Fr
 # ADD BASE RSC /l 0x809 /d "_DEBUG"
 # ADD RSC /l 0x809 /d "_DEBUG"
@@ -99,10 +99,6 @@ SOURCE=.\Array.cpp
 # Begin Source File
 
 SOURCE=.\Assert.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AutoThreadLock.cpp
 # End Source File
 # Begin Source File
 
@@ -147,6 +143,10 @@ SOURCE=.\CmdCtrl.cpp
 # Begin Source File
 
 SOURCE=.\ComboBox.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ComCtl32.cpp
 # End Source File
 # Begin Source File
 
@@ -263,10 +263,6 @@ SOURCE=.\LogFont.cpp
 # Begin Source File
 
 SOURCE=.\MainDlg.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\MainThread.cpp
 # End Source File
 # Begin Source File
 
@@ -414,10 +410,6 @@ SOURCE=.\TabWndHost.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Thread.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\ThreadJob.cpp
 # End Source File
 # Begin Source File
@@ -538,6 +530,10 @@ SOURCE=.\ComboBox.hpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ComCtl32.hpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\CriticalSection.hpp
 # End Source File
 # Begin Source File
@@ -587,6 +583,10 @@ SOURCE=.\Doc.hpp
 # Begin Source File
 
 SOURCE=.\EditBox.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Event.hpp
 # End Source File
 # Begin Source File
 
