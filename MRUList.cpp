@@ -70,14 +70,14 @@ void CMRUList::Add(const char* pszPath)
 
 	// Remove the path, if lower down.
 	if (iOldPos != -1)
-		m_Paths.Remove(iOldPos);
+		m_Paths.Delete(iOldPos);
 
 	// Insert the path at the top.
 	m_Paths.Insert(0, pszPath);
 
 	// Trim list, if required.
 	if (m_Paths.Size() > m_nMaxSize)
-		m_Paths.Remove(m_nMaxSize);
+		m_Paths.Delete(m_nMaxSize);
 }
 
 /******************************************************************************
