@@ -120,6 +120,7 @@
 #include "CmdBmp.hpp"
 #include "Cursor.hpp"
 #include "Icon.hpp"
+#include "ImageList.hpp"
 
 // Base window classes.
 #include "Wnd.hpp"

@@ -242,6 +242,10 @@ SOURCE=.\Icon.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ImageList.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\IniFile.cpp
 # End Source File
 # Begin Source File
@@ -655,6 +659,10 @@ SOURCE=.\HintBar.hpp
 # Begin Source File
 
 SOURCE=.\Icon.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ImageList.hpp
 # End Source File
 # Begin Source File
 
