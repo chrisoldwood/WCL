@@ -97,14 +97,7 @@ CIniFile::~CIniFile()
 }
 
 /******************************************************************************
-** Method:		ReadString()
-**				WriteString()
-**				ReadInt()
-**				WriteInt()
-**				ReadLong()
-**				WriteLong()
-**				ReadBool()
-**				WriteBool()
+** Method:		Read/Write String/Int/Long/Bool/Rect.
 **
 ** Description:	Methods to read and write specific data types to and from the
 **				.ini file.
@@ -213,6 +206,36 @@ void CIniFile::WriteBool(const char* pszSection, const char* pszEntry, bool bVal
 		::WritePrivateProfileString(pszSection, pszEntry, "True", m_strPath);
 	else
 		::WritePrivateProfileString(pszSection, pszEntry, "False", m_strPath);
+}
+
+CRect CIniFile::ReadRect(const char* pszSection, const char* pszEntry, const CRect& rcDefault) const
+{
+	// Read as a string.
+	CString str = ReadString(pszSection, pszEntry, "");
+
+	// Read anything?
+	if (str == "")
+		return rcDefault;
+
+	CStrArray astrFields;
+
+	// Parse.
+	if (CStrTok::Split(str, ",", astrFields) != 4)
+		return rcDefault;
+
+	return CRect(atoi(astrFields[0]), atoi(astrFields[1]), atoi(astrFields[2]), atoi(astrFields[3]));
+}
+
+void CIniFile::WriteRect(const char* pszSection, const char* pszEntry, const CRect& rcValue)
+{
+	ASSERT(pszSection);
+	ASSERT(pszEntry);
+	
+	CString str;
+
+	str.Format("%d,%d,%d,%d", rcValue.left, rcValue.top, rcValue.right, rcValue.bottom);
+
+	::WritePrivateProfileString(pszSection, pszEntry, str, m_strPath);
 }
 
 /******************************************************************************
