@@ -52,7 +52,8 @@ protected:
 	//
 	// Members.
 	//
-	CMemStream	m_MemStream;	// Used to implement stream methods.
+	CBuffer*	m_pBuffer;		// Buffer for stream.
+	CMemStream*	m_pStream;		// Used to implement stream methods.
 	uint		m_iFormat;		// The format of the clipboard data.
 };
 
@@ -65,27 +66,37 @@ protected:
 
 inline void CClipboard::Read(void* pBuffer, uint iNumBytes)
 {
-	m_MemStream.Read(pBuffer, iNumBytes);
+	ASSERT(m_pStream != NULL);
+
+	m_pStream->Read(pBuffer, iNumBytes);
 }
 
 inline void CClipboard::Write(const void* pBuffer, uint iNumBytes)
 {
-	m_MemStream.Write(pBuffer, iNumBytes);
+	ASSERT(m_pStream != NULL);
+
+	m_pStream->Write(pBuffer, iNumBytes);
 }
 
 inline ulong CClipboard::Seek(ulong lPos, uint nFrom)
 {
-	return m_MemStream.Seek(lPos, nFrom);
+	ASSERT(m_pStream != NULL);
+
+	return m_pStream->Seek(lPos, nFrom);
 }
 
 inline bool CClipboard::IsEOF()
 {
-	return m_MemStream.IsEOF();
+	ASSERT(m_pStream != NULL);
+
+	return m_pStream->IsEOF();
 }
 
 inline void CClipboard::Throw(int eErrCode)
 {
-	m_MemStream.Throw(eErrCode);
+	ASSERT(m_pStream != NULL);
+
+	m_pStream->Throw(eErrCode);
 }
 
 #endif //CLIPBOARD_HPP

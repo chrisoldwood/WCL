@@ -23,7 +23,9 @@
 */
 
 CClipboard::CClipboard()
-	: m_iFormat(0)
+	: m_pBuffer(NULL)
+	, m_pStream(NULL)
+	, m_iFormat(0)
 {
 }
 
@@ -75,8 +77,10 @@ void CClipboard::Open(uint nMode, uint iFormat)
 			throw CMemStreamException(CStreamException::E_OPEN_FAILED);
 
 		// Attach the data to the internal memory stream.
-		m_MemStream.AttachHandle(hMem);
-		m_MemStream.Open();
+		m_pBuffer = new CBuffer(hMem);
+		m_pStream = new CMemStream(*m_pBuffer);
+
+		m_pStream->Open();
 	}
 	// Copying to clipboard?
 	else if (nMode == GENERIC_WRITE)
@@ -86,7 +90,10 @@ void CClipboard::Open(uint nMode, uint iFormat)
 			throw CMemStreamException(CStreamException::E_CREATE_FAILED);
 
 		// Create the internal memory stream.
-		m_MemStream.Create();
+		m_pBuffer = new CBuffer();
+		m_pStream = new CMemStream(*m_pBuffer);
+
+		m_pStream->Create();
 	}
 
 	// Save settings for later.
@@ -110,25 +117,35 @@ void CClipboard::Open(uint nMode, uint iFormat)
 
 void CClipboard::Close()
 {
-	// Close the memory stream.
-	m_MemStream.Close();
-
-	// Need to write data to the clipboard?
-	if (m_nMode == GENERIC_WRITE)
+	// Stream created?
+	if ( (m_pBuffer != NULL) && (m_pStream != NULL) )
 	{
-		HGLOBAL hMem = m_MemStream.DetachHandle();
+		// Close the memory stream.
+		m_pStream->Close();
 
-		if (::SetClipboardData(m_iFormat, hMem) != hMem)
+		// Need to write data to the clipboard?
+		if (m_nMode == GENERIC_WRITE)
 		{
-			::CloseClipboard();
-			throw CMemStreamException(CStreamException::E_CREATE_FAILED);
+			HGLOBAL hMem = m_pBuffer->ToGlobal();
+
+			if (::SetClipboardData(m_iFormat, hMem) != hMem)
+			{
+				::CloseClipboard();
+				throw CMemStreamException(CStreamException::E_CREATE_FAILED);
+			}
 		}
 	}
 
 	// Close the clipboard.
 	::CloseClipboard();
 
+	// Delete memory stream and buffer.
+	delete m_pBuffer;
+	delete m_pStream;
+
 	// Reset members.
+	m_pBuffer = NULL;
+	m_pStream = NULL;
 	m_nMode   = NULL;
 	m_iFormat = 0;
 }
