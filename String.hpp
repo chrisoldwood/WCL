@@ -46,12 +46,15 @@ public:
 	//
 	// Mutation.
 	//
-	void Delete(int nFirst, int nCount = 1);
+	void     Delete(int nFirst, int nCount = 1);
+	CString& ToLower();
+	CString& ToUpper();
 
  	//
 	// Searching.
 	//
 	int Find(char cChar, int nStart = 0) const;
+	int Find(const char* pszStr, int nStart = 0) const;
 	int Count(char cChar) const;
 
 	//
@@ -148,6 +151,20 @@ inline int CString::Length() const
 	ASSERT(m_pszData);
 
 	return strlen(m_pszData);
+}
+
+inline CString& CString::ToLower()
+{
+	_strlwr(m_pszData);
+
+	return *this;
+}
+
+inline CString& CString::ToUpper()
+{
+	_strupr(m_pszData);
+
+	return *this;
 }
 
 inline const CString& CString::operator=(const CString& strSrc)

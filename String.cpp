@@ -561,15 +561,32 @@ int CString::Find(char cChar, int nStart) const
 {
 	ASSERT( (nStart >= 0) && (nStart <= Length()) );
 
-	const char* pszStr = m_pszData + nStart;
+	const char* psz = strchr(m_pszData + nStart, cChar);
 
-	while ( (*pszStr != '\0') && (*pszStr != cChar) )
-	{
-		pszStr++;
-		nStart++;
-	}
+	return (psz == NULL) ? -1 : (psz - m_pszData);
+}
 
-	return (*pszStr != '\0') ? nStart : -1;
+/******************************************************************************
+** Method:		Find()
+**
+** Description:	Finds the first occurence of the substring in the string
+**				starting from the position specified.
+**
+** Parameters:	pszStr	The substring to find.
+**
+** Returns:		The zero based index of the character OR
+**				-1 if the character was not found.
+**
+*******************************************************************************
+*/
+
+int CString::Find(const char* pszStr, int nStart) const
+{
+	ASSERT( (nStart >= 0) && (nStart <= Length()) );
+
+	const char* psz = strstr(m_pszData + nStart, pszStr);
+
+	return (psz == NULL) ? -1 : (psz - m_pszData);
 }
 
 /******************************************************************************
