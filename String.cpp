@@ -125,16 +125,12 @@ CString::~CString()
 
 void CString::LoadRsc(uint iRscID)
 {
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	// Initial buffer size.
 	int iBufSize = 4;
 	BufferSize(iBufSize);
 
 	// Load until buffer is big enough.
-	while(::LoadString(pApp->m_hInstance, iRscID, m_pszData, iBufSize) == (iBufSize-1))
+	while(::LoadString(CModule::This().Handle(), iRscID, m_pszData, iBufSize) == (iBufSize-1))
 	{
 		iBufSize *= 2;
 		BufferSize(iBufSize);
@@ -689,4 +685,46 @@ CString CString::Right(int nCount)
 	str.m_pszData[nCount] = '\0';
 
 	return str;
+}
+
+/******************************************************************************
+** Method:		Delete()
+**
+** Description:	Deletes a number of characters, from the specified position.
+**
+** Parameters:	nFirst		The first character to be deleted.
+**				nCount		The number of characters to delete.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CString::Delete(int nFirst, int nCount)
+{
+	ASSERT(nFirst >= 0);
+	ASSERT(nCount >= 0);
+
+	// Ignore, if doing nothing.
+	if (nCount <= 0)
+		return;
+
+	// Get current length.
+	int nLength = Length();
+
+	ASSERT(nFirst < nLength);
+	ASSERT((nFirst+nCount) <= nLength);
+
+	// Emptying string?
+	if ( (nFirst == 0) && (nCount == nLength) )
+	{
+		Free();
+		return;
+	}
+
+	char* pszDst = m_pszData + nFirst;
+	char* pszSrc = pszDst + nCount;
+
+	// Move string contents down.
+	strcpy(pszDst, pszSrc);
 }

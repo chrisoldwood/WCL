@@ -40,9 +40,15 @@ public:
 	//
 	// Attributes.
 	//
-	int Length() const;
+	bool Empty() const;
+	int  Length() const;
 
 	//
+	// Mutation.
+	//
+	void Delete(int nFirst, int nCount = 1);
+
+ 	//
 	// Searching.
 	//
 	int Find(char cChar, int nStart = 0) const;
@@ -130,6 +136,13 @@ protected:
 *******************************************************************************
 */
 
+inline bool CString::Empty() const
+{
+	ASSERT(m_pszData);
+
+	return (m_pszData[0] == '\0');
+}
+
 inline int CString::Length() const
 {
 	ASSERT(m_pszData);
@@ -188,6 +201,49 @@ inline void CString::Copy(const char* lpszBuffer)
 inline CString::StringData* CString::GetData() const
 {
 	return (StringData*) (m_pszData - (2 * sizeof(uint32)));
+}
+
+/******************************************************************************
+** 
+** Global string operators.
+**
+*******************************************************************************
+*/
+
+inline CString operator+(const CString& strLHS, const char* pszRHS)
+{
+	ASSERT(false);
+
+	CString str;
+
+	str  = strLHS;
+	str += pszRHS;
+
+	return str;
+}
+
+inline CString operator+(const char* pszLHS, const CString& strRHS)
+{
+	ASSERT(false);
+
+	CString str;
+
+	str  = pszLHS;
+	str += strRHS;
+
+	return str;
+}
+
+inline CString operator+(const CString& strLHS, const CString& strRHS)
+{
+	ASSERT(false);
+
+	CString str;
+
+	str  = strLHS;
+	str += strRHS;
+
+	return str;
 }
 
 #endif //STRING_HPP
