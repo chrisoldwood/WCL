@@ -26,7 +26,13 @@ public:
 	// Constructors/Destructor.
 	//
 	CStrArray();
+	CStrArray(const CStrArray& oRHS);
 	~CStrArray();
+
+	//
+	// Operators.
+	//
+	CStrArray& operator=(const CStrArray& oRHS);
 
 	//
 	// Methods.
@@ -44,6 +50,7 @@ public:
 	void DeleteAll();
 
 	int Find(const char* pszString, bool bIgnoreCase = false) const;
+
 };
 
 /******************************************************************************
@@ -57,9 +64,28 @@ inline CStrArray::CStrArray()
 {
 }
 
+inline CStrArray::CStrArray(const CStrArray& oRHS)
+{
+	for (int i = 0; i < oRHS.Size(); ++i)
+		Add(oRHS[i]);
+}
+
 inline CStrArray::~CStrArray()
 {
 	DeleteAll();
+}
+
+inline CStrArray& CStrArray::operator=(const CStrArray& oRHS)
+{
+	if (this != &oRHS)
+	{
+		DeleteAll();
+
+		for (int i = 0; i < oRHS.Size(); ++i)
+			Add(oRHS[i]);
+	}
+
+	return *this;
 }
 
 inline int CStrArray::Size() const
