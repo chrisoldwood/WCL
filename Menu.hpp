@@ -53,6 +53,7 @@ public:
 	//
 	// Item by position methods.
 	//
+	int     ItemCount() const;
 	void    EnableItem(int nPos, bool bEnable = true);
 	CString GetItemText(int nPos);
 	CPopupMenu GetItemPopup(int nPos);
@@ -105,6 +106,11 @@ inline void CMenu::CheckCmd(uint iCmdID, bool bCheck)
 inline void CMenu::RemoveCmd(uint iCmdID)
 {
 	::RemoveMenu(m_hMenu, iCmdID, MF_BYCOMMAND);
+}
+
+inline int CMenu::ItemCount() const
+{
+	return ::GetMenuItemCount(m_hMenu);
 }
 
 inline void CMenu::EnableItem(int nPos, bool bEnable)
