@@ -60,10 +60,12 @@ public:
 		SelectFile
 	};
     
-	bool Select(const CWnd& rParent, DlgMode eMode, const char* pszExts,
-				const char* pszDefExt, const char* pszDir = NULL);
+	bool Select(const CWnd& rParent, DlgMode eMode, const char* pszExts, const char* pszDefExt, const char* pszDir = NULL);
 	bool SelectDir(const CWnd& rParent, const char* pszTitle, const char* pszDir = NULL);
 	bool SelectComputer(const CWnd& rParent, const char* pszTitle);
+
+	static bool SelectFiles(const CWnd& rParent, const char* pszExts, const char* pszDefExt, CStrArray& astrFiles);
+	static bool SelectFiles(const CWnd& rParent, const char* pszExts, const char* pszDefExt, const char* pszDir, CStrArray& astrFiles);
 
 	//
 	// Common root directories.

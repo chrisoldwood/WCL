@@ -336,7 +336,7 @@ CString CPath::FileExt() const
 **
 ** Description:	Get a filename by using the common file open dialog.
 **
-** Parameters:	pParent		The dialogs parent.
+** Parameters:	rParent		The dialogs parent.
 **				eMode		One of DlgMode values.
 **				pszExts		File extensions.
 **				pszDefExt	Default file extension.
@@ -367,7 +367,7 @@ bool CPath::Select(const CWnd& rParent, DlgMode eMode, const char* pszExts,
 	ofnFile.nMaxCustFilter    = NULL;
 	ofnFile.nFilterIndex      = NULL;
 	ofnFile.lpstrFile         = szFileName;
-	ofnFile.nMaxFile          = MAX_PATH;
+	ofnFile.nMaxFile          = sizeof(szFileName);
 	ofnFile.lpstrFileTitle    = NULL;
 	ofnFile.nMaxFileTitle     = NULL;
 	ofnFile.lpstrInitialDir   = pszDir;
@@ -411,7 +411,7 @@ bool CPath::Select(const CWnd& rParent, DlgMode eMode, const char* pszExts,
 **
 ** Description:	Get a directory by using the common dialog.
 **
-** Parameters:	pParent		The dialogs parent.
+** Parameters:	rParent		The dialogs parent.
 **				pszTitle	The hint displayed above the view.
 **				pszDir		The initial directory.
 **
@@ -505,7 +505,7 @@ int CALLBACK CPath::BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPAR
 **
 ** Description:	Get a computer by using the common dialog.
 **
-** Parameters:	pParent		The dialogs parent.
+** Parameters:	rParent		The dialogs parent.
 **				pszTitle	The hint displayed above the view.
 **
 ** Returns:		true		If user pressed OK.
@@ -575,4 +575,91 @@ void CPath::StripFinalSlash(char* pszPath)
 	// Strip trailing slash, if it exists.
 	if ( (nLength > 0) && (pszPath[nLength-1] == '\\') )
 		pszPath[nLength-1] = '\0';
+}
+
+/******************************************************************************
+** Method:		SelectFiles()
+**
+** Description:	Select multiple files using the common dialog.
+**
+** Parameters:	rParent		The dialogs parent.
+**				pszExts		File extensions.
+**				pszDefExt	Default file extension.
+**				pszDir		Initial directory.
+**				astrFiles	The return buffer for the filenames.
+**
+** Returns:		true		If user pressed OK.
+**				false		If user pressed Cancel.
+**
+*******************************************************************************
+*/
+
+bool CPath::SelectFiles(const CWnd& rParent, const char* pszExts, const char* pszDefExt, CStrArray& astrFiles)
+{
+	return SelectFiles(rParent, pszExts, pszDefExt, NULL, astrFiles);
+}
+
+bool CPath::SelectFiles(const CWnd& rParent, const char* pszExts, const char* pszDefExt, const char* pszDir, CStrArray& astrFiles)
+{
+	OPENFILENAME ofnFile;
+	char         szFileName[MAX_PATH*100] = "";
+
+	ofnFile.lStructSize       = sizeof(OPENFILENAME);
+	ofnFile.hwndOwner         = rParent.Handle();
+	ofnFile.hInstance         = NULL;
+	ofnFile.lpstrFilter       = pszExts;
+	ofnFile.lpstrCustomFilter = NULL;
+	ofnFile.nMaxCustFilter    = NULL;
+	ofnFile.nFilterIndex      = NULL;
+	ofnFile.lpstrFile         = szFileName;
+	ofnFile.nMaxFile          = sizeof(szFileName);
+	ofnFile.lpstrFileTitle    = NULL;
+	ofnFile.nMaxFileTitle     = NULL;
+	ofnFile.lpstrInitialDir   = pszDir;
+	ofnFile.lpstrTitle        = "Select";
+	ofnFile.Flags             = OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_ALLOWMULTISELECT;
+	ofnFile.nFileOffset       = NULL;
+	ofnFile.nFileExtension    = NULL;
+	ofnFile.lpstrDefExt       = pszDefExt;
+	ofnFile.lCustData         = NULL;
+	ofnFile.lpfnHook          = NULL;
+	ofnFile.lpTemplateName    = NULL;
+	
+	if (!::GetOpenFileName(&ofnFile))
+		return false;
+
+	// Returned path must exist to check its type.
+	if (_access(szFileName, 0) != 0)
+		return false;
+
+	struct stat oInfo = { 0 };
+
+	// Get the returned paths type.
+	if (::stat(szFileName, &oInfo) != 0)
+		return false;
+
+	// Multiple files?
+	if ((oInfo.st_mode & _S_IFDIR))
+	{
+		// First path is the directory.
+		const char* pszDir = szFileName;
+
+		// Convert filename list to full paths.
+		// NB: Files are separated by '\0' and the list is terminated by a "\0\0".
+		const char *pszFileName = pszDir + strlen(pszDir) + 1;
+
+		while (*pszFileName != 0)
+		{ 
+			astrFiles.Add(CPath(pszDir, pszFileName));
+
+			pszFileName += strlen(pszFileName) + 1;
+		}
+	}
+	// Single file.
+	else
+	{
+		astrFiles.Add(szFileName);
+	}
+
+	return true;
 }
