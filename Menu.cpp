@@ -61,6 +61,30 @@ CMenu::~CMenu()
 }
 
 /******************************************************************************
+** Method:		GetItemPopup()
+**
+** Description:	Gets the popup menu at the position given.
+**
+** Parameters:	nPos	The position of the item.
+**
+** Returns:		The popup menu.
+**
+*******************************************************************************
+*/
+
+CPopupMenu CMenu::GetItemPopup(int nPos)
+{
+	ASSERT(m_hMenu != NULL);
+
+	// Get the popup menu.
+	HMENU hPopup = ::GetSubMenu(m_hMenu, nPos);
+
+	ASSERT(hPopup != NULL);
+
+	return CPopupMenu(hPopup);
+}
+
+/******************************************************************************
 ** Method:		SetItemPopup()
 **
 ** Description:	Sets the popup menu at the position given.
