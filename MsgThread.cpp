@@ -24,6 +24,9 @@
 
 CMsgThread::CMsgThread()
 {
+#ifdef _DEBUG
+	memset(&m_oMsg, 0, sizeof(MSG));
+#endif
 }
 
 /******************************************************************************
@@ -58,9 +61,17 @@ CMsgThread::~CMsgThread()
 
 void CMsgThread::Run()
 {
+#ifdef _DEBUG
+	memset(&m_oMsg, 0, sizeof(MSG));
+#endif
+
 	// Process message queue until WM_QUIT.
 	while (ProcessMsgQueue())
 		WaitMessage();
+
+#ifdef _DEBUG
+	memset(&m_oMsg, 0, sizeof(MSG));
+#endif
 }
 
 /******************************************************************************
@@ -77,13 +88,11 @@ void CMsgThread::Run()
 
 bool CMsgThread::ProcessMsgQueue()
 {
-	MSG Msg;
-
 	// Message waiting?
-	while (PeekMessage(&Msg, NULL, NULL, NULL, PM_NOREMOVE))
+	while (PeekMessage(&m_oMsg, NULL, NULL, NULL, PM_NOREMOVE))
 	{
 		// Is WM_QUIT?
-		if (!GetMessage(&Msg, NULL, NULL, NULL))
+		if (!GetMessage(&m_oMsg, NULL, NULL, NULL))
 		{
 			// Put back on the queue.
 			::PostQuitMessage(0);
@@ -96,13 +105,13 @@ bool CMsgThread::ProcessMsgQueue()
 		
 		// Give message filters first crack at message.
 		while ( ((pFilter = Iter.Next()) != NULL) && (!bProcessed) )
-			bProcessed = pFilter->ProcessMsg(Msg);
+			bProcessed = pFilter->ProcessMsg(m_oMsg);
 
 		// Still not processed?
 		if (!bProcessed)
 		{
-			TranslateMessage(&Msg);
-			DispatchMessage(&Msg);
+			TranslateMessage(&m_oMsg);
+			DispatchMessage(&m_oMsg);
 		}
 	}
 

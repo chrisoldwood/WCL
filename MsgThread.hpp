@@ -42,10 +42,13 @@ public:
 	//
 	bool ProcessMsgQueue();
 
+	const MSG& CurrentMsg() const;
+
 protected:
 	//
 	// Members.
 	//
+	MSG			m_oMsg;
 	CMsgFilters	m_MsgFilters;
 };
 
@@ -64,6 +67,11 @@ inline void CMsgThread::AddMsgFilter(CMsgFilter& rFilter)
 inline void CMsgThread::RemoveMsgFilter(CMsgFilter& rFilter)
 {
 	m_MsgFilters.Remove(rFilter);
+}
+
+inline const MSG& CMsgThread::CurrentMsg() const
+{
+	return m_oMsg;
 }
 
 #endif //MSGTHREAD_HPP
