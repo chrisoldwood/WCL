@@ -52,6 +52,7 @@ public:
 	int HorzRes() const;
 	int VertRes() const;
 	CSize TextExtents(const char* pszText) const;
+	CSize TextExtents(const CFont& oFont, const char* pszText) const;
 
 	//
 	// State.

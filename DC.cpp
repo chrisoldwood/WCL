@@ -56,69 +56,60 @@ void CDC::Border3D(const CRect& rcRect, bool bRaised, bool bThick)
 	const CPen* pInnerBotPen = NULL;
 	CRect rcBorder           = rcRect;
 
-	// If thin border, expand rect.
-	if (!bThick) 
-	{
-		rcBorder.left--;
-		rcBorder.top--;
-		rcBorder.right++;
-		rcBorder.bottom++;
-	}
-
 	// Get application object.
 	CApp& oApp = CApp::This();
 
 	// Get the pens.
 	if (bRaised)
 	{
-		pInnerTopPen = &oApp.LightPen();
-		pInnerBotPen = &oApp.DarkPen();
+		pOuterTopPen = &oApp.LightestPen();
+		pOuterBotPen = &oApp.DarkestPen();
 
 		if (bThick)
 		{
-			pOuterTopPen = &oApp.LightestPen();
-			pOuterBotPen = &oApp.DarkestPen();
+			pInnerTopPen = &oApp.LightPen();
+			pInnerBotPen = &oApp.DarkPen();
 		}
 	}
 	// Recessed.
 	else
 	{
-		pInnerTopPen = &oApp.DarkestPen();
-		pInnerBotPen = &oApp.LightPen();
+		pOuterTopPen = &oApp.DarkPen();
+		pOuterBotPen = &oApp.LightestPen();
 
 		if (bThick)
 		{
-			pOuterTopPen = &oApp.DarkPen();
-			pOuterBotPen = &oApp.LightestPen();
+			pInnerTopPen = &oApp.DarkestPen();
+			pInnerBotPen = &oApp.LightPen();
 		}
 	}
 
-	// Draw inside top edge.
-	Select(*pInnerTopPen);
-	Move(rcBorder.left+1,  rcBorder.bottom-2);
-	Line(rcBorder.left+1,  rcBorder.top+1);
-	Line(rcBorder.right-2, rcBorder.top+1);
-
-	// Draw inside bottom edge.
-	Select(*pInnerBotPen);
-	Move(rcBorder.right-2, rcBorder.top+1);
-	Line(rcBorder.right-2, rcBorder.bottom-2);
-	Line(rcBorder.left+1,  rcBorder.bottom-2);
-
 	if (bThick)
 	{
-		// Draw outside top edge.
-		Select(*pOuterTopPen);
-		Move(rcBorder.left,    rcBorder.bottom-1);
-		Line(rcBorder.left,    rcBorder.top);
-		Line(rcBorder.right-1, rcBorder.top);
+		// Draw inside top edge.
+		Select(*pInnerTopPen);
+		Move(rcBorder.left+1,  rcBorder.bottom-2);
+		Line(rcBorder.left+1,  rcBorder.top+1);
+		Line(rcBorder.right-2, rcBorder.top+1);
 
-		// Draw outside bottom edge.
-		Select(*pOuterBotPen);
-		Move(rcBorder.right-1, rcBorder.top);
-		Line(rcBorder.right-1, rcBorder.bottom-1);
-		Line(rcBorder.left,    rcBorder.bottom-1);
+		// Draw inside bottom edge.
+		Select(*pInnerBotPen);
+		Move(rcBorder.right-2, rcBorder.top+1);
+		Line(rcBorder.right-2, rcBorder.bottom-2);
+		Line(rcBorder.left+1,  rcBorder.bottom-2);
 	}
+
+	// Draw outside top edge.
+	Select(*pOuterTopPen);
+	Move(rcBorder.left,    rcBorder.bottom-1);
+	Line(rcBorder.left,    rcBorder.top);
+	Line(rcBorder.right-1, rcBorder.top);
+
+	// Draw outside bottom edge.
+	Select(*pOuterBotPen);
+	Move(rcBorder.right-1, rcBorder.top);
+	Line(rcBorder.right-1, rcBorder.bottom-1);
+	Line(rcBorder.left,    rcBorder.bottom-1);
 }
 
 /******************************************************************************
@@ -189,7 +180,8 @@ void CDC::VertLine3D(int iX, int iSY, int iDY, bool bRaised)
 ** Description:	Get the extents for a piece of text. This uses the currently
 **				selected font.
 **
-** Parameters:	pszText		The text, NULL terminated.
+** Parameters:	oFont		The font to use for the calculation.
+**				pszText		The text, NULL terminated.
 **
 ** Returns:		The dimensions.
 **
@@ -203,6 +195,14 @@ CSize CDC::TextExtents(const char* pszText) const
 	GetTextExtentPoint(m_hDC, pszText, lstrlen(pszText), &Size);
 	
 	return Size;
+}
+
+CSize CDC::TextExtents(const CFont& oFont, const char* pszText) const
+{
+	// NB: Only changes HDC, not 'this'.
+	const_cast<CDC*>(this)->Select(oFont);
+
+	return TextExtents(pszText);
 }
 
 /******************************************************************************
