@@ -25,8 +25,8 @@
 *******************************************************************************
 */
 
-CMRUList::CMRUList()
-	: m_nMaxSize(4)
+CMRUList::CMRUList(int nMaxSize)
+	: m_nMaxSize(nMaxSize)
 {
 }
 

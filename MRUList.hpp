@@ -25,7 +25,7 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CMRUList();
+	CMRUList(int nMaxSize = 4);
 	~CMRUList();
 	
 	//

@@ -1,17 +1,9 @@
-- Clipboard exception.
-
-- Clipboard class for simple copy text support.
-
 - Ref counted strings.
 
 - File finder recursion support.
 
 - App helpers for reg file types/apps etc.
 
-- Fix Bug in select computer method.
+- Two phase save support (SDI).
 
-- Two phase save support.
-
-- Replace CPath implementations for GetCWD() etc with Win32 functions.
-
-- Size grip on status bar.
+- Move to STL.
