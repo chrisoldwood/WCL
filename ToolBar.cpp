@@ -10,6 +10,18 @@
 
 #include "wcl.hpp"
 
+#ifdef _DEBUG
+// For memory leak detection.
+#define new DBGCRT_NEW
+#endif
+
+/******************************************************************************
+**
+** Local variables.
+**
+*******************************************************************************
+*/
+
 // Border around controls.
 const int BORDER_SIZE = 3;
 
