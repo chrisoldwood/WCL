@@ -10,11 +10,24 @@
 
 #include "wcl.hpp"
 #include <io.h>
+#include <shlobj.h>
 
 #ifdef _DEBUG
 // For memory leak detection.
 #define new DBGCRT_NEW
 #endif
+
+#ifndef _DEBUG
+#define	ATLASSERT
+#endif
+
+// conditional expression is constant
+#pragma warning ( disable : 4127 )
+
+#include <atlconv.h>
+
+// conditional expression is constant
+#pragma warning ( default : 4127 )
 
 /******************************************************************************
 ** Method:		Default constructor
@@ -408,7 +421,7 @@ bool CFile::Move(const char* pszSrc, const char* pszDst)
 **
 ** Parameters:	pszPath		The file path.
 **
-** Returns:		true or false
+** Returns:		true or false.
 **
 *******************************************************************************
 */
@@ -418,4 +431,108 @@ bool CFile::Delete(const char* pszPath)
 	ASSERT(pszPath != NULL);
 
 	return (::DeleteFile(pszPath) != 0);
+}
+
+/******************************************************************************
+** Method:		CreateFolder()
+**
+** Description:	Creates a folder.
+**
+** Parameters:	pszPath		The folder path.
+**
+** Returns:		true or false.
+**
+*******************************************************************************
+*/
+
+bool CFile::CreateFolder(const char* pszPath)
+{
+	ASSERT(pszPath != NULL);
+
+	return (::CreateDirectory(pszPath, NULL) != 0);
+}
+
+/******************************************************************************
+** Method:		DeleteFolder()
+**
+** Description:	Deletes a folder.
+**
+** Parameters:	pszPath		The folder path.
+**
+** Returns:		true or false.
+**
+*******************************************************************************
+*/
+
+bool CFile::DeleteFolder(const char* pszPath)
+{
+	ASSERT(pszPath != NULL);
+
+	return (::RemoveDirectory(pszPath) != 0);
+}
+
+/******************************************************************************
+** Method:		CreateShortcut()
+**
+** Description:	Create a shortcut to a file.
+**
+** Parameters:	pszLink		The path to the link.
+**				pszTarget	The path of the file the link points to.
+**				pszDesc		A description.
+**
+** Returns:		true or false.
+**
+*******************************************************************************
+*/
+
+bool CFile::CreateShortcut(const char* pszLink, const char* pszTarget, const char* pszDesc)
+{
+	ASSERT(pszLink   != NULL);
+	ASSERT(pszTarget != NULL);
+
+	// Initialise COM.
+	HRESULT hResult = ::CoInitialize(NULL);
+
+	if (SUCCEEDED(hResult))
+	{
+		IShellLink* pIShellLink = NULL;
+
+		// Get a pointer to the IShellLink interface. 
+		hResult = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, IID_IShellLink, (LPVOID*) &pIShellLink);
+
+		if (SUCCEEDED(hResult))
+		{ 
+			// Set the target file and description.
+			if (pszTarget != NULL)
+				pIShellLink->SetPath(pszTarget);
+
+			if (pszDesc != NULL)
+				pIShellLink->SetDescription(pszDesc);
+ 
+			IPersistFile* pIPersistFile = NULL;
+
+			// Query IShellLink for the IPersistFile interface for saving the shortcut. 
+			hResult = pIShellLink->QueryInterface(IID_IPersistFile, (LPVOID*) &pIPersistFile); 
+
+			if (SUCCEEDED(hResult))
+			{ 
+				USES_CONVERSION;
+
+				// Create the shortcut.
+				hResult = pIPersistFile->Save(A2W(pszLink), TRUE);
+
+				pIPersistFile->Release(); 
+			} 
+
+			pIShellLink->Release(); 
+		}
+
+		::CoUninitialize();
+	}
+
+	// If failed, store error in LastError.
+	if (FAILED(hResult))
+		::SetLastError(hResult);
+
+	return SUCCEEDED(hResult);
 }
