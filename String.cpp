@@ -698,3 +698,45 @@ uint CString::Split(const char* pszSeps, CStrArray& astrFields)
 
 	return astrFields.Size();
 }
+
+/******************************************************************************
+** Method:		Trim()
+**
+** Description:	Trims the leading and/or trailing whitespace from the string.
+**
+** Parameters:	bLeft	Trim leading whitespace.
+**				bRight	Trim trailing whitespace.
+**
+** Returns:		This.
+**
+*******************************************************************************
+*/
+
+CString& CString::Trim(bool bLeft, bool bRight)
+{
+	// Trim leading?
+	if (bLeft)
+	{
+		int nChars = 0;
+
+		for (char* psz = m_pszData; (*psz != '\0') && (isspace(*psz)); ++psz)
+			nChars++;
+
+		Delete(0, nChars);
+	}
+
+	int nLength = Length();
+
+	// Trim trailing?
+	if (bRight)
+	{
+		int nChars = 0;
+
+		for (char* psz = m_pszData+nLength-1; (psz >= m_pszData) && (isspace(*psz)); --psz)
+			nChars++;
+
+		Delete(nLength-nChars, nChars);
+	}
+
+	return *this;
+}

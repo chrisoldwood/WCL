@@ -49,6 +49,7 @@ public:
 	// Mutation.
 	//
 	void     Delete(int nFirst, int nCount = 1);
+	CString& Trim(bool bLeft = true, bool bRight = true);
 	CString& ToLower();
 	CString& ToUpper();
 
