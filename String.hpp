@@ -31,6 +31,7 @@ public:
 	CString();
 	CString(uint iRscID);
 	CString(const char* pszBuffer);
+	CString(const char* pszBuffer, uint iChars);
 	CString(const CString& strSrc);
 	~CString();
 
@@ -138,6 +139,40 @@ protected:
 **
 *******************************************************************************
 */
+
+inline CString::CString()
+	: m_pszData(pszNULL)
+{
+}
+
+inline CString::CString(uint iRscID)
+	: m_pszData(pszNULL)
+{
+	LoadRsc(iRscID);
+}
+
+inline CString::CString(const char* pszBuffer)
+	: m_pszData(pszNULL)
+{
+	Copy(pszBuffer, strlen(pszBuffer));
+}
+
+inline CString::CString(const char* pszBuffer, uint iChars)
+	: m_pszData(pszNULL)
+{
+	Copy(pszBuffer, iChars);
+}
+
+inline CString::CString(const CString& strSrc)
+	: m_pszData(pszNULL)
+{
+	Copy(strSrc.m_pszData, strSrc.Length());
+}
+
+inline CString::~CString()
+{
+	Free();
+}
 
 inline bool CString::Empty() const
 {
