@@ -87,7 +87,7 @@ bool CDoc::Load()
 		CFile File;
 
 		// Open, read and close.
-		File.Open(m_Path, CStream::ReadOnly);
+		File.Open(m_Path, GENERIC_READ);
 
 		*this << File;
 
