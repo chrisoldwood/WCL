@@ -200,6 +200,11 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			OnDestroy();
 			break;
 		
+		// Window being destroyed (Non-client).
+		case WM_NCDESTROY:
+			OnNCDestroy();
+			break;
+
 		// Call the default handler.
 		default:
 			return DefaultWndProc(hWnd, iMsg, wParam, lParam);
@@ -323,6 +328,26 @@ void CMsgWnd::OnShow(bool bShowing)
 
 void CMsgWnd::OnDestroy()
 {
+}
+
+/******************************************************************************
+** Method:		OnNCDestroy()
+**
+** Description:	The window has been destroyed. Unmap handle.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CMsgWnd::OnNCDestroy()
+{
+	// Delete object mapping.
+	CWnd::s_WndMap.Remove(*this);
+
+	m_hWnd = NULL;
 }
 
 /******************************************************************************

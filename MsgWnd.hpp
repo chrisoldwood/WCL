@@ -83,6 +83,7 @@ protected:
 	virtual void OnTimer(uint iTimerID);
 	virtual	void OnShow(bool bShowing);
 	virtual void OnDestroy();
+	virtual void OnNCDestroy();
 	virtual void OnHorizScroll(uint iCode, uint iPos);
 	virtual void OnVertScroll(uint iCode, uint iPos);
 	virtual void OnCmdMsg(uint iID);
