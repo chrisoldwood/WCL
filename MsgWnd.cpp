@@ -125,6 +125,11 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			OnCtlColour(iMsg, (HDC)wParam, (HWND)lParam);
 			return 0;
 
+		// Hit test on the window.
+		case WM_NCHITTEST:
+			OnHitTest(CPoint(LOWORD(lParam), HIWORD(lParam)));
+			return 0;
+
 		// Window resized.
 		case WM_SIZE:
 			{
@@ -245,7 +250,7 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 *******************************************************************************
 */
 
-void CMsgWnd::OnCreate(const CRect& rcClient)
+void CMsgWnd::OnCreate(const CRect& /*rcClient*/)
 {
 }
 
@@ -278,7 +283,7 @@ void CMsgWnd::OnEraseBackground(CDC& rDC)
 *******************************************************************************
 */
 
-void CMsgWnd::OnPaint(CDC& rDC)
+void CMsgWnd::OnPaint(CDC& /*rDC*/)
 {
 }
 
@@ -295,7 +300,7 @@ void CMsgWnd::OnPaint(CDC& rDC)
 *******************************************************************************
 */
 
-void CMsgWnd::OnResize(int iFlag, const CSize& rNewSize)
+void CMsgWnd::OnResize(int /*iFlag*/, const CSize& /*rNewSize*/)
 {
 }
 
@@ -311,7 +316,7 @@ void CMsgWnd::OnResize(int iFlag, const CSize& rNewSize)
 *******************************************************************************
 */
 
-void CMsgWnd::OnTimer(uint iTimerID)
+void CMsgWnd::OnTimer(uint /*iTimerID*/)
 {
 }
 
@@ -327,7 +332,7 @@ void CMsgWnd::OnTimer(uint iTimerID)
 *******************************************************************************
 */
 
-void CMsgWnd::OnShow(bool bShowing)
+void CMsgWnd::OnShow(bool /*bShowing*/)
 {
 }
 
@@ -381,11 +386,11 @@ void CMsgWnd::OnNCDestroy()
 *******************************************************************************
 */
 
-void CMsgWnd::OnHorizScroll(uint iCode, uint iPos)
+void CMsgWnd::OnHorizScroll(uint /*iCode*/, uint /*iPos*/)
 {
 }
 
-void CMsgWnd::OnVertScroll(uint iCode, uint iPos)
+void CMsgWnd::OnVertScroll(uint /*iCode*/, uint /*iPos*/)
 {
 }
 
@@ -511,7 +516,7 @@ LRESULT CMsgWnd::OnCtrlMsg(NMHDR& rMsgHdr)
 *******************************************************************************
 */
 
-void CMsgWnd::OnReflectedCtrlMsg(uint iMsg)
+void CMsgWnd::OnReflectedCtrlMsg(uint /*iMsg*/)
 {
 }
 
@@ -530,7 +535,7 @@ void CMsgWnd::OnReflectedCtrlMsg(uint iMsg)
 *******************************************************************************
 */
 
-void CMsgWnd::OnReflectedCtrlMsg(NMHDR& rMsgHdr)
+void CMsgWnd::OnReflectedCtrlMsg(NMHDR& /*rMsgHdr*/)
 {
 }
 
@@ -546,7 +551,7 @@ void CMsgWnd::OnReflectedCtrlMsg(NMHDR& rMsgHdr)
 *******************************************************************************
 */
 
-void CMsgWnd::OnActivate(bool bActivating)
+void CMsgWnd::OnActivate(bool /*bActivating*/)
 {
 }
 
@@ -562,16 +567,8 @@ void CMsgWnd::OnActivate(bool bActivating)
 *******************************************************************************
 */
 
-void CMsgWnd::OnMeasureItem(uint iID, uint iItem, uint& iWidth, uint& iHeight)
+void CMsgWnd::OnMeasureItem(uint /*iID*/, uint /*iItem*/, uint& /*iWidth*/, uint& /*iHeight*/)
 {
-/*
-	TRACE("OnMeasureItem\n");
-
-	TRACE1("ID:     %u\n", iID);
-	TRACE1("Item:   %u\n", iItem);
-	TRACE1("Width:  %u\n", iWidth);
-	TRACE1("Height: %u\n", iHeight);
-*/
 }
 
 /******************************************************************************
@@ -586,42 +583,9 @@ void CMsgWnd::OnMeasureItem(uint iID, uint iItem, uint& iWidth, uint& iHeight)
 *******************************************************************************
 */
 
-void CMsgWnd::OnDrawItem(uint iID, uint iAction, uint iState, CDC& rDC,
-							uint iItem, const CRect& rcItem)
+void CMsgWnd::OnDrawItem(uint /*iID*/, uint /*iAction*/, uint /*iState*/, CDC& /*rDC*/,
+							uint /*iItem*/, const CRect& /*rcItem*/)
 {
-#ifdef _DEBUG
-	TRACE("OnDrawItem\n");
-
-	TRACE1("ID  : %u\n", iID);
-	TRACE1("Item: %u\n", iItem);
-	
-	if (iAction & ODA_DRAWENTIRE)
-		TRACE("ODA Draw entire\n");
-
-	if (iAction & ODA_FOCUS)
-		TRACE("ODA Draw focus\n");
-
-	if (iAction & ODA_SELECT)
-		TRACE("ODA Draw select\n");
-
-	if (iState & ODS_CHECKED)
-		TRACE("ODS is checked\n");
-
-	if (iState & ODS_DISABLED)
-		TRACE("ODS is disabled\n");
-
-	if (iState & ODS_FOCUS)
-		TRACE("ODS has focus\n");
-
-	if (iState & ODS_GRAYED)
-		TRACE("ODS is grayed\n");
-
-	if (iState & ODS_SELECTED)
-		TRACE("ODS is selected\n");
-
-	TRACE4("Pos: (%d, %d)(%d,%d)\n", rcItem.left, rcItem.top, rcItem.right, rcItem.bottom);
-	TRACE("\n");
-#endif
 }
 
 /******************************************************************************
@@ -695,7 +659,7 @@ void CMsgWnd::OnCtlColour(uint nCtlClrMsg, HDC hDC, HWND hCtlWnd)
 *******************************************************************************
 */
 
-HBRUSH CMsgWnd::OnReflectedCtlClr(uint nCtlClrMsg, HDC hDC)
+HBRUSH CMsgWnd::OnReflectedCtlClr(uint /*nCtlClrMsg*/, HDC /*hDC*/)
 {
 	return NULL;
 }
@@ -729,7 +693,7 @@ void CMsgWnd::OnHelp(HELPINFO& /*oInfo*/)
 *******************************************************************************
 */
 
-void CMsgWnd::OnUserMsg(uint nMsg, WPARAM wParam, LPARAM lParam)
+void CMsgWnd::OnUserMsg(uint /*nMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 }
 
@@ -746,7 +710,7 @@ void CMsgWnd::OnUserMsg(uint nMsg, WPARAM wParam, LPARAM lParam)
 *******************************************************************************
 */
 
-void CMsgWnd::OnAppMsg(uint nMsg, WPARAM wParam, LPARAM lParam)
+void CMsgWnd::OnAppMsg(uint /*nMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 }
 
@@ -763,6 +727,23 @@ void CMsgWnd::OnAppMsg(uint nMsg, WPARAM wParam, LPARAM lParam)
 *******************************************************************************
 */
 
-void CMsgWnd::OnRegisteredMsg(uint nMsg, WPARAM wParam, LPARAM lParam)
+void CMsgWnd::OnRegisteredMsg(uint /*nMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
+}
+
+/******************************************************************************
+** Method:		OnHitTest()
+**
+** Description:	Queries the area of the window that the mouse is in.
+**
+** Parameters:	ptCursor	The mouse position in screen coordinates.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CMsgWnd::OnHitTest(const CPoint& ptCursor)
+{
+	DefaultWndProc(m_hWnd, WM_NCHITTEST, 0, MAKELPARAM(ptCursor.x, ptCursor.y));
 }

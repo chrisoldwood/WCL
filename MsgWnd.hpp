@@ -100,6 +100,7 @@ protected:
 	virtual void OnUserMsg(uint nMsg, WPARAM wParam, LPARAM lParam);
 	virtual void OnAppMsg(uint nMsg, WPARAM wParam, LPARAM lParam);
 	virtual void OnRegisteredMsg(uint nMsg, WPARAM wParam, LPARAM lParam);
+	virtual void OnHitTest(const CPoint& ptCursor);
 
 	//
 	// Access to window data.
