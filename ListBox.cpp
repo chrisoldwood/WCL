@@ -116,3 +116,28 @@ void CListBox::OnReflectedCtrlMsg(uint iMsg)
 void CListBox::OnSelChange()
 {
 }
+
+/******************************************************************************
+** Methods:		RestoreSel()
+**
+** Description:	Restores the selection provided. If there was no selection,
+**				then it selects the first item. If the item no longer exists,
+**				it sets it to the last item.
+**
+** Parameters:	iItem	The item to select, or LB_ERR, if there was none.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CListBox::RestoreSel(int iItem) const
+{
+	int nCount = Count();
+
+	// Handle no selection, or invalid selection.
+	iItem = (iItem == LB_ERR) ? 0 : iItem;
+	iItem = (iItem >= nCount) ? (nCount-1) : iItem;
+
+	CurSel(iItem);
+}

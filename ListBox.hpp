@@ -38,11 +38,14 @@ public:
 	int Find(const char* pszText, int iFirst = -1) const;
 	int FindExact(const char* pszText, int iFirst = -1) const;
 	void ItemData(int iItem, LPARAM lData) const;
+	void ItemPtr(int iItem, void* pData) const;
 	LPARAM ItemData(int iItem) const;
+	void*  ItemPtr(int iItem) const;
 	int CurSel() const;
 	void CurSel(int iItem) const;
 	int  CurSel(const char* pszText, int iFirst = -1) const;
 	bool IsSel(int iItem) const;
+	void RestoreSel(int iItem) const;
 	int TextLength(int iPos) const;
 	int Text(char* pszText, int iPos) const;
 	CString Text(int iPos) const;
@@ -116,6 +119,16 @@ inline void CListBox::ItemData(int iItem, LPARAM lData) const
 inline LPARAM CListBox::ItemData(int iItem) const
 {
 	return SendMessage(LB_GETITEMDATA, iItem, 0L);
+}
+
+inline void CListBox::ItemPtr(int iItem, void* pData) const
+{
+	SendMessage(LB_SETITEMDATA, iItem, (LPARAM)pData);
+}
+
+inline void* CListBox::ItemPtr(int iItem) const
+{
+	return (void*) SendMessage(LB_GETITEMDATA, iItem, 0L);
 }
 
 inline int CListBox::CurSel() const
