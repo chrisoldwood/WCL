@@ -84,6 +84,7 @@ public:
     LRESULT	SendMessage(UINT iMsg, WPARAM wParam = 0, LPARAM lParam = 0L) const;
     bool PostMessage(UINT iMsg, WPARAM wParam = 0, LPARAM lParam = 0L) const;
     bool PostCommand(uint iCmd) const;
+    bool PostCtrlMsg(uint iMsg, uint iCtrlID, HWND hCtrl) const;
 	
     //
     // Timers.
@@ -231,6 +232,11 @@ inline bool CWnd::PostMessage(UINT iMsg, WPARAM wParam, LPARAM lParam) const
 inline bool CWnd::PostCommand(uint iCmd) const
 {
 	return ::PostMessage(m_hWnd, WM_COMMAND, iCmd, 0L);
+}
+
+inline bool CWnd::PostCtrlMsg(uint iMsg, uint iCtrlID, HWND hCtrl) const
+{
+	return ::PostMessage(m_hWnd, WM_COMMAND, MAKEWPARAM(iCtrlID, iMsg), (LPARAM)hCtrl);
 }
 
 inline void CWnd::Redraw(bool bRedraw)
