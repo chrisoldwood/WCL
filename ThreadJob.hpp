@@ -44,7 +44,7 @@ public:
 	void      Status(JobStatus eStatus);
 
 	//
-	// Accessors.
+	// Methods.
 	//
 	virtual void Run() = 0;
 
