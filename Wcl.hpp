@@ -67,6 +67,7 @@
 #include "List.hpp"
 #include "PtrList.hpp"
 #include "Map.hpp"
+#include "TMap.hpp"
 #include "HandleMap.hpp"
 #include "IntPtrMap.hpp"
 #include "StrPtrMap.hpp"

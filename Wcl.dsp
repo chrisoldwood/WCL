@@ -882,6 +882,10 @@ SOURCE=.\Time.hpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\TMap.hpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ToolBar.hpp
 # End Source File
 # Begin Source File
