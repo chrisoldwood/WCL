@@ -136,32 +136,73 @@ void CEditBox::OnReflectedCtrlMsg(uint iMsg)
 /******************************************************************************
 ** Method:		Filter()
 **
-** Description:	Sets up the list of valid characters that can be entered into
-**				the edit box.
+** Description:	Sets up the character filter or modifies the existing one.
 **
-** Parameters:	pszFilter	The array of valid characters.
+** Parameters:	pszFilter	The array of characters.
+**				bAllow		Allow or disallow these characters.
 **
 ** Returns:		Nothing.
 **
 *******************************************************************************
 */
 
-void CEditBox::Filter(const char* pszFilter)
+void CEditBox::Filter(const char* pszFilter, bool bAllow)
 {
 	ASSERT(pszFilter != NULL);
 
-	// Allocate the filter array.
-	m_pFilter = new bool[256];
-
-	// Initialise to all invalid.
-	memset(m_pFilter, false, sizeof(bool) * 256);
+	AllocFilterMap();
 
 	// Make valid all chars in the filter.
 	while (*pszFilter != '\0')
-		m_pFilter[*pszFilter++] = true;
+		m_pFilter[*pszFilter++] = bAllow;
+}
 
-	// Allow Backspace key as well.
-	m_pFilter[8] = true;
+/******************************************************************************
+** Method:		Filter()
+**
+** Description:	Sets up a single character filter or modifies an existing one.
+**
+** Parameters:	cFilter		The character.
+**				bAllow		Allow or disallow the character.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CEditBox::Filter(char cFilter, bool bAllow)
+{
+	AllocFilterMap();
+
+	m_pFilter[cFilter] = bAllow;
+}
+
+/******************************************************************************
+** Method:		AllocFilterMap()
+**
+** Description:	Ensures the filter map is allocated and initialised.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CEditBox::AllocFilterMap()
+{
+	// Not already allocated?
+	if (m_pFilter == NULL)
+	{
+		// Allocate the filter map.
+		m_pFilter = new bool[256];
+
+		// Initialise to all invalid.
+		memset(m_pFilter, false, sizeof(bool) * 256);
+
+		// Always allow Backspace.
+		m_pFilter[8] = true;
+	}
 }
 
 /******************************************************************************

@@ -34,6 +34,7 @@ public:
 	void TextLimit(int iLimit) const;
 	void ReadOnly(bool bReadOnly = true) const;
 	void Select(int iFirstChar = 0, int iLastChar = -1) const;
+	void Selected(int& nStart, int& nEnd) const;
 	void Text(const char* pszText);
 	int  TextLength() const;
 	CString Text() const;
@@ -41,7 +42,8 @@ public:
 	//
 	// Custom methods.
 	//
-	void Filter(const char* pszFilter);
+	void Filter(const char* pszFilter, bool bAllow = true);
+	void Filter(char cFilter, bool bAllow = true);
 
 protected:
 	//
@@ -60,6 +62,11 @@ protected:
 	virtual	LRESULT WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
 	virtual void OnReflectedCtrlMsg(uint iMsg);
 	virtual bool FilterKey(char cChar);
+
+	//
+	// Internal methods.
+	//
+	void AllocFilterMap();
 };
 
 /******************************************************************************
@@ -82,6 +89,16 @@ inline void CEditBox::ReadOnly(bool bReadOnly) const
 inline void	CEditBox::Select(int iFirstChar, int iLastChar) const
 {
 	SendMessage(EM_SETSEL, 0, MAKELONG(iFirstChar, iLastChar));
+}
+
+inline void CEditBox::Selected(int& nStart, int& nEnd) const
+{
+	DWORD dwFirst, dwLast;
+
+	SendMessage(EM_GETSEL, (WPARAM)&dwFirst, (LPARAM)&dwLast);
+
+	nStart = dwFirst;
+	nEnd   = dwLast;
 }
 
 inline void CEditBox::Text(const char* pszText)
