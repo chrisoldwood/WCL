@@ -1,15 +1,9 @@
 - Clipboard exception.
 
-- Fix remove() in maps to allow non-unique maps.
-
-- Add Map support for unique flag.
-
-- Iter for non-unique maps?
-
 - Change ctrl msg table to be non-static.
-
-- DecimalBox to support fractions/show dec digits option.
 
 - Tree based class.
 
 - Change headers from .hpp to .h
+
+- Ref counted strings.
