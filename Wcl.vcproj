@@ -1013,6 +1013,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\MainThread.cpp">
+			</File>
+			<File
 				RelativePath="Map.cpp">
 				<FileConfiguration
 					Name="Release|Win32">

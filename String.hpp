@@ -77,6 +77,8 @@ public:
 	void Format(const char* pszFormat, ...);
 	void FormatEx(const char* pszFormat, va_list args);
 
+	static CString Fmt(const char* pszFormat, ...);
+
 	//
 	// Core operators.
 	//

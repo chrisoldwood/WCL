@@ -479,6 +479,32 @@ void CString::FormatEx(const char* pszFormat, va_list args)
 }
 
 /******************************************************************************
+** Method:		Fmt()
+**
+** Description:	Format the string using sprintf() style variable args..
+**
+** Parameters:	See sprintf().
+**
+** Returns:		The formatted string.
+**
+*******************************************************************************
+*/
+
+CString CString::Fmt(const char* pszFormat, ...)
+{
+	CString str;
+
+	va_list	args;
+	va_start(args, pszFormat);
+
+	str.FormatEx(pszFormat, args);
+
+	va_end(args);
+
+	return str;
+}
+
+/******************************************************************************
 ** Method:		Find()
 **
 ** Description:	Finds the first occurence of the character in the string
