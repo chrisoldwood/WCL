@@ -1592,6 +1592,15 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\StatusBarIcon.cpp">
+			</File>
+			<File
+				RelativePath=".\StatusBarLabel.cpp">
+			</File>
+			<File
+				RelativePath=".\StatusBarPanel.cpp">
+			</File>
+			<File
 				RelativePath="StdWnd.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -2290,6 +2299,15 @@
 			</File>
 			<File
 				RelativePath="StatusBar.hpp">
+			</File>
+			<File
+				RelativePath=".\StatusBarIcon.hpp">
+			</File>
+			<File
+				RelativePath=".\StatusBarLabel.hpp">
+			</File>
+			<File
+				RelativePath=".\StatusBarPanel.hpp">
 			</File>
 			<File
 				RelativePath="StdWnd.hpp">
