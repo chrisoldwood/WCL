@@ -90,7 +90,7 @@ void CDlgFrame::GetCreateParams(WNDCREATE& rParams)
 *******************************************************************************
 */
 
-void CDlgFrame::OnCreate(const CRect& rcClient)
+void CDlgFrame::OnCreate(const CRect& /*rcClient*/)
 {
 	CSize ToolBar;
 	CSize StatusBar;
@@ -180,4 +180,21 @@ void CDlgFrame::OnResize(int iFlag, const CSize& NewSize)
 	// Resize dialog to fit client?
 	if ( (!m_bFixedSize) && (m_rDialog.Handle() != NULL) )
 		m_rDialog.Move(ClientRect());
+}
+
+/******************************************************************************
+** Method:		OnFocus()
+**
+** Description:	Divert the focus to the active view window.
+**				
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CDlgFrame::OnFocus()
+{
+	m_rDialog.Focus();
 }

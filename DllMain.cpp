@@ -30,7 +30,7 @@
 *******************************************************************************
 */
 
-/*extern "C"*/ BOOL WINAPI DllMain(HINSTANCE hInst, DWORD dwReason, LPVOID lpvReserved)
+/*extern "C"*/ BOOL WINAPI DllMain(HINSTANCE hInst, DWORD dwReason, LPVOID /*lpvReserved*/)
 {
 	// Get dll object.
 	CDll& oDll = CDll::This();
