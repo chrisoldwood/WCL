@@ -59,8 +59,6 @@ public:
 	void Font(const CFont& rFont, bool bRedraw = true);
 	CFont Font() const;
 
-	void CanRedraw(bool bRedraw);
-
 	//
 	// Position/Dimensions.
 	//
@@ -96,6 +94,7 @@ public:
     //
     // Painting.
     //
+	void Redraw(bool bRedraw);
     void Invalidate(const CRect& rArea, bool bErase = true);
     void Invalidate(bool bErase = true);
     void Update();
@@ -195,11 +194,6 @@ inline CFont CWnd::Font() const
 	return CFont((HFONT)SendMessage(WM_GETFONT, 0, 0), false);
 }
 
-inline void CWnd::CanRedraw(bool bRedraw)
-{
-	SendMessage(WM_SETREDRAW, bRedraw, 0);
-}
-
 inline void CWnd::Move(const CRect& rNewPos, bool bRepaint)
 {
 	::MoveWindow(m_hWnd, rNewPos.left, rNewPos.top, rNewPos.Width(), rNewPos.Height(), bRepaint);
@@ -237,6 +231,11 @@ inline bool CWnd::PostMessage(UINT iMsg, WPARAM wParam, LPARAM lParam) const
 inline bool CWnd::PostCommand(uint iCmd) const
 {
 	return ::PostMessage(m_hWnd, WM_COMMAND, iCmd, 0L);
+}
+
+inline void CWnd::Redraw(bool bRedraw)
+{
+	SendMessage(WM_SETREDRAW, bRedraw, 0);
 }
 
 inline void CWnd::Invalidate(const CRect& rArea, bool bErase)
