@@ -214,6 +214,9 @@ ulong CFile::Seek(ulong lPos, uint nFrom)
 {
 	ASSERT(m_hFile != INVALID_HANDLE_VALUE);
 
+	// Reset error flag.
+	::SetLastError(NO_ERROR);
+
 	// Try the seek.
 	ulong lNewPos = ::SetFilePointer(m_hFile, lPos, NULL, nFrom);
 
