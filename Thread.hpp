@@ -26,15 +26,23 @@ public:
 	// Constructors/Destructor.
 	//
 	CThread();
-	~CThread();
+	virtual ~CThread();
 	
 	// The main thread function.
 	virtual void Run() = 0;
+
+	//
+	// Accessors.
+	//
+	HANDLE Handle() const;
+	DWORD  ID() const;
 
 protected:
 	//
 	// Members.
 	//
+	HANDLE	m_hHandle;
+	DWORD	m_dwID;
 };
 
 /******************************************************************************
@@ -43,5 +51,15 @@ protected:
 **
 *******************************************************************************
 */
+
+inline HANDLE CThread::Handle() const
+{
+	return m_hHandle;
+}
+
+inline DWORD CThread::ID() const
+{
+	return m_dwID;
+}
 
 #endif //THREAD_HPP

@@ -23,6 +23,8 @@
 */
 
 CThread::CThread()
+	: m_hHandle(NULL)
+	, m_dwID(NULL)
 {
 }
 
