@@ -42,7 +42,7 @@ public:
 
 /******************************************************************************
 ** 
-** The is the base class for all list collections.
+** This is the base class for all list collections.
 **
 *******************************************************************************
 */
@@ -86,7 +86,7 @@ protected:
 
 /******************************************************************************
 ** 
-** The class is used to iterate a list collection.
+** The class used to iterate a list collection.
 **
 *******************************************************************************
 */
@@ -118,6 +118,11 @@ protected:
 **
 *******************************************************************************
 */
+
+inline int CList::Length() const
+{
+	return m_nLength;
+}
 
 inline bool CListItem::operator!=(const CListItem& rRHS) const
 {

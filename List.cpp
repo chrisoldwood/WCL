@@ -47,23 +47,6 @@ CList::~CList()
 }
 
 /******************************************************************************
-** Method:		Length()
-**
-** Description:	Calculates the length of the list.
-**
-** Parameters:	None.
-**
-** Returns:		The list length.
-**
-*******************************************************************************
-*/
-
-int CList::Length() const
-{
-	return m_nLength;
-}
-
-/******************************************************************************
 ** Method:		AddToHead()
 **
 ** Description:	Adds an item to the head of the list.
@@ -280,7 +263,7 @@ void CList::RemoveAll()
 **
 ** Parameters:	rItem	The item to find.
 **
-** Returns:		Nothing.
+** Returns:		The item or NULL.
 **
 *******************************************************************************
 */
