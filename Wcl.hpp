@@ -14,12 +14,25 @@
 
 /******************************************************************************
 **
-** Standard headers.
+** Build targets.
 **
 *******************************************************************************
 */
 
-#define STRICT
+#define STRICT						// Use proper handle types.
+#define VC_EXTRALEAN				// Trim <windows.h>
+
+#define WINVER			0x0400		// Windows 95+
+#define _WIN32_WINNT	0x0400		// Windows NT 4.0+
+#define _WIN32_WINDOWS	0x0400		// Windows 95+
+#define _WIN32_IE		0x0400		// Internet Explorer 4.0+
+
+/******************************************************************************
+**
+** Standard headers.
+**
+*******************************************************************************
+*/
 
 #include "Pragmas.hpp"
 #include <windows.h>
@@ -65,6 +78,7 @@
 #include "TArray.hpp"
 #include "StrArray.hpp"
 #include "List.hpp"
+#include "TList.hpp"
 #include "PtrList.hpp"
 #include "Map.hpp"
 #include "MapIter.hpp"
