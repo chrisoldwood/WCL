@@ -26,7 +26,7 @@ protected:
 	// Constructors/Destructor.
 	//
 	CPtrList();
-	~CPtrList();
+	virtual ~CPtrList();
 	
 	//
 	// Methods.
@@ -80,7 +80,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CPtrListIter(const CPtrList& rList);
-	~CPtrListIter();
+	virtual ~CPtrListIter();
 
 	//
 	// Methods.

@@ -42,7 +42,7 @@ public:
 
 /******************************************************************************
 ** 
-** This is the base class for all list collections.
+** This is the base class for all singly-linked list collections.
 **
 *******************************************************************************
 */
@@ -60,7 +60,7 @@ protected:
 	// Constructors/Destructor.
 	//
 	CList();
-	~CList();
+	virtual ~CList();
 	
 	//
 	// Methods.
