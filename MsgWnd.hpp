@@ -92,6 +92,9 @@ protected:
 	virtual void OnReflectedCtrlMsg(NMHDR& rMsgHdr);
 	virtual void OnMeasureItem(uint iID, uint iItem, uint& iWidth, uint& iHeight);
 	virtual void OnDrawItem(uint iID, uint iAction, uint iState, CDC& rDC, uint iItem, const CRect& rcItem);
+	virtual void OnSetCursor(HWND hWnd, uint nHitCode, uint nMouseMsg);
+	virtual void OnCtlColour(uint nCtlClrMsg, HDC hDC, HWND hCtlWnd);
+	virtual HBRUSH OnReflectedCtlClr(uint nCtlClrMsg, HDC hDC);
 
 	//
 	// Access to window data.
@@ -101,17 +104,17 @@ protected:
 	//
 	// Access to message result members.
 	//
-	void MsgHandled(bool    bHandled);
+	void MsgHandled(BOOL    bHandled);
 	void MsgResult (LRESULT lResult);
 
-	bool*    MsgHandledBuffer(bool*    pbBuffer);
+	BOOL*    MsgHandledBuffer(BOOL*    pbBuffer);
 	LRESULT* MsgResultBuffer (LRESULT* plBuffer);
 
 private:
 	//
 	// Members.
 	//
-	bool*		m_pbMsgHandled;		// Was message handled?
+	BOOL*		m_pbMsgHandled;		// Was message handled?
 	LRESULT*	m_plMsgResult;		// Message result code.
 };
 
@@ -173,7 +176,7 @@ inline WNDPROC CMsgWnd::WindowProc(WNDPROC lpfnWndProc)
 	return (WNDPROC) ::SetWindowLong(m_hWnd, GWL_WNDPROC, (LONG)lpfnWndProc);
 }
 
-inline void CMsgWnd::MsgHandled(bool bHandled)
+inline void CMsgWnd::MsgHandled(BOOL bHandled)
 {
 	ASSERT(m_pbMsgHandled != NULL);
 
@@ -187,9 +190,9 @@ inline void CMsgWnd::MsgResult(LRESULT lResult)
 	*m_plMsgResult = lResult;
 }
 
-inline bool* CMsgWnd::MsgHandledBuffer(bool* pbBuffer)
+inline BOOL* CMsgWnd::MsgHandledBuffer(BOOL* pbBuffer)
 {
-	bool* pbOldBuffer = m_pbMsgHandled;
+	BOOL* pbOldBuffer = m_pbMsgHandled;
 
 	m_pbMsgHandled = pbBuffer;
 

@@ -99,6 +99,15 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			EndPaint(hWnd, &psPaint);
 			break;
 
+		// Initialise DC for child controls.
+		case WM_CTLCOLOREDIT:
+		case WM_CTLCOLORLISTBOX:
+		case WM_CTLCOLORBTN:
+		case WM_CTLCOLORSCROLLBAR:
+		case WM_CTLCOLORSTATIC:
+			OnCtlColour(iMsg, (HDC)wParam, (HWND)lParam);
+			return 0;
+
 		// Window resized.
 		case WM_SIZE:
 			{
@@ -562,4 +571,80 @@ void CMsgWnd::OnDrawItem(uint iID, uint iAction, uint iState, CDC& rDC,
 	TRACE4("Pos: (%d, %d)(%d,%d)\n", rcItem.left, rcItem.top, rcItem.right, rcItem.bottom);
 	TRACE("\n");
 #endif
+}
+
+/******************************************************************************
+** Method:		OnSetCursor()
+**
+** Description:	Set the cursor for the given window.
+**
+** Parameters:	hWnd		The window requiring a cursor.
+**				nHitCode	The HTXXX hit test code.
+**				nMouseMsg	The WM_* mouse message that generated the event.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CMsgWnd::OnSetCursor(HWND hWnd, uint nHitCode, uint nMouseMsg)
+{
+	DefaultWndProc(m_hWnd, WM_SETCURSOR, (WPARAM)hWnd, MAKELPARAM(nHitCode, nMouseMsg));
+}
+
+/******************************************************************************
+** Method:		OnCtlColour()
+**
+** Description:	Gets the colours for a child control.
+**				All WM_CTLCOLOR* messages map to this one.
+**
+** Parameters:	nCtlClrMsg	The WM_CTLCOLOR* message,
+**				hDC			The drawing HDC.
+**				hCtlWnd		The controls hWhd.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CMsgWnd::OnCtlColour(uint nCtlClrMsg, HDC hDC, HWND hCtlWnd)
+{
+	HBRUSH hBrush = NULL;
+
+	// Find if control is mapped.
+	CMsgWnd* pWnd = (CMsgWnd*) CWnd::s_WndMap.Find(hCtlWnd);
+
+	// Reflect message back to control first.
+	if (pWnd != NULL)
+		hBrush = pWnd->OnReflectedCtlClr(nCtlClrMsg, hDC);
+
+	if (hBrush != NULL)
+	{
+		MsgHandled((BOOL)hBrush);
+		MsgResult (0);
+	}
+	// If still not handled, call DefWindowProc.
+	else
+	{
+		DefaultWndProc(m_hWnd, nCtlClrMsg, (WPARAM)hDC, (LPARAM)hCtlWnd);
+	}
+}
+
+/******************************************************************************
+** Method:		OnReflectedCtlClr()
+**
+** Description:	The WM_CTLCOLOR* message reflected from the parent back to the
+**				child.
+**
+** Parameters:	nCtlClrMsg	The WM_CTLCOLOR* message,
+**				hDC			The drawing HDC.
+**
+** Returns:		See WM_CTLCOLOR*.
+**
+*******************************************************************************
+*/
+
+HBRUSH CMsgWnd::OnReflectedCtlClr(uint nCtlClrMsg, HDC hDC)
+{
+	return NULL;
 }
