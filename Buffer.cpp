@@ -230,6 +230,8 @@ void CBuffer::Set(const void* pData, uint nSize, uint nOffset)
 
 void CBuffer::operator=(const CBuffer& oRHS)
 {
+	ASSERT(this != &oRHS);
+
 	Size(oRHS.m_nSize);
 	Set(oRHS.m_pBuffer, oRHS.m_nSize);
 }
