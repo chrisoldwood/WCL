@@ -79,7 +79,7 @@ CDecimalBox::~CDecimalBox()
 }
 
 /******************************************************************************
-** Method:		Value()
+** Method:		RealValue()
 **
 ** Description:	Gets the value.
 **
@@ -90,13 +90,13 @@ CDecimalBox::~CDecimalBox()
 *******************************************************************************
 */
 
-double CDecimalBox::Value() const
+double CDecimalBox::RealValue() const
 {
-	return atof(Text());
+	return CStrCvt::ParseDouble(Text());
 }
 
 /******************************************************************************
-** Method:		Value()
+** Method:		RealValue()
 **
 ** Description:	Sets the value.
 **
@@ -107,7 +107,7 @@ double CDecimalBox::Value() const
 *******************************************************************************
 */
 
-void CDecimalBox::Value(double dValue)
+void CDecimalBox::RealValue(double dValue)
 {
 	char szText[50];
 
@@ -151,7 +151,9 @@ void CDecimalBox::Value(double dValue)
 
 int CDecimalBox::IntValue() const
 {
-	return atoi(Text());
+	ASSERT(m_nDecDigits == 0);
+
+	return CStrCvt::ParseInt(Text());
 }
 
 /******************************************************************************
@@ -168,9 +170,7 @@ int CDecimalBox::IntValue() const
 
 void CDecimalBox::IntValue(int nValue)
 {
-	char szText[50];
-
-	Text(itoa(nValue, szText, 10));
+	Text(CStrCvt::FormatInt(nValue));
 }
 
 /******************************************************************************

@@ -31,8 +31,8 @@ public:
 	//
 	// Methods.
 	//
-	double Value() const;
-	void   Value(double dValue);
+	double RealValue() const;
+	void   RealValue(double dValue);
 
 	int    IntValue() const;
 	void   IntValue(int nValue);
