@@ -58,14 +58,15 @@ public:
 	void DeleteAllItems();
 
 	void ItemText(int nItem, int nSubItem, const char* pszText);
+	void ItemImage(int nItem, int nImage);
 	void ItemState(int nItem, int nState, int nMask);
 	void ItemData(int nItem, LPARAM lParam);
 	void ItemPtr(int nItem, const void* pData);
 
-	CString ItemText(int nItem, int nSubItem);
+	CString ItemText(int nItem, int nSubItem) const;
 	int     ItemState(int nItem, int nMask = LVIS_SELECTED) const;
-	LPARAM  ItemData(int nItem);
-	void*   ItemPtr(int nItem);
+	LPARAM  ItemData(int nItem) const;
+	void*   ItemPtr(int nItem) const;
 
 	void Select(int nItem, bool bSelect = true);
 	bool IsSelection() const;
@@ -85,6 +86,9 @@ public:
 	void InsertColumns(const LVColumn* pColumns, int nColumns);
 	void DeleteColumn(int iPos);
 	void DeleteAllColumns();
+	int  ColumnWidth(int iPos) const;
+	void ColumnWidth(int iPos, int nWidth);
+	void ColumnWidthAuto(int iPos, bool bFitHeader = false);
 
 	//
 	// Search methods.
@@ -99,8 +103,8 @@ public:
 	void ImageList(uint nType, const CImageList& oImageList);
 	void ImageList(uint nType, uint nRscID, int nImgWidth, COLORREF crMask);
 	void IconSpacing(int iHorzSpacing, int iVertSpacing);
-	int  StringWidth(const char* pszString);
-	int  StringWidth(int nChars);
+	int  StringWidth(const char* pszString) const;
+	int  StringWidth(int nChars) const;
 	int  Sort(PFNLVCOMPARE pfnCompare, LPARAM lParamSort);
 
 protected:
@@ -185,7 +189,7 @@ inline int CListView::ItemState(int nItem, int nMask) const
 	return ListView_GetItemState(m_hWnd, nItem, nMask);
 }
 
-inline void* CListView::ItemPtr(int nItem)
+inline void* CListView::ItemPtr(int nItem) const
 {
 	return (void*) ItemData(nItem);
 }
@@ -240,12 +244,27 @@ inline void CListView::DeleteAllColumns()
 		ListView_DeleteColumn(m_hWnd, 0);
 }
 
+inline int CListView::ColumnWidth(int iPos) const
+{
+	return ListView_GetColumnWidth(m_hWnd, iPos);
+}
+
+inline void CListView::ColumnWidth(int iPos, int nWidth)
+{
+	ListView_SetColumnWidth(m_hWnd, iPos, nWidth);
+}
+
+inline void CListView::ColumnWidthAuto(int iPos, bool bFitHeader)
+{
+	ListView_SetColumnWidth(m_hWnd, iPos, (bFitHeader) ? LVSCW_AUTOSIZE_USEHEADER : LVSCW_AUTOSIZE);
+}
+
 inline void CListView::IconSpacing(int iHorzSpacing, int iVertSpacing)
 {
 	ListView_SetIconSpacing(m_hWnd, iHorzSpacing, iVertSpacing);
 }
 
-inline int CListView::StringWidth(const char* pszString)
+inline int CListView::StringWidth(const char* pszString) const
 {
 	return ListView_GetStringWidth(m_hWnd, pszString);
 }

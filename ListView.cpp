@@ -87,6 +87,31 @@ int CListView::InsertItem(int nPos, const char* pszText, int nImage)
 }
 
 /******************************************************************************
+** Method:		ItemImage()
+**
+** Description:	Sets the icon for the item.
+**
+** Parameters:	nItem		The item index.
+**				nImage		The image index.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CListView::ItemImage(int nItem, int nImage)
+{
+	LVITEM lvItem = { 0 };
+
+	// Initialise item structure.
+	lvItem.mask   = LVIF_IMAGE;
+	lvItem.iItem  = nItem;
+	lvItem.iImage = nImage;
+
+	ListView_SetItem(m_hWnd, &lvItem);
+}
+
+/******************************************************************************
 ** Method:		ItemData()
 **
 ** Description:	Sets the custom data for the item.
@@ -94,7 +119,7 @@ int CListView::InsertItem(int nPos, const char* pszText, int nImage)
 ** Parameters:	nItem		The item index.
 **				lParam		The item data.
 **
-** Returns:		The item text.
+** Returns:		Nothing.
 **
 *******************************************************************************
 */
@@ -125,7 +150,7 @@ void CListView::ItemData(int nItem, LPARAM lParam)
 *******************************************************************************
 */
 
-CString CListView::ItemText(int nItem, int nSubItem)
+CString CListView::ItemText(int nItem, int nSubItem) const
 {
 	LVITEM  lvItem      = { 0 };
 	char	szText[256] = { 0 };
@@ -155,7 +180,7 @@ CString CListView::ItemText(int nItem, int nSubItem)
 *******************************************************************************
 */
 
-LPARAM CListView::ItemData(int nItem)
+LPARAM CListView::ItemData(int nItem) const
 {
 	LVITEM lvItem = { 0 };
 
@@ -274,7 +299,7 @@ void CListView::ImageList(uint nType, uint nRscID, int nImgWidth, COLORREF crMas
 *******************************************************************************
 */
 
-int CListView::StringWidth(int nChars)
+int CListView::StringWidth(int nChars) const
 {
 	// Create a string of 'X's.
 	char* pszString = new char[nChars+1];
