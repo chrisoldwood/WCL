@@ -104,26 +104,28 @@ bool CMsgThread::ProcessMsgQueue()
 			return false;
 		}
 
-		// Is thread message?
-		if ( (m_oMsg.hwnd == NULL) && (m_oMsg.message >= WM_USER) )
+		// Is standard message?
+		if ( (m_oMsg.hwnd != NULL) || (m_oMsg.message < WM_USER) )
+		{
+			bool				bProcessed = false;
+			CMsgFilter*			pFilter = NULL;
+			CMsgFilters::CIter	Iter(m_MsgFilters);
+			
+			// Give message filters first crack at message.
+			while ( ((pFilter = Iter.Next()) != NULL) && (!bProcessed) )
+				bProcessed = pFilter->ProcessMsg(m_oMsg);
+
+			// Still not processed?
+			if (!bProcessed)
+			{
+				TranslateMessage(&m_oMsg);
+				DispatchMessage(&m_oMsg);
+			}
+		}
+		// Is thread message.
+		else
 		{
 			OnThreadMsg(m_oMsg.message, m_oMsg.wParam, m_oMsg.lParam);
-			return true;
-		}
-
-		bool				bProcessed = false;
-		CMsgFilter*			pFilter = NULL;
-		CMsgFilters::CIter	Iter(m_MsgFilters);
-		
-		// Give message filters first crack at message.
-		while ( ((pFilter = Iter.Next()) != NULL) && (!bProcessed) )
-			bProcessed = pFilter->ProcessMsg(m_oMsg);
-
-		// Still not processed?
-		if (!bProcessed)
-		{
-			TranslateMessage(&m_oMsg);
-			DispatchMessage(&m_oMsg);
 		}
 	}
 
