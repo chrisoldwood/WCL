@@ -39,8 +39,6 @@ public:
 	bool RunModeless(CWnd& rParent);
 	int  RunModal(CWnd& rParent);
 
-	void EndDialog(int nResult = IDCANCEL);
-
 protected:
 	///////////////////////////////////////////////////////
 	// Structure used to hold the control table.
@@ -115,6 +113,11 @@ protected:
 	void InitControls();
 	void GravityTable(CTLGRAVITY* pGravTable);
 	void InitGravityTable();
+
+	//
+	// Internal methods.
+	//
+	virtual void EndDialog(int nResult = IDCANCEL);
 
 	//
 	// Friends.
