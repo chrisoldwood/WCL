@@ -26,24 +26,21 @@
 *******************************************************************************
 */
 
-extern "C" int PASCAL WinMain(HINSTANCE hCurrInst, HINSTANCE hPrevInst, 
+extern "C" int WINAPI WinMain(HINSTANCE hCurrInst, HINSTANCE hPrevInst, 
 								LPSTR lpszCmdLine, int iCmdShow)
 {
 	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
+	CApp& oApp = CApp::This();
 
 	// Initialise members.
-	pApp->m_hInstance  = hCurrInst;
-	pApp->m_strCmdLine = lpszCmdLine;	
-	pApp->m_iCmdShow   = iCmdShow;
-
-	// Register custom controls.
+	oApp.m_Module.m_hInstance = hCurrInst;
+	oApp.m_strCmdLine         = lpszCmdLine;	
+	oApp.m_iCmdShow           = iCmdShow;
 
 	// Open, run and close the app...
-	pApp->Open();
-	pApp->Run();
-	pApp->Close();
+	oApp.Open();
+	oApp.Run();
+	oApp.Close();
 
 	return FALSE;
 }

@@ -175,10 +175,6 @@ int CWnd::AlertMsg(const char* pszMsg, ...) const
 {
 	char szMsg[128];
 
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	// Setup arguments.
 	va_list	args;
 	va_start(args, pszMsg);
@@ -186,17 +182,13 @@ int CWnd::AlertMsg(const char* pszMsg, ...) const
 	// Form message.
 	vsprintf((char*)szMsg, pszMsg, args);
 	
-	return MessageBox(m_hWnd, (LPCSTR)szMsg, pApp->m_strTitle, MB_OK | MB_ICONEXCLAMATION);
+	return MessageBox(m_hWnd, (LPCSTR)szMsg, CApp::This().m_strTitle, MB_OK | MB_ICONEXCLAMATION);
 }
 
 int CWnd::NotifyMsg(const char* pszMsg, ...) const
 {
 	char szMsg[128];
 
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	// Setup arguments.
 	va_list	args;
 	va_start(args, pszMsg);
@@ -204,17 +196,13 @@ int CWnd::NotifyMsg(const char* pszMsg, ...) const
 	// Form message.
 	vsprintf((char*)szMsg, pszMsg, args);
 	
-	return MessageBox(m_hWnd, (LPCSTR)szMsg, pApp->m_strTitle, MB_OK | MB_ICONINFORMATION);
+	return MessageBox(m_hWnd, (LPCSTR)szMsg, CApp::This().m_strTitle, MB_OK | MB_ICONINFORMATION);
 }
 
 int CWnd::QueryMsg(const char* pszMsg, ...) const
 {
 	char szMsg[128];
 
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	// Setup arguments.
 	va_list	args;
 	va_start(args, pszMsg);
@@ -222,17 +210,13 @@ int CWnd::QueryMsg(const char* pszMsg, ...) const
 	// Form message.
 	vsprintf((char*)szMsg, pszMsg, args);
 	
-	return MessageBox(m_hWnd, (LPCSTR)szMsg, pApp->m_strTitle, MB_YESNOCANCEL | MB_ICONQUESTION);
+	return MessageBox(m_hWnd, (LPCSTR)szMsg, CApp::This().m_strTitle, MB_YESNOCANCEL | MB_ICONQUESTION);
 }
 
 int CWnd::FatalMsg(const char* pszMsg, ...) const
 {
 	char szMsg[128];
 
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	// Setup arguments.
 	va_list	args;
 	va_start(args, pszMsg);
@@ -240,7 +224,7 @@ int CWnd::FatalMsg(const char* pszMsg, ...) const
 	// Form message.
 	vsprintf((char*)szMsg, pszMsg, args);
 	
-	return MessageBox(m_hWnd, (LPCSTR)szMsg, pApp->m_strTitle, MB_OK | MB_ICONSTOP);
+	return MessageBox(m_hWnd, (LPCSTR)szMsg, CApp::This().m_strTitle, MB_OK | MB_ICONSTOP);
 }
 
 /******************************************************************************
