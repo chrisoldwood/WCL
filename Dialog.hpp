@@ -89,6 +89,7 @@ protected:
 	CTLGRAVITY*	m_pGravTable;	// Table of controls gravity.
 	CSize		m_StartSize;	// Dialog initial size.
 	CWnd*		m_pParentWnd;	// Parent window.
+	CRect		m_rcOldGrip;	// Old resizing grip position.
 	
 	//
 	// General message handlers.
@@ -105,6 +106,7 @@ protected:
 	virtual bool OnOk();
 	virtual bool OnCancel();
 	virtual void OnResize(int iFlag, const CSize& rNewSize);
+	virtual void OnPaint(CDC& rDC);
 
 	//
 	// Control methods.

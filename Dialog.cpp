@@ -12,6 +12,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+// Size of sizing grip handle.
+const int SIZE_GRIP_SIZE = 12;
+
 /******************************************************************************
 ** Method:		Default constructor.
 **
@@ -30,6 +33,7 @@ CDialog::CDialog(uint iRscID)
 	, m_pCtrlTable(NULL)
 	, m_pGravTable(NULL)
 	, m_pParentWnd(NULL)
+	, m_rcOldGrip(0, 0, 0, 0)
 {
 }
 
@@ -470,13 +474,17 @@ void CDialog::OnResize(int iFlag, const CSize& rNewSize)
 
 		// Resize the window.
 		::DeferWindowPos(hDWP, pGrav->hWnd, NULL, rcNewPos.left, rcNewPos.top,
-							rcNewPos.Width(), rcNewPos.Height(), SWP_NOZORDER);
+							rcNewPos.Width(), rcNewPos.Height(), SWP_NOZORDER | SWP_NOCOPYBITS);
 
 		// Next control.
 	    pGrav++;
 	}
 
 	::EndDeferWindowPos(hDWP);
+
+	// Repaint sizing grip.
+	Invalidate(CRect(CPoint(rNewSize.cx-SIZE_GRIP_SIZE, rNewSize.cy-SIZE_GRIP_SIZE), CSize(SIZE_GRIP_SIZE+1, SIZE_GRIP_SIZE+1)), true);
+	Invalidate(&m_rcOldGrip, true);
 }
 
 /******************************************************************************
@@ -640,4 +648,52 @@ void CDialog::InitGravityTable()
 
 	    pGrav++;
 	}
+}
+
+/******************************************************************************
+** Method:		OnPaint()
+**
+** Description:	Paints the sizing grip, if one enabled.
+**
+** Parameters:	rDC		The device to paint on.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CDialog::OnPaint(CDC& rDC)
+{
+	// Not resizable?
+	if (m_pGravTable == NULL)
+		return;
+
+	// Get window dimensions.
+	CRect rcClient = ClientRect();
+
+	// Get bottom right co-ordinates.
+	CPoint ptCorner(rcClient.right-1, rcClient.bottom-1);
+
+	// Create pens.
+	CPen oDarkPen (PS_SOLID, 0, ::GetSysColor(COLOR_BTNSHADOW));
+	CPen oLightPen(PS_SOLID, 0, ::GetSysColor(COLOR_BTNHIGHLIGHT));
+	CPen oFacePen (PS_SOLID, 0, ::GetSysColor(COLOR_BTNFACE));
+
+	// For all lines.
+	for (int i = 0; i < 12; ++i)
+	{
+		// Select the required pen.
+		if ((i % 4) == 3)
+			rDC.Select(oLightPen);
+		else if ( ((i % 4) == 1) || ((i % 4) == 2) )
+			rDC.Select(oDarkPen);
+		else
+			rDC.Select(oFacePen);
+
+		// Draw the line.
+		rDC.Line(ptCorner.x-i-1, ptCorner.y, ptCorner.x, ptCorner.y-i-1);
+	}
+
+	// Save grip position for later.
+	m_rcOldGrip = CRect(CPoint(ptCorner.x-12, ptCorner.y-12), CSize(13, 13));
 }
