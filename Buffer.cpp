@@ -58,6 +58,25 @@ CBuffer::CBuffer(uint nSize)
 *******************************************************************************
 */
 
+CBuffer::CBuffer(const void* pData, uint nSize)
+	: m_nSize(nSize)
+	, m_pBuffer(malloc(nSize))
+{
+	Set(pData, nSize);
+}
+
+/******************************************************************************
+** Method:		Constructor.
+**
+** Description:	.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
 CBuffer::CBuffer(HGLOBAL hGlobal)
 {
 	ASSERT(hGlobal != NULL);
@@ -91,8 +110,9 @@ CBuffer::CBuffer(HGLOBAL hGlobal)
 */
 
 CBuffer::CBuffer(const CBuffer& oRHS)
+	: m_nSize(oRHS.m_nSize)
+	, m_pBuffer(malloc(m_nSize))
 {
-	Size(oRHS.m_nSize);
 	Set(oRHS.m_pBuffer, oRHS.m_nSize);
 }
 
