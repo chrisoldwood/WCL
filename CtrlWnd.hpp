@@ -28,6 +28,7 @@ public:
 	CCtrlWnd();
 	~CCtrlWnd();
 
+	virtual bool PreRegister();
 	virtual bool Create(CMsgWnd& rParent, uint iID, const CRect& rcPos);
 	virtual bool Create(CMsgWnd& rParent, uint iID, HWND hWnd);
 

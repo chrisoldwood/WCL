@@ -45,6 +45,32 @@ CCtrlWnd::~CCtrlWnd()
 }
 
 /******************************************************************************
+** Method:		PreRegister()
+**
+** Description:	Pre-register the windows' class. Normally this is done when the
+**				control is first created, however to use the control on a
+**				dialog as a custom control requires registering the class
+**				before the dialog is created.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+bool CCtrlWnd::PreRegister()
+{
+	ASSERT(m_hWnd == NULL);
+
+	WNDCLASS WndClass;
+
+	GetClassParams(WndClass);
+
+	return Register(WndClass);
+}
+
+/******************************************************************************
 ** Method:		GetCreateParams()
 **
 ** Description:	Template method to get the window creation data.
