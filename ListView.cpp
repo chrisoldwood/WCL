@@ -364,6 +364,32 @@ int CListView::FindItem(const void* pData, int nStart) const
 }
 
 /******************************************************************************
+** Methods:		FindAllItems()
+**
+** Description:	Finds all items either by text value or by lParam member.
+**
+** Parameters:	pszText		Text item to find.
+**				lData		LPARAM data to find.
+**				pData		LPARAM data to find.
+**				bPartial	Extact or partial find?
+**				vItems		The array of items found.
+**
+** Returns:		The number of items found.
+**
+*******************************************************************************
+*/
+
+uint CListView::FindAllItems(const void* pData, CUIntArray& vItems) const
+{
+	int n = -1;
+
+	while ((n = FindItem(pData, n)) != LB_ERR)
+		vItems.Add(n);
+
+	return vItems.Size();
+}
+
+/******************************************************************************
 ** Methods:		RestoreSel()
 **
 ** Description:	Restores the selection provided. If there was no selection,

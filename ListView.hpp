@@ -90,12 +90,16 @@ public:
 	void ColumnWidth(int iPos, int nWidth);
 	void ColumnWidthAuto(int iPos, bool bFitHeader = false);
 
+	// Template shorthands.
+	typedef TArray<uint> CUIntArray;
+
 	//
 	// Search methods.
 	//
-	int FindItem(const char* pszText, bool bPartial = false, int nStart = -1) const;
-	int FindItem(LPARAM lData, int nStart = -1) const;
-	int FindItem(const void* pData, int nStart = -1) const;
+	int  FindItem(const char* pszText, bool bPartial = false, int nStart = -1) const;
+	int  FindItem(LPARAM lData, int nStart = -1) const;
+	int  FindItem(const void* pData, int nStart = -1) const;
+	uint FindAllItems(const void* pData, CUIntArray& vItems) const;
 
 	//
 	// Misc methods.
