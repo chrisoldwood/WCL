@@ -259,8 +259,8 @@ void CToolBar::OnShowHint(const CWnd* pWnd) const
 		return;
 
 	// Show a hint?
-	if (pWnd)
-		pStatusBar->Hint(::GetDlgCtrlID(pWnd->Handle()));
+	if (pWnd != NULL)
+		pStatusBar->Hint(pApp->m_rCmdControl.CmdHint(::GetDlgCtrlID(pWnd->Handle())));
 	else
 		pStatusBar->Hint("");
 }
