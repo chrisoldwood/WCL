@@ -32,6 +32,12 @@ protected:
 	//
 	// Members.
 	//
+
+	// The main thread function.
+	virtual void Run();
+
+	// Friends.
+	friend class CApp;
 };
 
 /******************************************************************************
@@ -40,5 +46,20 @@ protected:
 **
 *******************************************************************************
 */
+
+inline CMainThread::CMainThread()
+{
+	m_hThread = NULL;
+	m_dwID    = ::GetCurrentThreadId();
+}
+
+inline CMainThread::~CMainThread()
+{
+}
+
+inline void CMainThread::Run()
+{
+	CMsgThread::Run();
+}
 
 #endif // MAINTHREAD_HPP
