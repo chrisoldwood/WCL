@@ -36,6 +36,11 @@ protected:
 	// The main thread function.
 	virtual void Run();
 
+	//
+	// Message handlers.
+	//
+	virtual void OnThreadMsg(UINT nMsg, WPARAM wParam, LPARAM lParam);
+
 	// Friends.
 	friend class CApp;
 };
@@ -46,20 +51,5 @@ protected:
 **
 *******************************************************************************
 */
-
-inline CMainThread::CMainThread()
-{
-	m_hThread = NULL;
-	m_dwID    = ::GetCurrentThreadId();
-}
-
-inline CMainThread::~CMainThread()
-{
-}
-
-inline void CMainThread::Run()
-{
-	CMsgThread::Run();
-}
 
 #endif // MAINTHREAD_HPP
