@@ -85,23 +85,19 @@ void CDate::Set(int iDay, int iMonth, int  iYear)
 	ASSERT( (iMonth >= 1)        && (iMonth <= 12) );
 	ASSERT( (iDay   >= 1)        && (iDay   <= DaysInMonth(iMonth, iYear)) );
 
-	int i;
+	tm oTM;
 
-	// Calculate number of 4 year periods.
-	m_lDate = ((iYear - MIN_YEAR) / 4) * DAYS_PER_4_YEARS;
+	oTM.tm_mday  = iDay;
+	oTM.tm_mon   = iMonth-1;
+	oTM.tm_year  = iYear - 1900;
+	oTM.tm_hour  = 0;
+	oTM.tm_min   = 0;
+	oTM.tm_sec   = 0;
+	oTM.tm_isdst = 0;
 
-	// Calculate number of years remaining.
-	int iRemYrs = ((iYear - MIN_YEAR) % 4);
+	m_tDate = mktime(&oTM);
 
-	// Add on remaining years.
-	m_lDate += iRemYrs * DAYS_PER_YEAR;
-
-	// Add on each whole month.
-	for (i = 1; i < iMonth; i++)
-		m_lDate += DaysInMonth(i, iYear);
-
-	// Add on day.
-	m_lDate += (iDay - 1);
+	ASSERT(m_tDate != -1);
 }
 
 /******************************************************************************
@@ -118,31 +114,11 @@ void CDate::Set(int iDay, int iMonth, int  iYear)
 
 void CDate::Get(int& iDay, int& iMonth, int& iYear) const
 {
-	long lDate = m_lDate;
+	tm oTM = *gmtime(&m_tDate);
 
-	// Initialise year.
-	iYear = MIN_YEAR;
-
-	// Calculate 4 year blocks.
-	iYear += (lDate / DAYS_PER_4_YEARS) * 4;
-	lDate  = lDate % DAYS_PER_4_YEARS;
-
-	// Calculate remainder years.
-	iYear += lDate / DAYS_PER_YEAR;
-	lDate  = lDate % DAYS_PER_YEAR;
-
-	// Initialise month.
-	iMonth = 1;
-	
-	// Calculate month.
-	while (lDate >= DaysInMonth(iMonth, iYear))
-	{
-		lDate -= DaysInMonth(iMonth, iYear);
-		iMonth++;
-	}
-	
-	// Calculate date.
-	iDay = (lDate + 1);
+	iDay   = oTM.tm_mday;
+	iMonth = oTM.tm_mon + 1;
+	iYear  = oTM.tm_year + 1900;
 }
 
 /******************************************************************************
@@ -301,12 +277,12 @@ bool CDate::FromString(const char* pszDate)
 
 void CDate::operator <<(CStream& rStream)
 {
-	rStream >> m_lDate;
+	rStream.Read(&m_tDate, sizeof(m_tDate));
 }
 
 void CDate::operator >>(CStream& rStream) const
 {
-	rStream << m_lDate;
+	rStream.Write(&m_tDate, sizeof(m_tDate));
 }
 
 /******************************************************************************

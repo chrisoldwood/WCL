@@ -18,8 +18,7 @@ class CDateTimeSpan;
 
 /******************************************************************************
 ** 
-** This class is used to represent a date and time. See the CDate and CTime
-** class declarations for the limits.
+** This class is used to wrap a time_t that represents a date & time in GMT.
 **
 *******************************************************************************
 */
@@ -31,6 +30,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CDateTime();
+	CDateTime(time_t tDateTime);
 	CDateTime(int iDay, int iMonth, int iYear, int iHours, int iMins, int iSecs);
 	CDateTime(const CDate& rDate, const CTime& rTime);
 
@@ -44,6 +44,7 @@ public:
 	// Core accessors & mutators.
 	//
 	void Set();
+	void Set(time_t tDateTime);
 	void Set(int  iDay, int  iMonth, int  iYear, int  iHours, int  iMins, int  iSecs);
 	void Get(int& iDay, int& iMonth, int& iYear, int& iHours, int& iMins, int& iSecs) const;
 
@@ -54,6 +55,12 @@ public:
 	void  Time(const CTime& rTime);
 
 	static CDateTime Current();
+
+	//
+	// Conversion operators.
+	//
+	void operator =(time_t tDateTime);
+	operator time_t() const;
 
 	//
 	// Comparison operators.
@@ -71,7 +78,6 @@ public:
 	CDateTimeSpan operator  -(const CDateTime& rRHS) const;
 	void          operator -=(const CDateTimeSpan& rRHS);
 	
-
 	//
 	// Persistance.
 	//
@@ -82,8 +88,7 @@ protected:
 	//
 	// Members.
 	//
-	CDate	m_Date;		// The date part.
-	CTime	m_Time;		// The time part.
+	time_t	m_tDateTime;
 
 	//
 	// Friends.
@@ -105,7 +110,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CDateTimeSpan();
-	CDateTimeSpan(int64 lSecs);
+	CDateTimeSpan(time_t tSecs);
 	CDateTimeSpan(const CDateTime& rDateTime);
 	
 	//
@@ -120,7 +125,7 @@ protected:
 	//
 	// Members.
 	//
-	int64	m_lSpan;	// The span in seconds.
+	time_t	m_tSpan;
 
 	//
 	// Friends.
@@ -136,7 +141,13 @@ protected:
 */
 
 inline CDateTime::CDateTime()
+	: m_tDateTime(0)
 {
+}
+
+inline CDateTime::CDateTime(time_t tDateTime)
+{
+	Set(tDateTime);
 }
 
 inline CDateTime::CDateTime(int iDay, int iMonth, int iYear, int iHours, int iMins, int iSecs)
@@ -145,8 +156,7 @@ inline CDateTime::CDateTime(int iDay, int iMonth, int iYear, int iHours, int iMi
 }
 
 inline CDateTime::CDateTime(const CDate& rDate, const CTime& rTime)
-	: m_Date(rDate)
-	, m_Time(rTime)
+	: m_tDateTime(rDate.m_tDate + rTime.m_tTime)
 {
 }
 
@@ -162,86 +172,106 @@ inline CDateTime CDateTime::Max()
 
 inline void CDateTime::Set()
 {
-	m_Date.Set();
-	m_Time.Set();
+	CDate oDate = CDate::Current();
+	CTime oTime = CTime::Current();
+
+	*this = CDateTime(oDate, oTime);
+}
+
+inline void CDateTime::Set(time_t tDateTime)
+{
+	m_tDateTime = tDateTime;
 }
 
 inline void CDateTime::Set(int iDay, int iMonth, int iYear, int iHours, int iMins, int iSecs)
 {
-	m_Date.Set(iDay, iMonth, iYear);
-	m_Time.Set(iHours, iMins, iSecs);
+	CDate oDate(iDay,   iMonth, iYear);
+	CTime oTime(iHours, iMins,  iSecs);
+
+	*this = CDateTime(oDate, oTime);
 }
 
 inline void CDateTime::Get(int& iDay, int& iMonth, int& iYear, int& iHours, int& iMins, int& iSecs) const
 {
-	m_Date.Get(iDay,   iMonth, iYear);
-	m_Time.Get(iHours, iMins,  iSecs);
+	CDate oDate = Date();
+	CTime oTime = Time();
+
+	oDate.Get(iDay,   iMonth, iYear);
+	oTime.Get(iHours, iMins,  iSecs);
 }
 
 inline CDate CDateTime::Date() const
 {
-	return m_Date;
+	return CDate(m_tDateTime - (m_tDateTime % SECS_PER_DAY));
 }
 
 inline void  CDateTime::Date(const CDate& rDate)
 {
-	m_Date = rDate;
+	CTime oTime = Time();
+
+	*this = CDateTime(rDate, oTime);
 }
 
 inline CTime CDateTime::Time() const
 {
-	return m_Time;
+	return CTime(m_tDateTime % SECS_PER_DAY);
 }
 
 inline void  CDateTime::Time(const CTime& rTime)
 {
-	m_Time = rTime;
+	CDate oDate = Date();
+
+	*this = CDateTime(oDate, rTime);
+}
+
+inline void CDateTime::operator =(time_t tDateTime)
+{
+	Set(tDateTime);
+}
+
+inline CDateTime::operator time_t() const
+{
+	return m_tDateTime;
 }
 
 inline bool CDateTime::operator ==(const CDateTime& rRHS) const
 {
-	return ((m_Date == rRHS.m_Date) && (m_Time == rRHS.m_Time));
+	return (m_tDateTime == rRHS.m_tDateTime);
 }
 
 inline bool CDateTime::operator !=(const CDateTime& rRHS) const
 {
-	return ((m_Date != rRHS.m_Date) || (m_Time != rRHS.m_Time));
+	return (m_tDateTime != rRHS.m_tDateTime);
 }
 
 inline bool CDateTime::operator <(const CDateTime& rRHS) const
 {
-	return ( (m_Date  < rRHS.m_Date)
-		 || ((m_Date == rRHS.m_Date) && (m_Time < rRHS.m_Time)) );
+	return (m_tDateTime < rRHS.m_tDateTime);
 }
 
 inline bool CDateTime::operator >(const CDateTime& rRHS) const
 {
-	return ( (m_Date  > rRHS.m_Date)
-		 || ((m_Date == rRHS.m_Date) && (m_Time > rRHS.m_Time)) );
+	return (m_tDateTime > rRHS.m_tDateTime);
 }
 
 inline bool CDateTime::operator <=(const CDateTime& rRHS) const
 {
-	return ((*this < rRHS) || (*this == rRHS));
+	return (m_tDateTime <= rRHS.m_tDateTime);
 }
 
 inline bool CDateTime::operator >=(const CDateTime& rRHS) const
 {
-	return ((*this > rRHS) || (*this == rRHS));
+	return (m_tDateTime >= rRHS.m_tDateTime);
 }
 
 inline CDateTimeSpan CDateTime::operator -(const CDateTime& rRHS) const
 {
-	CDateTimeSpan dtsThis(*this);
-	CDateTimeSpan dtsRHS(rRHS);
-	
-	return CDateTimeSpan(dtsThis.m_lSpan - dtsRHS.m_lSpan);
+	return CDateTimeSpan(m_tDateTime - rRHS.m_tDateTime);
 }
 
 inline void CDateTime::operator -=(const CDateTimeSpan& rRHS)
 {
-	// TODO: Implement properly.
-	m_Time -= CTimeSpan(rRHS.Secs());
+	m_tDateTime -= rRHS.m_tSpan;
 }
 
 /******************************************************************************
@@ -252,43 +282,38 @@ inline void CDateTime::operator -=(const CDateTimeSpan& rRHS)
 */
 
 inline CDateTimeSpan::CDateTimeSpan()
-	: m_lSpan(0)
+	: m_tSpan(0)
 {
 }
 
-inline CDateTimeSpan::CDateTimeSpan(int64 lSecs)
-	: m_lSpan(lSecs)
+inline CDateTimeSpan::CDateTimeSpan(time_t tSecs)
+	: m_tSpan(tSecs)
 {
 }
 
 inline CDateTimeSpan::CDateTimeSpan(const CDateTime& rDateTime)
 {
-	// Convert date and time to spans.
-	int64 lDays = CDateSpan(rDateTime.Date()).Days();
-	int64 lSecs = CTimeSpan(rDateTime.Time()).Secs();
-
-	// Calculate span.
-	m_lSpan = (lDays * SECS_PER_DAY) + lSecs;
+	m_tSpan = rDateTime.m_tDateTime;
 }
 
 inline int CDateTimeSpan::Secs() const
 {
-	return (int) m_lSpan;
+	return m_tSpan;
 }
 
 inline int CDateTimeSpan::Mins() const
 {
-	return (int) (m_lSpan / SECS_PER_MIN);
+	return (m_tSpan / SECS_PER_MIN);
 }
 
 inline int CDateTimeSpan::Hours() const
 {
-	return (int) (m_lSpan / SECS_PER_HOUR);
+	return (m_tSpan / SECS_PER_HOUR);
 }
 
 inline int CDateTimeSpan::Days() const
 {
-	return (int) (m_lSpan / SECS_PER_DAY);
+	return (m_tSpan / SECS_PER_DAY);
 }
 
 #endif //DATETIME_HPP

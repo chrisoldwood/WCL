@@ -46,12 +46,10 @@ CDateTime CDateTime::Current()
 
 void CDateTime::operator <<(CStream& rStream)
 {
-	rStream >> m_Date;
-	rStream >> m_Time;
+	rStream.Read(&m_tDateTime, sizeof(m_tDateTime));
 }
 
 void CDateTime::operator >>(CStream& rStream) const
 {
-	rStream << m_Date;
-	rStream << m_Time;
+	rStream.Write(&m_tDateTime, sizeof(m_tDateTime));
 }

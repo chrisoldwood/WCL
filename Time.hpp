@@ -15,6 +15,7 @@
 // Forward declarations.
 class CStream;
 class CTimeSpan;
+class CDateTime;
 
 /******************************************************************************
 ** 
@@ -29,7 +30,7 @@ const int SECS_PER_DAY  = 60*60*24;
 
 /******************************************************************************
 ** 
-** This class is used to represent a time between 00:00:00 and 23:59:59.
+** This class is used to wrap a time_t that represents a time in GMT.
 **
 *******************************************************************************
 */
@@ -41,6 +42,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CTime();
+	CTime(time_t tTime);
 	CTime(int  iHours, int  iMins, int  iSecs);
 
 	//
@@ -53,6 +55,7 @@ public:
 	// Core accessors & mutators.
 	//
 	void Set();
+	void Set(time_t tTime);
 	void Set(int  iHours, int  iMins, int  iSecs);
 	void Get(int& iHours, int& iMins, int& iSecs) const;
 
@@ -89,6 +92,12 @@ public:
 	bool    FromString(const char* pszTime);
 
 	//
+	// Conversion operators.
+	//
+	void operator =(time_t tTime);
+	operator time_t() const;
+
+	//
 	// Comparison operators.
 	//
 	bool operator ==(const CTime& rRHS) const;
@@ -116,12 +125,13 @@ protected:
 	//
 	// Members.
 	//
-	int32	m_lTime;	// The time in seconds from 00:00:00.
+	time_t	m_tTime;
 
 	//
 	// Friends.
 	//
 	friend class CTimeSpan;
+	friend class CDateTime;
 };
 
 /******************************************************************************
@@ -138,7 +148,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CTimeSpan();
-	CTimeSpan(int iSecs);
+	CTimeSpan(int nSecs);
 	CTimeSpan(const CTime& rTime);
 	
 	// Accessors.
@@ -151,7 +161,7 @@ protected:
 	//
 	// Members.
 	//
-	int32	m_lSpan;	// The time span in seconds.
+	int	m_nSpan;
 
 	//
 	// Friends.
@@ -167,8 +177,13 @@ protected:
 */
 
 inline CTime::CTime()
-	: m_lTime(0)
+	: m_tTime(0)
 {
+}
+
+inline CTime::CTime(time_t tTime)
+{
+	Set(tTime);
 }
 
 inline CTime::CTime(int iHours, int iMins, int iSecs)
@@ -184,6 +199,11 @@ inline CTime CTime::Min()
 inline CTime CTime::Max()
 {
 	return CTime(23, 59, 59);
+}
+
+inline void CTime::Set(time_t tTime)
+{
+	m_tTime = (tTime % SECS_PER_DAY);
 }
 
 inline void CTime::Hours(int iHours)
@@ -237,24 +257,34 @@ inline int CTime::Secs() const
 	return iSecs;
 }
 
+inline void CTime::operator =(time_t tTime)
+{
+	Set(tTime);
+}
+
+inline CTime::operator time_t() const
+{
+	return m_tTime;
+}
+
 inline bool CTime::operator ==(const CTime& rRHS) const
 {
-	return (m_lTime == rRHS.m_lTime);
+	return (m_tTime == rRHS.m_tTime);
 }
 
 inline bool CTime::operator !=(const CTime& rRHS) const
 {
-	return (m_lTime != rRHS.m_lTime);
+	return (m_tTime != rRHS.m_tTime);
 }
 
 inline bool CTime::operator <(const CTime& rRHS) const
 {
-	return (m_lTime < rRHS.m_lTime);
+	return (m_tTime < rRHS.m_tTime);
 }
 
 inline bool CTime::operator >(const CTime& rRHS) const
 {
-	return (m_lTime > rRHS.m_lTime);
+	return (m_tTime > rRHS.m_tTime);
 }
 
 inline bool CTime::operator <=(const CTime& rRHS) const
@@ -269,17 +299,17 @@ inline bool CTime::operator >=(const CTime& rRHS) const
 
 inline CTimeSpan CTime::operator -(const CTime& rRHS) const
 {
-	return CTimeSpan(m_lTime - rRHS.m_lTime);
+	return CTimeSpan(m_tTime - rRHS.m_tTime);
 }
 
 inline void CTime::operator +=(const CTimeSpan& rRHS)
 {
-	m_lTime += rRHS.m_lSpan;
+	m_tTime += rRHS.m_nSpan;
 }
 
 inline void CTime::operator -=(const CTimeSpan& rRHS)
 {
-	m_lTime -= rRHS.m_lSpan;
+	m_tTime -= rRHS.m_nSpan;
 }
 
 /******************************************************************************
@@ -290,38 +320,38 @@ inline void CTime::operator -=(const CTimeSpan& rRHS)
 */
 
 inline CTimeSpan::CTimeSpan()
-	: m_lSpan(0)
+	: m_nSpan(0)
 {
 }
 
-inline CTimeSpan::CTimeSpan(int iSecs)
-	: m_lSpan(iSecs)
+inline CTimeSpan::CTimeSpan(int nSecs)
+	: m_nSpan(nSecs)
 {
 }
 
 inline CTimeSpan::CTimeSpan(const CTime& rTime)
-	: m_lSpan(rTime.m_lTime)
+	: m_nSpan(rTime.m_tTime)
 {
 }
 
 inline int CTimeSpan::Secs() const
 {
-	return m_lSpan;
+	return m_nSpan;
 }
 
 inline int CTimeSpan::Mins() const
 {
-	return m_lSpan / SECS_PER_MIN;
+	return m_nSpan / SECS_PER_MIN;
 }
 
 inline int CTimeSpan::Hours() const
 {
-	return m_lSpan / SECS_PER_HOUR;
+	return m_nSpan / SECS_PER_HOUR;
 }
 
 inline int CTimeSpan::Days() const
 {
-	return m_lSpan / SECS_PER_DAY;
+	return m_nSpan / SECS_PER_DAY;
 }
 
 #endif //TIME_HPP

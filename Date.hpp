@@ -15,10 +15,11 @@
 // Forward declarations.
 class CStream;
 class CDateSpan;
+class CDateTime;
 
 /******************************************************************************
 ** 
-** This class is used to represent a date between 01/01/1901 and 31/12/2099.
+** This class is used to wrap a time_t that represents a date in GMT.
 **
 *******************************************************************************
 */
@@ -30,6 +31,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CDate();
+	CDate(time_t tDate);
 	CDate(int iDay, int iMonth, int iYear);
 
 	//
@@ -42,6 +44,7 @@ public:
 	// Core accessors & mutators.
 	//
 	void Set();
+	void Set(time_t tDate);
 	void Set(int  iDay, int  iMonth, int  iYear);
 	void Get(int& iDay, int& iMonth, int& iYear) const;
 
@@ -87,6 +90,12 @@ public:
 	bool    FromString(const char* pszDate);
 
 	//
+	// Conversion operators.
+	//
+	void operator =(time_t tDate);
+	operator time_t() const;
+
+	//
 	// Comparison operators.
 	//
 	bool operator ==(const CDate& rRHS) const;
@@ -114,7 +123,7 @@ protected:
 	//
 	// Members.
 	//
-	int32	m_lDate;	// The date in days since 01/01/1901.
+	time_t	m_tDate;
 
 	//
 	// Internal methods.
@@ -125,6 +134,7 @@ protected:
 	// Friends.
 	//
 	friend class CDateSpan;
+	friend class CDateTime;
 };
 
 /******************************************************************************
@@ -141,7 +151,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CDateSpan();
-	CDateSpan(int iDays);
+	CDateSpan(int nDays);
 	CDateSpan(const CDate& rDate);
 	
 	// Accessors.
@@ -151,7 +161,7 @@ protected:
 	//
 	// Members.
 	//
-	int32	m_lSpan;	// The span in days.
+	int	m_nSpan;
 
 	//
 	// Friends.
@@ -167,8 +177,13 @@ protected:
 */
 
 inline CDate::CDate()
-	: m_lDate(0)
+	: m_tDate(0)
 {
+}
+
+inline CDate::CDate(time_t tDate)
+{
+	Set(tDate);
 }
 
 inline CDate::CDate(int iDay, int iMonth, int iYear)
@@ -178,12 +193,17 @@ inline CDate::CDate(int iDay, int iMonth, int iYear)
 
 inline CDate CDate::Min()
 {
-	return CDate(1, 1, 1901);
+	return CDate(1, 1, 1970);
 }
 
 inline CDate CDate::Max()
 {
-	return CDate(31, 12, 2099);
+	return CDate(1, 1, 2038);
+}
+
+inline void CDate::Set(time_t tDate)
+{
+	m_tDate = (tDate - (tDate % SECS_PER_DAY));
 }
 
 inline void CDate::Day(int iDay)
@@ -239,7 +259,7 @@ inline int CDate::Year() const
 
 inline int CDate::DayOfWeek() const
 {
-	return ((m_lDate + 1) % 7);
+	return (((m_tDate / SECS_PER_DAY) + 3) % 7);
 }
 
 inline int CDate::DaysInMonth() const
@@ -251,24 +271,34 @@ inline int CDate::DaysInMonth() const
 	return DaysInMonth(iMonth, iYear);
 }
 
+inline void CDate::operator =(time_t tDate)
+{
+	Set(tDate);
+}
+
+inline CDate::operator time_t() const
+{
+	return m_tDate;
+}
+
 inline bool CDate::operator ==(const CDate& rRHS) const
 {
-	return (m_lDate == rRHS.m_lDate);
+	return (m_tDate == rRHS.m_tDate);
 }
 
 inline bool CDate::operator !=(const CDate& rRHS) const
 {
-	return (m_lDate != rRHS.m_lDate);
+	return (m_tDate != rRHS.m_tDate);
 }
 
 inline bool CDate::operator <(const CDate& rRHS) const
 {
-	return (m_lDate < rRHS.m_lDate);
+	return (m_tDate < rRHS.m_tDate);
 }
 
 inline bool CDate::operator >(const CDate& rRHS) const
 {
-	return (m_lDate > rRHS.m_lDate);
+	return (m_tDate > rRHS.m_tDate);
 }
 
 inline bool CDate::operator <=(const CDate& rRHS) const
@@ -283,17 +313,17 @@ inline bool CDate::operator >=(const CDate& rRHS) const
 
 inline CDateSpan CDate::operator -(const CDate& rRHS) const
 {
-	return CDateSpan(m_lDate - rRHS.m_lDate);
+	return CDateSpan((m_tDate - rRHS.m_tDate) / SECS_PER_DAY);
 }
 
 inline void CDate::operator +=(const CDateSpan& rRHS)
 {
-	m_lDate += rRHS.m_lSpan;
+	m_tDate += (rRHS.m_nSpan * SECS_PER_DAY);
 }
 
 inline void CDate::operator -=(const CDateSpan& rRHS)
 {
-	m_lDate -= rRHS.m_lSpan;
+	m_tDate -= (rRHS.m_nSpan * SECS_PER_DAY);
 }
 
 /******************************************************************************
@@ -304,23 +334,23 @@ inline void CDate::operator -=(const CDateSpan& rRHS)
 */
 
 inline CDateSpan::CDateSpan()
-	: m_lSpan(0)
+	: m_nSpan(0)
 {
 }
 
-inline CDateSpan::CDateSpan(int iDays)
-	: m_lSpan(iDays)
+inline CDateSpan::CDateSpan(int nDays)
+	: m_nSpan(nDays)
 {
 }
 
 inline CDateSpan::CDateSpan(const CDate& rDate)
-	: m_lSpan(rDate.m_lDate)
+	: m_nSpan(rDate.m_tDate / SECS_PER_DAY)
 {
 }
 
 inline int CDateSpan::Days() const
 {
-	return m_lSpan;
+	return m_nSpan;
 }
 
 #endif //DATE_HPP

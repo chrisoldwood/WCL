@@ -49,7 +49,7 @@ void CTime::Set(int iHours, int iMins, int iSecs)
 	ASSERT( (iMins  >= 0) && (iMins  <= 59) );
 	ASSERT( (iSecs  >= 0) && (iSecs  <= 59) );
 
-	m_lTime = (iHours * SECS_PER_HOUR) + (iMins * SECS_PER_MIN) + iSecs;
+	m_tTime = (iHours * SECS_PER_HOUR) + (iMins * SECS_PER_MIN) + iSecs;
 }
 
 /******************************************************************************
@@ -66,9 +66,9 @@ void CTime::Set(int iHours, int iMins, int iSecs)
 
 void CTime::Get(int& iHours, int& iMins, int& iSecs) const
 {
-	iSecs  = m_lTime % 60;
-	iMins  = (m_lTime % SECS_PER_HOUR) / SECS_PER_MIN;
-	iHours = m_lTime / SECS_PER_HOUR;
+	iSecs  = m_tTime % 60;
+	iMins  = (m_tTime % SECS_PER_HOUR) / SECS_PER_MIN;
+	iHours = m_tTime / SECS_PER_HOUR;
 }
 
 /******************************************************************************
@@ -205,10 +205,10 @@ bool CTime::FromString(const char* pszTime)
 
 void CTime::operator <<(CStream& rStream)
 {
-	rStream >> m_lTime;
+	rStream.Read(&m_tTime, sizeof(m_tTime));
 }
 
 void CTime::operator >>(CStream& rStream) const
 {
-	rStream << m_lTime;
+	rStream.Write(&m_tTime, sizeof(m_tTime));
 }
