@@ -300,7 +300,7 @@ bool CPath::Select(const CWnd& rParent, DlgMode eMode, const char* pszExts,
 /******************************************************************************
 ** Method:		Rename()
 **
-** Description:	Rename the path.
+** Description:	Rename the file.
 **
 ** Parameters:	pszPath		The path to rename it to.
 **
@@ -308,12 +308,12 @@ bool CPath::Select(const CWnd& rParent, DlgMode eMode, const char* pszExts,
 **
 *******************************************************************************
 */
-
+/*
 bool CPath::Rename(const char* pszPath)
 {
 	return (rename(*this, pszPath) == 0);
 }
-
+*/
 /******************************************************************************
 ** Method:		Delete()
 **
@@ -325,8 +325,9 @@ bool CPath::Rename(const char* pszPath)
 **
 *******************************************************************************
 */
-
+/*
 bool CPath::Delete()
 {
 	return (_unlink(*this) == 0);
 }
+*/

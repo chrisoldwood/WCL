@@ -30,8 +30,9 @@ public:
 	// Constructors/Destructor.
 	//
 	CPath();
-    CPath(const char* pszPath);
-	CPath(const CPath& pathSrc);
+    CPath(const char*    pszPath);
+	CPath(const CString& strSrc);
+	CPath(const CPath&   strSrc);
 
 	//
 	// File/Dir attributes.
@@ -52,10 +53,11 @@ public:
 
 	//
 	// Operations.
-	//
-	bool Rename(const char* pszPath);
-	bool Delete();
-
+	// TODO: Move to CFile.
+/*	//
+	bool RenameFile(const char* pszPath);
+	bool DeleteFile();
+*/
 	//
 	// File Open dialog.
 	enum DlgMode
@@ -98,9 +100,14 @@ inline CPath::CPath(const char* pszPath)
 	Copy(pszPath);
 }
 
-inline CPath::CPath(const CPath& pathSrc)
+inline CPath::CPath(const CString& strSrc)
 {
-	Copy(pathSrc.m_pszData);
+	Copy(strSrc);
+}
+
+inline CPath::CPath(const CPath& strSrc)
+{
+	Copy(strSrc);
 }
 
 inline const CPath& CPath::operator=(const CString& rSrc)
