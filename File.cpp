@@ -259,3 +259,46 @@ void CFile::Throw(int eErrCode)
 {
 	throw CFileException(eErrCode, *this);
 }
+
+/******************************************************************************
+** Method:		QueryInfo()
+**
+** Description:	Queries for information about a file.
+**
+** Parameters:	pszPath		The file path.
+**				oInfo		The returned information.
+**
+** Returns:		true or false
+**
+*******************************************************************************
+*/
+
+bool CFile::QueryInfo(const char* pszPath, struct _stat& oInfo)
+{
+	ASSERT(pszPath != NULL);
+
+	memset(&oInfo, 0, sizeof(oInfo));
+
+	int nResult = _stat(pszPath, &oInfo);
+
+	return (nResult == 0);
+}
+
+/******************************************************************************
+** Method:		Delete()
+**
+** Description:	Deletes the given file.
+**
+** Parameters:	pszPath		The file path.
+**
+** Returns:		true or false
+**
+*******************************************************************************
+*/
+
+bool CFile::Delete(const char* pszPath)
+{
+	ASSERT(pszPath != NULL);
+
+	return (::DeleteFile(pszPath) != 0);
+}

@@ -12,6 +12,8 @@
 #ifndef FILE_HPP
 #define FILE_HPP
 
+#include <sys/stat.h>
+
 /******************************************************************************
 ** 
 ** This class encapsulates I/O to a binary/ASCII file.
@@ -51,8 +53,11 @@ public:
 	virtual void  Throw(int eErrCode);
 
 	//
-	// Members.
+	// Class methods.
 	//
+	static bool QueryInfo(const char* pszPath, struct _stat& oInfo);
+
+	static bool Delete(const char* pszPath);
 
 protected:
 	//
