@@ -65,11 +65,8 @@ void CFrameMenu::LoadRsc(uint iRscID)
 		m_hMenu = NULL;
 	}
 
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-	
 	// Load the resource.
-	m_hMenu = ::LoadMenu(pApp->m_hInstance, MAKEINTRESOURCE(iRscID));
+	m_hMenu = ::LoadMenu(CModule::This().Handle(), MAKEINTRESOURCE(iRscID));
+
 	ASSERT(m_hMenu != NULL);
 }
