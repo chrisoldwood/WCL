@@ -24,6 +24,7 @@
 
 CPen::CPen()
 	: m_hPen(NULL)
+	, m_bOwner(false)
 {
 }
 
@@ -41,6 +42,7 @@ CPen::CPen()
 
 CPen::~CPen()
 {
-	if (m_hPen)
+	// Delete if valid and we own it.
+	if ( (m_hPen) && (m_bOwner) )
 		::DeleteObject(m_hPen);
 }

@@ -26,9 +26,11 @@ public:
 	// Constructors/Destructor.
 	//
 	CPen();
+	CPen(int iID);
 	CPen(int iStyle, int iWidth, COLORREF crClr);
 	~CPen();
 	
+	void Create(int iID);
 	void Create(int iStyle, int iWidth, COLORREF crClr);
 
 	//
@@ -41,6 +43,7 @@ protected:
 	// Members.
 	//
 	HPEN	m_hPen;
+	bool	m_bOwner;
 };
 
 /******************************************************************************
@@ -50,15 +53,30 @@ protected:
 *******************************************************************************
 */
 
+inline CPen::CPen(int iID)
+{
+	Create(iID);
+}
+
 inline CPen::CPen(int iStyle, int iWidth, COLORREF crClr)
 {
 	Create(iStyle, iWidth, crClr);
 }
 
+inline void CPen::Create(int iID)
+{
+	m_hPen   = GetStockPen(iID);
+	m_bOwner = false;
+
+	ASSERT(m_hPen != NULL);
+}
+
 inline void CPen::Create(int iStyle, int iWidth, COLORREF crClr)
 {
-	m_hPen = ::CreatePen(iStyle, iWidth, crClr);
-	ASSERT(m_hPen);
+	m_hPen   = ::CreatePen(iStyle, iWidth, crClr);
+	m_bOwner = true;
+
+	ASSERT(m_hPen != NULL);
 }
 
 inline HPEN CPen::Handle() const
