@@ -125,17 +125,8 @@ LRESULT CEditBox::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 *******************************************************************************
 */
 
-void CEditBox::OnReflectedCtrlMsg(uint iMsg)
+void CEditBox::OnReflectedCtrlMsg(uint /*iMsg*/)
 {
-/*
-	// Decode message.
-	switch(iMsg)
-	{
-		// Unknown.
-		default:
-			break;
-	}
-*/
 }
 
 /******************************************************************************
