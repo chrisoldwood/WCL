@@ -61,14 +61,14 @@ CDoc::~CDoc()
 *******************************************************************************
 */
 
-void CDoc::operator <<(CStream& rStream)
+void CDoc::operator <<(CStream& /*rStream*/)
 {
-	ASSERT(false);
+	ASSERT_FALSE();
 }
 
-void CDoc::operator >>(CStream& rStream)
+void CDoc::operator >>(CStream& /*rStream*/)
 {
-	ASSERT(false);
+	ASSERT_FALSE();
 }
 
 /******************************************************************************
