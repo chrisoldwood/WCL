@@ -54,8 +54,10 @@ public:
 	int FatalMsg(const char* pszMsg, ...) const;
 
 	//
-	// Error handling.
+	// Other methods.
 	//
+	bool ShowNormal() const;
+
 	static CString FormatError(DWORD dwError = ::GetLastError());
 
 	// Global access to the app object.
@@ -189,6 +191,12 @@ inline uint CApp::StartTimer(uint nFrequency)
 inline void CApp::StopTimer(uint nTimerID)
 {
 	::KillTimer(NULL, nTimerID);
+}
+
+inline bool CApp::ShowNormal() const
+{
+	return ( (m_iCmdShow == SW_SHOWNORMAL) || (m_iCmdShow == SW_SHOWNOACTIVATE)
+		  || (m_iCmdShow == SW_SHOW)       || (m_iCmdShow == SW_SHOWNA) );
 }
 
 #endif //APP_HPP
