@@ -11,6 +11,11 @@
 #include "wcl.hpp"
 #include <shlwapi.h>
 
+#ifdef _DEBUG
+// For memory leak detection.
+#define new DBGCRT_NEW
+#endif
+
 /******************************************************************************
 **
 ** Local types.
