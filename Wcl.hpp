@@ -84,6 +84,7 @@
 // Persistance classes.
 #include "FileFinder.hpp"
 #include "IniFile.hpp"
+#include "RegKey.hpp"
 #include "Stream.hpp"
 #include "File.hpp"
 #include "MemStream.hpp"

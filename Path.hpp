@@ -33,6 +33,7 @@ public:
     CPath(const char*    pszPath);
 	CPath(const CString& strSrc);
 	CPath(const CPath&   strSrc);
+    CPath(const char*    pszDir, const char* pszFile);
 
 	//
 	// File/Dir attributes.
@@ -98,6 +99,8 @@ protected:
 
 inline CPath::CPath(const char* pszPath)
 {
+	ASSERT(pszPath != NULL);
+
 	Copy(pszPath);
 }
 
@@ -111,6 +114,16 @@ inline CPath::CPath(const CPath& strSrc)
 	Copy(strSrc);
 }
 
+inline CPath::CPath(const char* pszDir, const char* pszFile)
+{
+	ASSERT(pszDir  != NULL);
+	ASSERT(pszFile != NULL);
+
+	Copy(pszDir);
+	CString::operator +=("\\");
+	CString::operator +=(pszFile);
+}
+
 inline const CPath& CPath::operator=(const CString& rSrc)
 {
 	Copy(rSrc);
@@ -119,13 +132,16 @@ inline const CPath& CPath::operator=(const CString& rSrc)
 
 inline const CPath& CPath::operator=(const char* pszBuffer)
 {
+	ASSERT(pszBuffer != NULL);
+
 	Copy(pszBuffer);
 	return *this;
 }
 
 inline void CPath::operator+=(const char* pszPath)
 {
-	ASSERT(pszPath);
+	ASSERT(pszPath != NULL);
+
 	CString::operator +=("\\");
 	CString::operator +=(pszPath);
 }

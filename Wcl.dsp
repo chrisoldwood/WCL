@@ -338,6 +338,10 @@ SOURCE=.\RadioBtn.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\RegKey.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ScreenDC.cpp
 # End Source File
 # Begin Source File
@@ -714,6 +718,10 @@ SOURCE=.\Rect.hpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\RegKey.hpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ScreenDC.hpp
 # End Source File
 # Begin Source File
@@ -782,10 +790,6 @@ SOURCE=.\TArray.hpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\TBinTree.hpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\Thread.hpp
 # End Source File
 # Begin Source File
@@ -807,10 +811,6 @@ SOURCE=.\TransparentBmp.hpp
 # Begin Source File
 
 SOURCE=.\TTree.hpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\TVarTree.hpp
 # End Source File
 # Begin Source File
 
