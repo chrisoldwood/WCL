@@ -100,7 +100,7 @@ bool CMsgThread::ProcessMsgQueue()
 		}
 
 		// Is thread message?
-		if (m_oMsg.hwnd == NULL)
+		if ( (m_oMsg.hwnd == NULL) && (m_oMsg.message >= WM_USER) )
 		{
 			OnThreadMsg(m_oMsg.message, m_oMsg.wParam, m_oMsg.lParam);
 			return true;
