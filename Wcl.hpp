@@ -27,6 +27,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <commctrl.h>
+#include <time.h>
 
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC
@@ -59,6 +60,7 @@
 
 // Core collection classes.
 #include "Array.hpp"
+#include "IntArray.hpp"
 #include "PtrArray.hpp"
 #include "StrArray.hpp"
 #include "List.hpp"
@@ -67,6 +69,9 @@
 #include "HandleMap.hpp"
 #include "IntPtrMap.hpp"
 #include "StrPtrMap.hpp"
+
+// Template collection classes.
+#include "TPtrArray.hpp"
 
 // Exception classes.
 #include "Exception.hpp"
