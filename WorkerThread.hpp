@@ -12,6 +12,9 @@
 #ifndef WORKERTHREAD_HPP
 #define WORKERTHREAD_HPP
 
+// Forward declarations.
+class CThreadPool;
+
 /******************************************************************************
 ** 
 ** A worker thread in a thread pool.
@@ -25,13 +28,13 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CWorkerThread();
+	CWorkerThread(CThreadPool& oPool);
 	~CWorkerThread();
 
 	// Thread status.
 	enum ThreadStatus
 	{
-		SUSPENDED,
+		STOPPED,
 		IDLE,
 		RUNNING,
 	};
@@ -52,8 +55,30 @@ protected:
 	//
 	// Members.
 	//
+	CThreadPool&	m_oPool;
 	ThreadStatus	m_eStatus;
-	CThreadJob*		m_pCurrentJob;
+	CEvent			m_oSyncEvent;
+	CThreadJob*		m_pJob;
+
+	// Thread messages.
+	enum ThreadMsg
+	{
+		START_THREAD	= WM_USER+1,
+		RUN_JOB			= WM_USER+2,
+		STOP_THREAD		= WM_USER+3,
+	};
+
+	//
+	// Message handlers.
+	//
+	virtual void OnThreadMsg(UINT nMsg, WPARAM wParam, LPARAM lParam);
+
+	void OnStartThread();
+	void OnRunJob();
+	void OnStopThread();
+
+	// Inital thread function.
+	static DWORD WINAPI ThreadFunction(LPVOID lpParam);
 };
 
 /******************************************************************************
