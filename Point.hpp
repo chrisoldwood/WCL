@@ -29,6 +29,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CPoint();
+	CPoint(const POINT& pt);
 	CPoint(int iX, int iY);
 	
 	//
@@ -49,6 +50,11 @@ public:
 inline CPoint::CPoint()
 {
 	Set(0, 0);
+}
+
+inline CPoint::CPoint(const POINT& pt)
+{
+	Set(pt.x, pt.y);
 }
 
 inline CPoint::CPoint(int iX, int iY)
