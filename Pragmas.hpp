@@ -52,6 +52,9 @@
 // 'this' used in base member initialisation list.
 #pragma warning ( disable : 4355 )
 
+// Copy constructor could not be generated.
+#pragma warning ( disable : 4511 )
+
 #ifdef _DEBUG
 
 // Unreachable code, caused by ASSERT macros
