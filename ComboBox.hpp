@@ -39,7 +39,9 @@ public:
 	int Find(const char* pszText, int iFirst = -1) const;
 	int FindExact(const char* pszText, int iFirst = -1) const;
 	void ItemData(int iItem, LPARAM lData) const;
+	void ItemPtr(int iItem, void* pData) const;
 	LPARAM ItemData(int iItem) const;
+	void*  ItemPtr(int iItem) const;
 	int CurSel() const;
 	void CurSel(int iItem) const;
 	int CurSel(const char* pszText, int iFirst = -1) const;
@@ -118,7 +120,17 @@ inline void CComboBox::ItemData(int iItem, LPARAM lData) const
 
 inline LPARAM CComboBox::ItemData(int iItem) const
 {
-	return SendMessage(LB_GETITEMDATA, iItem, 0L);
+	return SendMessage(CB_GETITEMDATA, iItem, 0L);
+}
+
+inline void CComboBox::ItemPtr(int iItem, void* pData) const
+{
+	SendMessage(CB_SETITEMDATA, iItem, (LPARAM)pData);
+}
+
+inline void* CComboBox::ItemPtr(int iItem) const
+{
+	return (void*) SendMessage(CB_GETITEMDATA, iItem, 0L);
 }
 
 inline int CComboBox::CurSel() const
