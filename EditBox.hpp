@@ -34,11 +34,13 @@ public:
 	void TextLimit(int iLimit) const;
 	void ReadOnly(bool bReadOnly = true) const;
 	void Select(int iFirstChar = 0, int iLastChar = -1) const;
-	void Selected(int& nStart, int& nEnd) const;
 	void Text(const char* pszText);
 	void ReplaceSel(const char* pszText, bool bCanUndo = true);
 	void Append(const char* pszText);
-	int  TextLength() const;
+	void TabWidth(uint nWidth);
+
+	void    Selected(int& nStart, int& nEnd) const;
+	int     TextLength() const;
 	CString Text() const;
 
 	//
@@ -111,6 +113,11 @@ inline void CEditBox::Text(const char* pszText)
 inline void CEditBox::ReplaceSel(const char* pszText, bool bCanUndo)
 {
 	SendMessage(EM_REPLACESEL, bCanUndo, (LPARAM)pszText);
+}
+
+inline void CEditBox::TabWidth(uint nWidth)
+{
+	::SendMessage(m_hWnd, EM_SETTABSTOPS, 1, (LPARAM)&nWidth);
 }
 
 inline int CEditBox::TextLength() const
