@@ -14,7 +14,7 @@
 
 /******************************************************************************
 ** 
-** .
+** Helper class to automatically aquire and release a thread lock.
 **
 *******************************************************************************
 */
@@ -25,13 +25,14 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CAutoThreadLock();
+	CAutoThreadLock(IThreadLock& oLock);
 	~CAutoThreadLock();
 	
 protected:
 	//
 	// Members.
 	//
+	IThreadLock&	m_oLock;
 };
 
 /******************************************************************************
@@ -40,5 +41,16 @@ protected:
 **
 *******************************************************************************
 */
+
+inline CAutoThreadLock::CAutoThreadLock(IThreadLock& oLock)
+	: m_oLock(oLock)
+{
+	m_oLock.Aquire();
+}
+
+inline CAutoThreadLock::~CAutoThreadLock()
+{
+	m_oLock.Release();
+}
 
 #endif // AUTOTHREADLOCK_HPP
