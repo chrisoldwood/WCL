@@ -29,7 +29,7 @@
 
 CBuffer::CBuffer()
 	: m_nSize(0)
-	, m_pBuffer(malloc(0))
+	, m_pBuffer(NULL)
 {
 }
 
@@ -135,9 +135,8 @@ CBuffer::CBuffer(const CBuffer& oRHS)
 
 CBuffer::~CBuffer()
 {
-	ASSERT(m_pBuffer != NULL);
-
-	free(m_pBuffer);
+	if (m_pBuffer != NULL)
+		free(m_pBuffer);
 }
 
 /******************************************************************************
@@ -154,15 +153,11 @@ CBuffer::~CBuffer()
 
 void CBuffer::Size(uint nSize)
 {
-	ASSERT(m_pBuffer != NULL);
-
 	if (m_nSize != nSize)
 	{
 		m_nSize   = nSize;
 		m_pBuffer = realloc(m_pBuffer, m_nSize);
 	}
-
-	ASSERT(m_pBuffer != NULL);
 }
 
 /******************************************************************************
@@ -181,11 +176,10 @@ void CBuffer::Size(uint nSize)
 
 void CBuffer::Get(void* pData, uint nSize, uint nOffset) const
 {
-	ASSERT(m_pBuffer != NULL);
-
 	if (nSize == 0)
 		return;
 
+	ASSERT(m_pBuffer     != NULL);
 	ASSERT(nOffset       <  m_nSize);
 	ASSERT(nOffset+nSize <= m_nSize);
 
@@ -210,11 +204,10 @@ void CBuffer::Get(void* pData, uint nSize, uint nOffset) const
 
 void CBuffer::Set(const void* pData, uint nSize, uint nOffset)
 {
-	ASSERT(m_pBuffer != NULL);
-
 	if (nSize == 0)
 		return;
 
+	ASSERT(m_pBuffer     != NULL);
 	ASSERT(nOffset       <  m_nSize);
 	ASSERT(nOffset+nSize <= m_nSize);
 
@@ -259,7 +252,7 @@ HGLOBAL CBuffer::ToGlobal() const
 	HGLOBAL hGlobal = ::GlobalAlloc(GMEM_MOVEABLE | GMEM_DDESHARE | GMEM_ZEROINIT, m_nSize);
 	void*   pGlobal = ::GlobalLock(hGlobal);
 
-	ASSERT (pGlobal != NULL);
+	ASSERT(pGlobal != NULL);
 
 	// Copy to global buffer.
 	Get(pGlobal, m_nSize);
