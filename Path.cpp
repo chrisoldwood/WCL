@@ -71,6 +71,29 @@ bool CPath::ReadOnly() const
 }
 
 /******************************************************************************
+** Method:		IsFolder()
+**
+** Description:	Determine if a file or directory is a directory.
+**
+** Parameters:	None.
+**
+** Returns:		true or false.
+**
+*******************************************************************************
+*/
+
+bool CPath::IsFolder() const
+{
+	struct stat oInfo = { 0 };
+
+	int nResult = ::stat(m_pszData, &oInfo);
+
+	ASSERT(nResult == 0);
+
+	return ((nResult == 0) && (oInfo.st_mode & _S_IFDIR));
+}
+
+/******************************************************************************
 ** Method:		CurrentDir()
 **				ApplicationDir()
 **				ModuleDir()
@@ -169,6 +192,49 @@ CPath CPath::Module(HMODULE hModule)
 	::GetModuleFileName(hModule, szPath, sizeof(szPath));
 	
 	return CPath(szPath);
+}
+
+/******************************************************************************
+** Method:		SpecialDir()
+**
+** Description:	Gets a path of a Special Folder indetified by its CSIDL.
+**
+** Parameters:	nCSIDL	The CSIDL of the folder (See SHGetSpecialFolderPath).
+**
+** Returns:		The directory as a path.
+**
+*******************************************************************************
+*/
+
+CPath CPath::SpecialDir(int nCSIDL)
+{
+	char szPath[MAX_PATH] = "";
+
+	::SHGetSpecialFolderPath(NULL, szPath, nCSIDL, FALSE);
+
+	return CPath(szPath);
+}
+
+/******************************************************************************
+** Method:		Drive()
+**
+** Description:	Get the drive portion of the full path.
+**
+** Parameters:	None.
+**
+** Returns:		The drive as a path.
+**
+*******************************************************************************
+*/
+
+CPath CPath::Drive() const
+{
+	char szDrive[MAX_PATH];
+
+	_splitpath(m_pszData, szDrive, NULL, NULL, NULL);
+	strcat(szDrive, "\\");
+
+	return CPath(szDrive);
 }
 
 /******************************************************************************

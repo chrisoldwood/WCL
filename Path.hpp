@@ -40,10 +40,12 @@ public:
 	//
     bool Exists() const;
     bool ReadOnly() const;
+	bool IsFolder() const;
 
 	//
 	// Path components.
 	//
+	CPath   Drive() const;
 	CPath   Directory() const;
 	CString FileName() const;
 	CString FileTitle() const;
@@ -72,6 +74,7 @@ public:
 	static CPath WindowsDir();
 	static CPath SystemDir();
 	static CPath TempDir();
+	static CPath SpecialDir(int nCSIDL);
 
 	static CPath ModuleDir(HMODULE hModule);
 
