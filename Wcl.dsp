@@ -150,6 +150,10 @@ SOURCE=.\CtrlWnd.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Cursor.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Date.cpp
 # End Source File
 # Begin Source File
@@ -418,6 +422,10 @@ SOURCE=.\UpDownBtns.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\URLLabel.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\View.cpp
 # End Source File
 # Begin Source File
@@ -499,6 +507,10 @@ SOURCE=.\ComboBox.hpp
 # Begin Source File
 
 SOURCE=.\CtrlWnd.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Cursor.hpp
 # End Source File
 # Begin Source File
 
@@ -815,6 +827,10 @@ SOURCE=.\TTree.hpp
 # Begin Source File
 
 SOURCE=.\UpDownBtns.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\URLLabel.hpp
 # End Source File
 # Begin Source File
 
