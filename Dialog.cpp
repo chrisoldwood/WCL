@@ -248,9 +248,30 @@ BOOL DIALOGPROC DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	// Push the existing messages' return values onto the stack.
 	BOOL*	 pbMsgHandled = pDialog->MsgHandledBuffer(&bMsgHandled);
 	LRESULT* plMsgResult  = pDialog->MsgResultBuffer (&lMsgResult);
-	
+
+#ifdef _DEBUG
+	try
+	{
+#endif
+
 	// Call real message handler.
 	pDialog->WndProc(hWnd, iMsg, wParam, lParam);
+
+#ifdef _DEBUG
+	}
+	catch (CException& e)
+	{
+		TRACE5("EXCEPTION in WndProc(0x%p, 0x%08X, 0x%08X, 0x%08X) [%s]\n", hWnd, iMsg, wParam, lParam, e.ErrorText());
+
+		ASSERT_FALSE();
+	}
+	catch (...)
+	{
+		TRACE4("EXCEPTION in WndProc(0x%p, 0x%08X, 0x%08X, 0x%08X) [unknown]\n", hWnd, iMsg, wParam, lParam);
+
+		ASSERT_FALSE();
+	}
+#endif
 
 	// Pop the old messages' return values back off the stack.
 	pDialog->MsgHandledBuffer(pbMsgHandled);
