@@ -131,6 +131,26 @@ void CDlgFrame::OnCreate(const CRect& rcClient)
 }
 
 /******************************************************************************
+** Method:		OnDestroy()
+**
+** Description:	The window is being destroyed - destroy the main dialog.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CDlgFrame::OnDestroy()
+{
+	if (m_rDialog.Handle() != NULL)
+		m_rDialog.Destroy();
+
+	CFrameWnd::OnDestroy();
+}
+
+/******************************************************************************
 ** Method:		OnResize()
 **
 ** Description:	Window has been resized. Resize the dialog to fit the window.
@@ -149,6 +169,6 @@ void CDlgFrame::OnResize(int iFlag, const CSize& NewSize)
 	CFrameWnd::OnResize(iFlag, NewSize);
 
 	// Resize dialog to fit client?
-	if (!m_bFixedSize)
+	if ( (!m_bFixedSize) && (m_rDialog.Handle() != NULL) )
 		m_rDialog.Move(ClientRect());
 }

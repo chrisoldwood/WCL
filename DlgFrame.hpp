@@ -45,6 +45,7 @@ protected:
 	// Message processors.
 	//
 	virtual void OnCreate(const CRect& rcClient);
+	virtual void OnDestroy();
 	virtual void OnResize(int iFlag, const CSize& NewSize);
 };
 
