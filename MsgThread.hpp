@@ -37,6 +37,11 @@ public:
 	void AddMsgFilter(CMsgFilter& rFilter);
 	void RemoveMsgFilter(CMsgFilter& rFilter);
 
+	//
+	// Message processing.
+	//
+	bool ProcessMsgQueue();
+
 protected:
 	//
 	// Members.

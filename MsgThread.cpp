@@ -46,7 +46,8 @@ CMsgThread::~CMsgThread()
 ** Method:		Run.
 **
 ** Description:	The main processing loop for the thread. It pulls messages out
-**				out the message queue and dispatches them.
+**				out the message queue, passes them to any filters and if not
+**				handled does the usual stuff.
 **
 ** Parameters:	None.
 **
@@ -57,37 +58,53 @@ CMsgThread::~CMsgThread()
 
 void CMsgThread::Run()
 {
-	// Forever.
-	for (;;)
+	// Process message queue until WM_QUIT.
+	while (ProcessMsgQueue())
+		WaitMessage();
+}
+
+/******************************************************************************
+** Method:		ProcessMsgQueue.
+**
+** Description:	Processes any waiting messages.
+**
+** Parameters:	None.
+**
+** Returns:		false if WM_QUIT was seen, else true.
+**
+*******************************************************************************
+*/
+
+bool CMsgThread::ProcessMsgQueue()
+{
+	MSG Msg;
+
+	// Message waiting?
+	while (PeekMessage(&Msg, NULL, NULL, NULL, PM_NOREMOVE))
 	{
-		MSG Msg;
-	
-		// Message waiting?
-		if(PeekMessage(&Msg, NULL, NULL, NULL, PM_NOREMOVE))
+		// Is WM_QUIT?
+		if (!GetMessage(&Msg, NULL, NULL, NULL))
 		{
-			// Is WM_QUIT?
-			if (!GetMessage(&Msg, NULL, NULL, NULL))
-				return;
-
-			bool				bProcessed = false;
-			CMsgFilter*			pFilter = NULL;
-			CMsgFilters::CIter	Iter(m_MsgFilters);
-			
-			// Give message filters first crack at message.
-			while ( ((pFilter = Iter.Next()) != NULL) && (!bProcessed) )
-				bProcessed = pFilter->ProcessMsg(Msg);
-
-			// Still not processed?
-			if (!bProcessed)
-			{
-				TranslateMessage(&Msg);
-				DispatchMessage(&Msg);
-			}
+			// Put back on the queue.
+			::PostQuitMessage(0);
+			return false;
 		}
-		else
+
+		bool				bProcessed = false;
+		CMsgFilter*			pFilter = NULL;
+		CMsgFilters::CIter	Iter(m_MsgFilters);
+		
+		// Give message filters first crack at message.
+		while ( ((pFilter = Iter.Next()) != NULL) && (!bProcessed) )
+			bProcessed = pFilter->ProcessMsg(Msg);
+
+		// Still not processed?
+		if (!bProcessed)
 		{
-			// Yield.
-			WaitMessage();
+			TranslateMessage(&Msg);
+			DispatchMessage(&Msg);
 		}
 	}
+
+	return true;
 }
