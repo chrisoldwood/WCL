@@ -130,6 +130,7 @@
 #include "RadioBtn.hpp"
 #include "Button.hpp"
 #include "ListView.hpp"
+#include "CheckBoxList.hpp"
 #include "DateTimePicker.hpp"
 #include "ProgressBar.hpp"
 #include "UpDownBtns.hpp"
@@ -146,8 +147,8 @@
 #include "TabWndHost.hpp"
 
 // Special dialog classes.
-#include "PropertyPageDlg.hpp"
-#include "PropertyDlg.hpp"
+#include "PropertyPage.hpp"
+#include "PropertySheet.hpp"
 
 // View window classes.
 #include "MainDlg.hpp"
