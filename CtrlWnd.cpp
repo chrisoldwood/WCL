@@ -125,6 +125,33 @@ bool CCtrlWnd::Create(CMsgWnd& rParent, uint iID, const CRect& rcPos)
 /******************************************************************************
 ** Method:		Create()
 **
+** Description:	Create the control window.
+**
+** Parameters:	rParent		The parent window.
+**				iID			The control ID.
+**				rcPos		The window position.
+**				dwExStyle	The extended styles.
+**				dwStyle		The styles.
+**
+** Returns:		true or false.
+**
+*******************************************************************************
+*/
+
+bool CCtrlWnd::Create(CMsgWnd& rParent, uint iID, const CRect& rcPos, DWORD dwExStyle, DWORD dwStyle)
+{
+	// Save members.
+	m_iID     = iID;
+	m_pParent = &rParent;
+	m_rcPos   = rcPos;
+
+	// Create the window.
+	return CPopupWnd::Create(dwExStyle, dwStyle);
+}
+
+/******************************************************************************
+** Method:		Create()
+**
 ** Description:	Attach the object to an existing control.
 **
 ** Parameters:	rParent		The parent window.

@@ -30,6 +30,7 @@ public:
 	CPopupWnd();
 
 	virtual bool Create();
+	virtual bool Create(DWORD dwExStyle, DWORD dwStyle);
 
 protected:
 	///////////////////////////////////////////////////////

@@ -182,6 +182,42 @@ bool CPopupWnd::Create()
 }
 
 /******************************************************************************
+** Method:		Create()
+**
+** Description:	Calls the template methods to create the window, overriding
+**				the styles with the ones passed in.
+**
+** Parameters:	dwExStyle	The extended styles.
+**				dwStyle		The styles.
+**
+** Returns:		true or false.
+**
+*******************************************************************************
+*/
+
+bool CPopupWnd::Create(DWORD dwExStyle, DWORD dwStyle)
+{
+	ASSERT(m_hWnd == NULL);
+
+	// Register the class.
+	WNDCLASS WndClass;
+
+	GetClassParams(WndClass);
+	if (!Register(WndClass))
+		return false;
+
+	// Create the window.
+	WNDCREATE WndCreate;
+
+	GetCreateParams(WndCreate);
+
+	WndCreate.dwExStyle = dwExStyle;
+	WndCreate.dwStyle   = dwStyle;
+
+	return Create(WndCreate);
+}
+
+/******************************************************************************
 ** Function:	PopupWndProc()
 **
 ** Description:	This is the real CPopupWnd based window message procedure. It

@@ -30,6 +30,7 @@ public:
 
 	virtual bool PreRegister();
 	virtual bool Create(CMsgWnd& rParent, uint iID, const CRect& rcPos);
+	virtual bool Create(CMsgWnd& rParent, uint iID, const CRect& rcPos, DWORD dwExStyle, DWORD dwStyle);
 	virtual bool Create(CMsgWnd& rParent, uint iID, HWND hWnd);
 
 protected:
