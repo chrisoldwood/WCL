@@ -222,6 +222,25 @@ ulong CFile::Seek(ulong lPos, Origin eOrigin)
 }
 
 /******************************************************************************
+** Method:		CurPos()
+**
+** Description:	Gets the current file position.
+**
+** Parameters:	None.
+**
+** Returns:		The current stream position.
+**
+** Exceptions:	CFileException on error.
+**
+*******************************************************************************
+*/
+
+ulong CFile::CurPos()
+{
+	return Seek(0, Current);
+}
+
+/******************************************************************************
 ** Method:		IsEOF()
 **
 ** Description:	Used to detect when the end of the stream has been reached.
@@ -282,6 +301,30 @@ bool CFile::QueryInfo(const char* pszPath, struct _stat& oInfo)
 	int nResult = _stat(pszPath, &oInfo);
 
 	return (nResult == 0);
+}
+
+/******************************************************************************
+** Method:		Size()
+**
+** Description:	Gets the size of the file in bytes.
+**
+** Parameters:	pszPath		The file path.
+**
+** Returns:		The size or 0 on error.
+**
+*******************************************************************************
+*/
+
+uint CFile::Size(const char* pszPath)
+{
+	uint nSize = 0;
+
+	struct _stat oInfo;
+
+	if (QueryInfo(pszPath, oInfo))
+		nSize = oInfo.st_size;
+
+	return nSize;
 }
 
 /******************************************************************************
