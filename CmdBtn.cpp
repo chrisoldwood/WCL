@@ -65,7 +65,7 @@ void CCmdButton::GetCreateParams(WNDCREATE& rParams)
 */
 
 void CCmdButton::OnDrawItem(uint iID, uint iAction, uint iState, CDC& rDC,
-							uint iItem, const CRect& rcItem)
+							uint /*iItem*/, const CRect& rcItem)
 {
 	// Repaint or Selection change?
 	if ( (iAction & ODA_DRAWENTIRE) || (iAction & ODA_SELECT) )

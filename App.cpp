@@ -333,7 +333,7 @@ CString CApp::FormatError(DWORD dwError)
 *******************************************************************************
 */
 
-void CALLBACK CApp::TimerProc(HWND hWnd, UINT uMsg, UINT nTimerID, DWORD dwTime)
+void CALLBACK CApp::TimerProc(HWND /*hWnd*/, UINT /*uMsg*/, UINT nTimerID, DWORD /*dwTime*/)
 {
 	ASSERT(pThis != NULL);
 
@@ -353,6 +353,6 @@ void CALLBACK CApp::TimerProc(HWND hWnd, UINT uMsg, UINT nTimerID, DWORD dwTime)
 *******************************************************************************
 */
 
-void CApp::OnTimer(uint nTimerID)
+void CApp::OnTimer(uint /*nTimerID*/)
 {
 }

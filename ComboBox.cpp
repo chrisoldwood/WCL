@@ -118,15 +118,6 @@ void CComboBox::GetCreateParams(WNDCREATE& rParams)
 *******************************************************************************
 */
 
-void CComboBox::OnReflectedCtrlMsg(uint iMsg)
+void CComboBox::OnReflectedCtrlMsg(uint /*iMsg*/)
 {
-/*
-	// Decode message.
-	switch(iMsg)
-	{
-		// Unknown.
-		default:
-			break;
-	}
-*/
 }
