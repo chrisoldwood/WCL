@@ -52,6 +52,7 @@ public:
 	void     Delete(int nFirst, int nCount = 1);
 	void     Replace(char cOldChar, char cNewChar);
 	void     Replace(char cChar, const char* pszString);
+	CString& RepCtrlChars();
 	CString& Trim(bool bLeft = true, bool bRight = true);
 	CString& ToLower();
 	CString& ToUpper();

@@ -866,6 +866,28 @@ void CString::Replace(char cChar, const char* pszString)
 }
 
 /******************************************************************************
+** Method:		RepCtrlChars()
+**
+** Description:	Replaces any control characters with its "C" equivalent.
+**				e.g. 0x0A -> "\n"
+**
+** Parameters:	None.
+**
+** Returns:		This.
+**
+*******************************************************************************
+*/
+
+CString& CString::RepCtrlChars()
+{
+	Replace('\t', "\\t");
+	Replace('\r', "\\r");
+	Replace('\n', "\\n");
+
+	return *this;
+}
+
+/******************************************************************************
 ** Method:		Trim()
 **
 ** Description:	Trims the leading and/or trailing whitespace from the string.
