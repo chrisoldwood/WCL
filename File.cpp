@@ -90,10 +90,10 @@ void CFile::Create(const char* pszPath)
 	{
 		// File is read-only?
 		if (m_Path.ReadOnly())
-			throw CFileException(CFileException::E_READ_ONLY, *this);
+			throw CFileException(CFileException::E_READ_ONLY, m_Path);
 		
 		// Unknown reason.
-		throw CFileException(CFileException::E_CREATE_FAILED, *this);
+		throw CFileException(CFileException::E_CREATE_FAILED, m_Path);
 	}
 }
 
@@ -123,14 +123,14 @@ void CFile::Open(const char* pszPath, uint nMode)
 	{
 		// File exists?
 		if (!m_Path.Exists())
-			throw CFileException(CFileException::E_PATH_INVALID, *this);
+			throw CFileException(CFileException::E_PATH_INVALID, m_Path);
 
 		// Trying to write and file is read-only ?
 		if ( (nMode & GENERIC_WRITE) && (m_Path.ReadOnly()) )
-			throw CFileException(CFileException::E_READ_ONLY, *this);
+			throw CFileException(CFileException::E_READ_ONLY, m_Path);
 		
 		// Unknown reason.
-		throw CFileException(CFileException::E_OPEN_FAILED, *this);
+		throw CFileException(CFileException::E_OPEN_FAILED, m_Path);
 	}
 
 	// Get EOF.
@@ -184,7 +184,7 @@ void CFile::Read(void* pBuffer, uint iNumBytes)
 	DWORD dwRead = 0;
 
 	if (::ReadFile(m_hFile, pBuffer, iNumBytes, &dwRead, NULL) == 0)
-		throw CFileException(CFileException::E_READ_FAILED, *this);
+		throw CFileException(CFileException::E_READ_FAILED, m_Path);
 }
 
 /******************************************************************************
@@ -210,7 +210,7 @@ void CFile::Write(const void* pBuffer, uint iNumBytes)
 	DWORD dwWritten = 0;
 
 	if (::WriteFile(m_hFile, (const char*)pBuffer, iNumBytes, &dwWritten, NULL) == 0)
-		throw CFileException(CFileException::E_WRITE_FAILED, *this);
+		throw CFileException(CFileException::E_WRITE_FAILED, m_Path);
 }
 
 /******************************************************************************
@@ -240,7 +240,7 @@ ulong CFile::Seek(ulong lPos, uint nFrom)
 
 	// Error?
 	if (::GetLastError() != NO_ERROR)
-		throw CFileException(CFileException::E_SEEK_FAILED, *this);
+		throw CFileException(CFileException::E_SEEK_FAILED, m_Path);
 
 	return lNewPos;
 }
@@ -281,7 +281,7 @@ bool CFile::IsEOF()
 
 void CFile::Throw(int eErrCode)
 {
-	throw CFileException(eErrCode, *this);
+	throw CFileException(eErrCode, m_Path);
 }
 
 /******************************************************************************
