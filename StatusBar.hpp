@@ -15,8 +15,7 @@
 /******************************************************************************
 ** 
 ** This is a child window that acts as a placeholder for other child windows
-** that display information about the application. By defualt it knows about a
-** hint window and a progress bar.
+** that display information about the application.
 **
 *******************************************************************************
 */
@@ -31,23 +30,30 @@ public:
 	~CStatusBar();
 
 	//
-	// Wrapper methods.
+	// Panel methods.
+	//
+	void AddPanel(CStatusBarPanel& oPanel);
+
+	//
+	// Hint methods.
 	//
 	void Hint(uint iRscID);
 	void Hint(const char* pszHint);
 
 protected:
+	// Template shorthands.
+	typedef TPtrArray<CStatusBarPanel> CPanels;
+
 	//
 	// Members.
 	//
-	bool			m_bSizeGrip;
-	CWnd*			m_pActive;
-	CHintBar		m_HintBar;
-//	CProgressBar	m_ProgressBar;
+	bool			m_bSizeGrip;	// Dar a sizing grip?
+	CWnd*			m_pActive;		// Active window to left of status bar.
+	CPanels			m_apPanels;		// Status bar panels on right-hand side.
+	CHintBar		m_oHintBar;		// The menu/toolbar hint windnow.
 
 	// Child window IDs.
-	enum {	IDC_HINT_BAR     = 100,
-			IDC_PROGRESS_BAR = 101 };
+	static const uint IDC_HINT_BAR = 100;
 
 	//
 	// Internal methods.

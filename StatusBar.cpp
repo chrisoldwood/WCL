@@ -23,10 +23,17 @@
 */
 
 // Width of border around child windows.
-const int BORDER_SIZE = 3;
+// NB: Lower outer border is part of the main window.
+const int OUTER_BORDER_SIZE = 2;
+
+// Width of border around child window content.
+const int INNER_BORDER_SIZE = CStatusBarPanel::BORDER_SIZE;
 
 // Size of sizing grip handle.
 const int SIZE_GRIP_SIZE = 12;
+
+// Size of gap between panels.
+const int PANEL_GAP_SIZE = 2;
 
 /******************************************************************************
 ** Method:		Default constructor.
@@ -102,14 +109,11 @@ void CStatusBar::GetCreateParams(WNDCREATE& rParams)
 	CCtrlWnd::GetCreateParams(rParams);
 
     // Get the height of the default font.
-    CScreenDC DC;
-    
-    DC.Select(CApp::This().DefaultFont());
-    CSize FontSize = DC.TextExtents("Ly");
+    CSize FontSize = CScreenDC().TextExtents(CApp::This().DefaultFont(), "Ly");
 
 	// Override any settings.
 	rParams.pszClassName  = "StatusBar";
-	rParams.rcPos.Set(0, 0, 0, FontSize.cy + (2*BORDER_SIZE));
+	rParams.rcPos.Set(0, 0, 0, FontSize.cy + (2*INNER_BORDER_SIZE) + OUTER_BORDER_SIZE);
 }
 
 /******************************************************************************
@@ -127,11 +131,10 @@ void CStatusBar::GetCreateParams(WNDCREATE& rParams)
 void CStatusBar::OnCreate(const CRect& rcClient)
 {
 	// Create the child windows.
-	m_HintBar.Create(*this, IDC_HINT_BAR, rcClient);
-//	m_ProgressBar.Create(*this, IDC_PROGRESS_BAR, rcClient);
+	m_oHintBar.Create(*this, IDC_HINT_BAR, rcClient);
 
 	// Set active window to be the hint window.
-	m_pActive = &m_HintBar;
+	m_pActive = &m_oHintBar;
 }
 
 /******************************************************************************
@@ -177,7 +180,7 @@ void CStatusBar::OnPaint(CDC& rDC)
 			rDC.Select(oFacePen);
 
 		// Draw the line.
-		rDC.Line(ptCorner.x-i-1, ptCorner.y, ptCorner.x, ptCorner.y-i-1);
+		rDC.Line(ptCorner.x-i, ptCorner.y, ptCorner.x+1, ptCorner.y-i-1);
 	}
 
 #ifdef _DEBUG
@@ -202,19 +205,44 @@ void CStatusBar::OnPaint(CDC& rDC)
 
 void CStatusBar::OnResize(int /*iFlag*/, const CSize& rNewSize)
 {
-	ASSERT(m_HintBar.Handle());
-//	ASSERT(m_ProgressBar.Handle());
+	ASSERT(m_oHintBar.Handle());
 
-	// Calculate size grip adjustment.
-	int nGripSize = (m_bSizeGrip) ? SIZE_GRIP_SIZE : 0;
+	CSize dmSize = rNewSize;
 
-	// Calculate the position of all the children.
-	CRect rcNewPos(BORDER_SIZE, BORDER_SIZE, rNewSize.cx-BORDER_SIZE-nGripSize, 
-					rNewSize.cy-BORDER_SIZE);
+	// Adjust size for the grip, if one.
+	if (m_bSizeGrip)
+		dmSize.cx -= SIZE_GRIP_SIZE + PANEL_GAP_SIZE;
 
-	// Move the children
-	m_HintBar.Move(rcNewPos);
-//	m_ProgressBar.Move(rcNewPos);
+	// Allocate DWP handle.
+	HDWP hDWP = ::BeginDeferWindowPos(m_apPanels.Size() + 1);
+
+	ASSERT(hDWP != NULL);
+
+	// Reposition the child panels.
+	for (int i = m_apPanels.Size()-1; i >= 0; --i)
+	{
+		CStatusBarPanel* pPanel = m_apPanels[i];
+		int              nWidth = pPanel->ClientRect().Width();
+
+		// Reposition window.
+		CRect rcNewPos(dmSize.cx-nWidth, OUTER_BORDER_SIZE, dmSize.cx, OUTER_BORDER_SIZE+(dmSize.cy-OUTER_BORDER_SIZE));
+
+		::DeferWindowPos(hDWP, pPanel->Handle(), NULL, rcNewPos.left, rcNewPos.top,
+							rcNewPos.Width(), rcNewPos.Height(), SWP_NOZORDER | SWP_NOCOPYBITS);
+
+		// Adjust size for panel.
+		dmSize.cx -= nWidth;
+		dmSize.cx -= PANEL_GAP_SIZE;
+	}
+
+	// Reposition the main child.
+	CRect rcNewPos(0, OUTER_BORDER_SIZE, dmSize.cx, OUTER_BORDER_SIZE+(dmSize.cy-OUTER_BORDER_SIZE));
+
+	::DeferWindowPos(hDWP, m_oHintBar.Handle(), NULL, rcNewPos.left, rcNewPos.top,
+						rcNewPos.Width(), rcNewPos.Height(), SWP_NOZORDER | SWP_NOCOPYBITS);
+
+	// Move them.
+	::EndDeferWindowPos(hDWP);
 }
 
 /******************************************************************************
@@ -263,10 +291,10 @@ void CStatusBar::ActivateWnd(CWnd* pWnd)
 
 void CStatusBar::Hint(uint iRscID)
 {
-	ASSERT(m_HintBar.Handle());
+	ASSERT(m_oHintBar.Handle());
 
-	ActivateWnd(&m_HintBar);
-	m_HintBar.Hint(iRscID);
+	ActivateWnd(&m_oHintBar);
+	m_oHintBar.Hint(iRscID);
 }
 
 /******************************************************************************
@@ -284,10 +312,10 @@ void CStatusBar::Hint(uint iRscID)
 
 void CStatusBar::Hint(const char* pszHint)
 {
-	ASSERT(m_HintBar.Handle());
+	ASSERT(m_oHintBar.Handle());
 
-	ActivateWnd(&m_HintBar);
-	m_HintBar.Hint(pszHint);
+	ActivateWnd(&m_oHintBar);
+	m_oHintBar.Hint(pszHint);
 }
 
 /******************************************************************************
@@ -329,4 +357,28 @@ void CStatusBar::OnHitTest(const CPoint& ptCursor)
 
 	// Handle in base class.
 	CCtrlWnd::OnHitTest(ptCursor);
+}
+
+/******************************************************************************
+** Method:		AddPanel()
+**
+** Description:	Adds a panel to the status bar. The panel is added to the right
+**				of the existing ones.
+**
+** Parameters:	oPanel		The new panel.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CStatusBar::AddPanel(CStatusBarPanel& oPanel)
+{
+	ASSERT(oPanel.Handle() != NULL);
+
+	m_apPanels.Add(&oPanel);
+
+	// Force a layout change, if window created.
+	if (m_hWnd != NULL)
+		OnResize(SIZE_RESTORED, ClientRect().Size());
 }
