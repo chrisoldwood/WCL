@@ -180,9 +180,9 @@ bool CTime::FromString(const char* pszTime)
 		pszSecs = "0";
 
 	// Convert to numbers.
-	int	iHours = atoi(pszHours);
-	int iMins  = atoi(pszMins);
-	int iSecs  = atoi(pszSecs);
+	int	iHours = CStrCvt::ParseInt(pszHours);
+	int iMins  = CStrCvt::ParseInt(pszMins);
+	int iSecs  = CStrCvt::ParseInt(pszSecs);
 
 	// Validate each componet.
 	if ( (iHours < 0) || (iHours > 23) )	return false;

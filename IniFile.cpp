@@ -155,11 +155,7 @@ void CIniFile::WriteInt(const char* pszSection, const char* pszEntry, int iValue
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
 	
-	char szValue[10];
-	
-	// Convert to string and write.
-	wsprintf(szValue, "%d", iValue);
-	::WritePrivateProfileString(pszSection, pszEntry, szValue, m_strPath);
+	::WritePrivateProfileString(pszSection, pszEntry, CStrCvt::FormatInt(iValue), m_strPath);
 }
 						
 long CIniFile::ReadLong(const char* pszSection, const char* pszEntry, long lDefault) const
@@ -178,7 +174,7 @@ long CIniFile::ReadLong(const char* pszSection, const char* pszEntry, long lDefa
 		return lDefault;
 		
 	// Convert to value and return
-	return strtol(szValue, NULL, 10);
+	return CStrCvt::ParseLong(szValue);
 }
 						
 void CIniFile::WriteLong(const char* pszSection, const char* pszEntry, long lValue)
@@ -186,11 +182,7 @@ void CIniFile::WriteLong(const char* pszSection, const char* pszEntry, long lVal
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
 
-	char szValue[20];
-	
-	// Convert to string and write.
-	wsprintf(szValue, "%ld", lValue);
-	::WritePrivateProfileString(pszSection, pszEntry, szValue, m_strPath);
+	::WritePrivateProfileString(pszSection, pszEntry, CStrCvt::FormatLong(lValue), m_strPath);
 }
 						
 bool CIniFile::ReadBool(const char* pszSection, const char* pszEntry, bool bDefault) const
