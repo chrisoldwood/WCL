@@ -51,6 +51,7 @@ public:
 	// Conversion methods.
 	//
 	HGLOBAL ToGlobal() const;
+	CString ToString() const;
 
 protected:
 	//
@@ -80,6 +81,11 @@ inline const void* CBuffer::Buffer() const
 inline void* CBuffer::Buffer()
 {
 	return m_pBuffer;
+}
+
+inline CString CBuffer::ToString() const
+{
+	return CString((char*)m_pBuffer, m_nSize);
 }
 
 #endif // BUFFER_HPP
