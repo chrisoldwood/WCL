@@ -281,12 +281,6 @@ LRESULT CDialog::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			}
 			return CMsgWnd::WndProc(hWnd, iMsg, wParam, lParam);
 		
-		// Window being destroyed.
-		case WM_NCDESTROY:
-			// Delete object mapping.
-			CWnd::s_WndMap.Remove(*this);
-			break;
-		
 		// Call the default handler.
 		default:
 			return CMsgWnd::WndProc(hWnd, iMsg, wParam, lParam);

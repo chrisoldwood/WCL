@@ -318,8 +318,7 @@ LRESULT CPopupWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			// Restore WndProc.
 			WindowProc(m_lpfnOldWndProc);
 			
-			// Delete object mapping.
-			CWnd::s_WndMap.Remove(*this);
+			OnNCDestroy();
 			break;
 		
 		// Call the default handler.
