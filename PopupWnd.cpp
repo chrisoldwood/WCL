@@ -406,7 +406,7 @@ LRESULT CPopupWnd::DefaultWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lP
 *******************************************************************************
 */
 
-void CPopupWnd::OnActivate(bool bActivating)
+void CPopupWnd::OnActivate(bool /*bActivating*/)
 {
 }
 
@@ -461,31 +461,31 @@ void CPopupWnd::OnFocusLost()
 *******************************************************************************
 */
 
-void CPopupWnd::OnLeftButtonDown(const CPoint& ptCursor, uint iKeyFlags)
+void CPopupWnd::OnLeftButtonDown(const CPoint& /*ptCursor*/, uint /*iKeyFlags*/)
 {
 }
 
-void CPopupWnd::OnLeftButtonUp(const CPoint& ptCursor, uint iKeyFlags)
+void CPopupWnd::OnLeftButtonUp(const CPoint& /*ptCursor*/, uint /*iKeyFlags*/)
 {
 }
 
-void CPopupWnd::OnLeftButtonDblClick(const CPoint& ptCursor, uint iKeyFlags)
+void CPopupWnd::OnLeftButtonDblClick(const CPoint& /*ptCursor*/, uint /*iKeyFlags*/)
 {
 }
 
-void CPopupWnd::OnRightButtonDown(const CPoint& ptCursor, uint iKeyFlags)
+void CPopupWnd::OnRightButtonDown(const CPoint& /*ptCursor*/, uint /*iKeyFlags*/)
 {
 }
 
-void CPopupWnd::OnRightButtonUp(const CPoint& ptCursor, uint iKeyFlags)
+void CPopupWnd::OnRightButtonUp(const CPoint& /*ptCursor*/, uint /*iKeyFlags*/)
 {
 }
 
-void CPopupWnd::OnRightButtonDblClick(const CPoint& ptCursor, uint iKeyFlags)
+void CPopupWnd::OnRightButtonDblClick(const CPoint& /*ptCursor*/, uint /*iKeyFlags*/)
 {
 }
 
-void CPopupWnd::OnMouseMove(const CPoint& ptCursor, uint iKeyFlags)
+void CPopupWnd::OnMouseMove(const CPoint& /*ptCursor*/, uint /*iKeyFlags*/)
 {
 }
 
@@ -504,14 +504,14 @@ void CPopupWnd::OnMouseMove(const CPoint& ptCursor, uint iKeyFlags)
 *******************************************************************************
 */
 
-void CPopupWnd::OnKeyDown(WORD wKey, DWORD dwFlags)
+void CPopupWnd::OnKeyDown(WORD /*wKey*/, DWORD /*dwFlags*/)
 {
 }
 
-void CPopupWnd::OnKeyUp(WORD wKey, DWORD dwFlags)
+void CPopupWnd::OnKeyUp(WORD /*wKey*/, DWORD /*dwFlags*/)
 {
 }
 
-void CPopupWnd::OnChar(WORD wKey, DWORD dwFlags)
+void CPopupWnd::OnChar(WORD /*wKey*/, DWORD /*dwFlags*/)
 {
 }
