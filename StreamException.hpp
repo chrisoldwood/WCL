@@ -25,7 +25,7 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CStreamException();
+	CStreamException(int nCode);
 	virtual ~CStreamException();
 
 	//
@@ -49,5 +49,14 @@ public:
 **
 *******************************************************************************
 */
+
+inline CStreamException::CStreamException(int nCode)
+	: CException(nCode)
+{
+}
+
+inline CStreamException::~CStreamException()
+{
+}
 
 #endif //STREAMEXCEPTION_HPP

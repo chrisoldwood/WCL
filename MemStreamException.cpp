@@ -28,9 +28,8 @@
 */
 
 CMemStreamException::CMemStreamException(int eErrCode)
+	: CStreamException(eErrCode)
 {
-	m_nErrorCode = eErrCode;
-
 	// Convert error to string.
 	switch(eErrCode)
 	{

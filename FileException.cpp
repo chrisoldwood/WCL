@@ -28,9 +28,8 @@
 */
 
 CFileException::CFileException(int eErrCode, const CPath& rPath)
+	: CStreamException(eErrCode)
 {
-	m_nErrorCode = eErrCode;
-
 	// Convert error to string.
 	switch(eErrCode)
 	{
