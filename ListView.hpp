@@ -44,9 +44,9 @@ public:
 	//
 	// Attributes.
 	//
-	void CheckBoxes(bool bOn);
-	void FullRowSelect(bool bOn);
-	void GridLines(bool bOn);
+	void CheckBoxes(bool bOn = true);
+	void FullRowSelect(bool bOn = true);
+	void GridLines(bool bOn = true);
 
 	//
 	// Item methods.
@@ -72,6 +72,7 @@ public:
 	void Select(int nItem);
 	int  Selected() const;
 	bool IsSelection() const;
+	void RestoreSel(int nItem);
 
 	int  ItemCount() const;
 

@@ -113,10 +113,7 @@ CString CListView::ItemText(int nItem, int nSubItem)
 	lvItem.cchTextMax = sizeof(szText);
 
 	// Get the item text.
-	int nLen = SendMessage(LVM_GETITEMTEXT, nItem, (LPARAM)&lvItem);
-
-	// Allocate the buffer
-	ASSERT(nLen < sizeof(szText));
+	SendMessage(LVM_GETITEMTEXT, nItem, (LPARAM)&lvItem);
 
 	return szText;
 }
@@ -318,4 +315,29 @@ int CListView::FindItem(const void* pData, int nStart) const
 	oInfo.lParam = (LPARAM)pData;
 
 	return ListView_FindItem(m_hWnd, nStart, &oInfo);
+}
+
+/******************************************************************************
+** Methods:		RestoreSel()
+**
+** Description:	Restores the selection provided. If there was no selection,
+**				then it selects the first item. If the item no longer exists,
+**				it sets it to the last item.
+**
+** Parameters:	iItem	The item to select, or LB_ERR, if there was none.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CListView::RestoreSel(int nItem)
+{
+	int nCount = ItemCount();
+
+	// Handle no selection, or invalid selection.
+	nItem = (nItem == LB_ERR) ? 0 : nItem;
+	nItem = (nItem >= nCount) ? (nCount-1) : nItem;
+
+	Select(nItem);
 }
