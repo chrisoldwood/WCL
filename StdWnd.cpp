@@ -98,7 +98,7 @@ LRESULT CStdWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 *******************************************************************************
 */
 
-bool CStdWnd::Register(WNDCLASS& rParams)
+bool CStdWnd::Register(WNDCLASS& /*rParams*/)
 {
 	return true;
 }

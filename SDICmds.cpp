@@ -381,14 +381,14 @@ void CSDICmds::OnFileCreated(CSDIDoc& oDoc)
 	OnFileOpened(oDoc);
 }
 
-void CSDICmds::OnFileOpened(CSDIDoc& oDoc)
+void CSDICmds::OnFileOpened(CSDIDoc& /*oDoc*/)
 {
 }
 
-void CSDICmds::OnFileSaved(CSDIDoc& oDoc)
+void CSDICmds::OnFileSaved(CSDIDoc& /*oDoc*/)
 {
 }
 
-void CSDICmds::OnFileClosed(CSDIDoc& oDoc)
+void CSDICmds::OnFileClosed(CSDIDoc& /*oDoc*/)
 {
 }

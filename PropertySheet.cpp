@@ -69,7 +69,7 @@ CPropertySheet::~CPropertySheet()
 *******************************************************************************
 */
 
-bool CPropertySheet::RunModeless(CWnd& rParent)
+bool CPropertySheet::RunModeless(CWnd& /*rParent*/)
 {
 /*	// Initalise members.
 	m_bModal = false;
@@ -218,7 +218,7 @@ void CPropertySheet::PageTable(PAGE* pPageTable)
 *******************************************************************************
 */
 
-int CALLBACK PropSheetProc(HWND hWnd, UINT iMsg, LPARAM lParam)
+int CALLBACK PropSheetProc(HWND hWnd, UINT iMsg, LPARAM /*lParam*/)
 {
 	// Initialised?
 	if (iMsg == PSCB_INITIALIZED)

@@ -118,7 +118,7 @@ void CSplitWnd::GetCreateParams(WNDCREATE& rParams)
 *******************************************************************************
 */
 
-void CSplitWnd::OnResize(int iFlag, const CSize& rNewSize)
+void CSplitWnd::OnResize(int /*iFlag*/, const CSize& /*rNewSize*/)
 {
 	// Left/Top pane set and changed size?
 	if ( (m_pPanes[0] != NULL) && (PaneRect(0).Size() != m_pPanes[0]->WindowRect().Size()) )
