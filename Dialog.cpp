@@ -72,16 +72,12 @@ bool CDialog::RunModeless(CWnd& rParent)
 	// Initalise members.
 	m_bModal = false;
 
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	ASSERT(rParent.Handle());
-	ASSERT(pApp->m_hInstance);
+	ASSERT(CModule::This().Handle());
 	ASSERT(m_iRscID);
 
 	// Create it.
-	HWND hWnd = CreateDialogParam(pApp->m_hInstance, MAKEINTRESOURCE(m_iRscID),
+	HWND hWnd = CreateDialogParam(CModule::This().Handle(), MAKEINTRESOURCE(m_iRscID),
 									rParent.Handle(), (DLGPROC)DlgProc, (LPARAM)this);
 
 	ASSERT(hWnd);
@@ -109,16 +105,12 @@ int CDialog::RunModal(CWnd& rParent)
 	// Initalise members.
 	m_bModal = true;
 
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	ASSERT(rParent.Handle());
-	ASSERT(pApp->m_hInstance);
+	ASSERT(CModule::This().Handle());
 	ASSERT(m_iRscID);
 	
 	// Create it.
-	int iReturn = DialogBoxParam(pApp->m_hInstance, MAKEINTRESOURCE(m_iRscID),
+	int iReturn = DialogBoxParam(CModule::This().Handle(), MAKEINTRESOURCE(m_iRscID),
 									rParent.Handle(), (DLGPROC)DlgProc, (LPARAM)this);
 
 	ASSERT(iReturn != -1);
@@ -178,7 +170,8 @@ BOOL DIALOGPROC DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 			// Save handle.
 			pDialog->m_hWnd = hWnd;
-			
+			pDialog->m_bMsgHandled = TRUE;
+
 			// Setup Window mapping.
 			CWnd::s_WndMap.Add(*pDialog);
 
@@ -192,7 +185,8 @@ BOOL DIALOGPROC DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			
 			// Now call initialise method.
 			pDialog->OnCreate(pDialog->ClientRect());
-			return TRUE;
+
+			return pDialog->m_bMsgHandled;
 		}
 		else
 		{
@@ -372,11 +366,26 @@ void CDialog::OnResize(int iFlag, const CSize& rNewSize)
 	// No table specified?
 	if (m_pGravTable == NULL)
 		return;
-	
+
 	CTLGRAVITY* pGrav = m_pGravTable;
+	int			nWnds = 0;
+
+	// Count the number of entries.
+	while (pGrav->iID != 0)
+	{
+		nWnds++;
+		pGrav++;
+	}
+
+	// Allocate DWP handle.
+	HDWP hDWP = ::BeginDeferWindowPos(nWnds);
+
+	ASSERT(hDWP != NULL);
+
+	// Resize all controls.
+	pGrav = m_pGravTable;
 	
-	// For all controls.
-	while( (pGrav) && (pGrav->iID) )
+	while (pGrav->iID != 0)
 	{
 		CRect rcNewPos;
 
@@ -421,12 +430,14 @@ void CDialog::OnResize(int iFlag, const CSize& rNewSize)
 		}
 
 		// Resize the window.
-		::MoveWindow(pGrav->hWnd, rcNewPos.left, rcNewPos.top,
-						rcNewPos.Width(), rcNewPos.Height(), TRUE);
+		::DeferWindowPos(hDWP, pGrav->hWnd, NULL, rcNewPos.left, rcNewPos.top,
+							rcNewPos.Width(), rcNewPos.Height(), SWP_NOZORDER);
 
 		// Next control.
 	    pGrav++;
 	}
+
+	::EndDeferWindowPos(hDWP);
 }
 
 /******************************************************************************
