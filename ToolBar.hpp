@@ -44,13 +44,14 @@ protected:
 	typedef struct tagCTRL
 	{
 		CCtrlWnd*	pWnd;
-		uint		iID;
+		uint		nID;
 	} CTRL;
 
 	//
 	// Members.
 	//
-	CTRL*	m_pCtrlTable;		// Table of controls.
+	CTRL*		m_pCtrlTable;		// Table of controls.
+	CToolTip	m_oToolTip;			// Tool tips control.
 
 	//
 	// Window creation template methods.
@@ -64,11 +65,12 @@ protected:
 	virtual void OnCreate(const CRect& rcClient);
 	virtual void OnPaint(CDC& rDC);
 	virtual void OnCtrlMsg(uint iID, uint iMsg, HWND hControl);
+	virtual LRESULT OnCtrlMsg(NMHDR& rMsgHdr);
 
 	//
 	// Tooltip/Hint support.
 	//
-	virtual void CToolBar::OnShowHint(const CWnd* pWnd) const;
+	virtual void OnShowHint(const CWnd* pWnd) const;
 };
 
 /******************************************************************************
@@ -83,7 +85,7 @@ protected:
 #define TBCTL(wnd, id)		(wnd), (id),
 #define TBGAP()				NULL,  IDC_SEPARATOR,
 
-#define END_TOOLBAR			NULL,  0, }; \
+#define END_TOOLBAR			NULL,  0 }; \
 							m_pCtrlTable = Ctrls;
 
 /******************************************************************************

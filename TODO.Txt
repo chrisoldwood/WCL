@@ -6,4 +6,4 @@
 
 - Iter for non-unique maps?
 
-- Routing of hints/tooltips via cmd controller.
+- Change ctrl msg table to be non-static.

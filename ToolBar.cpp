@@ -11,7 +11,10 @@
 #include "wcl.hpp"
 
 // Border around controls.
-#define BORDER_SIZE		3
+const int BORDER_SIZE = 3;
+
+// Border around controls.
+const int TOOLTIP_ID = 10;
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -28,12 +31,8 @@
 CToolBar::CToolBar()
 	: m_pCtrlTable(NULL)
 {
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	// Add to the main threads' msg filters.
-	pApp->m_MainThread.AddMsgFilter(*this);
+	CApp::This().m_MainThread.AddMsgFilter(*this);
 }
 
 /******************************************************************************
@@ -50,12 +49,8 @@ CToolBar::CToolBar()
 
 CToolBar::~CToolBar()
 {
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	// Remove from the main threads' msg filters.
-	pApp->m_MainThread.RemoveMsgFilter(*this);
+	CApp::This().m_MainThread.RemoveMsgFilter(*this);
 }
 
 /******************************************************************************
@@ -119,6 +114,9 @@ void CToolBar::GetCreateParams(WNDCREATE& rParams)
 
 void CToolBar::OnCreate(const CRect& rcClient)
 {
+	// Create the tool tip control.
+	m_oToolTip.Create(*this, TOOLTIP_ID, CRect());
+
 	// Any controls?
 	if (m_pCtrlTable == NULL)
 		return;
@@ -129,10 +127,10 @@ void CToolBar::OnCreate(const CRect& rcClient)
 	CTRL*	pCtrl = m_pCtrlTable;
 
 	// For all controls.
-	while ( (pCtrl) && (pCtrl->iID) )
+	while ( (pCtrl) && (pCtrl->nID) )
 	{
 		// Separator?
-		if (pCtrl->iID == IDC_SEPARATOR)
+		if (pCtrl->nID == IDC_SEPARATOR)
 		{
 			// Leave a gap.
 			ptOrigin.x += iCtrlHt/2;
@@ -141,8 +139,11 @@ void CToolBar::OnCreate(const CRect& rcClient)
 		else
 		{
 			// Create control.
-			pCtrl->pWnd->Create(*this, pCtrl->iID, CRect(ptOrigin, dmSize));
+			pCtrl->pWnd->Create(*this, pCtrl->nID, CRect(ptOrigin, dmSize));
 			ptOrigin.x += iCtrlHt;
+
+			// Add to tooltip control?
+			m_oToolTip.AddTool(*this, *pCtrl->pWnd, LPSTR_TEXTCALLBACK);
 		}
 		
 		// Move to next.
@@ -189,6 +190,40 @@ void CToolBar::OnCtrlMsg(uint iID, uint iMsg, HWND hControl)
 	// Forward to frame window.
 	if (iMsg == BN_CLICKED)
 		::PostMessage(GetParent(m_hWnd), WM_COMMAND, iID, 0L);
+}
+
+/******************************************************************************
+** Method:		OnCtrlMsg()
+**
+** Description:	A WM_NOTIFY event has been sent, possibly from the tool tip
+**				control (which has no ID).
+**
+** Parameters:	rMsgHdr		The message.
+**
+** Returns:		Depends on the message.
+**
+*******************************************************************************
+*/
+
+LRESULT CToolBar::OnCtrlMsg(NMHDR& rMsgHdr)
+{
+	// Get tool tip?
+	if ( (rMsgHdr.hwndFrom == m_oToolTip.Handle())
+	  && (rMsgHdr.code     == TTN_GETDISPINFO) )
+	{
+		NMTTDISPINFO& oInfo = reinterpret_cast<NMTTDISPINFO&>(rMsgHdr);
+
+		ASSERT(oInfo.uFlags & TTF_IDISHWND);
+
+		// Get the tip (Assumes the ID is the controls HWND).
+		int nCtlID = ::GetDlgCtrlID((HWND)rMsgHdr.idFrom);
+
+		// Return it.
+		strcpy(oInfo.szText, CApp::This().m_rCmdControl.CmdToolTipStr(nCtlID));
+		return 0;
+	}
+
+	return CCtrlWnd::OnCtrlMsg(rMsgHdr);
 }
 
 /******************************************************************************
@@ -250,17 +285,16 @@ bool CToolBar::ProcessMsg(MSG& rMsg)
 void CToolBar::OnShowHint(const CWnd* pWnd) const
 {
 	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
+	CApp& oApp = CApp::This();
 
 	// Get the status bar.
-	CStatusBar*	pStatusBar = pApp->m_rMainWnd.StatusBar();
+	CStatusBar*	pStatusBar = oApp.m_rMainWnd.StatusBar();
 	if (pStatusBar == NULL)
 		return;
 
 	// Show a hint?
 	if (pWnd != NULL)
-		pStatusBar->Hint(pApp->m_rCmdControl.CmdHint(::GetDlgCtrlID(pWnd->Handle())));
+		pStatusBar->Hint(oApp.m_rCmdControl.CmdHintStr(::GetDlgCtrlID(pWnd->Handle())));
 	else
 		pStatusBar->Hint("");
 }
