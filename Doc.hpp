@@ -54,6 +54,11 @@ protected:
 	// Members.
 	//
 	CPath	m_Path;
+
+private:
+	// Disallow copies.
+	CDoc(const CDoc&);
+	void operator=(const CDoc&);
 };
 
 /******************************************************************************
