@@ -388,9 +388,13 @@ void CFrameWnd::OnSelectMenu(uint iFlags, uint iItemID, HMENU hMenu)
 
 void CFrameWnd::OnShowMenuItemHint(uint iItemID)
 {
+	// Get application object.
+	CApp* pApp = CApp::This();
+	ASSERT(pApp != NULL);
+
 	// Show hint.
 	if (m_pStatusBar)
-		m_pStatusBar->Hint(iItemID);
+		m_pStatusBar->Hint(pApp->m_rCmdControl.CmdHint(iItemID));
 }
 
 /******************************************************************************
@@ -416,13 +420,8 @@ void CFrameWnd::OnShowMenuPopupHint(HMENU hMenu)
     // Menu not empty?
     if (iFirstID != -1)
     {
-		// Calculate menu hint and load.
-		// The hint is always a multiple of 10.
-		int iHintID = iFirstID - (iFirstID % 10);
-
-		// Show hint.
-		if (m_pStatusBar)
-			m_pStatusBar->Hint(iHintID);
+		// The menu item ID is modulo 10.
+		OnShowMenuItemHint(iFirstID - (iFirstID % 10));
 	}
 	else
 	{
