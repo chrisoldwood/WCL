@@ -10,6 +10,18 @@
 
 #include "wcl.hpp"
 
+#ifdef _DEBUG
+// For memory leak detection.
+#define new DBGCRT_NEW
+#endif
+
+/******************************************************************************
+**
+** Local variables.
+**
+*******************************************************************************
+*/
+
 // Thickness of the bar.
 #define	BAR_SIZE	4
 

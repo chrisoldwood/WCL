@@ -95,6 +95,11 @@ public:
 *******************************************************************************
 */
 
+#ifdef _DEBUG
+// For memory leak detection.
+#define new DBGCRT_NEW
+#endif
+
 inline CPtrList::CPtrList()
 {
 }
@@ -178,5 +183,9 @@ inline void* CPtrListIter::Next()
 
 	return (pItem != NULL) ? pItem->m_pData : NULL;
 }
+
+#ifdef _DEBUG
+#undef new
+#endif
 
 #endif //PTRLIST_HPP

@@ -15,6 +15,11 @@
 #include <commdlg.h>
 #include <shlobj.h>
 
+#ifdef _DEBUG
+// For memory leak detection.
+#define new DBGCRT_NEW
+#endif
+
 /******************************************************************************
 ** Method:		Constructor
 **
