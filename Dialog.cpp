@@ -45,6 +45,7 @@ CDialog::CDialog(uint iRscID)
 	, m_pCtrlTable(NULL)
 	, m_pGravTable(NULL)
 	, m_pParentWnd(NULL)
+	, m_bNoSizeGrip(false)
 	, m_rcOldGrip(0, 0, 0, 0)
 {
 }
@@ -676,8 +677,8 @@ void CDialog::InitGravityTable()
 
 void CDialog::OnPaint(CDC& rDC)
 {
-	// Not resizable?
-	if (m_pGravTable == NULL)
+	// Not resizable OR size grip disabled?
+	if ( (m_pGravTable == NULL) || (m_bNoSizeGrip) )
 		return;
 
 	// Get window dimensions.

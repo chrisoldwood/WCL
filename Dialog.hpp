@@ -89,6 +89,7 @@ protected:
 	CTLGRAVITY*	m_pGravTable;	// Table of controls gravity.
 	CSize		m_StartSize;	// Dialog initial size.
 	CWnd*		m_pParentWnd;	// Parent window.
+	bool		m_bNoSizeGrip;	// No size grip?
 	CRect		m_rcOldGrip;	// Old resizing grip position.
 	
 	//
