@@ -61,11 +61,11 @@ void CMainDlg::OnPaint(CDC& rDC)
 	// Get the parent CFrameWnd.
 	CFrameWnd* pParentFrame = static_cast<CFrameWnd*>(m_pParentWnd);
 
-	// Draw toolbar border.
-	if (pParentFrame->ToolBar() != NULL)
+	// Draw upper border.
+	if ( (pParentFrame->ToolBar() != NULL) || (pParentFrame->Menu() != NULL) )
 		rDC.HorzLine3D(rcClient.left, rcClient.right, rcClient.top, false);
 
-	// Draw status bar border.
+	// Draw lower border.
 	if (pParentFrame->StatusBar() != NULL)
 		rDC.HorzLine3D(rcClient.left, rcClient.right, rcClient.bottom-2, false);
 }
