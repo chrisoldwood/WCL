@@ -709,6 +709,11 @@ void CDialog::OnPaint(CDC& rDC)
 
 	// Save grip position for later.
 	m_rcOldGrip = CRect(CPoint(ptCorner.x-12, ptCorner.y-12), CSize(13, 13));
+
+#ifdef _DEBUG
+	// Passify BoundsChecker.
+	rDC.Select(CPen(NULL_PEN));
+#endif
 }
 
 /******************************************************************************
