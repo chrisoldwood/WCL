@@ -122,6 +122,10 @@ SOURCE=.\CheckBox.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\CheckBoxList.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Clipboard.cpp
 # End Source File
 # Begin Source File
@@ -318,11 +322,11 @@ SOURCE=.\ProgressBar.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\PropertyDlg.cpp
+SOURCE=.\PropertyPage.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\PropertyPageDlg.cpp
+SOURCE=.\PropertySheet.cpp
 # End Source File
 # Begin Source File
 
@@ -463,6 +467,10 @@ SOURCE=.\Button.hpp
 # Begin Source File
 
 SOURCE=.\CheckBox.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\CheckBoxList.hpp
 # End Source File
 # Begin Source File
 
@@ -686,11 +694,11 @@ SOURCE=.\ProgressBar.hpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\PropertyDlg.hpp
+SOURCE=.\PropertyPage.hpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\PropertyPageDlg.hpp
+SOURCE=.\PropertySheet.hpp
 # End Source File
 # Begin Source File
 
