@@ -31,7 +31,7 @@ public:
 	//
 	// Open/Close operations.
 	//
-	void Open(Mode eMode, uint iFormat);
+	void Open(uint nMode, uint iFormat);
 	void Close();
 
 	//
@@ -39,7 +39,7 @@ public:
 	//
 	virtual void  Read(void* pBuffer, uint iNumBytes);
 	virtual void  Write(const void* pBuffer, uint iNumBytes);
-	virtual ulong Seek(ulong lPos, Origin eOrigin);
+	virtual ulong Seek(ulong lPos, uint nFrom = FILE_BEGIN);
 	virtual bool  IsEOF();
 	virtual void  Throw(int eErrCode);
 
@@ -68,9 +68,9 @@ inline void CClipboard::Write(const void* pBuffer, uint iNumBytes)
 	m_MemStream.Write(pBuffer, iNumBytes);
 }
 
-inline ulong CClipboard::Seek(ulong lPos, Origin eOrigin)
+inline ulong CClipboard::Seek(ulong lPos, uint nFrom)
 {
-	return m_MemStream.Seek(lPos, eOrigin);
+	return m_MemStream.Seek(lPos, nFrom);
 }
 
 inline bool CClipboard::IsEOF()

@@ -46,7 +46,7 @@ public:
 	//
 	virtual void  Read(void* pBuffer, uint iNumBytes);
 	virtual void  Write(const void* pBuffer, uint iNumBytes);
-	virtual ulong Seek(ulong lPos, Origin eOrigin);
+	virtual ulong Seek(ulong lPos, uint nFrom = FILE_BEGIN);
 	virtual bool  IsEOF();
 	virtual void  Throw(int eErrCode);
 

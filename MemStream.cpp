@@ -167,7 +167,7 @@ void CMemStream::Create()
 	m_lPos = 0;
 
 	m_bOwner = true;
-	m_eMode  = WriteOnly;
+	m_nMode  = GENERIC_WRITE;
 }
 
 /******************************************************************************
@@ -198,7 +198,7 @@ void CMemStream::Open()
 
 	// Set to SOF.
 	m_lPos  = 0;
-	m_eMode = ReadOnly;
+	m_nMode = GENERIC_READ;
 }
 
 /******************************************************************************
@@ -220,7 +220,7 @@ void CMemStream::Close()
 		::GlobalUnlock(m_hMem);
 
 	// Writing?
-	if (m_eMode == WriteOnly)
+	if (m_nMode & GENERIC_WRITE)
 	{
 		// Shrink block to EOF.
 		m_hMem = ::GlobalReAlloc(m_hMem, m_lEOF, GMEM_ZEROINIT);
@@ -232,7 +232,7 @@ void CMemStream::Close()
 
 	// Reset members.
 	m_pBuffer = NULL;
-	m_eMode   = None;
+	m_nMode   = NULL;
 }
 
 /******************************************************************************
@@ -253,7 +253,7 @@ void CMemStream::Close()
 void CMemStream::Read(void* pBuffer, uint iNumBytes)
 {
 	ASSERT(m_pBuffer != NULL);
-	ASSERT( (m_eMode == ReadOnly) || (m_eMode == ReadWrite) );
+	ASSERT(m_nMode & GENERIC_READ);
 
 	// Stream open?
 	if (m_pBuffer == NULL)
@@ -286,7 +286,7 @@ void CMemStream::Read(void* pBuffer, uint iNumBytes)
 void CMemStream::Write(const void* pBuffer, uint iNumBytes)
 {
 	ASSERT(m_pBuffer != NULL);
-	ASSERT( (m_eMode == WriteOnly) || (m_eMode == ReadWrite) );
+	ASSERT(m_nMode & GENERIC_WRITE);
 	ASSERT(m_bOwner == true);
 
 	// Stream open?
@@ -326,7 +326,7 @@ void CMemStream::Write(const void* pBuffer, uint iNumBytes)
 ** Description:	Core method for changing the stream pointer.
 **
 ** Parameters:	lPos		The new position.
-**				eOrigin		The origin from where to seek.
+**				nFrom		The origin from where to seek.
 **
 ** Returns:		The new stream pointer.
 **
@@ -335,7 +335,7 @@ void CMemStream::Write(const void* pBuffer, uint iNumBytes)
 *******************************************************************************
 */
 
-ulong CMemStream::Seek(ulong lPos, Origin eOrigin)
+ulong CMemStream::Seek(ulong lPos, uint nFrom)
 {
 	ASSERT(m_pBuffer != NULL);
 
@@ -344,12 +344,12 @@ ulong CMemStream::Seek(ulong lPos, Origin eOrigin)
 		throw CMemStreamException(CMemStreamException::E_SEEK_FAILED);
 
 	// Calculate new position.
-	switch(eOrigin)
+	switch(nFrom)
 	{
-		case Start:		m_lPos  = lPos;				break;
-		case Current:	m_lPos += lPos;				break;
-		case End:		m_lPos  = m_lEOF - lPos;	break;
-		default:		ASSERT(false);				break;
+		case FILE_BEGIN:	m_lPos  = lPos;				break;
+		case FILE_CURRENT:	m_lPos += lPos;				break;
+		case FILE_END:		m_lPos  = m_lEOF - lPos;	break;
+		default:			ASSERT(false);				break;
 	}
 		   
 	// Seeked to invalid position?

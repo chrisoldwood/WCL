@@ -23,7 +23,7 @@
 */
 
 CStream::CStream()
-	: m_eMode(None)
+	: m_nMode(NULL)
 	, m_nFormat(0)
 	, m_nVersion(0)
 {

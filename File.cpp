@@ -24,7 +24,7 @@
 */
 
 CFile::CFile()
-	: m_hFile(HFILE_ERROR)
+	: m_hFile(INVALID_HANDLE_VALUE)
 	, m_lEOF(0)
 {
 }
@@ -43,8 +43,8 @@ CFile::CFile()
 
 CFile::~CFile()
 {
-	if (m_hFile != HFILE_ERROR)
-		_lclose(m_hFile);
+	if (m_hFile != INVALID_HANDLE_VALUE)
+		::CloseHandle(m_hFile);
 }
 
 /******************************************************************************
@@ -63,12 +63,12 @@ CFile::~CFile()
 
 void CFile::Create(const char* pszPath)
 {
-	m_eMode = WriteOnly;
+	m_nMode = GENERIC_WRITE;
 	m_Path  = pszPath;
-	m_hFile = _lcreat(m_Path, 0);
+	m_hFile = ::CreateFile(m_Path, m_nMode, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	// Error?
-	if (m_hFile == HFILE_ERROR)
+	if (m_hFile == INVALID_HANDLE_VALUE)
 	{
 		// File is read-only?
 		if (m_Path.ReadOnly())
@@ -94,30 +94,29 @@ void CFile::Create(const char* pszPath)
 *******************************************************************************
 */
 
-void CFile::Open(const char* pszPath, Mode eMode)
+void CFile::Open(const char* pszPath, uint nMode)
 {
-	m_eMode = eMode;
+	m_nMode = nMode;
 	m_Path  = pszPath;
-	m_hFile = _lopen(m_Path, m_eMode);
+	m_hFile = ::CreateFile(m_Path, m_nMode, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	
 	// Error?
-	if (m_hFile == HFILE_ERROR)
+	if (m_hFile == INVALID_HANDLE_VALUE)
 	{
 		// File exists?
 		if (!m_Path.Exists())
 			throw CFileException(CFileException::E_PATH_INVALID, *this);
 
 		// Trying to write and file is read-only ?
-		if ( ((eMode == WriteOnly) || (eMode == ReadWrite)) && (m_Path.ReadOnly()) )
+		if ( (nMode & GENERIC_WRITE) && (m_Path.ReadOnly()) )
 			throw CFileException(CFileException::E_READ_ONLY, *this);
 		
 		// Unknown reason.
 		throw CFileException(CFileException::E_OPEN_FAILED, *this);
 	}
 
-	// Get EOF by seeking to the end.
-	m_lEOF = Seek(0, End);
-	Seek(0, Start);
+	// Get EOF.
+	m_lEOF = Size();
 }
 
 /******************************************************************************
@@ -134,13 +133,13 @@ void CFile::Open(const char* pszPath, Mode eMode)
 
 void CFile::Close()
 {
-	ASSERT(m_hFile != HFILE_ERROR);
+	ASSERT(m_hFile != INVALID_HANDLE_VALUE);
 
-	_lclose(m_hFile);
+	::CloseHandle(m_hFile);
 
 	// Reset members.
-	m_hFile = HFILE_ERROR;
-	m_eMode = None;
+	m_hFile = INVALID_HANDLE_VALUE;
+	m_nMode = NULL;
 	m_lEOF  = 0;
 }
 
@@ -161,10 +160,12 @@ void CFile::Close()
 
 void CFile::Read(void* pBuffer, uint iNumBytes)
 {
-	ASSERT(m_hFile != HFILE_ERROR);
-	ASSERT( (m_eMode == ReadOnly) || (m_eMode == ReadWrite) );
+	ASSERT(m_hFile != INVALID_HANDLE_VALUE);
+	ASSERT(m_nMode & GENERIC_READ);
 
-	if (_lread(m_hFile, pBuffer, iNumBytes) != iNumBytes)
+	DWORD dwRead = 0;
+
+	if (::ReadFile(m_hFile, pBuffer, iNumBytes, &dwRead, NULL) == 0)
 		throw CFileException(CFileException::E_READ_FAILED, *this);
 }
 
@@ -185,10 +186,12 @@ void CFile::Read(void* pBuffer, uint iNumBytes)
 
 void CFile::Write(const void* pBuffer, uint iNumBytes)
 {
-	ASSERT(m_hFile != HFILE_ERROR);
-	ASSERT( (m_eMode == WriteOnly) || (m_eMode == ReadWrite) );
+	ASSERT(m_hFile != INVALID_HANDLE_VALUE);
+	ASSERT(m_nMode & GENERIC_WRITE);
 
-	if (_lwrite(m_hFile, (const char*)pBuffer, iNumBytes) != iNumBytes)
+	DWORD dwWritten = 0;
+
+	if (::WriteFile(m_hFile, (const char*)pBuffer, iNumBytes, &dwWritten, NULL) == 0)
 		throw CFileException(CFileException::E_WRITE_FAILED, *this);
 }
 
@@ -198,7 +201,7 @@ void CFile::Write(const void* pBuffer, uint iNumBytes)
 ** Description:	Core method for changing the stream pointer.
 **
 ** Parameters:	lPos		The new position.
-**				eOrigin		The origin from where to seek.
+**				nFrom		The origin from where to seek.
 **
 ** Returns:		The new stream pointer.
 **
@@ -207,37 +210,18 @@ void CFile::Write(const void* pBuffer, uint iNumBytes)
 *******************************************************************************
 */
 
-ulong CFile::Seek(ulong lPos, Origin eOrigin)
+ulong CFile::Seek(ulong lPos, uint nFrom)
 {
-	ASSERT(m_hFile != HFILE_ERROR);
+	ASSERT(m_hFile != INVALID_HANDLE_VALUE);
 
 	// Try the seek.
-	LONG lNewPos = _llseek(m_hFile, lPos, eOrigin);
+	ulong lNewPos = ::SetFilePointer(m_hFile, lPos, NULL, nFrom);
 
 	// Error?
-	if (lNewPos == HFILE_ERROR)
+	if (::GetLastError() != NO_ERROR)
 		throw CFileException(CFileException::E_SEEK_FAILED, *this);
 
 	return lNewPos;
-}
-
-/******************************************************************************
-** Method:		CurPos()
-**
-** Description:	Gets the current file position.
-**
-** Parameters:	None.
-**
-** Returns:		The current stream position.
-**
-** Exceptions:	CFileException on error.
-**
-*******************************************************************************
-*/
-
-ulong CFile::CurPos()
-{
-	return Seek(0, Current);
 }
 
 /******************************************************************************
@@ -254,10 +238,10 @@ ulong CFile::CurPos()
 
 bool CFile::IsEOF()
 {
-	ASSERT(m_hFile != HFILE_ERROR);
-	ASSERT(m_eMode == ReadOnly);
+	ASSERT(m_hFile != INVALID_HANDLE_VALUE);
+	ASSERT(m_nMode & GENERIC_READ);
 
-	return (Seek(0, Current) >= m_lEOF);
+	return (Seek(0, FILE_CURRENT) >= m_lEOF);
 }
 
 /******************************************************************************
@@ -277,6 +261,45 @@ bool CFile::IsEOF()
 void CFile::Throw(int eErrCode)
 {
 	throw CFileException(eErrCode, *this);
+}
+
+/******************************************************************************
+** Method:		SetEOF()
+**
+** Description:	Sets the end of the file to the current file pointer.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CFile::SetEOF()
+{
+	::SetEndOfFile(m_hFile);
+}
+
+/******************************************************************************
+** Method:		size()
+**
+** Description:	Gets the current size of the file position.
+**
+** Parameters:	None.
+**
+** Returns:		The current size.
+**
+*******************************************************************************
+*/
+
+ulong CFile::Size()
+{
+	ulong lCurPos = Seek(0, FILE_CURRENT);
+	ulong lSize   = Seek(0, FILE_END);
+
+	Seek(lCurPos, FILE_BEGIN);
+
+	return lSize;
 }
 
 /******************************************************************************
@@ -315,16 +338,59 @@ bool CFile::QueryInfo(const char* pszPath, struct _stat& oInfo)
 *******************************************************************************
 */
 
-uint CFile::Size(const char* pszPath)
+ulong CFile::Size(const char* pszPath)
 {
-	uint nSize = 0;
+	ulong lSize = 0;
 
 	struct _stat oInfo;
 
 	if (QueryInfo(pszPath, oInfo))
-		nSize = oInfo.st_size;
+		lSize = oInfo.st_size;
 
-	return nSize;
+	return lSize;
+}
+
+/******************************************************************************
+** Method:		Copy()
+**
+** Description:	Copies the file.
+**
+** Parameters:	pszSrc		The source file path.
+**				pszDst		The destination file path.
+**				bOverwrite	Overwrite if exists?
+**
+** Returns:		true or false.
+**
+*******************************************************************************
+*/
+
+bool CFile::Copy(const char* pszSrc, const char* pszDst, bool bOverwrite)
+{
+	ASSERT(pszSrc != NULL);
+	ASSERT(pszDst != NULL);
+
+	return (::CopyFile(pszSrc, pszDst, !bOverwrite) != 0);
+}
+
+/******************************************************************************
+** Method:		Move()
+**
+** Description:	Moves the file.
+**
+** Parameters:	pszSrc		The source file path.
+**				pszDst		The destination file path.
+**
+** Returns:		true or false.
+**
+*******************************************************************************
+*/
+
+bool CFile::Move(const char* pszSrc, const char* pszDst)
+{
+	ASSERT(pszSrc != NULL);
+	ASSERT(pszDst != NULL);
+
+	return (::MoveFile(pszSrc, pszDst) != 0);
 }
 
 /******************************************************************************

@@ -12,6 +12,9 @@
 #ifndef STREAM_HPP
 #define STREAM_HPP
 
+// For Read and Write access.
+#define GENERIC_READWRITE	(GENERIC_READ | GENERIC_WRITE)
+
 /******************************************************************************
 ** 
 ** This is the abstract class from which all I/O based classes are derived.
@@ -29,33 +32,12 @@ public:
 	virtual ~CStream();
 
 	//
-	// Access modes.
-	//
-	enum Mode
-	{
-		None      = -1,				// Unopened.
-		ReadOnly  = OF_READ,		// Read only.
-		WriteOnly = OF_WRITE,		// Write only.
-		ReadWrite = OF_READWRITE	// Read and Write.
-	};
-
-	//
-	// Seek origins.
-	//
-	enum Origin
-	{
-		Start   = 0,	// From the start of the stream.
-		Current = 1,	// From the current position of the stream.
-		End     = 2		// From the end of the stream.
-	};
-
-	//
 	// Generic operations.
 	// (Must be overriden)
 	//
 	virtual void  Read(void* pBuffer, uint iNumBytes) = 0;
 	virtual void  Write(const void* pBuffer, uint iNumBytes) = 0;
-	virtual ulong Seek(ulong lPos, Origin eOrigin) = 0;
+	virtual ulong Seek(ulong lPos, uint nFrom = FILE_BEGIN) = 0;
 	virtual bool  IsEOF() = 0;
 	virtual void  Throw(int eErrCode) = 0;
 
@@ -105,7 +87,7 @@ protected:
 	//
 	// Members.
 	//
-	Mode	m_eMode;		// Open mode.
+	uint	m_nMode;		// Open mode.
 	uint32	m_nFormat;		// Stream format;
 	uint32	m_nVersion;		// Stream version.
 };

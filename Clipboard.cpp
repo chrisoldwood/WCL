@@ -49,7 +49,7 @@ CClipboard::~CClipboard()
 **
 ** Description:	.
 **
-** Parameters:	eMode	The access mode.
+** Parameters:	nMode	The access mode.
 **
 ** Returns:		Nothing.
 **
@@ -58,16 +58,16 @@ CClipboard::~CClipboard()
 *******************************************************************************
 */
 
-void CClipboard::Open(Mode eMode, uint iFormat)
+void CClipboard::Open(uint nMode, uint iFormat)
 {
-	ASSERT( (eMode == ReadOnly) || (eMode == WriteOnly) );
+	ASSERT((nMode == GENERIC_READ) || (nMode == GENERIC_WRITE));
 
 	// Check we can open the clipboard.
 	if (::OpenClipboard(NULL) == FALSE)
 		throw CMemStreamException(CStreamException::E_OPEN_FAILED);
 
 	// Pasting from clipboard?
-	if (eMode == ReadOnly)
+	if (nMode == GENERIC_READ)
 	{
 		// Get current clipboard data stream.
 		HGLOBAL hMem = ::GetClipboardData(iFormat);
@@ -79,7 +79,7 @@ void CClipboard::Open(Mode eMode, uint iFormat)
 		m_MemStream.Open();
 	}
 	// Copying to clipboard?
-	else if (eMode == WriteOnly)
+	else if (nMode == GENERIC_WRITE)
 	{
 		// Empty current contents.
 		if (::EmptyClipboard() == FALSE)
@@ -90,7 +90,7 @@ void CClipboard::Open(Mode eMode, uint iFormat)
 	}
 
 	// Save settings for later.
-	m_eMode   = eMode;
+	m_nMode   = nMode;
 	m_iFormat = iFormat;
 }
 
@@ -114,7 +114,7 @@ void CClipboard::Close()
 	m_MemStream.Close();
 
 	// Need to write data to the clipboard?
-	if (m_eMode == WriteOnly)
+	if (m_nMode == GENERIC_WRITE)
 	{
 		HGLOBAL hMem = m_MemStream.DetachHandle();
 
@@ -129,6 +129,6 @@ void CClipboard::Close()
 	::CloseClipboard();
 
 	// Reset members.
-	m_eMode   = None;
+	m_nMode   = NULL;
 	m_iFormat = 0;
 }
