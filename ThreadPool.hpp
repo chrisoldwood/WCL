@@ -41,31 +41,47 @@ public:
 	void CancelJob(CThreadJob* pJob);
 	void CancelAllJobs();
 
+	void ClearCompletedJobs();
+	void DeleteCompletedJobs();
+
 	//
 	// Queue accessors.
 	//
-	int NumPendingJobs() const;
-	int NumRunningJobs() const;
-	int NumCompletedJobs() const;
+	int PendingJobCount() const;
+	int RunningJobCount() const;
+	int CompletedJobCount() const;
 
 protected:
 	// Template shorthands.
 	typedef TPtrArray<CWorkerThread> CThreads;
 	typedef TPtrArray<CThreadJob> CJobQueue;
 
+	// Thread pool status.
+	enum Status
+	{
+		STOPPED,
+		RUNNING,
+	};
+
 	//
 	// Members.
 	//
-	int			m_nThreads;
-	CThreads	m_oPool;
-	CJobQueue	m_oPendingQ;
-	CJobQueue	m_oRunningQ;
-	CJobQueue	m_oCompletedQ;
+	int					m_nThreads;
+	Status				m_eStatus;
+	CThreads			m_oPool;
+	CJobQueue			m_oPendingQ;
+	CJobQueue			m_oRunningQ;
+	CJobQueue			m_oCompletedQ;
+	CCriticalSection	m_oLock;
 
 	//
 	// Internal methods.
 	//
 	void ScheduleJob();
+	void OnJobCompleted(CThreadJob* pJob);
+
+	// Friends.
+	friend class CWorkerThread;
 };
 
 /******************************************************************************
@@ -75,17 +91,17 @@ protected:
 *******************************************************************************
 */
 
-inline int CThreadPool::NumPendingJobs() const
+inline int CThreadPool::PendingJobCount() const
 {
 	return m_oPendingQ.Size();
 }
 
-inline int CThreadPool::NumRunningJobs() const
+inline int CThreadPool::RunningJobCount() const
 {
 	return m_oRunningQ.Size();
 }
 
-inline int CThreadPool::NumCompletedJobs() const
+inline int CThreadPool::CompletedJobCount() const
 {
 	return m_oCompletedQ.Size();
 }

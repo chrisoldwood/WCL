@@ -24,6 +24,7 @@
 
 CThreadPool::CThreadPool(int nThreads)
 	: m_nThreads(nThreads)
+	, m_eStatus(STOPPED)
 {
 	ASSERT(m_nThreads > 0);
 }
@@ -42,6 +43,11 @@ CThreadPool::CThreadPool(int nThreads)
 
 CThreadPool::~CThreadPool()
 {
+	ASSERT(m_eStatus == STOPPED);
+	ASSERT(m_oPendingQ.Size()   == 0);
+	ASSERT(m_oRunningQ.Size()   == 0);
+	ASSERT(m_oCompletedQ.Size() == 0);
+
 	// Free thread pool.
 	m_oPool.DeleteAll();
 }
@@ -61,16 +67,17 @@ CThreadPool::~CThreadPool()
 void CThreadPool::Start()
 {
 	ASSERT(m_oPool.Size() == 0);
+	ASSERT(m_eStatus == STOPPED);
 
 	// Create the thread pool.
 	for (int i = 0; i < m_nThreads; ++i)
-		m_oPool.Add(new CWorkerThread);
+		m_oPool.Add(new CWorkerThread(*this));
 
 	// Start the pool threads.
 	for (i = 0; i < m_nThreads; ++i)
 		m_oPool[i]->Start();
 
-	// Wait for the threads to become idle.
+	m_eStatus = RUNNING;
 }
 
 /******************************************************************************
@@ -88,12 +95,13 @@ void CThreadPool::Start()
 void CThreadPool::Stop()
 {
 	ASSERT(m_oPool.Size() != 0);
+	ASSERT(m_eStatus == RUNNING);
 
 	// Stop the pool threads.
 	for (int i = 0; i < m_nThreads; ++i)
 		m_oPool[i]->Stop();
 
-	// Wait for the threads to die.
+	m_eStatus = STOPPED;
 }
 
 /******************************************************************************
@@ -111,6 +119,10 @@ void CThreadPool::Stop()
 void CThreadPool::AddJob(CThreadJob* pJob)
 {
 	ASSERT(pJob != NULL);
+	ASSERT(m_eStatus == RUNNING);
+
+	// Lock queues.
+	CAutoThreadLock oAutoLock(m_oLock);
 
 	// Add to the pending queue.
 	m_oPendingQ.Add(pJob);
@@ -134,6 +146,24 @@ void CThreadPool::AddJob(CThreadJob* pJob)
 void CThreadPool::CancelJob(CThreadJob* pJob)
 {
 	ASSERT(pJob != NULL);
+	ASSERT(m_eStatus == RUNNING);
+
+	// Lock queues.
+	CAutoThreadLock oAutoLock(m_oLock);
+
+	int i = m_oPendingQ.Find(pJob);
+
+	// If pending, move to completed queue.
+	// NB: If running, leave it to complete.
+	if (i != -1)
+	{
+		ASSERT(pJob->Status() == CThreadJob::PENDING);
+
+		pJob->Status(CThreadJob::CANCELLED);
+
+		m_oPendingQ.Remove(i);
+		m_oCompletedQ.Add(pJob);
+	}
 }
 
 /******************************************************************************
@@ -150,6 +180,57 @@ void CThreadPool::CancelJob(CThreadJob* pJob)
 
 void CThreadPool::CancelAllJobs()
 {
+	ASSERT(m_eStatus == RUNNING);
+
+	// Lock queues.
+	CAutoThreadLock oAutoLock(m_oLock);
+
+	// Move all pending jobs to completed queue.
+	// NB: Leave all running jobs to complete.
+	for (int i = 0; i < m_oPendingQ.Size(); ++i)
+	{
+		CThreadJob* pJob = m_oPendingQ[i];
+
+		pJob->Status(CThreadJob::CANCELLED);
+
+		m_oCompletedQ.Add(pJob);
+	}
+
+	m_oPendingQ.RemoveAll();
+}
+
+/******************************************************************************
+** Method:		ClearCompletedJobs()
+**
+** Description:	Remove all jobs from the completed job queue.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CThreadPool::ClearCompletedJobs()
+{
+	m_oCompletedQ.RemoveAll();
+}
+
+/******************************************************************************
+** Method:		ClearCompletedJobs()
+**
+** Description:	Delete all jobs in the completed job queue.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CThreadPool::DeleteCompletedJobs()
+{
+	m_oCompletedQ.DeleteAll();
 }
 
 /******************************************************************************
@@ -166,6 +247,11 @@ void CThreadPool::CancelAllJobs()
 
 void CThreadPool::ScheduleJob()
 {
+	ASSERT(m_eStatus == RUNNING);
+
+	// Lock queues.
+	CAutoThreadLock oAutoLock(m_oLock);
+
 	// Pending queue empty?
 	if (m_oPendingQ.Size() == 0)
 		return;
@@ -190,4 +276,35 @@ void CThreadPool::ScheduleJob()
 			break;
 		}
 	}
+}
+
+/******************************************************************************
+** Method:		OnJobCompleted()
+**
+** Description:	Notification method that a worker thread has finished its job.
+**
+** Parameters:	pJob	The job completed.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CThreadPool::OnJobCompleted(CThreadJob* pJob)
+{
+	ASSERT(pJob != NULL);
+	ASSERT(pJob->Status() == CThreadJob::COMPLETED);
+	ASSERT(m_eStatus == RUNNING);
+
+	// Lock queues.
+	CAutoThreadLock oAutoLock(m_oLock);
+
+	// Move from running to completed queue.
+	int i = m_oRunningQ.Find(pJob);
+
+	m_oRunningQ.Remove(i);
+	m_oCompletedQ.Add(pJob);
+
+	// Try and run another.
+	ScheduleJob();
 }

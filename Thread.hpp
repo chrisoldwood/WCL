@@ -28,21 +28,26 @@ public:
 	CThread();
 	virtual ~CThread();
 	
-	// The main thread function.
-	virtual void Run() = 0;
-
 	//
 	// Accessors.
 	//
 	HANDLE Handle() const;
 	DWORD  ID() const;
 
+	//
+	// Methods.
+	//
+	bool PostMessage(UINT nMsg, WPARAM wParam = 0, LPARAM lParam = 0L);
+
 protected:
 	//
 	// Members.
 	//
-	HANDLE	m_hHandle;
+	HANDLE	m_hThread;
 	DWORD	m_dwID;
+
+	// The main thread function.
+	virtual void Run() = 0;
 };
 
 /******************************************************************************
@@ -52,14 +57,31 @@ protected:
 *******************************************************************************
 */
 
+inline CThread::CThread()
+	: m_hThread(NULL)
+	, m_dwID(NULL)
+{
+}
+
+inline CThread::~CThread()
+{
+}
+
 inline HANDLE CThread::Handle() const
 {
-	return m_hHandle;
+	return m_hThread;
 }
 
 inline DWORD CThread::ID() const
 {
 	return m_dwID;
+}
+
+inline bool CThread::PostMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
+{
+	ASSERT(m_dwID != NULL);
+
+	return (::PostThreadMessage(m_dwID, nMsg, wParam, lParam) != 0);
 }
 
 #endif //THREAD_HPP
