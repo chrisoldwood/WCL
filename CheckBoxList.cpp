@@ -1,9 +1,9 @@
 /******************************************************************************
 ** (C) Chris Oldwood
 **
-** MODULE:		PROPERTYPAGEDLG.CPP
+** MODULE:		CHECKBOXLIST.CPP
 ** COMPONENT:	Windows C++ Library.
-** DESCRIPTION:	CPropertyPageDlg class definition.
+** DESCRIPTION:	CCheckBoxList class definition.
 **
 *******************************************************************************
 */
@@ -22,8 +22,7 @@
 *******************************************************************************
 */
 
-CPropertyPageDlg::CPropertyPageDlg(uint nRscID)
-	: CDialog(nRscID)
+CCheckBoxList::CCheckBoxList()
 {
 }
 
@@ -39,6 +38,25 @@ CPropertyPageDlg::CPropertyPageDlg(uint nRscID)
 *******************************************************************************
 */
 
-CPropertyPageDlg::~CPropertyPageDlg()
+CCheckBoxList::~CCheckBoxList()
 {
+}
+
+/******************************************************************************
+** Method:		OnCreate()
+**
+** Description:	Sets the check box mode of the listview.
+**
+** Parameters:	rcClient	The client rectangle.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CCheckBoxList::OnCreate(const CRect& rcClient)
+{
+	CheckBoxes(true);
+
+	CListView::OnCreate(rcClient);
 }

@@ -1,16 +1,16 @@
 /******************************************************************************
 ** (C) Chris Oldwood
 **
-** MODULE:		PROPERTYDLG.HPP
+** MODULE:		PROPERTYSHEET.HPP
 ** COMPONENT:	Windows C++ Library.
-** DESCRIPTION:	The CPropertyDlg class declaration.
+** DESCRIPTION:	The CPropertySheet class declaration.
 **
 *******************************************************************************
 */
 
 // Check for previous inclusion
-#ifndef PROPERTYDLG_HPP
-#define PROPERTYDLG_HPP
+#ifndef PROPERTYSHEET_HPP
+#define PROPERTYSHEET_HPP
 
 /******************************************************************************
 ** 
@@ -19,45 +19,54 @@
 *******************************************************************************
 */
 
-class CPropertyDlg : public CDialog
+class CPropertySheet : public CWnd
 {
 public:
 	//
 	// Constructors/Destructor.
 	//
-	CPropertyDlg(uint nRscID, int nTabCtrlID);
-	~CPropertyDlg();
+	CPropertySheet();
+	~CPropertySheet();
 	
+	//
+	// Creation methods (Overriden from CDialog).
+	//
+	virtual bool RunModeless(CWnd& rParent);
+	virtual int  RunModal(CWnd& rParent);
+
 protected:
 	/////////////////////////////////////////////////////////////////
 	// Structure to define an entry in the property page table.
 	/////////////////////////////////////////////////////////////////
 
-	typedef struct tagPAGEDLG
+	typedef struct tagPAGE
 	{
-		CPropertyPageDlg*	m_pPageDlg;		// The page.
-		const char*			m_pszLabel;		// The tab label.
-	} PAGEDLG;
+		CPropertyPage*	m_pPage;		// The page.
+		const char*		m_pszLabel;		// The tab label.
+	} PAGE;
 
 	//
 	// Members.
 	//
-	int			m_nPages;		// Number of pages.
-	PAGEDLG*	m_pPageTable;	// Table of pages.
-	CTabCtrl	m_oTabCtrl;		// The tab control page host.
+	CString			m_strTitle;		// Title for the property sheet.
+	int				m_nPages;		// Number of pages.
+	PAGE*			m_pPageTable;	// Table of pages.
+	HPROPSHEETPAGE*	m_phPages;		// Array of page handles.
+
+	//
+	// General message handlers.
+	//
+	friend int CALLBACK PropSheetProc(HWND hWnd, UINT iMsg, LPARAM lParam);
 
 	//
 	// Message processors.
 	//
-	virtual void OnCreate(const CRect& rcClient);
-	virtual bool OnOk();
-	     LRESULT OnSelChanging(NMHDR& rMsgHdr);
-	     LRESULT OnSelChange(NMHDR& rMsgHdr);
+	virtual void OnInitDialog();
 
 	//
 	// Internal methods.
 	//
-	void PageTable(PAGEDLG* pPageTable);
+	void PageTable(PAGE* pPageTable);
 };
 
 /******************************************************************************
@@ -67,7 +76,7 @@ protected:
 *******************************************************************************
 */
 
-#define DEFINE_PAGE_TABLE	PAGEDLG Pages[] = {
+#define DEFINE_PAGE_TABLE	PAGE Pages[] = {
 
 #define PAGE(page, label)	{ (page), (label) },
 
@@ -81,4 +90,4 @@ protected:
 *******************************************************************************
 */
 
-#endif //PROPERTYDLG_HPP
+#endif //PROPERTYSHEET_HPP

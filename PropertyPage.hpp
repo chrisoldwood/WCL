@@ -1,16 +1,16 @@
 /******************************************************************************
 ** (C) Chris Oldwood
 **
-** MODULE:		PROPERTYPAGEDLG.HPP
+** MODULE:		PROPERTYPAGE.HPP
 ** COMPONENT:	Windows C++ Library.
-** DESCRIPTION:	The CPropertyPageDlg class declaration.
+** DESCRIPTION:	The CPropertyPage class declaration.
 **
 *******************************************************************************
 */
 
 // Check for previous inclusion
-#ifndef PROPERTYPAGEDLG_HPP
-#define PROPERTYPAGEDLG_HPP
+#ifndef PROPERTYPAGE_HPP
+#define PROPERTYPAGE_HPP
 
 /******************************************************************************
 ** 
@@ -19,25 +19,36 @@
 *******************************************************************************
 */
 
-class CPropertyPageDlg : public CDialog
+class CPropertyPage : public CDialog
 {
 public:
 	//
 	// Constructors/Destructor.
 	//
-	CPropertyPageDlg(uint nRscID);
-	~CPropertyPageDlg();
+	CPropertyPage(uint nRscID);
+	~CPropertyPage();
 	
 protected:
 	//
 	// Members.
 	//
 
+	//
+	// General message handlers.
+	//
+	friend BOOL DIALOGPROC PropPageProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
+
+	//
+	// Message processors.
+	//
+	virtual LRESULT OnCtrlMsg(NMHDR& rMsgHdr);
+	virtual bool    OnValidate();
+	virtual bool    OnOk();
 
 	//
 	// Friends.
 	//
-	friend class CPropertyDlg;
+	friend class CPropertySheet;
 };
 
 /******************************************************************************
@@ -47,4 +58,4 @@ protected:
 *******************************************************************************
 */
 
-#endif //PROPERTYPAGEDLG_HPP
+#endif //PROPERTYPAGE_HPP
