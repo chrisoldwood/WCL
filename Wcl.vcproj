@@ -2040,6 +2040,9 @@
 				RelativePath="Assert.hpp">
 			</File>
 			<File
+				RelativePath=".\AutoBool.hpp">
+			</File>
+			<File
 				RelativePath="AutoThreadLock.hpp">
 			</File>
 			<File

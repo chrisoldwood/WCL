@@ -180,6 +180,7 @@
 #include "SysInfo.hpp"
 #include "TrayIcon.hpp"
 #include "StrTok.hpp"
+#include "AutoBool.hpp"
 
 // Threading classes.
 #include "IThreadLock.hpp"
