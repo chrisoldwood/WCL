@@ -41,6 +41,23 @@ CIniFile::CIniFile()
 }
 
 /******************************************************************************
+** Method:		Constructor.
+**
+** Description:	Initialises with the given path.
+**
+** Parameters:	pszPath		.INI file path.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+CIniFile::CIniFile(const char* pszPath)
+	: m_strPath(pszPath)
+{
+}
+
+/******************************************************************************
 ** Method:		Destructor.
 **
 ** Description:	.
@@ -181,4 +198,44 @@ void CIniFile::WriteBool(const char* pszSection, const char* pszEntry, bool bVal
 		WritePrivateProfileString(pszSection, pszEntry, "True", m_strPath);
 	else
 		WritePrivateProfileString(pszSection, pszEntry, "False", m_strPath);
+}
+
+/******************************************************************************
+** Method:		DeleteSection()
+**
+** Description:	Deletes an entire section.
+**
+** Parameters:	pszSection	The section to delete.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CIniFile::DeleteSection(const char* pszSection)
+{
+	ASSERT(pszSection);
+
+	WritePrivateProfileString(pszSection, NULL, NULL, m_strPath);
+}
+
+/******************************************************************************
+** Method:		DeleteKey()
+**
+** Description:	Deletes a key from a section.
+**
+** Parameters:	pszSection	The section to delete from.
+**				pszEntry	The key to delete.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CIniFile::DeleteKey(const char* pszSection, const char* pszEntry)
+{
+	ASSERT(pszSection);
+	ASSERT(pszEntry);
+
+	WritePrivateProfileString(pszSection, pszEntry, NULL, m_strPath);
 }

@@ -26,6 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CIniFile();
+	CIniFile(const char* pszPath);
 	~CIniFile();
 	
 	//
@@ -41,6 +42,9 @@ public:
 	void    WriteLong  (const char* pszSection, const char* pszEntry, long lValue);
 	void    WriteBool  (const char* pszSection, const char* pszEntry, bool bValue);
 	
+	void    DeleteSection(const char* pszSection);
+	void    DeleteKey    (const char* pszSection, const char* pszEntry);
+
 	//
 	// Members.
 	//
