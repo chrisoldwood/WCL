@@ -23,12 +23,6 @@ class CNetFinder
 {
 public:
 	//
-	// Constructors/Destructor.
-	//
-//	CNetFinder();
-//	~CNetFinder();
-
-	//
 	// Methods.
 	//
 	static int FindDomains  (CStrArray& astrDomains);
