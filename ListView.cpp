@@ -51,7 +51,7 @@ void CListView::GetCreateParams(WNDCREATE& rParams)
 	// Override any settings.
 	rParams.pszClassName = WC_LISTVIEW;
 	rParams.dwExStyle   |= WS_EX_CLIENTEDGE;
-	rParams.dwStyle     |= WS_BORDER | LVS_SINGLESEL;
+	rParams.dwStyle     |= WS_BORDER | LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS;
 }
 
 /******************************************************************************
