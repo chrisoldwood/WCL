@@ -129,14 +129,72 @@ void CCmdControl::UpdateUI()
 
 void CCmdControl::DrawCmd(uint iCmdID, CDC& rDC, const CRect& rDst, bool bEnabled) const
 {
+	ASSERT(CmdBmpIndex(iCmdID) != -1);
+
+	m_CmdBitmap.DrawCmd(CmdBmpIndex(iCmdID), rDC, rDst, bEnabled);
+}
+
+/******************************************************************************
+** Method:		CmdBmpIndex()
+**
+** Description:	Get the commands' bitmap index.
+**
+** Parameters:	iCmdID		The command.
+**
+** Returns:		The index or -1 if there isn't one.
+**
+*******************************************************************************
+*/
+
+int CCmdControl::CmdBmpIndex(uint iCmdID) const
+{
 	CMD* pCmd = m_pCmdTable;
 	
-	// Find command callback function.
+	// Find command.
 	while ( (pCmd != NULL) && (pCmd->m_eType != CmdNone)
 		 && ( (iCmdID < pCmd->m_iFirstID) || (iCmdID > pCmd->m_iLastID) ) )
 	    pCmd++;
 
-	// If found, draw it.
-	if ( (pCmd != NULL) && (iCmdID >= pCmd->m_iFirstID) && (iCmdID <= pCmd->m_iLastID) && (pCmd->m_iBmpIndex != -1) )
-		m_CmdBitmap.DrawCmd(pCmd->m_iBmpIndex, rDC, rDst, bEnabled);
+	// If found, return it.
+	if ( (pCmd != NULL) && (iCmdID >= pCmd->m_iFirstID) && (iCmdID <= pCmd->m_iLastID) )
+		return pCmd->m_iBmpIndex;
+
+	// Not found.
+	return -1;
+}
+
+/******************************************************************************
+** Method:		CmdHint()
+**
+** Description:	Get the commands' hint resource ID.
+**				By default the hint resurce ID is the same as the command ID.
+**
+** Parameters:	iCmdID		The command.
+**
+** Returns:		The hint resource ID.
+**
+*******************************************************************************
+*/
+
+int CCmdControl::CmdHint(uint iCmdID) const
+{
+	return iCmdID;
+}
+
+/******************************************************************************
+** Method:		CmdToolTip()
+**
+** Description:	Get the commands' tool tip resource ID.
+**				By default the tool tip resurce ID is the same as the command ID.
+**
+** Parameters:	iCmdID		The command.
+**
+** Returns:		The tool tip resource ID.
+**
+*******************************************************************************
+*/
+
+int CCmdControl::CmdToolTip(uint iCmdID) const
+{
+	return iCmdID;
 }

@@ -35,11 +35,18 @@ public:
 	CCmdBitmap& CmdBitmap();
 
 	//
-	// Methods.
+	// Command methods.
 	//
-	void Execute(uint iCmdID);
-	void UpdateUI();
-	void DrawCmd(uint iCmdID, CDC& rDC, const CRect& rDst, bool bEnabled) const;
+	virtual void Execute(uint iCmdID);
+	virtual void UpdateUI();
+	virtual void DrawCmd(uint iCmdID, CDC& rDC, const CRect& rDst, bool bEnabled) const;
+
+	//
+	// Command property methods.
+	//
+	virtual int CmdBmpIndex(uint iCmdID) const;
+	virtual int CmdHint(uint iCmdID) const;
+	virtual int CmdToolTip(uint iCmdID) const;
 
 protected:
 	///////////////////////////////////////////////////////
