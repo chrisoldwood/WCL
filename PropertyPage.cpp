@@ -85,11 +85,11 @@ BOOL DIALOGPROC PropPageProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			//
 
 			// Store the return values for this message.
-			bool     bMsgHandled = false;
+			BOOL     bMsgHandled = false;
 			LRESULT  lMsgResult  = 0;
 
 			// Push the existing messages' return values onto the stack.
-			bool*	 pbMsgHandled = pDialog->MsgHandledBuffer(&bMsgHandled);
+			BOOL*	 pbMsgHandled = pDialog->MsgHandledBuffer(&bMsgHandled);
 			LRESULT* plMsgResult  = pDialog->MsgResultBuffer (&lMsgResult);
 
 			// Save handle/result.
@@ -127,11 +127,11 @@ BOOL DIALOGPROC PropPageProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	//
 
 	// Store the return values for this message.
-	bool     bMsgHandled = false;
+	BOOL     bMsgHandled = false;
 	LRESULT  lMsgResult  = 0;
 
 	// Push the existing messages' return values onto the stack.
-	bool*	 pbMsgHandled = pDialog->MsgHandledBuffer(&bMsgHandled);
+	BOOL*	 pbMsgHandled = pDialog->MsgHandledBuffer(&bMsgHandled);
 	LRESULT* plMsgResult  = pDialog->MsgResultBuffer (&lMsgResult);
 
 	// Call real message handler.

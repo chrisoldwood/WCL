@@ -210,11 +210,11 @@ LRESULT WINDOWPROC PopupWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lPar
 	//
 
 	// Store the return values for this message.
-	bool     bMsgHandled = false;
+	BOOL     bMsgHandled = false;
 	LRESULT  lMsgResult  = 0;
 
 	// Push the existing messages' return values onto the stack.
-	bool*	 pbMsgHandled = pWnd->MsgHandledBuffer(&bMsgHandled);
+	BOOL*	 pbMsgHandled = pWnd->MsgHandledBuffer(&bMsgHandled);
 	LRESULT* plMsgResult  = pWnd->MsgResultBuffer (&lMsgResult);
 	
 	// Call real message handler.
