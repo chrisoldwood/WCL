@@ -366,7 +366,7 @@ int CListView::FindItem(const void* pData, int nStart) const
 /******************************************************************************
 ** Methods:		FindAllItems()
 **
-** Description:	Finds all items either by text value or by lParam member.
+** Description:	Finds all items by lParam member.
 **
 ** Parameters:	pszText		Text item to find.
 **				lData		LPARAM data to find.
