@@ -127,6 +127,15 @@ protected:
 	bool	m_bRelease;		// Call ReleaseDC on destruction?
 	int		m_iState;		// Initial DC state (From SaveDC).
 
+#ifdef _DEBUG
+	// To passify BoundsChecker.
+	HBITMAP		m_hOrgBitmap;
+	HBRUSH		m_hOrgBrush;
+	HFONT		m_hOrgFont;
+	HPALETTE	m_hOrgPalette;
+	HPEN		m_hOrgPen;
+#endif
+
 	//
 	// Internal methods.
 	//

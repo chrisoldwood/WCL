@@ -34,6 +34,15 @@ CMemDC::CMemDC(const CDC& rDC)
 	m_devType = rDC.Type();
 
 	ASSERT(m_hDC);
+
+#ifdef _DEBUG
+	// Passify BoundsChecker.
+	m_hOrgBitmap  = (HBITMAP)  ::GetCurrentObject(m_hDC, OBJ_BITMAP);
+	m_hOrgBrush   = (HBRUSH)   ::GetCurrentObject(m_hDC, OBJ_BRUSH );
+	m_hOrgFont    = (HFONT)    ::GetCurrentObject(m_hDC, OBJ_FONT  );
+	m_hOrgPalette = (HPALETTE) ::GetCurrentObject(m_hDC, OBJ_PAL   );
+	m_hOrgPen     = (HPEN)     ::GetCurrentObject(m_hDC, OBJ_PEN   );
+#endif
 }
 
 /******************************************************************************
@@ -53,6 +62,15 @@ CMemDC::~CMemDC()
 	// Restore DC to inital settings.
 	RestoreState(m_iState);
 	
+#ifdef _DEBUG
+	// Passify BoundsChecker.
+	::SelectObject (m_hDC, m_hOrgBitmap );
+	::SelectObject (m_hDC, m_hOrgBrush  );
+	::SelectObject (m_hDC, m_hOrgFont   );
+	::SelectPalette(m_hDC, m_hOrgPalette, FALSE);
+	::SelectObject (m_hDC, m_hOrgPen    );
+#endif
+
 	// Free up DC.
 	DeleteDC(m_hDC);
 }
