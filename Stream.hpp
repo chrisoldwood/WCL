@@ -64,6 +64,7 @@ public:
 	virtual void operator <<(const uint16&    rBuffer);
 	virtual void operator <<(const uint32&    rBuffer);
 	virtual void operator <<(const CString&   rBuffer);
+	virtual void operator <<(const char*      pBuffer);
 	virtual void operator <<(const CDate&     rBuffer);
 	virtual void operator <<(const CTime&     rBuffer);
 	virtual void operator <<(const CDateTime& rBuffer);
@@ -192,6 +193,16 @@ inline void CStream::operator <<(const uint32& rBuffer)
 inline void CStream::operator <<(const CString& rBuffer)
 {
 	rBuffer >> *this;
+}
+
+inline void CStream::operator <<(const char* pBuffer)
+{
+	uint32 nLen = strlen(pBuffer)+1;
+
+	Write(&nLen, sizeof(uint32));
+
+	if (nLen)
+		Write(pBuffer, nLen);
 }
 
 inline void CStream::operator <<(const CDate& rBuffer)
