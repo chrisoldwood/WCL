@@ -1,0 +1,250 @@
+/******************************************************************************
+** (C) Chris Oldwood
+**
+** MODULE:		STREAM.HPP
+** COMPONENT:	Windows C++ Library.
+** DESCRIPTION:	The CStream class declaration.
+**
+*******************************************************************************
+*/
+
+// Check for previous inclusion
+#ifndef STREAM_HPP
+#define STREAM_HPP
+
+/******************************************************************************
+** 
+** This is the abstract class from which all I/O based classes are derived.
+**
+*******************************************************************************
+*/
+
+class CStream
+{
+public:
+	//
+	// Constructors/Destructor.
+	//
+	CStream();
+	virtual ~CStream();
+
+	//
+	// Access modes.
+	//
+	enum Mode
+	{
+		None      = -1,				// Unopened.
+		ReadOnly  = OF_READ,		// Read only.
+		WriteOnly = OF_WRITE,		// Write only.
+		ReadWrite = OF_READWRITE	// Read and Write.
+	};
+
+	//
+	// Seek origins.
+	//
+	enum Origin
+	{
+		Start   = 0,	// From the start of the stream.
+		Current = 1,	// From the current position of the stream.
+		End     = 2		// From the end of the stream.
+	};
+
+	//
+	// Generic operations.
+	// (Must be overriden)
+	//
+	virtual void  Read(void* pBuffer, uint iNumBytes) = 0;
+	virtual void  Write(const void* pBuffer, uint iNumBytes) = 0;
+	virtual ulong Seek(ulong lPos, Origin eOrigin) = 0;
+	virtual bool  IsEOF() = 0;
+	virtual void  Throw(int eErrCode) = 0;
+
+	//
+	// Type specific operations.
+	//
+	virtual void operator >>(bool&      rBuffer);
+	virtual void operator >>(int8&      rBuffer);
+	virtual void operator >>(int16&     rBuffer);
+	virtual void operator >>(int32&     rBuffer);
+	virtual void operator >>(uint8&     rBuffer);
+	virtual void operator >>(uint16&    rBuffer);
+	virtual void operator >>(uint32&    rBuffer);
+	virtual void operator >>(CString&   rBuffer);
+	virtual void operator >>(CDate&     rBuffer);
+	virtual void operator >>(CTime&     rBuffer);
+	virtual void operator >>(CDateTime& rBuffer);
+
+	virtual void operator <<(const bool&      rBuffer);
+	virtual void operator <<(const int8&      rBuffer);
+	virtual void operator <<(const int16&     rBuffer);
+	virtual void operator <<(const int32&     rBuffer);
+	virtual void operator <<(const uint8&     rBuffer);
+	virtual void operator <<(const uint16&    rBuffer);
+	virtual void operator <<(const uint32&    rBuffer);
+	virtual void operator <<(const CString&   rBuffer);
+	virtual void operator <<(const CDate&     rBuffer);
+	virtual void operator <<(const CTime&     rBuffer);
+	virtual void operator <<(const CDateTime& rBuffer);
+	
+	//
+	// Text specific operations.
+	//
+	CString ReadLine();
+	void    WriteLine(const char* pszLine);
+
+	//
+	// Stream format and version.
+	//
+	uint32 Format () const;
+	uint32 Version() const;
+
+	void Format (uint32 nFormat);
+	void Version(uint32 nVersion);
+
+protected:
+	//
+	// Members.
+	//
+	Mode	m_eMode;		// Open mode.
+	uint32	m_nFormat;		// Stream format;
+	uint32	m_nVersion;		// Stream version.
+};
+
+/******************************************************************************
+**
+** Implementation of inline functions.
+**
+*******************************************************************************
+*/
+
+inline void CStream::operator >>(bool& rBuffer)
+{
+	Read(&rBuffer, sizeof(bool));
+}
+
+inline void CStream::operator >>(int8& rBuffer)
+{
+	Read(&rBuffer, sizeof(int8));
+}
+
+inline void CStream::operator >>(int16& rBuffer)
+{
+	Read(&rBuffer, sizeof(int16));
+}
+
+inline void CStream::operator >>(int32& rBuffer)
+{
+	Read(&rBuffer, sizeof(int32));
+}
+
+inline void CStream::operator >>(uint8&  rBuffer)
+{
+	Read(&rBuffer, sizeof(uint8));
+}
+
+inline void CStream::operator >>(uint16& rBuffer)
+{
+	Read(&rBuffer, sizeof(uint16));
+}
+
+inline void CStream::operator >>(uint32& rBuffer)
+{
+	Read(&rBuffer, sizeof(uint32));
+}
+
+inline void CStream::operator >>(CString& rBuffer)
+{
+	rBuffer << *this;
+}
+
+inline void CStream::operator >>(CDate& rBuffer)
+{
+	rBuffer << *this;
+}
+
+inline void CStream::operator >>(CTime& rBuffer)
+{
+	rBuffer << *this;
+}
+
+inline void CStream::operator >>(CDateTime& rBuffer)
+{
+	rBuffer << *this;
+}
+
+inline void CStream::operator <<(const bool&  rBuffer)
+{
+	Write((void*) &rBuffer, sizeof(bool));
+}
+
+inline void CStream::operator <<(const int8&  rBuffer)
+{
+	Write((void*) &rBuffer, sizeof(int8));
+}
+
+inline void CStream::operator <<(const int16& rBuffer)
+{
+	Write((void*) &rBuffer, sizeof(int16));
+}
+
+inline void CStream::operator <<(const int32& rBuffer)
+{
+	Write((void*) &rBuffer, sizeof(int32));
+}
+
+inline void CStream::operator <<(const uint8&  rBuffer)
+{
+	Write((void*) &rBuffer, sizeof(uint8));
+}
+
+inline void CStream::operator <<(const uint16& rBuffer)
+{
+	Write((void*) &rBuffer, sizeof(uint16));
+}
+
+inline void CStream::operator <<(const uint32& rBuffer)
+{
+	Write((void*) &rBuffer, sizeof(uint32));
+}
+
+inline void CStream::operator <<(const CString& rBuffer)
+{
+	rBuffer >> *this;
+}
+
+inline void CStream::operator <<(const CDate& rBuffer)
+{
+	rBuffer >> *this;
+}
+
+inline void CStream::operator <<(const CTime& rBuffer)
+{
+	rBuffer >> *this;
+}
+
+inline void CStream::operator <<(const CDateTime& rBuffer)
+{
+	rBuffer >> *this;
+}
+
+inline uint32 CStream::Format() const
+{
+	return m_nFormat;
+}
+
+inline uint32 CStream::Version() const
+{
+	return m_nVersion;
+}
+
+inline void CStream::Format(uint32 nFormat)
+{
+	m_nFormat = nFormat;
+}
+
+inline void CStream::Version(uint32 nVersion)
+{
+	m_nVersion = nVersion;
+}
+
+#endif //STREAM_HPP
