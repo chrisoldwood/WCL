@@ -28,7 +28,7 @@ public:
 	CBuffer();
 	CBuffer(uint nSize);
 	CBuffer(const void* pData, uint nSize);
-	CBuffer(HGLOBAL hGlobal);
+	explicit CBuffer(HGLOBAL hGlobal);
 	CBuffer(const CBuffer& oRHS);
 	~CBuffer();
 	
