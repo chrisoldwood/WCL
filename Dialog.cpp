@@ -100,7 +100,11 @@ bool CDialog::RunModeless(CWnd& rParent)
 	HWND hWnd = CreateDialogParam(CModule::This().Handle(), MAKEINTRESOURCE(m_iRscID),
 									rParent.Handle(), (DLGPROC)DlgProc, (LPARAM)this);
 
-	ASSERT(hWnd);
+	ASSERT(hWnd != NULL);
+
+	// If a child dialog, turn off size grip.
+	if (WindowStyle() & WS_CHILD)
+		m_bNoSizeGrip = true;
 
 	// Okay?
 	return (hWnd != NULL);
