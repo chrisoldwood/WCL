@@ -7,3 +7,9 @@
 - Iter for non-unique maps?
 
 - Change ctrl msg table to be non-static.
+
+- DecimalBox to support fractions/show dec digits option.
+
+- Tree based class.
+
+- Change headers from .hpp to .h
