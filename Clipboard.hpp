@@ -43,6 +43,11 @@ public:
 	virtual bool  IsEOF();
 	virtual void  Throw(int eErrCode);
 
+	//
+	// Class methods.
+	//
+	static bool CopyText(HWND hOwner, const char* pszText);
+
 protected:
 	//
 	// Members.

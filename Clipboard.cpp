@@ -132,3 +132,59 @@ void CClipboard::Close()
 	m_nMode   = NULL;
 	m_iFormat = 0;
 }
+
+/******************************************************************************
+** Method:		CopyText()
+**
+** Description:	Helper method for copying text to the clipboard.
+**
+** Parameters:	hOwner		The clipboard owner.
+**				pszText		The text to copy.
+**
+** Returns:		true or false.
+**
+*******************************************************************************
+*/
+
+bool CClipboard::CopyText(HWND hOwner, const char* pszText)
+{
+	ASSERT(::IsWindow(hOwner));
+	ASSERT(pszText != NULL);
+
+	bool bCopied = false;
+
+	// Open the clipboard.
+	if (::OpenClipboard(hOwner))
+	{
+		// Clear existing contents.
+		if (::EmptyClipboard())
+		{
+			int     nLen  = strlen(pszText);
+			HGLOBAL hData = ::GlobalAlloc(GMEM_MOVEABLE, nLen+1);
+
+			// Allocated block?
+			if (hData != NULL)
+			{
+				char* pszData = (char*) ::GlobalLock(hData);
+
+				// Locked block?
+				if (pszData != NULL)
+				{
+					// Copy string to clipboard buffer.
+					strcpy(pszData, pszText);
+
+					::GlobalUnlock(hData);
+
+					// Copy to clipbaord.
+					if (::SetClipboardData(CF_TEXT, hData) != NULL)
+						bCopied = true;
+				}
+			}
+		}
+
+		// Close it.
+		::CloseClipboard();
+	}
+
+	return bCopied;
+}
