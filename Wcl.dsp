@@ -174,6 +174,14 @@ SOURCE=.\DlgFrame.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Dll.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\DllMain.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Doc.cpp
 # End Source File
 # Begin Source File
@@ -258,6 +266,10 @@ SOURCE=.\Menu.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Module.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\MRUList.cpp
 # End Source File
 # Begin Source File
@@ -303,6 +315,14 @@ SOURCE=.\PrinterDC.cpp
 # Begin Source File
 
 SOURCE=.\ProgressBar.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\PropertyDlg.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\PropertyPageDlg.cpp
 # End Source File
 # Begin Source File
 
@@ -375,6 +395,10 @@ SOURCE=.\Time.cpp
 # Begin Source File
 
 SOURCE=.\ToolBar.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ToolTip.cpp
 # End Source File
 # Begin Source File
 
@@ -494,6 +518,10 @@ SOURCE=.\DlgFrame.hpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Dll.hpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Doc.hpp
 # End Source File
 # Begin Source File
@@ -598,6 +626,10 @@ SOURCE=.\Menu.hpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Module.hpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\MRUList.hpp
 # End Source File
 # Begin Source File
@@ -651,6 +683,14 @@ SOURCE=.\PrinterDC.hpp
 # Begin Source File
 
 SOURCE=.\ProgressBar.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\PropertyDlg.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\PropertyPageDlg.hpp
 # End Source File
 # Begin Source File
 
@@ -743,6 +783,10 @@ SOURCE=.\Time.hpp
 # Begin Source File
 
 SOURCE=.\ToolBar.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ToolTip.hpp
 # End Source File
 # Begin Source File
 
