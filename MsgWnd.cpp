@@ -186,6 +186,15 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 		
+		// Help requested.
+		case WM_HELP:
+			{
+				HELPINFO* pInfo = (LPHELPINFO)lParam;
+
+				OnHelp(*pInfo);
+			}
+			break;
+
 		// Window being destroyed.
 		case WM_DESTROY:
 			OnDestroy();
@@ -647,4 +656,20 @@ void CMsgWnd::OnCtlColour(uint nCtlClrMsg, HDC hDC, HWND hCtlWnd)
 HBRUSH CMsgWnd::OnReflectedCtlClr(uint nCtlClrMsg, HDC hDC)
 {
 	return NULL;
+}
+
+/******************************************************************************
+** Method:		OnHelp()
+**
+** Description:	Help requested for the window.
+**
+** Parameters:	See HELPINFO.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CMsgWnd::OnHelp(HELPINFO& /*oInfo*/)
+{
 }

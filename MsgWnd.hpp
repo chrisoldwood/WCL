@@ -95,6 +95,7 @@ protected:
 	virtual void OnSetCursor(HWND hWnd, uint nHitCode, uint nMouseMsg);
 	virtual void OnCtlColour(uint nCtlClrMsg, HDC hDC, HWND hCtlWnd);
 	virtual HBRUSH OnReflectedCtlClr(uint nCtlClrMsg, HDC hDC);
+	virtual void OnHelp(HELPINFO& oInfo);
 
 	//
 	// Access to window data.
