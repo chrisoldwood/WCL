@@ -11,7 +11,10 @@
 #include "wcl.hpp"
 
 // Width of border around child windows.
-#define BORDER_SIZE		3
+const int BORDER_SIZE = 3;
+
+// Size of sizing grip handle.
+const int SIZE_GRIP_SIZE = 12;
 
 /******************************************************************************
 ** Method:		Default constructor.
@@ -25,8 +28,9 @@
 *******************************************************************************
 */
 
-CStatusBar::CStatusBar()
-	: m_pActive(NULL)
+CStatusBar::CStatusBar(bool bSizeGrip)
+	: m_bSizeGrip(bSizeGrip)
+	, m_pActive(NULL)
 {
 }
 
@@ -121,7 +125,7 @@ void CStatusBar::OnCreate(const CRect& rcClient)
 /******************************************************************************
 ** Method:		OnPaint()
 **
-** Description:	Paints the border.
+** Description:	Paints the sizing grip, if one enabled.
 **
 ** Parameters:	rDC		The device to paint on.
 **
@@ -132,6 +136,34 @@ void CStatusBar::OnCreate(const CRect& rcClient)
 
 void CStatusBar::OnPaint(CDC& rDC)
 {
+	if (!m_bSizeGrip)
+		return;
+
+	// Get window dimensions.
+	CRect rcClient = ClientRect();
+
+	// Get bottom right co-ordinates.
+	CPoint ptCorner(rcClient.right-1, rcClient.bottom-1);
+
+	// Create pens.
+	CPen oDarkPen (PS_SOLID, 0, ::GetSysColor(COLOR_BTNSHADOW));
+	CPen oLightPen(PS_SOLID, 0, ::GetSysColor(COLOR_BTNHIGHLIGHT));
+	CPen oFacePen (PS_SOLID, 0, ::GetSysColor(COLOR_BTNFACE));
+
+	// For all lines.
+	for (int i = 0; i < 12; ++i)
+	{
+		// Select the required pen.
+		if ((i % 4) == 3)
+			rDC.Select(oLightPen);
+		else if ( ((i % 4) == 1) || ((i % 4) == 2) )
+			rDC.Select(oDarkPen);
+		else
+			rDC.Select(oFacePen);
+
+		// Draw the line.
+		rDC.Line(ptCorner.x-i-1, ptCorner.y, ptCorner.x, ptCorner.y-i-1);
+	}
 }
 
 /******************************************************************************
@@ -153,8 +185,11 @@ void CStatusBar::OnResize(int iFlag, const CSize& rNewSize)
 	ASSERT(m_HintBar.Handle());
 //	ASSERT(m_ProgressBar.Handle());
 
+	// Calculate size grip adjustment.
+	int nGripSize = (m_bSizeGrip) ? SIZE_GRIP_SIZE : 0;
+
 	// Calculate the position of all the children.
-	CRect rcNewPos(BORDER_SIZE, BORDER_SIZE, rNewSize.cx-BORDER_SIZE, 
+	CRect rcNewPos(BORDER_SIZE, BORDER_SIZE, rNewSize.cx-BORDER_SIZE-nGripSize, 
 					rNewSize.cy-BORDER_SIZE);
 
 	// Move the children

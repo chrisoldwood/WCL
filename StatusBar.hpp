@@ -27,7 +27,7 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CStatusBar();
+	CStatusBar(bool bSizeGrip = true);
 	~CStatusBar();
 
 	//
@@ -40,6 +40,7 @@ protected:
 	//
 	// Members.
 	//
+	bool			m_bSizeGrip;
 	CWnd*			m_pActive;
 	CHintBar		m_HintBar;
 //	CProgressBar	m_ProgressBar;
