@@ -59,6 +59,12 @@ public:
 	void Font(const CFont& rFont, bool bRedraw = true);
 	CFont Font() const;
 
+	void  WindowExStyle(DWORD dwExStyle);
+	DWORD WindowExStyle() const;
+
+	void  WindowStyle(DWORD dwStyle);
+	DWORD WindowStyle() const;
+
 	//
 	// Position/Dimensions.
 	//
@@ -193,6 +199,30 @@ inline void CWnd::Font(const CFont& rFont, bool bRedraw)
 inline CFont CWnd::Font() const
 {
 	return CFont((HFONT)SendMessage(WM_GETFONT, 0, 0), false);
+}
+
+inline void CWnd::WindowExStyle(DWORD dwExStyle)
+{
+	::SetWindowLong(m_hWnd, GWL_EXSTYLE, dwExStyle);
+}
+
+inline DWORD CWnd::WindowExStyle() const
+{
+	ASSERT(m_hWnd != NULL);
+
+	return ::GetWindowLong(m_hWnd, GWL_EXSTYLE);
+}
+
+inline void CWnd::WindowStyle(DWORD dwStyle)
+{
+	::SetWindowLong(m_hWnd, GWL_STYLE, dwStyle);
+}
+
+inline DWORD CWnd::WindowStyle() const
+{
+	ASSERT(m_hWnd != NULL);
+
+	return ::GetWindowLong(m_hWnd, GWL_STYLE);
 }
 
 inline void CWnd::Move(const CRect& rNewPos, bool bRepaint)
