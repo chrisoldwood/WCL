@@ -52,20 +52,26 @@ public:
 	// Item methods.
 	//
 	void Reserve(int nItems);
-	int  AddItem(const char* pszText);
-	int  AddItem(const char* pszText, LPARAM      lData, int nImage = -1);
-	int  AddItem(const char* pszText, const void* pData, int nImage = -1);
+	int  AppendItem(const char* pszText);
+	int  AppendItem(const char* pszText, const void* pData);
+	int  AppendItem(const char* pszText, LPARAM      lData, int nImage);
+	int  InsertItem(int nPos, const char* pszText);
+	int  InsertItem(int nPos, const char* pszText, const void* pData);
+	int  InsertItem(int nPos, const char* pszText, LPARAM      lData, int nImage);
 	void DeleteItem(int nItem);
 	void DeleteAllItems();
 
 	void ItemText(int nItem, int nSubItem, const char* pszText);
 	void ItemState(int nItem, int nState, int nMask);
 
-	LPARAM ItemData(int nItem);
-	void*  ItemPtr(int nItem);
+	CString ItemText(int nItem, int nSubItem);
+	int     ItemState(int nItem, int nMask = LVIS_SELECTED);
+	LPARAM  ItemData(int nItem);
+	void*   ItemPtr(int nItem);
 
 	void Select(int nItem);
-	int  SelectionMark() const;
+	int  Selected() const;
+	bool IsSelection() const;
 
 	int  ItemCount() const;
 
@@ -79,12 +85,20 @@ public:
 	void DeleteAllColumns();
 
 	//
+	// Search methods.
+	//
+	int FindItem(const char* pszText, bool bPartial = false, int nStart = -1) const;
+	int FindItem(LPARAM lData, int nStart = -1) const;
+	int FindItem(const void* pData, int nStart = -1) const;
+
+	//
 	// Misc methods.
 	//
 	void ImageList(uint iRscID, int nImgWidth, COLORREF crMask);
 	void IconSpacing(int iHorzSpacing, int iVertSpacing);
 	int  StringWidth(const char* pszString);
 	int  StringWidth(int nChars);
+	int  Sort(PFNLVCOMPARE pfnCompare, LPARAM lParamSort);
 
 protected:
 	//
@@ -133,9 +147,29 @@ inline void CListView::Reserve(int nItems)
 	ListView_SetItemCount(m_hWnd, nItems);
 }
 
-inline int CListView::AddItem(const char* pszText)
+inline int CListView::AppendItem(const char* pszText)
 {
-	return AddItem(pszText, (const void*)NULL, -1);
+	return AppendItem(pszText, 0, -1);
+}
+
+inline int CListView::AppendItem(const char* pszText, const void* pData)
+{
+	return AppendItem(pszText, (LPARAM)pData, -1);
+}
+
+inline int CListView::AppendItem(const char* pszText, LPARAM lData, int nImage)
+{
+	return InsertItem(ItemCount(), pszText, lData, nImage);
+}
+
+inline int CListView::InsertItem(int nPos, const char* pszText)
+{
+	return InsertItem(nPos, pszText, 0, -1);
+}
+
+inline int CListView::InsertItem(int nPos, const char* pszText, const void* pData)
+{
+	return InsertItem(nPos, pszText, (LPARAM)pData, -1);
 }
 
 inline void CListView::DeleteItem(int nItem)
@@ -158,14 +192,24 @@ inline void CListView::ItemState(int nItem, int nState, int nMask)
 	ListView_SetItemState(m_hWnd, nItem, nState, nMask);
 }
 
-inline void CListView::Select(int nItem)
+inline int CListView::ItemState(int nItem, int nMask)
 {
-	ItemState(nItem, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+	return ListView_GetItemState(m_hWnd, nItem, nMask);
 }
 
-inline int CListView::SelectionMark() const
+inline void CListView::Select(int nItem)
 {
-	return ListView_GetSelectionMark(m_hWnd);
+	ItemState(nItem, LVIS_SELECTED | LVIS_FOCUSED, 0x000F);
+}
+
+inline int CListView::Selected() const
+{
+	return ListView_GetNextItem(m_hWnd, -1, LVNI_SELECTED);
+}
+
+inline bool CListView::IsSelection() const
+{
+	return (Selected() != -1);
 }
 
 inline int CListView::ItemCount() const
@@ -199,6 +243,11 @@ inline void CListView::IconSpacing(int iHorzSpacing, int iVertSpacing)
 inline int CListView::StringWidth(const char* pszString)
 {
 	return ListView_GetStringWidth(m_hWnd, pszString);
+}
+
+inline int CListView::Sort(PFNLVCOMPARE pfnCompare, LPARAM lParamSort)
+{
+	return ListView_SortItems(m_hWnd, pfnCompare, lParamSort);
 }
 
 #endif //LISTVIEW_HPP

@@ -50,20 +50,21 @@ void CListView::GetCreateParams(WNDCREATE& rParams)
 }
 
 /******************************************************************************
-** Method:		AddItem()
+** Method:		InsertItem()
 **
-** Description:	Adds a new item to the listview.
+** Description:	Inserts an item into the listview at the position given.
 **
-** Parameters:	pszText		The items label.
+** Parameters:	nPos		The position to insert at.
+**				pszText		The items label.
 **				lData		Item data.
-**				nImage		The index of the image list image.
+**				nImage		The index of the image list image (-1 for none).
 **
 ** Returns:		The index of the item or -1 on error.
 **
 *******************************************************************************
 */
 
-int CListView::AddItem(const char* pszText, LPARAM lData, int nImage)
+int CListView::InsertItem(int nPos, const char* pszText, LPARAM lData, int nImage)
 {
 	LVITEM lvItem;
 
@@ -71,7 +72,7 @@ int CListView::AddItem(const char* pszText, LPARAM lData, int nImage)
 
 	// Initialise item structure.
 	lvItem.mask    = LVIF_TEXT | LVIF_PARAM;
-	lvItem.iItem   = ListView_GetItemCount(m_hWnd);
+	lvItem.iItem   = nPos;
 	lvItem.pszText = (char*) pszText;
 	lvItem.iImage  = nImage;
 	lvItem.lParam  = lData;
@@ -84,22 +85,40 @@ int CListView::AddItem(const char* pszText, LPARAM lData, int nImage)
 }
 
 /******************************************************************************
-** Method:		AddItem()
+** Method:		ItemText()
 **
-** Description:	Adds a new item to the listview.
+** Description:	Gets the text for the item.
+**				NB: Uses a fixed buffer because there is no LVM_GETITEMTEXTLEN.
 **
-** Parameters:	pszText		The items label.
-**				pData		Item data.
-**				nImage		The index of the image list image.
+** Parameters:	nItem		The item index.
+**				nSubItem	The sub item index.
 **
-** Returns:		The index of the item or -1 on error.
+** Returns:		The item text.
 **
 *******************************************************************************
 */
 
-int CListView::AddItem(const char* pszText, const void* pData, int nImage)
+CString CListView::ItemText(int nItem, int nSubItem)
 {
-	return AddItem(pszText, (LPARAM)pData, nImage);
+	LVITEM	lvItem;
+	char	szText[256] = { 0 };
+
+	memset(&lvItem, 0, sizeof(lvItem));
+
+	// Initialise item structure.
+	lvItem.mask       = LVIF_TEXT;
+	lvItem.iItem      = nItem;
+	lvItem.iSubItem   = nSubItem;
+	lvItem.pszText    = szText;
+	lvItem.cchTextMax = sizeof(szText);
+
+	// Get the item text.
+	int nLen = SendMessage(LVM_GETITEMTEXT, nItem, (LPARAM)&lvItem);
+
+	// Allocate the buffer
+	ASSERT(nLen < sizeof(szText));
+
+	return szText;
 }
 
 /******************************************************************************
@@ -244,4 +263,59 @@ int CListView::StringWidth(int nChars)
 	delete[] pszString;
 
 	return iWidth;
+}
+
+/******************************************************************************
+** Methods:		FindItem()
+**
+** Description:	Finds an item either by text value or by lParam member.
+**
+** Parameters:	pszText		Text item to find.
+**				lData		LPARAM data to find.
+**				pData		LPARAM data to find.
+**				bPartial	Extact or partial find?
+**				nStart		The item to start from.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+int CListView::FindItem(const char* pszText, bool bPartial, int nStart) const
+{
+	ASSERT(pszText != NULL);
+
+	LVFINDINFO oInfo;
+
+	memset(&oInfo, 0, sizeof(oInfo));
+
+	oInfo.flags  = LVFI_STRING;
+	oInfo.flags |= (bPartial) ? LVFI_PARTIAL : 0;
+	oInfo.psz    = pszText;
+
+	return ListView_FindItem(m_hWnd, nStart, &oInfo);
+}
+
+int CListView::FindItem(LPARAM lData, int nStart) const
+{
+	LVFINDINFO oInfo;
+
+	memset(&oInfo, 0, sizeof(oInfo));
+
+	oInfo.flags  = LVFI_PARAM;
+	oInfo.lParam = lData;
+
+	return ListView_FindItem(m_hWnd, nStart, &oInfo);
+}
+
+int CListView::FindItem(const void* pData, int nStart) const
+{
+	LVFINDINFO oInfo;
+
+	memset(&oInfo, 0, sizeof(oInfo));
+
+	oInfo.flags  = LVFI_PARAM;
+	oInfo.lParam = (LPARAM)pData;
+
+	return ListView_FindItem(m_hWnd, nStart, &oInfo);
 }
