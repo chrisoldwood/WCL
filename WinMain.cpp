@@ -38,8 +38,9 @@ extern "C" int WINAPI WinMain(HINSTANCE hCurrInst, HINSTANCE hPrevInst,
 	oApp.m_iCmdShow           = iCmdShow;
 
 	// Open, run and close the app...
-	oApp.Open();
-	oApp.Run();
+	if (oApp.Open())
+		oApp.Run();
+
 	oApp.Close();
 
 	return FALSE;
