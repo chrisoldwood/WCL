@@ -94,6 +94,7 @@ protected:
 			void OnSelectMenu(uint iFlags, uint iItemID, HMENU hMenu);
 	virtual void OnShowMenuItemHint(uint iItemID);
 	virtual void OnShowMenuPopupHint(HMENU hMenu);
+	virtual void OnDropFile(int nFile, const char* pszPath);
 };
 
 /******************************************************************************

@@ -30,12 +30,8 @@ CFrameWnd::CFrameWnd(uint iIconID)
 	, m_pStatusBar(NULL)
 	, m_pActiveDlg(NULL)
 {
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	// Add to the main threads' msg filters.
-	pApp->m_MainThread.AddMsgFilter(*this);
+	CApp::This().m_MainThread.AddMsgFilter(*this);
 }
 
 /******************************************************************************
@@ -52,12 +48,8 @@ CFrameWnd::CFrameWnd(uint iIconID)
 
 CFrameWnd::~CFrameWnd()
 {
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	// Remove from the main threads' msg filters.
-	pApp->m_MainThread.RemoveMsgFilter(*this);
+	CApp::This().m_MainThread.RemoveMsgFilter(*this);
 }
 
 /******************************************************************************
@@ -77,12 +69,8 @@ void CFrameWnd::GetClassParams(WNDCLASS& rParams)
 	// Get base class settings.
 	CPopupWnd::GetClassParams(rParams);
 
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	// Override any settings.
-	rParams.hIcon         = ::LoadIcon(pApp->m_hInstance, MAKEINTRESOURCE(m_iIconID));
+	rParams.hIcon         = ::LoadIcon(CModule::This().Handle(), MAKEINTRESOURCE(m_iIconID));
 	rParams.hbrBackground = (HBRUSH) (COLOR_BTNSHADOW + 1);
 	rParams.lpszClassName = "FrameWnd";
 
@@ -106,13 +94,9 @@ void CFrameWnd::GetCreateParams(WNDCREATE& rParams)
 	// Get base class settings.
 	CPopupWnd::GetCreateParams(rParams);
 
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	// Override any settings.
 	rParams.pszClassName  = "FrameWnd";
-	rParams.pszTitle      = pApp->m_strTitle;
+	rParams.pszTitle      = CApp::This().m_strTitle;
 	rParams.dwStyle       = WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN;
 	rParams.hParent       = HWND_DESKTOP;
 }
@@ -232,6 +216,24 @@ LRESULT CFrameWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		// Menu item selected.
 		case WM_MENUSELECT:
 			OnSelectMenu(HIWORD(wParam), LOWORD(wParam), (HMENU)lParam);
+			break;
+
+		// Drag'n'drop performed.
+		case WM_DROPFILES:
+			{
+				HDROP hDrop  = (HDROP)wParam;
+				int   nFiles = ::DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
+
+				// For all files
+				for (int i = 0; i < nFiles; i++)
+				{
+					char szPath[MAX_PATH+1];
+
+					// Get filename and process.
+					if (::DragQueryFile(hDrop, i, szPath, MAX_PATH) > 0)
+						OnDropFile(i, szPath);
+				}
+			}
 			break;
 
 		// Can Windows terminate?
@@ -388,13 +390,9 @@ void CFrameWnd::OnSelectMenu(uint iFlags, uint iItemID, HMENU hMenu)
 
 void CFrameWnd::OnShowMenuItemHint(uint iItemID)
 {
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp != NULL);
-
 	// Show hint.
 	if (m_pStatusBar)
-		m_pStatusBar->Hint(pApp->m_rCmdControl.CmdHint(iItemID));
+		m_pStatusBar->Hint(CApp::This().m_rCmdControl.CmdHintStr(iItemID));
 }
 
 /******************************************************************************
@@ -546,4 +544,21 @@ bool CFrameWnd::ProcessMsg(MSG& rMsg)
 	// Try active modeless dialog next.
 
 	return false;
+}
+
+/******************************************************************************
+** Method:		OnDropFile()
+**
+** Description:	The user has drag'n'dropped one or more files onto the window.
+**
+** Parameters:	nFile		The index of the dropped file.
+**				pszPath		The files' path.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CFrameWnd::OnDropFile(int nFile, const char* pszPath)
+{
 }
