@@ -218,11 +218,6 @@ LRESULT CFrameWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			OnActivateApp(wParam);
 			break;
 		
-		// Menu item selected.
-		case WM_MENUSELECT:
-			OnSelectMenu(HIWORD(wParam), LOWORD(wParam), (HMENU)lParam);
-			break;
-
 		// Drag'n'drop performed.
 		case WM_DROPFILES:
 			{
@@ -335,120 +330,6 @@ void CFrameWnd::OnResize(int iFlag, const CSize& rNewSize)
 								rNewSize.cx, rNewSize.cy);
 			m_pStatusBar->Move(rcNewPos);
 		}
-	}
-}
-
-/******************************************************************************
-** Method:		OnSelectMenu()
-**
-** Description:	Decode the menu item being shown and display a hint for it. The
-**				strings IDs are the same as the item IDs, except for popup
-**				menus where they are a multiple of 25; in which case it looks
-**				as the first item to determine the hint ID.
-**
-** Parameters:	iFlags		The menu item flags.
-**				iItemID		The menu ID.
-**				hMenu		The menu handle.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
-
-void CFrameWnd::OnSelectMenu(uint iFlags, uint iItemID, HMENU hMenu)
-{
-	char* pszHint = "";
-
-	// Is a popup?
-	if (iFlags & MF_POPUP)
-	{
-		// Menu item selected?
-		if (iFlags == 0xFFFF)
-		{
-			pszHint = "";
-		}
-		else if (iFlags & MF_SYSMENU)
-		{
-			pszHint = "System Menu";
-		}
-		else // Popup menu
-		{
-			hMenu = GetSubMenu(hMenu, iItemID);
-
-			OnShowMenuPopupHint(hMenu);
-			return;
-		}
-	}
-	else // Menu item
-	{
-		// Is a separator
-		if (iFlags & MF_SEPARATOR)
-		{
-			pszHint = "";
-		}
-		else // Menu item.
-		{
-			OnShowMenuItemHint(iItemID);
-			return;
-		}
-	}
-		
-	// Show menu hint.
-	if (m_pStatusBar)
-		m_pStatusBar->Hint(pszHint);
-}
-
-/******************************************************************************
-** Method:		OnShowMenuItemHint()
-**
-** Description:	Display a hint for the selected menu item. This method is
-**				virtual and can be overriden.
-**
-** Parameters:	iItemID		The menu ID.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
-
-void CFrameWnd::OnShowMenuItemHint(uint iItemID)
-{
-	// Show hint.
-	if (m_pStatusBar)
-		m_pStatusBar->Hint(CApp::This().m_rCmdControl.CmdHintStr(iItemID));
-}
-
-/******************************************************************************
-** Method:		OnShowMenuPopupHint()
-**
-** Description:	Display a hint for the selected popup menu. This method is
-**				virtual and can be overriden, by defualt it loads the hint from
-**				resource file and displays it. It looks at the first item in
-**				the submenu and uses modulo 10 to find the hint for it.
-**
-** Parameters:	hMenu		The menu handle
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
-
-void CFrameWnd::OnShowMenuPopupHint(HMENU hMenu)
-{
-	// Get ID of first item in menu.
-	int iFirstID = GetMenuItemID(hMenu, 0);
-    
-    // Menu not empty?
-    if (iFirstID != -1)
-    {
-		// The menu item ID is modulo 10.
-		OnShowMenuItemHint(iFirstID - (iFirstID % 10));
-	}
-	else
-	{
-		// Show dummy hint.
-		if (m_pStatusBar)
-			m_pStatusBar->Hint("");
 	}
 }
 
