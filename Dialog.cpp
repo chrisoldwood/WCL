@@ -25,7 +25,8 @@
 */
 
 CDialog::CDialog(uint iRscID)
-	: m_iRscID(iRscID)
+	: CMsgWnd()
+	, m_iRscID(iRscID)
 	, m_pCtrlTable(NULL)
 	, m_pGravTable(NULL)
 {
@@ -169,8 +170,9 @@ BOOL DIALOGPROC DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			pDialog = (CDialog*)lParam;
 
 			// Save handle.
-			pDialog->m_hWnd = hWnd;
+			pDialog->m_hWnd        = hWnd;
 			pDialog->m_bMsgHandled = TRUE;
+			pDialog->m_lMsgResult  = 0;
 
 			// Setup Window mapping.
 			CWnd::s_WndMap.Add(*pDialog);
@@ -198,6 +200,10 @@ BOOL DIALOGPROC DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	// Call real message handler.
 	pDialog->WndProc(hWnd, iMsg, wParam, lParam);
 
+	// Set the return value.
+	::SetWindowLong(hWnd, DWL_MSGRESULT, pDialog->m_lMsgResult);
+
+	// Return if msg was handled.
 	return pDialog->m_bMsgHandled;
 }
 
