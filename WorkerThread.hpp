@@ -28,7 +28,7 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CWorkerThread(CThreadPool& oPool);
+	CWorkerThread(CThreadPool& oPool, uint nPoolID);
 	~CWorkerThread();
 
 	// Thread status.
@@ -55,10 +55,11 @@ protected:
 	//
 	// Members.
 	//
-	CThreadPool&	m_oPool;
-	ThreadStatus	m_eStatus;
-	CEvent			m_oSyncEvent;
-	CThreadJob*		m_pJob;
+	CThreadPool&	m_oPool;		// The owning thread pool.
+	uint			m_nPoolID;		// The ID within the pool.
+	ThreadStatus	m_eStatus;		// Current status.
+	CEvent			m_oSyncEvent;	// Start/Stop event object.
+	CThreadJob*		m_pJob;			// Current job, if one.
 
 	// Thread messages.
 	enum ThreadMsg

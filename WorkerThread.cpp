@@ -27,8 +27,9 @@
 *******************************************************************************
 */
 
-CWorkerThread::CWorkerThread(CThreadPool& oPool)
+CWorkerThread::CWorkerThread(CThreadPool& oPool, uint nPoolID)
 	: m_oPool(oPool)
+	, m_nPoolID(nPoolID)
 	, m_eStatus(STOPPED)
 	, m_oSyncEvent(true, false)
 	, m_pJob(NULL)
@@ -77,12 +78,19 @@ DWORD WINAPI CWorkerThread::ThreadFunction(LPVOID lpParam)
 	pThread->m_eStatus = IDLE;
 	pThread->m_oSyncEvent.Signal();
 
-	// Call the threads main function.
-	pThread->Run();
+	try
+	{
+		// Call the threads main function.
+		pThread->Run();
+	}
+	catch (...)
+	{
+		TRACE1("Unhandled exception in worker thread: %d\n", pThread->m_nPoolID);
+	}
 
 	// Signal calling thread that we've stopped.
 	pThread->m_eStatus = STOPPED;
-	pThread->m_oSyncEvent.Signal();
+	pThread->m_oSyncEvent.Signal();	
 
 	return 0;
 }
@@ -182,14 +190,14 @@ void CWorkerThread::RunJob(CThreadJob* pJob)
 *******************************************************************************
 */
 
-void CWorkerThread::OnThreadMsg(UINT nMsg, WPARAM wParam, LPARAM lParam)
+void CWorkerThread::OnThreadMsg(UINT nMsg, WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 	switch(nMsg)
 	{
 		case START_THREAD:	OnStartThread();	break;
 		case RUN_JOB:		OnRunJob();			break;
 		case STOP_THREAD:	OnStopThread();		break;
-		default:			ASSERT(false);		break;
+		default:			ASSERT_FALSE();		break;
 	}
 }
 
@@ -223,24 +231,31 @@ void CWorkerThread::OnStartThread()
 
 void CWorkerThread::OnRunJob()
 {
-	ASSERT(m_pJob != NULL);
-	ASSERT(m_pJob->Status() == CThreadJob::RUNNING);
+	try
+	{
+		ASSERT(m_pJob != NULL);
+		ASSERT(m_pJob->Status() == CThreadJob::RUNNING);
 
-	// Get the job to run.
-	CThreadJob* pJob = m_pJob;
+		// Get the job to run.
+		CThreadJob* pJob = m_pJob;
 
-	// Run it.
-	pJob->Run();
+		// Run it.
+		pJob->Run();
 
-	// Update job state.
-	pJob->Status(CThreadJob::COMPLETED);
+		// Update job state.
+		pJob->Status(CThreadJob::COMPLETED);
 
-	// Update thread state.
-	m_eStatus = IDLE;
-	m_pJob    = NULL;
+		// Update thread state.
+		m_eStatus = IDLE;
+		m_pJob    = NULL;
 
-	// Notify thread pool.
-	m_oPool.OnJobCompleted(pJob);
+		// Notify thread pool.
+		m_oPool.OnJobCompleted(pJob);
+	}
+	catch (...)
+	{
+		ASSERT_FALSE();
+	}
 }
 
 /******************************************************************************
