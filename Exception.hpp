@@ -23,21 +23,6 @@ class CException
 {
 public:
 	//
-	// Exception codes.
-	//
-	enum ErrCode
-	{
-		E_GENERIC = 0,	// Generic exception.
-	};
-
-	//
-	// Constructors/Destructor.
-	//
-	CException();
-	CException(ErrCode eCode, const char* pszText, ...);
-	virtual ~CException();
-
-	//
 	// Access to exception details.
 	//
 	virtual int         ErrorCode() const;
@@ -49,6 +34,13 @@ protected:
 	//
 	int		m_nErrorCode;
 	CString	m_strErrorText;
+
+	//
+	// Make abstract.
+	//
+	CException(int nCode);
+	CException(int nCode, const char* pszText, ...);
+	virtual ~CException();
 };
 
 /******************************************************************************
@@ -58,12 +50,13 @@ protected:
 *******************************************************************************
 */
 
-inline CException::CException()
+inline CException::CException(int nCode)
+	: m_nErrorCode(nCode)
 {
 }
 
-inline CException::CException(ErrCode eCode, const char* pszText, ...)
-	: m_nErrorCode(eCode)
+inline CException::CException(int nCode, const char* pszText, ...)
+	: m_nErrorCode(nCode)
 {
 	// Setup arguments.
 	va_list	args;
