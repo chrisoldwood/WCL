@@ -37,7 +37,7 @@ protected:
 	//
 	// Members.
 	//
-	char m_szHint[128];
+	CString m_strHint;
 	
 	//
 	// Window creation template methods.

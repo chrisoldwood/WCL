@@ -16,6 +16,16 @@
 #endif
 
 /******************************************************************************
+**
+** Local variables.
+**
+*******************************************************************************
+*/
+
+// Width of border around child window content.
+const int INNER_BORDER_SIZE = CStatusBarPanel::BORDER_SIZE;
+
+/******************************************************************************
 ** Method:		Default constructor.
 **
 ** Description:	Override any default settings for the window class and style.
@@ -29,8 +39,6 @@
 
 CHintBar::CHintBar()
 {
-	// Clear hint.
-	m_szHint[0] = '\0';
 }
 
 /******************************************************************************
@@ -108,18 +116,16 @@ void CHintBar::Hint(uint iRscID)
 
 void CHintBar::Hint(const char* pszHint)
 {
-	ASSERT(pszHint);
+	ASSERT(pszHint != NULL);
 
-	// Hint different?
-	if (lstrcmp(pszHint, (LPCSTR)m_szHint) == 0)
+	// Ignore, if same hint.
+	if (m_strHint == pszHint)
 		return;
 		
-	// Save it.
-	lstrcpy(m_szHint, pszHint);
+	m_strHint = pszHint;
 
-	// Redraw bar.
+	// Redraw.
 	Invalidate();
-	Update();
 }
 
 /******************************************************************************
@@ -140,5 +146,6 @@ void CHintBar::OnPaint(CDC& rDC)
 	rDC.Select(CApp::This().DefaultFont());
 	rDC.TextColour(GetSysColor(COLOR_BTNTEXT));
 	rDC.BkMode(TRANSPARENT);
-	rDC.TextOut(2, 0, (const char*)m_szHint);
+
+	rDC.TextOut(INNER_BORDER_SIZE, INNER_BORDER_SIZE, m_strHint);
 }
