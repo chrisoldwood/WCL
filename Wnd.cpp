@@ -173,58 +173,58 @@ void CWnd::Centre()
 
 int CWnd::AlertMsg(const char* pszMsg, ...) const
 {
-	char szMsg[128];
+	CString strMsg;
 
 	// Setup arguments.
 	va_list	args;
 	va_start(args, pszMsg);
 	
-	// Form message.
-	vsprintf((char*)szMsg, pszMsg, args);
+	// Format message.
+	strMsg.FormatEx(pszMsg, args);
 	
-	return MessageBox(m_hWnd, (LPCSTR)szMsg, CApp::This().m_strTitle, MB_OK | MB_ICONEXCLAMATION);
+	return MessageBox(m_hWnd, strMsg, CApp::This().m_strTitle, MB_OK | MB_ICONEXCLAMATION);
 }
 
 int CWnd::NotifyMsg(const char* pszMsg, ...) const
 {
-	char szMsg[128];
+	CString strMsg;
 
 	// Setup arguments.
 	va_list	args;
 	va_start(args, pszMsg);
 	
-	// Form message.
-	vsprintf((char*)szMsg, pszMsg, args);
+	// Format message.
+	strMsg.FormatEx(pszMsg, args);
 	
-	return MessageBox(m_hWnd, (LPCSTR)szMsg, CApp::This().m_strTitle, MB_OK | MB_ICONINFORMATION);
+	return MessageBox(m_hWnd, strMsg, CApp::This().m_strTitle, MB_OK | MB_ICONINFORMATION);
 }
 
 int CWnd::QueryMsg(const char* pszMsg, ...) const
 {
-	char szMsg[128];
+	CString strMsg;
 
 	// Setup arguments.
 	va_list	args;
 	va_start(args, pszMsg);
 	
-	// Form message.
-	vsprintf((char*)szMsg, pszMsg, args);
+	// Format message.
+	strMsg.FormatEx(pszMsg, args);
 	
-	return MessageBox(m_hWnd, (LPCSTR)szMsg, CApp::This().m_strTitle, MB_YESNOCANCEL | MB_ICONQUESTION);
+	return MessageBox(m_hWnd, strMsg, CApp::This().m_strTitle, MB_YESNOCANCEL | MB_ICONQUESTION);
 }
 
 int CWnd::FatalMsg(const char* pszMsg, ...) const
 {
-	char szMsg[128];
+	CString strMsg;
 
 	// Setup arguments.
 	va_list	args;
 	va_start(args, pszMsg);
 	
-	// Form message.
-	vsprintf((char*)szMsg, pszMsg, args);
+	// Format message.
+	strMsg.FormatEx(pszMsg, args);
 	
-	return MessageBox(m_hWnd, (LPCSTR)szMsg, CApp::This().m_strTitle, MB_OK | MB_ICONSTOP);
+	return MessageBox(m_hWnd, strMsg, CApp::This().m_strTitle, MB_OK | MB_ICONSTOP);
 }
 
 /******************************************************************************
