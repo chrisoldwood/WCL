@@ -11,6 +11,11 @@
 #include "wcl.hpp"
 #include <io.h>
 
+#ifdef _DEBUG
+// For memory leak detection.
+#define new DBGCRT_NEW
+#endif
+
 /******************************************************************************
 ** Method:		Default constructor
 **

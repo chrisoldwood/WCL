@@ -12,6 +12,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#ifdef _DEBUG
+// For memory leak detection.
+#define new DBGCRT_NEW
+#endif
+
+/******************************************************************************
+**
+** Local variables.
+**
+*******************************************************************************
+*/
+
 // Size of sizing grip handle.
 const int SIZE_GRIP_SIZE = 12;
 
