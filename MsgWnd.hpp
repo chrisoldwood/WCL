@@ -97,6 +97,9 @@ protected:
 	virtual void OnCtlColour(uint nCtlClrMsg, HDC hDC, HWND hCtlWnd);
 	virtual HBRUSH OnReflectedCtlClr(uint nCtlClrMsg, HDC hDC);
 	virtual void OnHelp(HELPINFO& oInfo);
+	virtual void OnUserMsg(uint nMsg, WPARAM wParam, LPARAM lParam);
+	virtual void OnAppMsg(uint nMsg, WPARAM wParam, LPARAM lParam);
+	virtual void OnRegisteredMsg(uint nMsg, WPARAM wParam, LPARAM lParam);
 
 	//
 	// Access to window data.

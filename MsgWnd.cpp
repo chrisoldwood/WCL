@@ -10,6 +10,11 @@
 
 #include "wcl.hpp"
 
+#ifdef _DEBUG
+// For memory leak detection.
+#define new DBGCRT_NEW
+#endif
+
 /******************************************************************************
 ** Method:		Default constructor.
 **
@@ -50,6 +55,18 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	ASSERT(m_pbMsgHandled != NULL);
 	ASSERT(m_plMsgResult  != NULL);
 
+	// Is in WM_USER range?
+	if ( (iMsg >= WM_USER) && (iMsg < WM_APP) )
+		OnUserMsg(iMsg, wParam, lParam);
+
+	// Is in WM_APP range?
+	if ( (iMsg >= WM_APP) && (iMsg < 0xC000) )
+		OnAppMsg(iMsg, wParam, lParam);
+
+	// Is in RegisterWindowMessage() range ?
+	if ( (iMsg >= 0xC000) && (iMsg < 0xFFFF) )
+		OnRegisteredMsg(iMsg, wParam, lParam);
+	
 	// Decode message.
 	switch(iMsg)
 	{
@@ -209,7 +226,7 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		default:
 			return DefaultWndProc(hWnd, iMsg, wParam, lParam);
 	}
-	
+
 	*m_pbMsgHandled = true;
 	*m_plMsgResult  = 0;
 
@@ -696,5 +713,56 @@ HBRUSH CMsgWnd::OnReflectedCtlClr(uint nCtlClrMsg, HDC hDC)
 */
 
 void CMsgWnd::OnHelp(HELPINFO& /*oInfo*/)
+{
+}
+
+/******************************************************************************
+** Method:		OnUserMsg()
+**
+** Description:	Message handler for messages in the WM_USER range of
+**				0x0400 - 0x7FFF.
+**
+** Parameters:	As WindowProc.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CMsgWnd::OnUserMsg(uint nMsg, WPARAM wParam, LPARAM lParam)
+{
+}
+
+/******************************************************************************
+** Method:		OnAppMsg()
+**
+** Description:	Message handler for messages in the WM_APP range of
+**				0x8000 - 0xBFFF.
+**
+** Parameters:	As WindowProc.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CMsgWnd::OnAppMsg(uint nMsg, WPARAM wParam, LPARAM lParam)
+{
+}
+
+/******************************************************************************
+** Method:		OnRegisteredMsg()
+**
+** Description:	Message handler for messages in the RegisterWindowMessage()
+**				range of 0xC000 - 0xFFFF.
+**
+** Parameters:	As WindowProc.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CMsgWnd::OnRegisteredMsg(uint nMsg, WPARAM wParam, LPARAM lParam)
 {
 }
