@@ -42,6 +42,25 @@ CLogFont::CLogFont()
 }
 
 /******************************************************************************
+** Method:		Constructor.
+**
+** Description:	Extract details from an existing font.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+CLogFont::CLogFont(HFONT hFont)
+{
+	ASSERT(hFont != NULL);
+
+	::GetObject(hFont, sizeof(LOGFONT), this);
+}
+
+/******************************************************************************
 ** Method:		Destructor.
 **
 ** Description:	.

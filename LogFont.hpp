@@ -26,8 +26,13 @@ public:
 	// Constructors/Destructor.
 	//
 	CLogFont();
+	CLogFont(HFONT hFont);
 	~CLogFont();
 	
+	//
+	// Methods.
+	//
+
 protected:
 	//
 	// Members.
