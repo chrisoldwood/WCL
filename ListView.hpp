@@ -48,6 +48,9 @@ public:
 	void FullRowSelect(bool bOn = true);
 	void GridLines(bool bOn = true);
 
+	// Template shorthands.
+	typedef TArray<uint> CUIntArray;
+
 	//
 	// Item methods.
 	//
@@ -64,6 +67,7 @@ public:
 	void ItemPtr(int nItem, const void* pData);
 
 	CString ItemText(int nItem, int nSubItem) const;
+	int     ItemImage(int nItem) const;
 	int     ItemState(int nItem, int nMask = LVIS_SELECTED) const;
 	LPARAM  ItemData(int nItem) const;
 	void*   ItemPtr(int nItem) const;
@@ -71,6 +75,7 @@ public:
 	void Select(int nItem, bool bSelect = true);
 	bool IsSelection() const;
 	int  Selection() const;
+	uint Selections(CUIntArray& vItems) const;
 	bool IsSelected(int nItem) const;
 	void RestoreSel(int nItem);
 
@@ -89,9 +94,6 @@ public:
 	int  ColumnWidth(int iPos) const;
 	void ColumnWidth(int iPos, int nWidth);
 	void ColumnWidthAuto(int iPos, bool bFitHeader = false);
-
-	// Template shorthands.
-	typedef TArray<uint> CUIntArray;
 
 	//
 	// Search methods.

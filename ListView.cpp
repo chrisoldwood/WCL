@@ -169,6 +169,31 @@ CString CListView::ItemText(int nItem, int nSubItem) const
 }
 
 /******************************************************************************
+** Method:		ItemImage()
+**
+** Description:	Gets the image index for an item.
+**
+** Parameters:	nItem	The item whose data it is to fetch.
+**
+** Returns:		The image index.
+**
+*******************************************************************************
+*/
+
+int CListView::ItemImage(int nItem) const
+{
+	LVITEM lvItem = { 0 };
+
+	// Initialise item structure.
+	lvItem.mask  = LVIF_IMAGE;
+	lvItem.iItem = nItem;
+
+	ListView_GetItem(m_hWnd, &lvItem);
+
+	return lvItem.iImage;
+}
+
+/******************************************************************************
 ** Method:		ItemData()
 **
 ** Description:	Gets the item data for an item.
@@ -191,6 +216,32 @@ LPARAM CListView::ItemData(int nItem) const
 	ListView_GetItem(m_hWnd, &lvItem);
 
 	return lvItem.lParam;
+}
+
+/******************************************************************************
+** Method:		Selections()
+**
+** Description:	Gets the indexes of all selected items.
+**
+** Parameters:	vItems		The return array.
+**
+** Returns:		The number of items selected.
+**
+*******************************************************************************
+*/
+
+uint CListView::Selections(CUIntArray& vItems) const
+{
+	ASSERT(vItems.Size() == 0);
+
+	// For all items...
+	for (int i = 0; i < ItemCount(); ++i)
+	{
+		if (IsSelected(i))
+			vItems.Add(i);
+	}
+
+	return vItems.Size();
 }
 
 /******************************************************************************
