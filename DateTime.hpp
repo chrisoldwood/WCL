@@ -57,6 +57,11 @@ public:
 	static CDateTime Current();
 
 	//
+	// Conversion methods.
+	//
+	CString ToString(int nDateFields = CDate::DD_MM_YY, int nTimeFields = CTime::HH_MM_SS) const;
+
+	//
 	// Conversion operators.
 	//
 	void operator =(time_t tDateTime);
@@ -222,6 +227,11 @@ inline void  CDateTime::Time(const CTime& rTime)
 	CDate oDate = Date();
 
 	*this = CDateTime(oDate, rTime);
+}
+
+inline CString CDateTime::ToString(int nDateFields, int nTimeFields) const
+{
+	return Date().ToString(nDateFields) + " " + Time().ToString(nTimeFields);
 }
 
 inline void CDateTime::operator =(time_t tDateTime)
