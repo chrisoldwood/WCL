@@ -859,7 +859,7 @@ CString& CString::Trim(bool bLeft, bool bRight)
 	{
 		int nChars = 0;
 
-		for (char* psz = m_pszData; (*psz != '\0') && (isspace(*psz)); ++psz)
+		for (char* psz = m_pszData; (*psz != '\0') && (isspace((uchar)*psz)); ++psz)
 			nChars++;
 
 		Delete(0, nChars);
@@ -872,7 +872,7 @@ CString& CString::Trim(bool bLeft, bool bRight)
 	{
 		int nChars = 0;
 
-		for (char* psz = m_pszData+nLength-1; (psz >= m_pszData) && (isspace(*psz)); --psz)
+		for (char* psz = m_pszData+nLength-1; (psz >= m_pszData) && (isspace((uchar)*psz)); --psz)
 			nChars++;
 
 		Delete(nLength-nChars, nChars);
