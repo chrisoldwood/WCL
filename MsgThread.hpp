@@ -19,7 +19,7 @@
 *******************************************************************************
 */
 
-class CMsgThread
+class CMsgThread : public CThread
 {
 public:
 	//
