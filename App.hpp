@@ -90,9 +90,10 @@ protected:
 	virtual	bool OnClose();
 
 	//
-	// Timer callback methods.
+	// Message handlers.
 	//
 	virtual void OnTimer(uint nTimerID);
+	virtual void OnThreadMsg(UINT nMsg, WPARAM wParam, LPARAM lParam);
 
 private:
 	//
@@ -103,7 +104,11 @@ private:
 	void Run();
 	void Close();
 
+	//
+	// Friends.
+	//
 	friend int WINAPI WinMain(HINSTANCE hCurrInst, HINSTANCE hPrevInst, LPSTR lpszCmdLine, int iCmdShow);
+	friend class CMainThread;
 
 	//
 	// Disallow copies and assignments.

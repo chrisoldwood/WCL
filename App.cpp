@@ -356,3 +356,19 @@ void CALLBACK CApp::TimerProc(HWND /*hWnd*/, UINT /*uMsg*/, UINT nTimerID, DWORD
 void CApp::OnTimer(uint /*nTimerID*/)
 {
 }
+
+/******************************************************************************
+** Method:		OnThreadMsg()
+**
+** Description:	Default handler for main thread messages.
+**
+** Parameters:	See PostThreadMessage().
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CApp::OnThreadMsg(UINT /*nMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+}
