@@ -235,6 +235,32 @@ void CBuffer::operator=(const CBuffer& oRHS)
 }
 
 /******************************************************************************
+** Method:		Equivalence operator.
+**
+** Description:	Compares two buffers.
+**
+** Parameters:	oRHS	The other buffer.
+**
+** Returns:		true or false.
+**
+*******************************************************************************
+*/
+
+bool CBuffer::operator==(const CBuffer& oRHS) const
+{
+	// Sizes differ?
+	if (m_nSize != oRHS.m_nSize)
+		return false;
+
+	// Both empty?
+	if (m_nSize == 0)
+		return true;
+
+	// Do bytewise compare.
+	return (memcmp(m_pBuffer, oRHS.m_pBuffer, m_nSize) == 0);
+}
+
+/******************************************************************************
 ** Method:		ToGlobal()
 **
 ** Description:	Creates a global memory object from the buffer.
@@ -261,4 +287,32 @@ HGLOBAL CBuffer::ToGlobal() const
 	::GlobalUnlock(hGlobal);
 
 	return hGlobal;
+}
+
+/******************************************************************************
+** Method:		FromString()
+**
+** Description:	Fills the buffer with a string.
+**				NB: DDE requires the null terminator.
+**
+** Parameters:	pszString	The string.
+**				bIncNull	Include the '\0' terminator or not?
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CBuffer::FromString(const char* pszString, bool bIncNull)
+{
+	ASSERT(pszString != NULL);
+
+	int nLength = strlen(pszString);
+
+	// Allow for '\0'?
+	if (bIncNull)
+		++nLength;
+
+	Size(nLength);
+	Set(pszString, nLength);
 }

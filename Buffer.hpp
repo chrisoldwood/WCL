@@ -45,16 +45,22 @@ public:
 	void  Size(uint nSize);
 	void* Buffer();
 	void  Set(const void* pData, uint nSize, uint nOffset = 0);
-	void  operator=(const CBuffer& oRHS);
 
 	//
+	// Operators.
+	//
+	void operator=(const CBuffer& oRHS);
+	bool operator==(const CBuffer& oRHS) const;
+	bool operator!=(const CBuffer& oRHS) const;
+
+ 	//
 	// Conversion methods.
 	//
 	HGLOBAL ToGlobal() const;
 	CString ToString() const;
 	CString ToString(uint nChars) const;
 
-	void FromString(const char* pszString);
+	void FromString(const char* pszString, bool bIncNull = true);
 
 protected:
 	//
@@ -86,6 +92,11 @@ inline void* CBuffer::Buffer()
 	return m_pBuffer;
 }
 
+inline bool CBuffer::operator!=(const CBuffer& oRHS) const
+{
+	return !operator==(oRHS);
+}
+
 inline CString CBuffer::ToString() const
 {
 	return ToString(m_nSize);
@@ -96,16 +107,6 @@ inline CString CBuffer::ToString(uint nChars) const
 	ASSERT(nChars <= m_nSize);
 
 	return CString((char*)m_pBuffer, nChars);
-}
-
-inline void CBuffer::FromString(const char* pszString)
-{
-	ASSERT(pszString != NULL);
-
-	int nLength = strlen(pszString);
-
-	Size(nLength);
-	Set(pszString, nLength);
 }
 
 #endif // BUFFER_HPP
