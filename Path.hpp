@@ -69,6 +69,8 @@ public:
     
 	bool Select(const CWnd& rParent, DlgMode eMode, const char* pszExts,
 				const char* pszDefExt, const char* pszDir = NULL);
+	bool SelectDir(const CWnd& rParent, const char* pszTitle);
+	bool SelectComputer(const CWnd& rParent, const char* pszTitle);
 
 	//
 	// Common path root directories.
@@ -127,6 +129,43 @@ inline void CPath::operator+=(const char* pszPath)
 	ASSERT(pszPath);
 	CString::operator +=("\\");
 	CString::operator +=(pszPath);
+}
+
+/******************************************************************************
+** 
+** Global string operators.
+**
+*******************************************************************************
+*/
+
+inline CPath operator+(const CPath& strLHS, const CPath& strRHS)
+{
+	CPath str;
+
+	str  = strLHS;
+	str += strRHS;
+
+	return str;
+}
+
+inline CPath operator+(const CPath& strLHS, const CString& strRHS)
+{
+	CPath str;
+
+	str  = strLHS;
+	str += strRHS;
+
+	return str;
+}
+
+inline CPath operator+(const CPath& strLHS, const char* pszRHS)
+{
+	CPath str;
+
+	str  = strLHS;
+	str += pszRHS;
+
+	return str;
 }
 
 #endif //PATH_HPP

@@ -13,6 +13,7 @@
 #include <io.h>
 #include <direct.h>
 #include <commdlg.h>
+#include <shlobj.h>
 
 /******************************************************************************
 ** Method:		Constructor
@@ -295,6 +296,114 @@ bool CPath::Select(const CWnd& rParent, DlgMode eMode, const char* pszExts,
 	Copy(szFileName);
 	
 	return true;
+}
+
+/******************************************************************************
+** Method:		SelectDir()
+**
+** Description:	Get a directory by using the common dialog.
+**
+** Parameters:	pParent		The dialogs parent.
+**				pszTitle	The hint displayed above the view.
+**
+** Returns:		true		If user pressed OK.
+**				false		If user pressed Cancel.
+**
+*******************************************************************************
+*/
+
+bool CPath::SelectDir(const CWnd& rParent, const char* pszTitle)
+{
+	BROWSEINFO   oInfo;
+	char         szDir[MAX_PATH];
+	LPITEMIDLIST pItemIDList;
+	LPMALLOC     pMalloc;
+	HRESULT      hResult;
+
+	// Get shell memory allocator.
+	hResult = ::SHGetMalloc(&pMalloc);
+
+	ASSERT(SUCCEEDED(hResult));
+
+	if (FAILED(hResult))
+		return false;
+
+	// Intialise info structure to browse for only folders.
+	memset(&oInfo, 0, sizeof(oInfo));
+	oInfo.hwndOwner = rParent.Handle();
+	oInfo.lpszTitle = pszTitle;
+	oInfo.ulFlags   = BIF_RETURNONLYFSDIRS | BIF_STATUSTEXT | BIF_EDITBOX;
+
+	// Prompt the user.
+	pItemIDList = ::SHBrowseForFolder(&oInfo);
+
+	if (pItemIDList != NULL)
+	{
+		// Convert the standard path.
+		if (::SHGetPathFromIDList(pItemIDList, szDir))
+			Copy(szDir);
+
+		pMalloc->Free(pItemIDList);
+	}
+
+	// Cleanup.
+	pMalloc->Release();
+     
+	return pItemIDList != NULL;
+}
+
+/******************************************************************************
+** Method:		SelectComputer()
+**
+** Description:	Get a computer by using the common dialog.
+**
+** Parameters:	pParent		The dialogs parent.
+**				pszTitle	The hint displayed above the view.
+**
+** Returns:		true		If user pressed OK.
+**				false		If user pressed Cancel.
+**
+*******************************************************************************
+*/
+
+bool CPath::SelectComputer(const CWnd& rParent, const char* pszTitle)
+{
+	BROWSEINFO   oInfo;
+	char         szDir[MAX_PATH];
+	LPITEMIDLIST pItemIDList;
+	LPMALLOC     pMalloc;
+	HRESULT      hResult;
+
+	// Get shell memory allocator.
+	hResult = ::SHGetMalloc(&pMalloc);
+
+	ASSERT(SUCCEEDED(hResult));
+
+	if (FAILED(hResult))
+		return false;
+
+	// Intialise info structure to browse for only folders.
+	memset(&oInfo, 0, sizeof(oInfo));
+	oInfo.hwndOwner = rParent.Handle();
+	oInfo.lpszTitle = pszTitle;
+	oInfo.ulFlags   = BIF_BROWSEFORCOMPUTER;
+
+	// Prompt the user.
+	pItemIDList = ::SHBrowseForFolder(&oInfo);
+
+	if (pItemIDList != NULL)
+	{
+		// Convert the standard path.
+		if (::SHGetPathFromIDList(pItemIDList, szDir))
+			Copy(szDir);
+
+		pMalloc->Free(pItemIDList);
+	}
+
+	// Cleanup.
+	pMalloc->Release();
+     
+	return pItemIDList != NULL;
 }
 
 /******************************************************************************
