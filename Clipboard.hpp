@@ -44,9 +44,15 @@ public:
 	virtual void  Throw(int eErrCode);
 
 	//
-	// Class methods.
+	// Helper methods.
 	//
 	static bool CopyText(HWND hOwner, const char* pszText);
+
+	//
+	// Format methods.
+	//
+	static uint    RegisterFormat(const char* pszFormat);
+	static CString FormatName(uint nFormat);
 
 protected:
 	//

@@ -205,3 +205,71 @@ bool CClipboard::CopyText(HWND hOwner, const char* pszText)
 
 	return bCopied;
 }
+
+/******************************************************************************
+** Method:		RegisterFormat()
+**
+** Description:	Register the custom clipboard format.
+**
+** Parameters:	pszFormat		The format name.
+**
+** Returns:		A handle for the format.
+**
+*******************************************************************************
+*/
+
+uint CClipboard::RegisterFormat(const char* pszFormat)
+{
+	return ::RegisterClipboardFormat(pszFormat);
+}
+
+/******************************************************************************
+** Method:		FormatName()
+**
+** Description:	Gets the name of a clipboard format from its handle.
+**				NB: This handles both custom and re-defined formats.
+**
+** Parameters:	nFormat		The format handle.
+**
+** Returns:		The format name.
+**
+*******************************************************************************
+*/
+
+CString CClipboard::FormatName(uint nFormat)
+{
+	// Is predefined format?
+	if (nFormat < 0xC000)	
+	{
+		switch (nFormat)
+		{
+			case CF_TEXT:			return "CF_TEXT";
+			case CF_BITMAP:			return "CF_BITMAP";
+			case CF_METAFILEPICT:	return "CF_METAFILEPICT";
+			case CF_SYLK:			return "CF_SYLK";
+			case CF_DIF:			return "CF_DIF";
+			case CF_TIFF:			return "CF_TIFF";
+			case CF_OEMTEXT:		return "CF_OEMTEXT";
+			case CF_DIB:			return "CF_DIB";
+			case CF_PALETTE:		return "CF_PALETTE";
+			case CF_PENDATA:		return "CF_PENDATA";
+			case CF_RIFF:			return "CF_RIFF";
+			case CF_WAVE:			return "CF_WAVE";
+			case CF_UNICODETEXT:	return "CF_UNICODETEXT";
+			case CF_ENHMETAFILE:	return "CF_ENHMETAFILE";
+			case CF_HDROP:			return "CF_HDROP";
+			case CF_LOCALE:			return "CF_LOCALE";
+			default:				return "";
+		}
+	}
+	// Is custom format.
+	else
+	{
+		char szName[MAX_PATH+1] = "\0";
+
+		// Is custom format
+		::GetClipboardFormatName(nFormat, szName, sizeof(szName));
+
+		return szName;
+	}
+}
