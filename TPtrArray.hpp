@@ -18,12 +18,15 @@
 **
 *******************************************************************************
 */
-template<class T> class TPtrArray : public CPtrArray
+
+template<class T> class TPtrArray : protected CPtrArray
 {
 public:
 	//
 	// Methods.
 	//
+	int Size() const;
+
 	T& Item(int nIndex) const;
 	T& operator[](int nIndex) const;
 
@@ -44,6 +47,11 @@ public:
 **
 *******************************************************************************
 */
+
+template<class T> inline int TPtrArray<T>::Size() const
+{
+	return CPtrArray::Size();
+}
 
 template<class T> inline T& TPtrArray<T>::Item(int nIndex) const
 {
