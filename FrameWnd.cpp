@@ -538,10 +538,12 @@ void CFrameWnd::OnPaint(CDC& rDC)
 bool CFrameWnd::ProcessMsg(MSG& rMsg)
 {
 	// Try accelerator table first.
-	if (m_pAccel)
-		return m_pAccel->Translate(m_hWnd, rMsg);
+	if ( (m_pAccel != NULL) && (m_pAccel->Translate(m_hWnd, rMsg)) )
+		return true;
 
 	// Try active modeless dialog next.
+	if ( (m_pActiveDlg != NULL) && (::IsDialogMessage(m_pActiveDlg->Handle(), &rMsg)) )
+		return true;
 
 	return false;
 }
