@@ -212,8 +212,6 @@ inline CString::StringData* CString::GetData() const
 
 inline CString operator+(const CString& strLHS, const char* pszRHS)
 {
-	ASSERT(false);
-
 	CString str;
 
 	str  = strLHS;
@@ -224,8 +222,6 @@ inline CString operator+(const CString& strLHS, const char* pszRHS)
 
 inline CString operator+(const char* pszLHS, const CString& strRHS)
 {
-	ASSERT(false);
-
 	CString str;
 
 	str  = pszLHS;
@@ -236,8 +232,6 @@ inline CString operator+(const char* pszLHS, const CString& strRHS)
 
 inline CString operator+(const CString& strLHS, const CString& strRHS)
 {
-	ASSERT(false);
-
 	CString str;
 
 	str  = strLHS;
