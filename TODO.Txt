@@ -11,3 +11,5 @@
 - Add recessed fields support to the status bar.
 
 - Tidy up CFileTree class (Add proper accessors etc).
+
+- Add FullPath() method to make a FQ Path from a relative one.
