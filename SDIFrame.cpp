@@ -44,6 +44,46 @@ CSDIFrame::~CSDIFrame()
 }
 
 /******************************************************************************
+** Method:		OnCreate()
+**
+** Description:	The window has just been created.
+**
+** Parameters:	rcClient	The client area.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CSDIFrame::OnCreate(const CRect& rcClient)
+{
+	// Register for drag'n'drop support.
+	::DragAcceptFiles(m_hWnd, TRUE);
+
+	CFrameWnd::OnCreate(rcClient);
+}
+
+/******************************************************************************
+** Method:		OnDestroy()
+**
+** Description:	The window is being destroyed.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CSDIFrame::OnDestroy()
+{
+	// Register for drag'n'drop support.
+	::DragAcceptFiles(m_hWnd, FALSE);
+
+	CFrameWnd::OnDestroy();
+}
+
+/******************************************************************************
 ** Method:		OnResize()
 **
 ** Description:	The window has been resized. This resizes the toolbar, status
@@ -114,19 +154,44 @@ void CSDIFrame::View(CView* pView)
 void CSDIFrame::UpdateTitle()
 {
 	// Get application object.
-	CSDIApp* pApp = CSDIApp::This();
-	ASSERT(pApp != NULL);
+	CSDIApp& oApp = CSDIApp::This();
 
 	// Get the application name.
-	CString strTitle = pApp->m_strTitle;
+	CString strTitle = oApp.m_strTitle;
 
 	// Append doc title, if available.
-	if (pApp->m_pDoc != NULL)
+	if (oApp.m_pDoc != NULL)
 	{
 		strTitle += " - [";
-		strTitle += pApp->m_pDoc->Path();
+		strTitle += oApp.m_pDoc->Path();
 		strTitle += "]";
 	}
 
 	Title(strTitle);
+}
+
+/******************************************************************************
+** Method:		OnDropFile()
+**
+** Description:	The user has drag'n'dropped one or more files onto the window.
+**
+** Parameters:	nFile		The index of the dropped file.
+**				pszPath		The files' path.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CSDIFrame::OnDropFile(int nFile, const char* pszPath)
+{
+	ASSERT(nFile   >= 0);
+	ASSERT(pszPath != NULL);
+
+	// Only load the first file.
+	if (nFile == 0)
+	{
+		// Call cmd controller to open file.
+		static_cast<CSDICmds&>(CSDIApp::This().m_rCmdControl).OpenFile(pszPath);
+	}
 }

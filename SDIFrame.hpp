@@ -50,7 +50,10 @@ protected:
 	//
 	// Message processors (Overriden from the base class).
 	//
+	virtual void OnCreate(const CRect& rcClient);
 	virtual void OnResize(int iFlag, const CSize& rNewSize);
+	virtual void OnDropFile(int nFile, const char* pszPath);
+	virtual void OnDestroy();
 };
 
 /******************************************************************************

@@ -82,17 +82,13 @@ void CStatusBar::GetClassParams(WNDCLASS& rParams)
 
 void CStatusBar::GetCreateParams(WNDCREATE& rParams)
 {
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	// Get base class settings.
 	CCtrlWnd::GetCreateParams(rParams);
 
     // Get the height of the default font.
     CScreenDC DC;
     
-    DC.Select(pApp->DefaultFont());
+    DC.Select(CApp::This().DefaultFont());
     CSize FontSize = DC.TextExtents("Ly");
 
 	// Override any settings.
