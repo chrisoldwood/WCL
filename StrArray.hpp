@@ -60,6 +60,11 @@ public:
 *******************************************************************************
 */
 
+#ifdef _DEBUG
+// For memory leak detection.
+#define new DBGCRT_NEW
+#endif
+
 inline CStrArray::CStrArray()
 {
 }
@@ -140,5 +145,9 @@ inline int CStrArray::Find(const char* pszString, bool bIgnoreCase) const
 
 	return -1;
 }
+
+#ifdef _DEBUG
+#undef new
+#endif
 
 #endif //STRARRAY_HPP
