@@ -33,6 +33,8 @@ public:
 	void Reset() const;
 	int Count() const;
 	int Add(const char* pszText) const;
+	int Add(const char* pszText, LPARAM lData) const;
+	int Add(const char* pszText, void*  pData) const;
 	int Insert(const char* pszText, int iPos) const;
 	int Delete(int iItem) const;
 	int Find(const char* pszText, int iFirst = -1) const;
@@ -89,6 +91,24 @@ inline int CListBox::Count() const
 inline int CListBox::Add(const char* pszText) const
 {
 	return (int)SendMessage(LB_ADDSTRING, 0, (LPARAM)(LPCSTR) pszText);
+}
+
+inline int CListBox::Add(const char* pszText, LPARAM lData) const
+{
+	int n = Add(pszText);
+
+	ItemData(n, lData);
+
+	return n;
+}
+
+inline int CListBox::Add(const char* pszText, void*  pData) const
+{
+	int n = Add(pszText);
+
+	ItemPtr(n, pData);
+
+	return n;
 }
 
 inline int CListBox::Insert(const char* pszText, int iPos) const
