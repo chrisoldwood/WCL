@@ -25,8 +25,8 @@ public:
 	//
 	// Methods.
 	//
-	virtual void Lock() = 0;
-	virtual void Unlock() = 0;
+	virtual void Aquire() = 0;
+	virtual void Release() = 0;
 	
 protected:
 	// Make interface.
