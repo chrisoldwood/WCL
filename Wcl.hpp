@@ -131,6 +131,7 @@
 #include "StdWnd.hpp"
 
 // Built-in controls classes
+#include "StaticCtrl.hpp"
 #include "Label.hpp"
 #include "ListBox.hpp"
 #include "ComboBox.hpp"

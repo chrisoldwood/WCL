@@ -398,6 +398,10 @@ SOURCE=.\SplitWnd.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\StaticCtrl.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\StatusBar.cpp
 # End Source File
 # Begin Source File
@@ -847,6 +851,10 @@ SOURCE=.\Size.hpp
 # Begin Source File
 
 SOURCE=.\SplitWnd.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\StaticCtrl.hpp
 # End Source File
 # Begin Source File
 
