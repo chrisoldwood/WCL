@@ -45,8 +45,10 @@ public:
 	// Command property methods.
 	//
 	virtual int CmdBmpIndex(uint iCmdID) const;
-	virtual int CmdHint(uint iCmdID) const;
-	virtual int CmdToolTip(uint iCmdID) const;
+	virtual int CmdHintID(uint iCmdID) const;
+	virtual int CmdToolTipID(uint iCmdID) const;
+	virtual CString CmdHintStr(uint iCmdID) const;
+	virtual CString CmdToolTipStr(uint iCmdID) const;
 
 protected:
 	///////////////////////////////////////////////////////

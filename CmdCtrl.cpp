@@ -109,7 +109,7 @@ void CCmdControl::UpdateUI()
 	}
 
 	// Force a redraw of the menu bar.
-	CApp::This()->m_rMainWnd.DrawMenuBar();
+	CApp::This().m_rMainWnd.DrawMenuBar();
 }
 
 /******************************************************************************
@@ -164,7 +164,7 @@ int CCmdControl::CmdBmpIndex(uint iCmdID) const
 }
 
 /******************************************************************************
-** Method:		CmdHint()
+** Method:		CmdHintID()
 **
 ** Description:	Get the commands' hint resource ID.
 **				By default the hint resurce ID is the same as the command ID.
@@ -176,13 +176,13 @@ int CCmdControl::CmdBmpIndex(uint iCmdID) const
 *******************************************************************************
 */
 
-int CCmdControl::CmdHint(uint iCmdID) const
+int CCmdControl::CmdHintID(uint iCmdID) const
 {
 	return iCmdID;
 }
 
 /******************************************************************************
-** Method:		CmdToolTip()
+** Method:		CmdToolTipID()
 **
 ** Description:	Get the commands' tool tip resource ID.
 **				By default the tool tip resurce ID is the same as the command ID.
@@ -194,7 +194,61 @@ int CCmdControl::CmdHint(uint iCmdID) const
 *******************************************************************************
 */
 
-int CCmdControl::CmdToolTip(uint iCmdID) const
+int CCmdControl::CmdToolTipID(uint iCmdID) const
 {
 	return iCmdID;
+}
+
+/******************************************************************************
+** Method:		CmdHintStr()
+**
+** Description:	Get the commands' hint text.
+**				If the string contains a newline, it assumes that text after
+**				the newline is a tooltip and removes it.
+**
+** Parameters:	iCmdID		The command.
+**
+** Returns:		The hint text.
+**
+*******************************************************************************
+*/
+
+CString CCmdControl::CmdHintStr(uint iCmdID) const
+{
+	CString str(CmdHintID(iCmdID));
+	int		nEOL = str.Find('\n');
+
+	// Hint only?
+	if (nEOL == -1)
+		return str;
+
+	// Strip tooltip.
+	return str.Left(nEOL);
+}
+
+/******************************************************************************
+** Method:		CmdToolTipStr()
+**
+** Description:	Get the commands' tool tip text.
+**				If the string contains a newline, it assumes that text before
+**				the newline is a hint and removes it.
+**
+** Parameters:	iCmdID		The command.
+**
+** Returns:		The tool tip text.
+**
+*******************************************************************************
+*/
+
+CString CCmdControl::CmdToolTipStr(uint iCmdID) const
+{
+	CString str(CmdHintID(iCmdID));
+	int		nEOL = str.Find('\n');
+
+	// Hint only?
+	if (nEOL == -1)
+		return "";
+
+	// Strip tooltip.
+	return str.Right(str.Length() - nEOL - 1);
 }
