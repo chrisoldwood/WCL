@@ -30,7 +30,7 @@ public:
 	~CIniFile();
 	
 	//
-	// I/O.
+	// Entry read/write methods.
 	//
 	CString ReadString (const char* pszSection, const char* pszEntry, const char* pszDefault) const;
 	int     ReadInt    (const char* pszSection, const char* pszEntry, int iDefault) const;
@@ -42,8 +42,15 @@ public:
 	void    WriteLong  (const char* pszSection, const char* pszEntry, long lValue);
 	void    WriteBool  (const char* pszSection, const char* pszEntry, bool bValue);
 	
-	void    DeleteSection(const char* pszSection);
-	void    DeleteKey    (const char* pszSection, const char* pszEntry);
+	void    DeleteEntry(const char* pszSection, const char* pszEntry);
+
+	//
+	// Section methods.
+	//
+	int  ReadSectionNames(CStrArray& astrNames);
+	int  ReadSection(const char* pszSection, CStrArray& astrEntries);
+	int  ReadSection(const char* pszSection, CStrArray& astrKeys, CStrArray& astrValues);
+	void DeleteSection(const char* pszSection);
 
 	//
 	// Members.

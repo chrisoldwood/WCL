@@ -104,7 +104,7 @@ CString CIniFile::ReadString(const char* pszSection, const char* pszEntry,
 	
 	char szBuffer[128];
 
-	GetPrivateProfileString(pszSection, pszEntry, pszDefault, szBuffer,
+	::GetPrivateProfileString(pszSection, pszEntry, pszDefault, szBuffer,
 							sizeof(szBuffer), m_strPath);
 
 	return szBuffer;
@@ -116,7 +116,7 @@ void CIniFile::WriteString(const char* pszSection, const char* pszEntry, const c
 	ASSERT(pszEntry);
 	ASSERT(pszValue);
 	
-	WritePrivateProfileString(pszSection, pszEntry, pszValue, m_strPath);
+	::WritePrivateProfileString(pszSection, pszEntry, pszValue, m_strPath);
 }
 						
 int CIniFile::ReadInt(const char* pszSection, const char* pszEntry, int iDefault) const
@@ -124,7 +124,7 @@ int CIniFile::ReadInt(const char* pszSection, const char* pszEntry, int iDefault
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
 
-	return GetPrivateProfileInt(pszSection, pszEntry, iDefault, m_strPath);
+	return ::GetPrivateProfileInt(pszSection, pszEntry, iDefault, m_strPath);
 }
 						
 void CIniFile::WriteInt(const char* pszSection, const char* pszEntry, int iValue)
@@ -136,7 +136,7 @@ void CIniFile::WriteInt(const char* pszSection, const char* pszEntry, int iValue
 	
 	// Convert to string and write.
 	wsprintf(szValue, "%d", iValue);
-	WritePrivateProfileString(pszSection, pszEntry, szValue, m_strPath);
+	::WritePrivateProfileString(pszSection, pszEntry, szValue, m_strPath);
 }
 						
 long CIniFile::ReadLong(const char* pszSection, const char* pszEntry, long lDefault) const
@@ -147,7 +147,7 @@ long CIniFile::ReadLong(const char* pszSection, const char* pszEntry, long lDefa
 	char szValue[20];
 
 	// Read as a string.
-	GetPrivateProfileString(pszSection, pszEntry, "", szValue, 
+	::GetPrivateProfileString(pszSection, pszEntry, "", szValue, 
 								sizeof(szValue), m_strPath);
 	
 	// Read anything?
@@ -167,7 +167,7 @@ void CIniFile::WriteLong(const char* pszSection, const char* pszEntry, long lVal
 	
 	// Convert to string and write.
 	wsprintf(szValue, "%ld", lValue);
-	WritePrivateProfileString(pszSection, pszEntry, szValue, m_strPath);
+	::WritePrivateProfileString(pszSection, pszEntry, szValue, m_strPath);
 }
 						
 bool CIniFile::ReadBool(const char* pszSection, const char* pszEntry, bool bDefault) const
@@ -178,7 +178,7 @@ bool CIniFile::ReadBool(const char* pszSection, const char* pszEntry, bool bDefa
 	char szValue[10];
 
 	// Read as a string.
-	GetPrivateProfileString(pszSection, pszEntry, "", szValue, 
+	::GetPrivateProfileString(pszSection, pszEntry, "", szValue, 
 								sizeof(szValue), m_strPath);
 
 	// Read anything?
@@ -195,9 +195,150 @@ void CIniFile::WriteBool(const char* pszSection, const char* pszEntry, bool bVal
 	ASSERT(pszEntry);
 
 	if (bValue)
-		WritePrivateProfileString(pszSection, pszEntry, "True", m_strPath);
+		::WritePrivateProfileString(pszSection, pszEntry, "True", m_strPath);
 	else
-		WritePrivateProfileString(pszSection, pszEntry, "False", m_strPath);
+		::WritePrivateProfileString(pszSection, pszEntry, "False", m_strPath);
+}
+
+/******************************************************************************
+** Method:		DeleteEntry()
+**
+** Description:	Deletes an entry from a section.
+**
+** Parameters:	pszSection	The section to delete from.
+**				pszEntry	The entry to delete.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CIniFile::DeleteEntry(const char* pszSection, const char* pszEntry)
+{
+	ASSERT(pszSection);
+	ASSERT(pszEntry);
+
+	::WritePrivateProfileString(pszSection, pszEntry, NULL, m_strPath);
+}
+
+/******************************************************************************
+** Method:		ReadSectionNames()
+**
+** Description:	Gets the names of all sections within the file.
+**
+** Parameters:	astrNames	The return buffer for the names.
+**
+** Returns:		The number of names read.
+**
+*******************************************************************************
+*/
+
+int CIniFile::ReadSectionNames(CStrArray& astrNames)
+{
+	// Allocate initial buffer.
+	DWORD dwSize   = 1024;
+	char* pszNames = (char*) _alloca(dwSize);
+
+	// Read all names, reallocating if necessary...
+	while (::GetPrivateProfileSectionNames(pszNames, dwSize, m_strPath) >= (dwSize-2))
+	{
+		// Double the buffer size.
+		dwSize  *= 2;
+		pszNames = (char*) _alloca(dwSize);
+	}
+
+	// For all strings.
+	while (*pszNames != '\0')
+	{
+		astrNames.Add(pszNames);
+		pszNames += strlen(pszNames) + 1;
+	}
+
+	return astrNames.Size();
+}
+
+/******************************************************************************
+** Method:		ReadSection()
+**
+** Description:	Reads all the entries for a section.
+**
+** Parameters:	pszSection	The section name.
+**				astrEntries	The return buffer for the entries.
+**
+** Returns:		The number of entries read.
+**
+*******************************************************************************
+*/
+
+int CIniFile::ReadSection(const char* pszSection, CStrArray& astrEntries)
+{
+	ASSERT(pszSection);
+
+	// Allocate initial buffer.
+	DWORD dwSize     = 1024;
+	char* pszEntries = (char*) _alloca(dwSize);
+
+	// Read all entries, reallocating if necessary...
+	while (::GetPrivateProfileSection(pszSection, pszEntries, dwSize, m_strPath) >= (dwSize-2))
+	{
+		// Double the buffer size.
+		dwSize  *= 2;
+		pszEntries = (char*) _alloca(dwSize);
+	}
+
+	// For all strings.
+	while (*pszEntries != '\0')
+	{
+		astrEntries.Add(pszEntries);
+		pszEntries += strlen(pszEntries) + 1;
+	}
+
+	return astrEntries.Size();
+}
+
+/******************************************************************************
+** Method:		ReadSection()
+**
+** Description:	Reads an entire section into two arrays of keys and values.
+**
+** Parameters:	pszSection	The section name.
+**				astrKeys	The return buffer for the keys.
+**				astrValues	The return buffer for the values.
+**
+** Returns:		The number of entries read.
+**
+*******************************************************************************
+*/
+
+int CIniFile::ReadSection(const char* pszSection, CStrArray& astrKeys, CStrArray& astrValues)
+{
+	ASSERT(pszSection);
+
+	CStrArray astrEntries;
+
+	// Read all the entries...
+	if (ReadSection(pszSection, astrEntries))
+	{
+		// Split all entries.
+		for (int i = 0; i < astrEntries.Size(); ++i)
+		{
+			// Split into key and value.
+			CString strEntry = astrEntries[i];
+			int     nLength  = strEntry.Length();
+			int     nSepPos  = strEntry.Find('=');
+
+			// Key set AND value set?
+			if ( (nSepPos > 0) && ((nLength-nSepPos-1) > 0) )
+			{
+				astrKeys.Add(strEntry.Left(nSepPos));
+				astrValues.Add(strEntry.Right(nLength-nSepPos-1));
+			}
+		}
+	}
+
+	ASSERT(astrKeys.Size() == astrValues.Size());
+
+	return astrKeys.Size();
 }
 
 /******************************************************************************
@@ -216,26 +357,5 @@ void CIniFile::DeleteSection(const char* pszSection)
 {
 	ASSERT(pszSection);
 
-	WritePrivateProfileString(pszSection, NULL, NULL, m_strPath);
-}
-
-/******************************************************************************
-** Method:		DeleteKey()
-**
-** Description:	Deletes a key from a section.
-**
-** Parameters:	pszSection	The section to delete from.
-**				pszEntry	The key to delete.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
-
-void CIniFile::DeleteKey(const char* pszSection, const char* pszEntry)
-{
-	ASSERT(pszSection);
-	ASSERT(pszEntry);
-
-	WritePrivateProfileString(pszSection, pszEntry, NULL, m_strPath);
+	::WritePrivateProfileString(pszSection, NULL, NULL, m_strPath);
 }
