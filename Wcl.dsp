@@ -238,6 +238,10 @@ SOURCE=.\HintBar.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Icon.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\IniFile.cpp
 # End Source File
 # Begin Source File
@@ -271,6 +275,10 @@ SOURCE=.\MainDlg.cpp
 # Begin Source File
 
 SOURCE=.\Map.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\MapIter.cpp
 # End Source File
 # Begin Source File
 
@@ -439,6 +447,10 @@ SOURCE=.\ToolTip.cpp
 # Begin Source File
 
 SOURCE=.\TransparentBmp.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\TrayIcon.cpp
 # End Source File
 # Begin Source File
 
@@ -642,6 +654,10 @@ SOURCE=.\HintBar.hpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Icon.hpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\IniFile.hpp
 # End Source File
 # Begin Source File
@@ -687,6 +703,10 @@ SOURCE=.\MainThread.hpp
 # Begin Source File
 
 SOURCE=.\Map.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\MapIter.hpp
 # End Source File
 # Begin Source File
 
@@ -886,6 +906,10 @@ SOURCE=.\TMap.hpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\TMapIter.hpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ToolBar.hpp
 # End Source File
 # Begin Source File
@@ -895,6 +919,10 @@ SOURCE=.\ToolTip.hpp
 # Begin Source File
 
 SOURCE=.\TransparentBmp.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\TrayIcon.hpp
 # End Source File
 # Begin Source File
 

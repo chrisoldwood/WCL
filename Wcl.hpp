@@ -67,7 +67,9 @@
 #include "List.hpp"
 #include "PtrList.hpp"
 #include "Map.hpp"
+#include "MapIter.hpp"
 #include "TMap.hpp"
+#include "TMapIter.hpp"
 #include "HandleMap.hpp"
 #include "IntPtrMap.hpp"
 #include "StrPtrMap.hpp"
@@ -117,6 +119,7 @@
 #include "ScreenDC.hpp"
 #include "CmdBmp.hpp"
 #include "Cursor.hpp"
+#include "Icon.hpp"
 
 // Base window classes.
 #include "Wnd.hpp"
@@ -169,6 +172,7 @@
 #include "HelpFile.hpp"
 #include "MRUList.hpp"
 #include "SysInfo.hpp"
+#include "TrayIcon.hpp"
 
 // Threading classes.
 #include "IThreadLock.hpp"
