@@ -1,18 +1,10 @@
 - Clipboard exception.
 
-- Clipboard class for simple support.
-
-- Change ctrl msg table to be non-static.
-
-- Change headers from .hpp to .h
+- Clipboard class for simple copy text support.
 
 - Ref counted strings.
 
 - File finder recursion support.
-
-- Templates to use STL.
-
-- RegKey class.
 
 - App helpers for reg file types/apps etc.
 
