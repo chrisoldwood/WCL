@@ -36,6 +36,11 @@ public:
 	//
 	HCURSOR Handle() const;
 
+	//
+	// Class methods.
+	//
+	static CPoint CurrentPos();
+
 protected:
 	//
 	// Members.
@@ -64,6 +69,15 @@ inline void CCursor::LoadRsc(const char* pszRsc)
 inline HCURSOR CCursor::Handle() const
 {
 	return m_hCursor;
+}
+
+inline CPoint CCursor::CurrentPos()
+{
+	CPoint ptCursor;
+
+	::GetCursorPos(&ptCursor);
+
+	return ptCursor;
 }
 
 #endif //CURSOR_HPP
