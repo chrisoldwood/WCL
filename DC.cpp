@@ -61,31 +61,30 @@ void CDC::Border3D(const CRect& rcRect, bool bRaised, bool bThick)
 	}
 
 	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
+	CApp& oApp = CApp::This();
 
 	// Get the pens.
 	if (bRaised)
 	{
-		pInnerTopPen = &pApp->LightPen();
-		pInnerBotPen = &pApp->DarkPen();
+		pInnerTopPen = &oApp.LightPen();
+		pInnerBotPen = &oApp.DarkPen();
 
 		if (bThick)
 		{
-			pOuterTopPen = &pApp->LightestPen();
-			pOuterBotPen = &pApp->DarkestPen();
+			pOuterTopPen = &oApp.LightestPen();
+			pOuterBotPen = &oApp.DarkestPen();
 		}
 	}
 	// Recessed.
 	else
 	{
-		pInnerTopPen = &pApp->DarkestPen();
-		pInnerBotPen = &pApp->LightPen();
+		pInnerTopPen = &oApp.DarkestPen();
+		pInnerBotPen = &oApp.LightPen();
 
 		if (bThick)
 		{
-			pOuterTopPen = &pApp->DarkPen();
-			pOuterBotPen = &pApp->LightestPen();
+			pOuterTopPen = &oApp.DarkPen();
+			pOuterBotPen = &oApp.LightestPen();
 		}
 	}
 
@@ -134,12 +133,11 @@ void CDC::Border3D(const CRect& rcRect, bool bRaised, bool bThick)
 void CDC::HorzLine3D(int iSX, int iDX, int iY, bool bRaised)
 {
 	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
+	CApp& oApp = CApp::This();
 
 	// Get the pens.
-	const CPen* pTopPen = (bRaised) ? &pApp->LightestPen() : &pApp->DarkPen();
-	const CPen* pBotPen = (bRaised) ? &pApp->DarkPen()     : &pApp->LightestPen();
+	const CPen* pTopPen = (bRaised) ? &oApp.LightestPen() : &oApp.DarkPen();
+	const CPen* pBotPen = (bRaised) ? &oApp.DarkPen()     : &oApp.LightestPen();
 
 	// Draw the lines.
 	Select(*pTopPen);
@@ -166,12 +164,11 @@ void CDC::HorzLine3D(int iSX, int iDX, int iY, bool bRaised)
 void CDC::VertLine3D(int iX, int iSY, int iDY, bool bRaised)
 {
 	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
+	CApp& oApp = CApp::This();
 
 	// Get the pens.
-	const CPen* pTopPen = (bRaised) ? &pApp->LightestPen() : &pApp->DarkPen();
-	const CPen* pBotPen = (bRaised) ? &pApp->DarkPen()     : &pApp->LightestPen();
+	const CPen* pTopPen = (bRaised) ? &oApp.LightestPen() : &oApp.DarkPen();
+	const CPen* pBotPen = (bRaised) ? &oApp.DarkPen()     : &oApp.LightestPen();
 
 	// Draw the lines.
 	Select(*pTopPen);

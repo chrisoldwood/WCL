@@ -110,6 +110,7 @@ public:
 	int BkMode(int iMode);
 	void TextOut(int iX, int iY, const char* pszText);
 	void TextOut(const CPoint& rptOrigin, const char* pszText);
+	void DrawText(const CRect& rcRect, const char* pszText, int nFormat);
 	
 	//
 	// Bit blitting.
@@ -297,6 +298,11 @@ inline void CDC::TextOut(int iX, int iY, const char* pszText)
 inline void CDC::TextOut(const CPoint& rptOrigin, const char* pszText)
 {
 	::TextOut(m_hDC, rptOrigin.x, rptOrigin.y, (LPCSTR)pszText, lstrlen((LPCSTR)pszText));
+}
+
+inline void CDC::DrawText(const CRect& rcRect, const char* pszText, int nFormat)
+{
+	::DrawText(m_hDC, pszText, -1, const_cast<CRect*>(&rcRect), nFormat);
 }
 
 inline void CDC::PatBlt(const CRect& rcDst, DWORD dwRop)
