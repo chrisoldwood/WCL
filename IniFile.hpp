@@ -27,6 +27,7 @@ public:
 	//
 	CIniFile();
 	CIniFile(const char* pszPath);
+	CIniFile(const char* pszDir, const char* pszFile);
 	~CIniFile();
 	
 	//
@@ -43,6 +44,12 @@ public:
 	void    WriteBool  (const char* pszSection, const char* pszEntry, bool bValue);
 	
 	void    DeleteEntry(const char* pszSection, const char* pszEntry);
+
+	//
+	// Array entry read/write methods.
+	//
+	CStrArray ReadStrings (const char* pszSection, const char* pszEntry, char cSep, const char*      pszDefault) const;
+	void      WriteStrings(const char* pszSection, const char* pszEntry, char cSep, const CStrArray& astrValues);
 
 	//
 	// Section methods.

@@ -63,6 +63,24 @@ CIniFile::CIniFile(const char* pszPath)
 }
 
 /******************************************************************************
+** Method:		Constructor.
+**
+** Description:	Initialises with the given directory and file name.
+**
+** Parameters:	pszDir		File directory.
+**				pszFile		File name.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+CIniFile::CIniFile(const char* pszDir, const char* pszFile)
+	: m_strPath(pszDir, pszFile)
+{
+}
+
+/******************************************************************************
 ** Method:		Destructor.
 **
 ** Description:	.
@@ -224,6 +242,72 @@ void CIniFile::DeleteEntry(const char* pszSection, const char* pszEntry)
 	ASSERT(pszEntry);
 
 	::WritePrivateProfileString(pszSection, pszEntry, NULL, m_strPath);
+}
+
+/******************************************************************************
+** Method:		ReadStrings()
+**
+** Description:	Read and parse a list of strings speparated by a character.
+**
+** Parameters:	pszSection	The section to delete from.
+**				pszEntry	The entry to delete.
+**				cSep		The string separator.
+**				pszDefault	The default list.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+CStrArray CIniFile::ReadStrings(const char* pszSection, const char* pszEntry, char cSep, const char* pszDefault) const
+{
+	ASSERT(pszSection != NULL);
+	ASSERT(pszEntry   != NULL);
+	ASSERT(pszDefault != NULL);
+
+	CStrArray astr;
+
+	// Get the entry.
+	CString str = ReadString(pszSection, pszEntry, pszDefault);
+
+	// Split list.
+	CStrTok::Split(str, cSep, astr);
+
+	return astr;
+}
+
+/******************************************************************************
+** Method:		DeleteEntry()
+**
+** Description:	Deletes an entry from a section.
+**
+** Parameters:	pszSection	The section to delete from.
+**				pszEntry	The entry to delete.
+**				cSep		The string separator.
+**				astrValues	The string list.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CIniFile::WriteStrings(const char* pszSection, const char* pszEntry, char cSep, const CStrArray& astrValues)
+{
+	ASSERT(pszSection != NULL);
+	ASSERT(pszEntry   != NULL);
+
+	CString str;
+
+	// Build string list.
+	for (int i = 0; i < astrValues.Size(); ++i)
+	{
+		if (i != 0)
+			str += cSep;
+
+		str += astrValues[i];
+	}
+
+	WriteString(pszSection, pszEntry, str);
 }
 
 /******************************************************************************
