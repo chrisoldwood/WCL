@@ -79,7 +79,7 @@ void CThreadPool::Start()
 		m_oPool.Add(new CWorkerThread(*this, i));
 
 	// Start the pool threads.
-	for (i = 0; i < m_nThreads; ++i)
+	for (int i = 0; i < m_nThreads; ++i)
 		m_oPool[i]->Start();
 
 	m_eStatus = RUNNING;
