@@ -325,7 +325,7 @@ LRESULT CDialog::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 *******************************************************************************
 */
 
-LRESULT CDialog::DefaultWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CDialog::DefaultWndProc(HWND /*hWnd*/, UINT /*iMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 	// Message not processed.
 	MsgHandled(false);
@@ -348,7 +348,7 @@ LRESULT CDialog::DefaultWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lPar
 *******************************************************************************
 */
 
-void CDialog::OnCreate(const CRect& rcClient)
+void CDialog::OnCreate(const CRect& /*rcClient*/)
 {
 	// Forward to normal dialog init method.
 	OnInitDialog();
@@ -417,7 +417,7 @@ bool CDialog::OnCancel()
 *******************************************************************************
 */
 
-void CDialog::OnResize(int iFlag, const CSize& rNewSize)
+void CDialog::OnResize(int /*iFlag*/, const CSize& rNewSize)
 {
 	// No table specified?
 	if (m_pGravTable == NULL)
@@ -709,4 +709,39 @@ void CDialog::OnPaint(CDC& rDC)
 
 	// Save grip position for later.
 	m_rcOldGrip = CRect(CPoint(ptCorner.x-12, ptCorner.y-12), CSize(13, 13));
+}
+
+/******************************************************************************
+** Method:		OnHitTest()
+**
+** Description:	Checks if the mouse is on the sizing grip.
+**
+** Parameters:	ptCursor	The mouse position in screen coordinates.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CDialog::OnHitTest(const CPoint& ptCursor)
+{
+	// Resizable AND size grip enabled?
+	if ( (m_pGravTable != NULL) && (!m_bNoSizeGrip) )
+	{
+		CPoint ptClient = ptCursor;
+
+		// Convert mouse coordinates to client.
+		::ScreenToClient(m_hWnd, &ptClient);
+
+		// Is in sizing grip rect?
+		if (ptClient.IsIn(m_rcOldGrip))
+		{
+			MsgHandled(true);
+			MsgResult (HTBOTTOMRIGHT);
+			return;
+		}
+	}
+
+	// Handle in base class.
+	CMsgWnd::OnHitTest(ptCursor);
 }

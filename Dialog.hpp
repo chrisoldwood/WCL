@@ -108,6 +108,7 @@ protected:
 	virtual bool OnCancel();
 	virtual void OnResize(int iFlag, const CSize& rNewSize);
 	virtual void OnPaint(CDC& rDC);
+	virtual void OnHitTest(const CPoint& ptCursor);
 
 	//
 	// Control methods.
