@@ -37,6 +37,10 @@ public:
 	void  Add(CWnd& rWnd);
 	void  Remove(CWnd& rWnd);
 	CWnd* Find(HWND hWnd) const;
+
+protected:
+	// The approx window map limit.
+	enum { MAX_WINDOWS = 100 };
 };
 
 /******************************************************************************

@@ -10,9 +10,6 @@
 
 #include "wcl.hpp"
 
-// The map size.
-#define MAP_SIZE	17
-
 /******************************************************************************
 ** Method:		Constructor.
 **
@@ -26,8 +23,8 @@
 */
 
 CWndMap::CWndMap()
-	: CHandleMap(MAP_SIZE)
 {
+	Reserve(MAX_WINDOWS);
 }
 
 /******************************************************************************
