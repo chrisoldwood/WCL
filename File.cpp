@@ -519,11 +519,11 @@ bool CFile::CreateShortcut(const char* pszLink, const char* pszTarget, const cha
 
 		if (SUCCEEDED(hResult))
 		{ 
-			// Set the target file and description.
-			if (pszTarget != NULL)
-				pIShellLink->SetPath(pszTarget);
+			// Set the link properties.
+			pIShellLink->SetPath(pszTarget);
+			pIShellLink->SetWorkingDirectory(CPath(pszTarget).Directory());
 
-			if (pszDesc != NULL)
+			if ((pszDesc != NULL) && (*pszDesc != '\0'))
 				pIShellLink->SetDescription(pszDesc);
  
 			IPersistFile* pIPersistFile = NULL;
