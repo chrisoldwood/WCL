@@ -99,6 +99,7 @@ public:
 	//
 	void Rectangle(const CRect& rRect);
 	void Ellipse(const CRect& rRect);
+	void Arc(const CRect& rRect, const CPoint& ptStart, const CPoint& ptEnd);
 	void Fill(const CRect& rRect, const CBrush& rBrush);
 
 	//
@@ -260,6 +261,12 @@ inline void CDC::Rectangle(const CRect& rRect)
 inline void CDC::Ellipse(const CRect& rRect)
 {
 	::Ellipse(m_hDC, rRect.left, rRect.top, rRect.right, rRect.bottom);
+}
+
+inline void CDC::Arc(const CRect& rRect, const CPoint& ptStart, const CPoint& ptEnd)
+{
+	::Arc(m_hDC, rRect.left, rRect.top, rRect.right, rRect.bottom,
+			ptStart.x, ptStart.y, ptEnd.x, ptEnd.y);
 }
 
 inline void CDC::Fill(const CRect& rRect, const CBrush& rBrush)
