@@ -39,8 +39,14 @@ public:
 	CPoint BottomRight() const;
 	CPoint BottomLeft() const;
 	CPoint TopRight() const;
+	CPoint Centre() const;
 
+	//
+	// Sizing & Position methods.
+	//
 	void Set(int iLeft, int iTop, int iRight, int iBottom);
+	void Inflate(int iSize);
+	void Offset(int iX, int iY);
 
 	//
 	// Attributes.
@@ -109,12 +115,33 @@ inline CPoint CRect::TopRight() const
 	return CPoint(right, top);
 }
 
+inline CPoint CRect::Centre() const
+{
+	return CPoint(left + (Width() / 2), top + (Height() / 2));
+}
+
 inline void CRect::Set(int iLeft, int iTop, int iRight, int iBottom)
 {
 	left   = iLeft;
 	top    = iTop;
 	right  = iRight;
 	bottom = iBottom;
+}
+
+inline void CRect::Inflate(int iSize)
+{
+	left   -= iSize;
+	top    -= iSize;
+	right  += iSize;
+	bottom += iSize;
+}
+
+inline void CRect::Offset(int iX, int iY)
+{
+	left   += iX;
+	top    += iY;
+	right  += iX;
+	bottom += iY;
 }
 
 inline bool CRect::Empty() const
