@@ -13,3 +13,5 @@
 - Two phase save support.
 
 - Replace CPath implementations for GetCWD() etc with Win32 functions.
+
+- Size grip on status bar.
