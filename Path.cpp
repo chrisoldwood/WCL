@@ -232,6 +232,7 @@ CPath CPath::Drive() const
 	char szDrive[MAX_PATH];
 
 	_splitpath(m_pszData, szDrive, NULL, NULL, NULL);
+
 	strcat(szDrive, "\\");
 
 	return CPath(szDrive);
@@ -240,9 +241,9 @@ CPath CPath::Drive() const
 /******************************************************************************
 ** Method:		Directory()
 **
-** Description:	Get the directory from the full path. This assumes that the
-**				last part of the path name specifies a file and as such only
-**				copies the path up to the last entry.
+** Description:	Get the directory from the full path. If the path specifies a
+**				a path to a file, it returns the files directory. If the path
+**				is to a folder, it returns the parent folder.
 **
 ** Parameters:	None.
 **
@@ -253,11 +254,15 @@ CPath CPath::Drive() const
 
 CPath CPath::Directory() const
 {
+	char szDrive[MAX_PATH];
 	char szDir[MAX_PATH];
 
-	_splitpath(m_pszData, NULL, szDir, NULL, NULL);
+	_splitpath(m_pszData, szDrive, szDir, NULL, NULL);
 
-	return CPath(szDir);
+	strcat(szDrive, szDir);
+	StripFinalSlash(szDrive);
+
+	return CPath(szDrive);
 }
 
 /******************************************************************************
@@ -278,6 +283,7 @@ CString CPath::FileName() const
 	char szExt[MAX_PATH];
 
 	_splitpath(m_pszData, NULL, NULL, szFileName, szExt);
+
 	strcat(szFileName, szExt);
 
 	return CString(szFileName);
@@ -546,4 +552,27 @@ bool CPath::SelectComputer(const CWnd& rParent, const char* pszTitle)
 	pMalloc->Release();
      
 	return pItemIDList != NULL;
+}
+
+/******************************************************************************
+** Method:		StripFinalSlash()
+**
+** Description:	Removes the trailing path separator from the path, if it exists.
+**
+** Parameters:	pszPath		The path to modify.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CPath::StripFinalSlash(char* pszPath)
+{
+	ASSERT(pszPath != NULL);
+
+	int nLength = strlen(pszPath);
+
+	// Strip trailing slash, if it exists.
+	if ( (nLength > 0) && (pszPath[nLength-1] == '\\') )
+		pszPath[nLength-1] = '\0';
 }

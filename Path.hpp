@@ -98,6 +98,8 @@ protected:
 	//
 	// Internal methods.
 	//
+	static void StripFinalSlash(char* pszPath);
+
 	static int CALLBACK BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPARAM lpData);
 };
 
