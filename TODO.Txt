@@ -7,3 +7,5 @@
 - Two phase save support (SDI).
 
 - Move to STL.
+
+- Set/KillTimer methods on App and callback.
