@@ -48,6 +48,10 @@ public:
 	//
 	static bool CopyText(HWND hOwner, const char* pszText);
 
+	static bool IsEmpty();
+	static bool IsFormatAvail(uint nFormat);
+	static bool PasteText(CString& strString);
+
 	//
 	// Format methods.
 	//

@@ -212,6 +212,85 @@ bool CClipboard::CopyText(HWND hOwner, const char* pszText)
 }
 
 /******************************************************************************
+** Method:		IsEmpty()
+**
+** Description:	Queries if the clipboard is empty.
+**
+** Parameters:	None.
+**
+** Returns:		true or false.
+**
+*******************************************************************************
+*/
+
+bool CClipboard::IsEmpty()
+{
+	return (::CountClipboardFormats() == 0);
+}
+
+/******************************************************************************
+** Method:		IsFormatAvail()
+**
+** Description:	Queries if the clipboard has data in the given format.
+**
+** Parameters:	nFormat		The format to query for.
+**
+** Returns:		true or false.
+**
+*******************************************************************************
+*/
+
+bool CClipboard::IsFormatAvail(uint nFormat)
+{
+	return (::IsClipboardFormatAvailable(nFormat) != 0);
+}
+
+/******************************************************************************
+** Method:		PasteText()
+**
+** Description:	Helper method for pasting text from the clipboard.
+**
+** Parameters:	strString	The return buffer.
+**
+** Returns:		true or false.
+**
+*******************************************************************************
+*/
+
+bool CClipboard::PasteText(CString& strString)
+{
+	bool bPasted = false;
+
+	// Open the clipboard.
+	if (::OpenClipboard(NULL))
+	{
+		HGLOBAL hData = ::GetClipboardData(CF_TEXT);
+
+		// Got data?
+		if (hData != NULL)
+		{
+			const char* psz = (const char*) ::GlobalLock(hData);
+
+			// Locked block?
+			if (psz != NULL)
+			{ 
+				// Copy string to return buffer.
+				strString = psz;
+			
+				::GlobalUnlock(hData); 
+
+				bPasted = true;
+			} 
+		}
+
+		// Close it.
+		::CloseClipboard();
+	}
+
+	return bPasted;
+}
+
+/******************************************************************************
 ** Method:		RegisterFormat()
 **
 ** Description:	Register the custom clipboard format.
