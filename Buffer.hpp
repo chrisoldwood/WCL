@@ -106,6 +106,9 @@ inline CString CBuffer::ToString(uint nChars) const
 {
 	ASSERT(nChars <= m_nSize);
 
+	if (m_pBuffer == NULL)
+		return "";
+
 	return CString((char*)m_pBuffer, nChars);
 }
 
