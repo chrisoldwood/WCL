@@ -62,7 +62,7 @@ public:
 	CFrameWnd&		m_rMainWnd;
 	CCmdControl&	m_rCmdControl;
 	CModule			m_Module;
-	CMsgThread		m_MainThread;
+	CMainThread		m_MainThread;
 	CString			m_strCmdLine;
 	int				m_iCmdShow;
 
