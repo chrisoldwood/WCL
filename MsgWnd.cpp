@@ -338,12 +338,8 @@ void CMsgWnd::OnVertScroll(uint iCode, uint iPos)
 
 void CMsgWnd::OnCmdMsg(uint iID)
 {
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	// Forward msg to cmd controller.
-	pApp->m_rCmdControl.Execute(iID);
+	CApp::This().m_rCmdControl.Execute(iID);
 }
 
 /******************************************************************************
