@@ -10,6 +10,11 @@
 
 #include "wcl.hpp"
 
+#ifdef _DEBUG
+// For memory leak detection.
+#define new DBGCRT_NEW
+#endif
+
 /******************************************************************************
 ** Method:		Constructor.
 **
@@ -44,5 +49,27 @@ CCursor::~CCursor()
 {
 	// Delete if valid and we own it.
 	if ( (m_hCursor) && (m_bOwner) )
-		::DeleteObject(m_hCursor);
+		::DestroyCursor(m_hCursor);
+}
+
+/******************************************************************************
+** Method:		LoadRsc()
+**
+** Description:	Loads the cursor from the resource file.
+**
+** Parameters:	iRscID		The resource ID.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CCursor::LoadRsc(uint nRscID)
+{
+	ASSERT(m_hCursor == NULL);
+
+	m_hCursor = ::LoadCursor(CModule::This().Handle(), MAKEINTRESOURCE(nRscID));
+	m_bOwner  = false;
+
+	ASSERT(m_hCursor != NULL);
 }

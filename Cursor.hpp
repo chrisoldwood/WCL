@@ -28,6 +28,7 @@ public:
 	CCursor();
 	~CCursor();
 
+	void LoadRsc(uint nRscID);
 	void LoadRsc(const char* pszRsc);
 	
 	//
@@ -52,6 +53,8 @@ protected:
 
 inline void CCursor::LoadRsc(const char* pszRsc)
 {
+	ASSERT(m_hCursor == NULL);
+
 	m_hCursor = ::LoadCursor(NULL, pszRsc);
 	m_bOwner  = false;
 
