@@ -99,6 +99,13 @@ bool CMsgThread::ProcessMsgQueue()
 			return false;
 		}
 
+		// Is thread message?
+		if (m_oMsg.hwnd == NULL)
+		{
+			OnThreadMsg(m_oMsg.message, m_oMsg.wParam, m_oMsg.lParam);
+			return true;
+		}
+
 		bool				bProcessed = false;
 		CMsgFilter*			pFilter = NULL;
 		CMsgFilters::CIter	Iter(m_MsgFilters);
@@ -116,4 +123,20 @@ bool CMsgThread::ProcessMsgQueue()
 	}
 
 	return true;
+}
+
+/******************************************************************************
+** Method:		OnThreadMsg()
+**
+** Description:	Message handler for general thread messages.
+**
+** Parameters:	Standard thread message parameters.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CMsgThread::OnThreadMsg(UINT /*nMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
 }

@@ -28,9 +28,6 @@ public:
 	CMsgThread();
 	~CMsgThread();
 
-	// The main thread function.
-	virtual void Run();
-
 	//
 	// Message filtering.
 	//
@@ -50,6 +47,14 @@ protected:
 	//
 	MSG			m_oMsg;
 	CMsgFilters	m_MsgFilters;
+
+	// The main thread function.
+	virtual void Run();
+
+	//
+	// Message handlers.
+	//
+	virtual void OnThreadMsg(UINT nMsg, WPARAM wParam, LPARAM lParam);
 };
 
 /******************************************************************************
