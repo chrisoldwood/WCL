@@ -25,7 +25,7 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CDecimalBox(bool bSigned, int nIntDigits, int nDecDigits, int nFlags = 0x00);
+	CDecimalBox(bool bSigned, int nIntDigits, int nDecDigits = 0, int nFlags = 0x00);
 	~CDecimalBox();
 	
 	//
@@ -34,12 +34,15 @@ public:
 	double Value() const;
 	void   Value(double dValue);
 
+	int    IntValue() const;
+	void   IntValue(int nValue);
+
 	// Flags.
 	enum Flags
 	{
 		DEFAULTS		= 0x00,
 		NO_TRAIL_ZEROES	= 0x01,
-		ALLOW_FRACTIONS = 0x02,
+//		ALLOW_FRACTIONS = 0x02,
 	};
 
 protected:

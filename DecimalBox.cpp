@@ -19,7 +19,7 @@
 /******************************************************************************
 ** Method:		Constructor.
 **
-** Description:	.
+** Description:	Constructor for defining real numbers.
 **
 ** Parameters:	None.
 **
@@ -51,14 +51,14 @@ CDecimalBox::CDecimalBox(bool bSigned, int nIntDigits, int nDecDigits, int nFlag
 		strFilter += '.';
 		m_nMaxChars++;
 	}
-
+/*
 	// Allow fractions?
 	if (m_nFlags & ALLOW_FRACTIONS)
 	{
 		strFilter += "/ ";
 		m_nMaxChars++;
 	}
-
+*/
 	Filter(strFilter);
 }
 
@@ -92,15 +92,7 @@ CDecimalBox::~CDecimalBox()
 
 double CDecimalBox::Value() const
 {
-	CString str = Text();
-
-	// Not a fraction?
-	if (str.Find('/') < 0)
-		return atof(str);
-
-	ASSERT(false);
-	
-	return atof(str);
+	return atof(Text());
 }
 
 /******************************************************************************
@@ -143,6 +135,42 @@ void CDecimalBox::Value(double dValue)
 	}
 
 	Text(szText);
+}
+
+/******************************************************************************
+** Method:		IntValue()
+**
+** Description:	Gets the value as an integer.
+**
+** Parameters:	None.
+**
+** Returns:		The value.
+**
+*******************************************************************************
+*/
+
+int CDecimalBox::IntValue() const
+{
+	return atoi(Text());
+}
+
+/******************************************************************************
+** Method:		IntValue()
+**
+** Description:	Sets an integer value.
+**
+** Parameters:	nValue	The value.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CDecimalBox::IntValue(int nValue)
+{
+	char szText[50];
+
+	Text(itoa(nValue, szText, 10));
 }
 
 /******************************************************************************
