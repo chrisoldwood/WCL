@@ -61,7 +61,6 @@ void CListView::GetCreateParams(WNDCREATE& rParams)
 **
 ** Parameters:	nPos		The position to insert at.
 **				pszText		The items label.
-**				lData		Item data.
 **				nImage		The index of the image list image (-1 for none).
 **
 ** Returns:		The index of the item or -1 on error.
@@ -69,24 +68,47 @@ void CListView::GetCreateParams(WNDCREATE& rParams)
 *******************************************************************************
 */
 
-int CListView::InsertItem(int nPos, const char* pszText, LPARAM lData, int nImage)
+int CListView::InsertItem(int nPos, const char* pszText, int nImage)
 {
-	LVITEM lvItem;
-
-	memset(&lvItem, 0, sizeof(lvItem));
+	LVITEM lvItem = { 0 };
 
 	// Initialise item structure.
 	lvItem.mask    = LVIF_TEXT | LVIF_PARAM;
 	lvItem.iItem   = nPos;
 	lvItem.pszText = (char*) pszText;
 	lvItem.iImage  = nImage;
-	lvItem.lParam  = lData;
+	lvItem.lParam  = NULL;
 
 	// Image specified?
 	if (nImage != -1)
 		lvItem.mask |= LVIF_IMAGE;
 
 	return ListView_InsertItem(m_hWnd, &lvItem);
+}
+
+/******************************************************************************
+** Method:		ItemData()
+**
+** Description:	Sets the custom data for the item.
+**
+** Parameters:	nItem		The item index.
+**				lParam		The item data.
+**
+** Returns:		The item text.
+**
+*******************************************************************************
+*/
+
+void CListView::ItemData(int nItem, LPARAM lParam)
+{
+	LVITEM lvItem = { 0 };
+
+	// Initialise item structure.
+	lvItem.mask   = LVIF_PARAM;
+	lvItem.iItem  = nItem;
+	lvItem.lParam = lParam;
+
+	ListView_SetItem(m_hWnd, &lvItem);
 }
 
 /******************************************************************************
@@ -105,10 +127,8 @@ int CListView::InsertItem(int nPos, const char* pszText, LPARAM lData, int nImag
 
 CString CListView::ItemText(int nItem, int nSubItem)
 {
-	LVITEM	lvItem;
+	LVITEM  lvItem      = { 0 };
 	char	szText[256] = { 0 };
-
-	memset(&lvItem, 0, sizeof(lvItem));
 
 	// Initialise item structure.
 	lvItem.mask       = LVIF_TEXT;
@@ -137,34 +157,15 @@ CString CListView::ItemText(int nItem, int nSubItem)
 
 LPARAM CListView::ItemData(int nItem)
 {
-	LVITEM lvItem;
-
-	memset(&lvItem, 0, sizeof(lvItem));
+	LVITEM lvItem = { 0 };
 
 	// Initialise item structure.
-	lvItem.mask    = LVIF_PARAM;
-	lvItem.iItem   = nItem;
+	lvItem.mask  = LVIF_PARAM;
+	lvItem.iItem = nItem;
 
 	ListView_GetItem(m_hWnd, &lvItem);
 
 	return lvItem.lParam;
-}
-
-/******************************************************************************
-** Method:		ItemPtr()
-**
-** Description:	Gets the item data for an item.
-**
-** Parameters:	nItem	The item whose data it is to fetch.
-**
-** Returns:		The item data.
-**
-*******************************************************************************
-*/
-
-void* CListView::ItemPtr(int nItem)
-{
-	return (void*) ItemData(nItem);
 }
 
 /******************************************************************************
@@ -184,9 +185,7 @@ void* CListView::ItemPtr(int nItem)
 
 void CListView::InsertColumn(int iPos, const char* pszName, int iWidth, int iFormat)
 {
-	LVCOLUMN lvColumn;
-
-	memset(&lvColumn, 0, sizeof(lvColumn));
+	LVCOLUMN lvColumn = { 0 };
 
     lvColumn.mask     = LVCF_TEXT | LVCF_WIDTH | LVCF_FMT;
     lvColumn.fmt      = iFormat;
@@ -219,10 +218,32 @@ void CListView::InsertColumns(const LVColumn* pColumns, int nColumns)
 /******************************************************************************
 ** Method:		ImageList()
 **
+** Description:	Sets the image list for the control from an ImageList object.
+**
+** Parameters:	nType		The type of image list (small/normal/state).
+**				oImageList	The image list.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CListView::ImageList(uint nType, const CImageList& oImageList)
+{
+	ASSERT(oImageList.Handle() != NULL);
+	ASSERT(oImageList.Owner()  == false);
+
+	ListView_SetImageList(m_hWnd, oImageList.Handle(), nType);
+}
+
+/******************************************************************************
+** Method:		ImageList()
+**
 ** Description:	Sets the image list for the control from a bitmap in the
 **				resource file.
 **
-** Parameters:	iRscID		The ID of the bitmap resource.
+** Parameters:	nType		The type of image list (small/normal/state).
+**				nRscID		The ID of the bitmap resource.
 **				nImgWidth	The width of each image.
 **				crMask		The colour used for the mask.
 **
@@ -231,13 +252,14 @@ void CListView::InsertColumns(const LVColumn* pColumns, int nColumns)
 *******************************************************************************
 */
 
-void CListView::ImageList(uint iRscID, int nImgWidth, COLORREF crMask)
+void CListView::ImageList(uint nType, uint nRscID, int nImgWidth, COLORREF crMask)
 {
-	// Load the image list.
-	HIMAGELIST hImgList = ImageList_LoadBitmap(CModule::This().Handle(), MAKEINTRESOURCE(iRscID), nImgWidth, 0, crMask);
-	ASSERT(hImgList != NULL);
+	CImageList oImageList;
 
-	ListView_SetImageList(m_hWnd, hImgList, LVSIL_NORMAL);
+	// Load the image list.
+	oImageList.LoadRsc(nRscID, nImgWidth, crMask);
+
+	ImageList(nType, oImageList);
 }
 
 /******************************************************************************
@@ -287,9 +309,7 @@ int CListView::FindItem(const char* pszText, bool bPartial, int nStart) const
 {
 	ASSERT(pszText != NULL);
 
-	LVFINDINFO oInfo;
-
-	memset(&oInfo, 0, sizeof(oInfo));
+	LVFINDINFO oInfo = { 0 };
 
 	oInfo.flags  = LVFI_STRING;
 	oInfo.flags |= (bPartial) ? LVFI_PARTIAL : 0;
@@ -300,9 +320,7 @@ int CListView::FindItem(const char* pszText, bool bPartial, int nStart) const
 
 int CListView::FindItem(LPARAM lData, int nStart) const
 {
-	LVFINDINFO oInfo;
-
-	memset(&oInfo, 0, sizeof(oInfo));
+	LVFINDINFO oInfo = { 0 };
 
 	oInfo.flags  = LVFI_PARAM;
 	oInfo.lParam = lData;
@@ -312,9 +330,7 @@ int CListView::FindItem(LPARAM lData, int nStart) const
 
 int CListView::FindItem(const void* pData, int nStart) const
 {
-	LVFINDINFO oInfo;
-
-	memset(&oInfo, 0, sizeof(oInfo));
+	LVFINDINFO oInfo = { 0 };
 
 	oInfo.flags  = LVFI_PARAM;
 	oInfo.lParam = (LPARAM)pData;

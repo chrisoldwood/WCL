@@ -52,17 +52,15 @@ public:
 	// Item methods.
 	//
 	void Reserve(int nItems);
-	int  AppendItem(const char* pszText);
-	int  AppendItem(const char* pszText, const void* pData);
-	int  AppendItem(const char* pszText, LPARAM      lData, int nImage);
-	int  InsertItem(int nPos, const char* pszText);
-	int  InsertItem(int nPos, const char* pszText, const void* pData);
-	int  InsertItem(int nPos, const char* pszText, LPARAM      lData, int nImage);
+	int  AppendItem(const char* pszText, int nImage = -1);
+	int  InsertItem(int nPos, const char* pszText, int nImage = -1);
 	void DeleteItem(int nItem);
 	void DeleteAllItems();
 
 	void ItemText(int nItem, int nSubItem, const char* pszText);
 	void ItemState(int nItem, int nState, int nMask);
+	void ItemData(int nItem, LPARAM lParam);
+	void ItemPtr(int nItem, const void* pData);
 
 	CString ItemText(int nItem, int nSubItem);
 	int     ItemState(int nItem, int nMask = LVIS_SELECTED) const;
@@ -98,7 +96,8 @@ public:
 	//
 	// Misc methods.
 	//
-	void ImageList(uint iRscID, int nImgWidth, COLORREF crMask);
+	void ImageList(uint nType, const CImageList& oImageList);
+	void ImageList(uint nType, uint nRscID, int nImgWidth, COLORREF crMask);
 	void IconSpacing(int iHorzSpacing, int iVertSpacing);
 	int  StringWidth(const char* pszString);
 	int  StringWidth(int nChars);
@@ -151,29 +150,9 @@ inline void CListView::Reserve(int nItems)
 	ListView_SetItemCount(m_hWnd, nItems);
 }
 
-inline int CListView::AppendItem(const char* pszText)
+inline int CListView::AppendItem(const char* pszText, int nImage)
 {
-	return AppendItem(pszText, 0, -1);
-}
-
-inline int CListView::AppendItem(const char* pszText, const void* pData)
-{
-	return AppendItem(pszText, (LPARAM)pData, -1);
-}
-
-inline int CListView::AppendItem(const char* pszText, LPARAM lData, int nImage)
-{
-	return InsertItem(ItemCount(), pszText, lData, nImage);
-}
-
-inline int CListView::InsertItem(int nPos, const char* pszText)
-{
-	return InsertItem(nPos, pszText, 0, -1);
-}
-
-inline int CListView::InsertItem(int nPos, const char* pszText, const void* pData)
-{
-	return InsertItem(nPos, pszText, (LPARAM)pData, -1);
+	return InsertItem(ItemCount(), pszText, nImage);
 }
 
 inline void CListView::DeleteItem(int nItem)
@@ -196,9 +175,19 @@ inline void CListView::ItemState(int nItem, int nState, int nMask)
 	ListView_SetItemState(m_hWnd, nItem, nState, nMask);
 }
 
+inline void CListView::ItemPtr(int nItem, const void* pData)
+{
+	ItemData(nItem, (LPARAM)pData);
+}
+
 inline int CListView::ItemState(int nItem, int nMask) const
 {
 	return ListView_GetItemState(m_hWnd, nItem, nMask);
+}
+
+inline void* CListView::ItemPtr(int nItem)
+{
+	return (void*) ItemData(nItem);
 }
 
 inline void CListView::Select(int nItem, bool bSelect)
