@@ -23,8 +23,8 @@ CFG=Wcl - Win32 Debug
 
 # Begin Project
 # PROP AllowPerConfigDependencies 0
-# PROP Scc_ProjName ""
-# PROP Scc_LocalPath ""
+# PROP Scc_ProjName ""$/Win32/Wcl", UAAAAAAA"
+# PROP Scc_LocalPath "."
 CPP=cl.exe
 RSC=rc.exe
 
@@ -542,6 +542,10 @@ SOURCE=.\IniFile.hpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\IntArray.hpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\IntPtrMap.hpp
 # End Source File
 # Begin Source File
@@ -739,6 +743,10 @@ SOURCE=.\Time.hpp
 # Begin Source File
 
 SOURCE=.\ToolBar.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\TPtrArray.hpp
 # End Source File
 # Begin Source File
 
