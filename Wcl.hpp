@@ -70,6 +70,7 @@
 #include "HandleMap.hpp"
 #include "IntPtrMap.hpp"
 #include "StrPtrMap.hpp"
+#include "Tree.hpp"
 
 // Template collection classes.
 #include "TPtrArray.hpp"

@@ -410,6 +410,10 @@ SOURCE=.\TransparentBmp.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Tree.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\UpDownBtns.cpp
 # End Source File
 # Begin Source File
@@ -803,6 +807,10 @@ SOURCE=.\TPtrArray.hpp
 # Begin Source File
 
 SOURCE=.\TransparentBmp.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Tree.hpp
 # End Source File
 # Begin Source File
 
