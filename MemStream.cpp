@@ -22,12 +22,11 @@
 *******************************************************************************
 */
 
-CMemStream::CMemStream()
-	: m_hMem(NULL)
-	, m_bOwner(false)
+CMemStream::CMemStream(CBuffer& oBuffer)
+	: m_oBuffer(oBuffer)
 	, m_pBuffer(NULL)
-	, m_lAllocSize(0)
-	, m_lEOF(0)
+	, m_lAllocSize(oBuffer.Size())
+	, m_lEOF(oBuffer.Size())
 	, m_lPos(0)
 {
 }
@@ -46,89 +45,6 @@ CMemStream::CMemStream()
 
 CMemStream::~CMemStream()
 {
-	FreeBlock();
-}
-
-/******************************************************************************
-** Method:		FreeBlock().
-**
-** Description:	Free the current block.
-**
-** Parameters:	None.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
-
-void CMemStream::FreeBlock()
-{
-	// Valid block AND owner?
-	if ( (m_hMem != NULL) && (m_bOwner) )
-		::GlobalFree(m_hMem);
-
-	// Reset members.
-	m_hMem       = NULL;
-	m_bOwner     = false;
-	m_pBuffer    = NULL;
-	m_lAllocSize = 0;
-	m_lEOF       = 0;
-	m_lPos       = 0;
-}
-
-/******************************************************************************
-** Method:		AttachHandle()
-**
-** Description:	Give a handle to the stream to use. Also tell the stream to
-**				take ownership or not.
-**
-** Parameters:	hMem	The memory handle.
-**				bOwn	Flag to determine ownership.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
-
-void CMemStream::AttachHandle(HGLOBAL hMem, bool bOwn)
-{
-	ASSERT(hMem != NULL);
-
-	// Free any exisiting block.
-	FreeBlock();
-
-	m_hMem   = hMem;
-	m_bOwner = bOwn;
-
-	// Get memory block size.
-	m_lAllocSize = m_lEOF = ::GlobalSize(m_hMem);
-}
-
-/******************************************************************************
-** Method:		DetachHandle()
-**
-** Description:	Take ownership of the memory block away from the stream.
-**
-** Parameters:	None.
-**
-** Returns:		The memory handle.
-**
-*******************************************************************************
-*/
-
-HGLOBAL CMemStream::DetachHandle()
-{
-	HGLOBAL hMem = m_hMem;
-
-	// Reset members.
-	m_hMem       = NULL;
-	m_bOwner     = false;
-	m_pBuffer    = NULL;
-	m_lAllocSize = 0;
-	m_lEOF       = 0;
-	m_lPos       = 0;
-
-	return hMem;
 }
 
 /******************************************************************************
@@ -147,27 +63,21 @@ HGLOBAL CMemStream::DetachHandle()
 
 void CMemStream::Create()
 {
-	// Free the existing block.
-	FreeBlock();
-
 	// Set inital block size.
 	m_lAllocSize = ALLOC_SIZE;
 
 	// Allocate an inital block.
-	m_hMem = ::GlobalAlloc(GMEM_MOVEABLE | GMEM_DDESHARE | GMEM_ZEROINIT, m_lAllocSize);
-	if (m_hMem == NULL)
-		throw CMemStreamException(CMemStreamException::E_CREATE_FAILED);
+	m_oBuffer.Size(m_lAllocSize);
 
 	// Get pointer to buffer.
-	m_pBuffer = (byte*) ::GlobalLock(m_hMem);
+	m_pBuffer = (byte*) m_oBuffer.Buffer();
+
 	ASSERT(m_pBuffer != NULL);
 
 	// Set to SOF.
-	m_lEOF = 0;
-	m_lPos = 0;
-
-	m_bOwner = true;
-	m_nMode  = GENERIC_WRITE;
+	m_lEOF  = 0;
+	m_lPos  = 0;
+	m_nMode = GENERIC_WRITE;
 }
 
 /******************************************************************************
@@ -186,14 +96,9 @@ void CMemStream::Create()
 
 void CMemStream::Open()
 {
-	ASSERT(m_hMem != NULL);
-
-	// Valid handle?
-	if (m_hMem == NULL)
-		throw CMemStreamException(CMemStreamException::E_OPEN_FAILED);
-
 	// Get pointer to buffer.
-	m_pBuffer = (byte*) ::GlobalLock(m_hMem);
+	m_pBuffer = (byte*) m_oBuffer.Buffer();
+
 	ASSERT(m_pBuffer != NULL);
 
 	// Set to SOF.
@@ -215,19 +120,11 @@ void CMemStream::Open()
 
 void CMemStream::Close()
 {
-	// Stream open?
-	if (m_pBuffer != NULL)
-		::GlobalUnlock(m_hMem);
-
 	// Writing?
 	if (m_nMode & GENERIC_WRITE)
 	{
 		// Shrink block to EOF.
-		m_hMem = ::GlobalReAlloc(m_hMem, m_lEOF, GMEM_ZEROINIT);
-		
-		// Realloc failed?
-		if (m_hMem == NULL)
-			throw CMemStreamException(CMemStreamException::E_WRITE_FAILED);
+		m_oBuffer.Size(m_lEOF);
 	}
 
 	// Reset members.
@@ -287,7 +184,6 @@ void CMemStream::Write(const void* pBuffer, uint iNumBytes)
 {
 	ASSERT(m_pBuffer != NULL);
 	ASSERT(m_nMode & GENERIC_WRITE);
-	ASSERT(m_bOwner == true);
 
 	// Stream open?
 	if (m_pBuffer == NULL)
@@ -296,19 +192,15 @@ void CMemStream::Write(const void* pBuffer, uint iNumBytes)
 	// Enough space in current block?
 	if ((m_lPos + iNumBytes) > m_lAllocSize)
 	{
-		// Unlock buffer first.
-		m_pBuffer = NULL;
-		::GlobalUnlock(m_hMem);
-
 		// Extend block by 1 page or iNumBytes, if larger.
 		m_lAllocSize += max(ALLOC_SIZE, iNumBytes);
-		m_hMem = ::GlobalReAlloc(m_hMem, m_lAllocSize, GMEM_ZEROINIT);
-		
-		// Realloc failed?
-		if (m_hMem == NULL)
-			throw CMemStreamException(CMemStreamException::E_WRITE_FAILED);
 
-		m_pBuffer = (byte*) ::GlobalLock(m_hMem);
+		m_pBuffer = NULL;
+
+		m_oBuffer.Size(m_lAllocSize);
+		
+		m_pBuffer = (byte*) m_oBuffer.Buffer();
+
 		ASSERT(m_pBuffer != NULL);
 	}
 

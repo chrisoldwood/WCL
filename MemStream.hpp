@@ -14,7 +14,7 @@
 
 /******************************************************************************
 ** 
-** This class is used as a memory based file.
+** This is memory based stream.
 **
 *******************************************************************************
 */
@@ -25,15 +25,9 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CMemStream();
+	CMemStream(CBuffer& oBuffer);
 	~CMemStream();
 	
-	//
-	// Accessors & mutators.
-	//
-	void    AttachHandle(HGLOBAL hMem, bool bOwn = true);
-	HGLOBAL DetachHandle();
-
 	//
 	// Open/Close operations.
 	//
@@ -54,20 +48,14 @@ protected:
 	//
 	// Members.
 	//
-	HGLOBAL	m_hMem;			// Handle to memory block.
-	bool	m_bOwner;		// Owner of memory block?
-	byte*	m_pBuffer;		// Pointer to buffer.
-	ulong	m_lAllocSize;	// Current allocated size.
-	ulong	m_lEOF;			// Current end of stream.
-	ulong	m_lPos;			// Current position in the stream.
+	CBuffer&	m_oBuffer;		// Memory block.
+	byte*		m_pBuffer;		// Pointer to data.
+	ulong		m_lAllocSize;	// Current allocated size.
+	ulong		m_lEOF;			// Current end of stream.
+	ulong		m_lPos;			// Current position in the stream.
 
 	// Default allocation size in bytes (1K).
 	enum { ALLOC_SIZE = 1024 };
-
-	//
-	// Internal methods.
-	//
-	void FreeBlock();
 };
 
 /******************************************************************************
