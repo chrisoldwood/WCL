@@ -76,7 +76,7 @@ void CThreadPool::Start()
 
 	// Create the thread pool.
 	for (int i = 0; i < m_nThreads; ++i)
-		m_oPool.Add(new CWorkerThread(*this));
+		m_oPool.Add(new CWorkerThread(*this, i));
 
 	// Start the pool threads.
 	for (i = 0; i < m_nThreads; ++i)
@@ -267,7 +267,7 @@ void CThreadPool::ScheduleJob()
 		CWorkerThread* pThread = m_oPool[i];
 
 		// Found one?
-		if (m_oPool[i]->Status() == CWorkerThread::IDLE)
+		if (pThread->Status() == CWorkerThread::IDLE)
 		{
 			// Get next job.
 			CThreadJob* pJob = m_oPendingQ[0];
