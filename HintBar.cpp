@@ -131,12 +131,8 @@ void CHintBar::Hint(const char* pszHint)
 
 void CHintBar::OnPaint(CDC& rDC)
 {
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	// Draw the hint.
-	rDC.Select(pApp->DefaultFont());
+	rDC.Select(CApp::This().DefaultFont());
 	rDC.TextColour(GetSysColor(COLOR_BTNTEXT));
 	rDC.BkMode(TRANSPARENT);
 	rDC.TextOut(2, 0, (const char*)m_szHint);

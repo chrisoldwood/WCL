@@ -41,16 +41,12 @@ CPopupWnd::CPopupWnd()
 
 void CPopupWnd::GetClassParams(WNDCLASS& rParams)
 {
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	// Fill in default WNDCLASS members.
 	rParams.style         = CS_HREDRAW | CS_VREDRAW;
 	rParams.lpfnWndProc   = DefWindowProc;
 	rParams.cbClsExtra    = 0;
 	rParams.cbWndExtra    = 0;
-	rParams.hInstance     = pApp->m_hInstance;
+	rParams.hInstance     = CModule::This().Handle();
 	rParams.hIcon         = NULL;
 	rParams.hCursor       = ::LoadCursor(NULL, MAKEINTRESOURCE(IDC_ARROW));
 	rParams.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);
@@ -128,10 +124,6 @@ void CPopupWnd::GetCreateParams(WNDCREATE& rParams)
 
 bool CPopupWnd::Create(WNDCREATE& rCreate)
 {
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	// Now create it.
 	m_hWnd = ::CreateWindowEx(	rCreate.dwExStyle,
 								rCreate.pszClassName,
@@ -143,7 +135,7 @@ bool CPopupWnd::Create(WNDCREATE& rCreate)
 								rCreate.rcPos.Height(),
 								rCreate.hParent,
 								rCreate.hMenu,
-								pApp->m_hInstance,
+								CModule::This().Handle(),
 								rCreate.lpCreation );
 	ASSERT(m_hWnd);
 	

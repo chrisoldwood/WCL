@@ -61,12 +61,8 @@ void CBitmap::LoadRsc(uint iRscID)
 {
 	ASSERT(m_hBitmap == NULL);
 
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-	
 	// Load the resource.
-	m_hBitmap = ::LoadBitmap(pApp->m_hInstance, MAKEINTRESOURCE(iRscID));
+	m_hBitmap = ::LoadBitmap(CModule::This().Handle(), MAKEINTRESOURCE(iRscID));
 	ASSERT(m_hBitmap);
 	
 	// Get attributes.

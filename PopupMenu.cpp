@@ -81,15 +81,13 @@ void CPopupMenu::LoadRsc(uint iRscID)
 	ASSERT(m_hMenu   == NULL);
 	ASSERT(m_hParent == NULL);
 
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-	
 	// Load the resource.
-	m_hParent = ::LoadMenu(pApp->m_hInstance, MAKEINTRESOURCE(iRscID));
-	ASSERT(m_hParent);
+	m_hParent = ::LoadMenu(CModule::This().Handle(), MAKEINTRESOURCE(iRscID));
+
+	ASSERT(m_hParent != NULL);
 
 	// Get the popup menu.
 	m_hMenu = ::GetSubMenu(m_hParent, 0);
-	ASSERT(m_hMenu);
+
+	ASSERT(m_hMenu != NULL);
 }

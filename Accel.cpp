@@ -59,13 +59,10 @@ void CAccel::LoadRsc(uint iRscID)
 {
 	ASSERT(m_hAccel == NULL);
 
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-	
 	// Load the resource.
-	m_hAccel = ::LoadAccelerators(pApp->m_hInstance, MAKEINTRESOURCE(iRscID));
-	ASSERT(m_hAccel);
+	m_hAccel = ::LoadAccelerators(CModule::This().Handle(), MAKEINTRESOURCE(iRscID));
+
+	ASSERT(m_hAccel != NULL);
 }
 
 /******************************************************************************

@@ -212,12 +212,8 @@ void CListView::InsertColumns(const LVColumn* pColumns, int nColumns)
 
 void CListView::ImageList(uint iRscID, int nImgWidth, COLORREF crMask)
 {
-	// Get application object.
-	CApp* pApp = CApp::This();
-	ASSERT(pApp);
-
 	// Load the image list.
-	HIMAGELIST hImgList = ImageList_LoadBitmap(pApp->m_hInstance, MAKEINTRESOURCE(iRscID), nImgWidth, 0, crMask);
+	HIMAGELIST hImgList = ImageList_LoadBitmap(CModule::This().Handle(), MAKEINTRESOURCE(iRscID), nImgWidth, 0, crMask);
 	ASSERT(hImgList != NULL);
 
 	ListView_SetImageList(m_hWnd, hImgList, LVSIL_NORMAL);
