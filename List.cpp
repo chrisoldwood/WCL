@@ -204,7 +204,7 @@ int CList::Remove(const CListItem& rItem)
 	int			nPos   = 0;
 
 	// Find item.
-	while ( (pTmp) && (rItem != *pTmp) )
+	while ( (pTmp != NULL) && (rItem != *pTmp) )
 	{
 		pPrev  = pTmp;
 		ppPrev = &pTmp->m_pNext;
@@ -216,14 +216,16 @@ int CList::Remove(const CListItem& rItem)
 
 	// Remove.
 	*ppPrev = pTmp->m_pNext;
-	delete pTmp;
 
-	// Fixup tail.
+	// Fixup tail, if required.
 	if (pTmp == m_pTail)
 		m_pTail = pPrev;
 
+	// Fixup head, if required.
 	if (m_pHead == NULL)
 		m_pTail = NULL;
+
+	delete pTmp;
 
 	// Update length;
 	m_nLength--;
