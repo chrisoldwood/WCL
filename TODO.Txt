@@ -1,7 +1,5 @@
 - Ref counted strings.
 
-- File finder recursion support.
-
 - App helpers for reg file types/apps etc.
 
 - Two phase save support (SDI).
