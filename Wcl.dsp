@@ -102,6 +102,10 @@ SOURCE=.\Assert.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\AutoThreadLock.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Bitmap.cpp
 # End Source File
 # Begin Source File
@@ -143,6 +147,10 @@ SOURCE=.\CmdCtrl.cpp
 # Begin Source File
 
 SOURCE=.\ComboBox.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\CriticalSection.cpp
 # End Source File
 # Begin Source File
 
@@ -258,6 +266,10 @@ SOURCE=.\MainDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\MainThread.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Map.cpp
 # End Source File
 # Begin Source File
@@ -295,6 +307,10 @@ SOURCE=.\MsgThread.cpp
 # Begin Source File
 
 SOURCE=.\MsgWnd.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\NetFinder.cpp
 # End Source File
 # Begin Source File
 
@@ -402,6 +418,14 @@ SOURCE=.\Thread.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ThreadJob.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ThreadPool.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Time.cpp
 # End Source File
 # Begin Source File
@@ -440,6 +464,10 @@ SOURCE=.\Wnd.cpp
 
 SOURCE=.\WndMap.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\WorkerThread.cpp
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
@@ -459,6 +487,10 @@ SOURCE=.\Array.hpp
 # Begin Source File
 
 SOURCE=.\Assert.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AutoThreadLock.hpp
 # End Source File
 # Begin Source File
 
@@ -503,6 +535,10 @@ SOURCE=.\CmdCtrl.hpp
 # Begin Source File
 
 SOURCE=.\ComboBox.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\CriticalSection.hpp
 # End Source File
 # Begin Source File
 
@@ -602,6 +638,10 @@ SOURCE=.\IntPtrMap.hpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\IThreadLock.hpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Label.hpp
 # End Source File
 # Begin Source File
@@ -627,6 +667,10 @@ SOURCE=.\LogFont.hpp
 # Begin Source File
 
 SOURCE=.\MainDlg.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\MainThread.hpp
 # End Source File
 # Begin Source File
 
@@ -667,6 +711,10 @@ SOURCE=.\MsgThread.hpp
 # Begin Source File
 
 SOURCE=.\MsgWnd.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\NetFinder.hpp
 # End Source File
 # Begin Source File
 
@@ -806,6 +854,14 @@ SOURCE=.\Thread.hpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ThreadJob.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ThreadPool.hpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Time.hpp
 # End Source File
 # Begin Source File
@@ -855,6 +911,10 @@ SOURCE=.\Wnd.hpp
 # Begin Source File
 
 SOURCE=.\WndMap.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\WorkerThread.hpp
 # End Source File
 # End Group
 # Begin Source File

@@ -91,6 +91,9 @@
 #include "Clipboard.hpp"
 #include "Doc.hpp"
 
+// Networking classes.
+#include "NetFinder.hpp"
+
 // GUI classes.
 #include "Accel.hpp"
 #include "Menu.hpp"
@@ -164,9 +167,18 @@
 #include "HelpFile.hpp"
 #include "MRUList.hpp"
 
-// Process classes.
+// Threading classes.
+#include "IThreadLock.hpp"
+#include "CriticalSection.hpp"
+#include "AutoThreadLock.hpp"
 #include "Thread.hpp"
 #include "MsgThread.hpp"
+#include "MainThread.hpp"
+#include "ThreadJob.hpp"
+#include "WorkerThread.hpp"
+#include "ThreadPool.hpp"
+
+// Process classes.
 #include "Library.hpp"
 #include "CmdCtrl.hpp"
 
