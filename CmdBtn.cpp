@@ -81,16 +81,15 @@ void CCmdButton::OnDrawItem(uint iID, uint iAction, uint iState, CDC& rDC,
 		}
 
 		// Get application object.
-		CApp* pApp = CApp::This();
-		ASSERT(pApp);
+		CApp& oApp = CApp::This();
 
 		CRect rcDst(ptDst, rcItem.Size());
 
 		// Draw button face.
 		if (iState & ODS_DISABLED)
-			pApp->m_rCmdControl.DrawCmd(iID, rDC, rcDst, false);
+			oApp.m_rCmdControl.DrawCmd(iID, rDC, rcDst, false);
 		else
-			pApp->m_rCmdControl.DrawCmd(iID, rDC, rcDst, true);
+			oApp.m_rCmdControl.DrawCmd(iID, rDC, rcDst, true);
 		
 		// Draw button border.
 		if (iState & ODS_SELECTED)
