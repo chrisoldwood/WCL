@@ -58,6 +58,7 @@
 #include "Time.hpp"
 #include "Date.hpp"
 #include "DateTime.hpp"
+#include "Buffer.hpp"
 
 // Core collection classes.
 #include "Array.hpp"
@@ -166,6 +167,7 @@
 // Misc classes.
 #include "HelpFile.hpp"
 #include "MRUList.hpp"
+#include "SysInfo.hpp"
 
 // Threading classes.
 #include "IThreadLock.hpp"

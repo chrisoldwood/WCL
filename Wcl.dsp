@@ -110,6 +110,10 @@ SOURCE=.\Brush.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Buffer.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\BusyCursor.cpp
 # End Source File
 # Begin Source File
@@ -402,6 +406,10 @@ SOURCE=.\String.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\SysInfo.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\TabCtrl.cpp
 # End Source File
 # Begin Source File
@@ -491,6 +499,10 @@ SOURCE=.\Bitmap.hpp
 # Begin Source File
 
 SOURCE=.\Brush.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Buffer.hpp
 # End Source File
 # Begin Source File
 
@@ -835,6 +847,10 @@ SOURCE=.\String.hpp
 # Begin Source File
 
 SOURCE=.\StrPtrMap.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\SysInfo.hpp
 # End Source File
 # Begin Source File
 
