@@ -202,6 +202,10 @@ SOURCE=.\FileException.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\FileFinder.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Font.cpp
 # End Source File
 # Begin Source File
@@ -366,10 +370,6 @@ SOURCE=.\StdWnd.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\StrArray.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\Stream.cpp
 # End Source File
 # Begin Source File
@@ -407,10 +407,6 @@ SOURCE=.\ToolTip.cpp
 # Begin Source File
 
 SOURCE=.\TransparentBmp.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Tree.cpp
 # End Source File
 # Begin Source File
 
@@ -554,6 +550,10 @@ SOURCE=.\FileException.hpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\FileFinder.hpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Font.hpp
 # End Source File
 # Begin Source File
@@ -579,10 +579,6 @@ SOURCE=.\HintBar.hpp
 # Begin Source File
 
 SOURCE=.\IniFile.hpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\IntArray.hpp
 # End Source File
 # Begin Source File
 
@@ -706,10 +702,6 @@ SOURCE=.\PropertySheet.hpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\PtrArray.hpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\PtrList.hpp
 # End Source File
 # Begin Source File
@@ -786,6 +778,14 @@ SOURCE=.\TabWndHost.hpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\TArray.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\TBinTree.hpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Thread.hpp
 # End Source File
 # Begin Source File
@@ -802,15 +802,15 @@ SOURCE=.\ToolTip.hpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\TPtrArray.hpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\TransparentBmp.hpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Tree.hpp
+SOURCE=.\TTree.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\TVarTree.hpp
 # End Source File
 # Begin Source File
 
