@@ -179,6 +179,11 @@ void CStatusBar::OnPaint(CDC& rDC)
 		// Draw the line.
 		rDC.Line(ptCorner.x-i-1, ptCorner.y, ptCorner.x, ptCorner.y-i-1);
 	}
+
+#ifdef _DEBUG
+	// Passify BoundsChecker.
+	rDC.Select(CPen(NULL_PEN));
+#endif
 }
 
 /******************************************************************************
