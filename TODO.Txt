@@ -8,4 +8,6 @@
 
 - Move to STL.
 
-- DEBUG_NEW type macro.
+- Make size grip behave properly for resizing.
+
+- Add recessed fields support to the status bar.
