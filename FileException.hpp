@@ -38,7 +38,7 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CFileException(int eErrCode, const CFile& rFile);
+	CFileException(int eErrCode, const CPath& rPath);
 	~CFileException();
 	
 protected:
