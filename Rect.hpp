@@ -47,6 +47,8 @@ public:
 	void Set(int iLeft, int iTop, int iRight, int iBottom);
 	void Inflate(int iSize);
 	void Offset(int iX, int iY);
+	void Size(int nWidth, int nHeight);
+	void Size(const CSize& Size);
 
 	//
 	// Attributes.
@@ -142,6 +144,17 @@ inline void CRect::Offset(int iX, int iY)
 	top    += iY;
 	right  += iX;
 	bottom += iY;
+}
+
+inline void CRect::Size(int nWidth, int nHeight)
+{
+	right  = left + nWidth;
+	bottom = top  + nHeight;
+}
+
+inline void CRect::Size(const CSize& dmSize)
+{
+	Size(dmSize.cx, dmSize.cy);
 }
 
 inline bool CRect::Empty() const
