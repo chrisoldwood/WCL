@@ -61,7 +61,7 @@ void CToolTip::GetCreateParams(WNDCREATE& rParams)
 
 	// Override any settings.
 	rParams.pszClassName = TOOLTIPS_CLASS;
-	rParams.dwStyle      = WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP;
+	rParams.dwStyle      = WS_POPUP | TTS_NOPREFIX /*| TTS_ALWAYSTIP*/;
 	rParams.hMenu        = NULL;
 }
 
