@@ -12,6 +12,11 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+#ifdef _DEBUG
+// For memory leak detection.
+#define new DBGCRT_NEW
+#endif
+
 /******************************************************************************
 **
 ** Linker directives.
@@ -240,7 +245,7 @@ int CApp::AlertMsg(const char* pszMsg, ...) const
 	// Format message.
 	strMsg.FormatEx(pszMsg, args);
 	
-	return MessageBox(NULL, strMsg, m_strTitle, MB_OK | MB_ICONEXCLAMATION | MB_TASKMODAL);
+	return MessageBox(m_rMainWnd.Handle(), strMsg, m_strTitle, MB_OK | MB_ICONEXCLAMATION | MB_TASKMODAL);
 }
 
 int CApp::NotifyMsg(const char* pszMsg, ...) const
@@ -254,7 +259,7 @@ int CApp::NotifyMsg(const char* pszMsg, ...) const
 	// Format message.
 	strMsg.FormatEx(pszMsg, args);
 	
-	return MessageBox(NULL, strMsg, m_strTitle, MB_OK | MB_ICONINFORMATION | MB_TASKMODAL);
+	return MessageBox(m_rMainWnd.Handle(), strMsg, m_strTitle, MB_OK | MB_ICONINFORMATION | MB_TASKMODAL);
 }
 
 int CApp::QueryMsg(const char* pszMsg, ...) const
@@ -268,7 +273,7 @@ int CApp::QueryMsg(const char* pszMsg, ...) const
 	// Format message.
 	strMsg.FormatEx(pszMsg, args);
 	
-	return MessageBox(NULL, strMsg, m_strTitle, MB_YESNOCANCEL | MB_ICONQUESTION | MB_TASKMODAL);
+	return MessageBox(m_rMainWnd.Handle(), strMsg, m_strTitle, MB_YESNOCANCEL | MB_ICONQUESTION | MB_TASKMODAL);
 }
 
 int CApp::FatalMsg(const char* pszMsg, ...) const
@@ -282,7 +287,7 @@ int CApp::FatalMsg(const char* pszMsg, ...) const
 	// Format message.
 	strMsg.FormatEx(pszMsg, args);
 	
-	return MessageBox(NULL, strMsg, m_strTitle, MB_OK | MB_ICONSTOP | MB_TASKMODAL);
+	return MessageBox(m_rMainWnd.Handle(), strMsg, m_strTitle, MB_OK | MB_ICONSTOP | MB_TASKMODAL);
 }
 
 /******************************************************************************
