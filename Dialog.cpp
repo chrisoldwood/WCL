@@ -29,6 +29,7 @@ CDialog::CDialog(uint iRscID)
 	, m_iRscID(iRscID)
 	, m_pCtrlTable(NULL)
 	, m_pGravTable(NULL)
+	, m_pParentWnd(NULL)
 {
 }
 
@@ -71,7 +72,8 @@ CDialog::~CDialog()
 bool CDialog::RunModeless(CWnd& rParent)
 {
 	// Initalise members.
-	m_bModal = false;
+	m_bModal     = false;
+	m_pParentWnd = &rParent;
 
 	ASSERT(rParent.Handle());
 	ASSERT(CModule::This().Handle());
@@ -104,7 +106,8 @@ bool CDialog::RunModeless(CWnd& rParent)
 int CDialog::RunModal(CWnd& rParent)
 {
 	// Initalise members.
-	m_bModal = true;
+	m_bModal     = true;
+	m_pParentWnd = &rParent;
 
 	ASSERT(rParent.Handle());
 	ASSERT(CModule::This().Handle());

@@ -88,6 +88,7 @@ protected:
 	CTRL*		m_pCtrlTable;	// Table of controls.
 	CTLGRAVITY*	m_pGravTable;	// Table of controls gravity.
 	CSize		m_StartSize;	// Dialog initial size.
+	CWnd*		m_pParentWnd;	// Parent window.
 	
 	//
 	// General message handlers.
