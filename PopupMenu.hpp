@@ -27,9 +27,12 @@ public:
 	//
 	CPopupMenu();
 	CPopupMenu(HMENU hMenu);
+	CPopupMenu(uint iRscID);
 	~CPopupMenu();
 
 	void LoadRsc(uint iRscID);
+
+	uint TrackMenu(CWnd& rParent, const CPoint& ptOrigin);
 
 protected:
 	//

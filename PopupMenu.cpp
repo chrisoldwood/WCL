@@ -47,6 +47,24 @@ CPopupMenu::CPopupMenu(HMENU hMenu)
 }
 
 /******************************************************************************
+** Method:		Constructor
+**
+** Description:	.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+CPopupMenu::CPopupMenu(uint iRscID)
+	: m_hParent(NULL)
+{
+	LoadRsc(iRscID);
+}
+
+/******************************************************************************
 ** Method:		Destructor
 **
 ** Description:	.
@@ -90,4 +108,23 @@ void CPopupMenu::LoadRsc(uint iRscID)
 	m_hMenu = ::GetSubMenu(m_hParent, 0);
 
 	ASSERT(m_hMenu != NULL);
+}
+
+/******************************************************************************
+** Method:		TrackMenu()
+**
+** Description:	Shows and tracks a popup menu.
+**
+** Parameters:	rParent		The menus parent window.
+**				ptOrigin	The position of the menus top-left corner.
+**
+** Returns:		The command ID or NULL.
+**
+*******************************************************************************
+*/
+
+uint CPopupMenu::TrackMenu(CWnd& rParent, const CPoint& ptOrigin)
+{
+	return ::TrackPopupMenu(m_hMenu, TPM_LEFTALIGN | TPM_TOPALIGN | TPM_RETURNCMD | TPM_LEFTBUTTON,
+							ptOrigin.x, ptOrigin.y, NULL, rParent.Handle(), NULL);
 }
