@@ -120,8 +120,7 @@ inline CPath::CPath(const char* pszDir, const char* pszFile)
 	ASSERT(pszFile != NULL);
 
 	Copy(pszDir);
-	CString::operator +=("\\");
-	CString::operator +=(pszFile);
+	operator +=(pszFile);
 }
 
 inline const CPath& CPath::operator=(const CString& rSrc)
@@ -142,7 +141,12 @@ inline void CPath::operator+=(const char* pszPath)
 {
 	ASSERT(pszPath != NULL);
 
-	CString::operator +=("\\");
+	int nLength = Length();
+
+	// Add path separator?
+	if ( (nLength > 0) && ((*this)[nLength-1] != '\\') )
+		CString::operator +=('\\');
+
 	CString::operator +=(pszPath);
 }
 
