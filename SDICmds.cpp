@@ -61,20 +61,21 @@ bool CSDICmds::NewFile()
 		return false;
 
 	// Get application object.
-	CSDIApp* pApp = CSDIApp::This();
-	ASSERT(pApp);
+	CSDIApp& oApp = CSDIApp::This();
 
 	// Create a new doc and view and attach them.
-	pApp->m_pDoc  = pApp->CreateDoc();
-	pApp->m_pView = pApp->CreateView(*pApp->m_pDoc);
-	pApp->m_pDoc->m_pView = pApp->m_pView;
+	oApp.m_pDoc  = oApp.CreateDoc();
+	oApp.m_pView = oApp.CreateView(*oApp.m_pDoc);
+	oApp.m_pDoc->m_pView = oApp.m_pView;
 
 	// Create the view and attach it to the frame window.
-	pApp->FrameWnd().View(pApp->m_pView);
+	oApp.FrameWnd().View(oApp.m_pView);
+
+	OnFileCreated(*oApp.m_pDoc);
 
 	// Update the UI.
-	pApp->m_rCmdControl.UpdateUI();
-	pApp->FrameWnd().UpdateTitle();
+	oApp.m_rCmdControl.UpdateUI();
+	oApp.FrameWnd().UpdateTitle();
 
 	return true;
 }
@@ -94,52 +95,20 @@ bool CSDICmds::NewFile()
 bool CSDICmds::OpenFile()
 {
 	// Get application object.
-	CSDIApp* pApp = CSDIApp::This();
-	ASSERT(pApp);
+	CSDIApp& oApp = CSDIApp::This();
 
 	CPath Path;
 
 	// Get file extensions.
-	const char* pszFileExts = pApp->FileExts();
-	const char* pszDefExt   = pApp->DefFileExt();
+	const char* pszFileExts = oApp.FileExts();
+	const char* pszDefExt   = oApp.DefFileExt();
 
 	// Select a filename.
-	if (!Path.Select(pApp->m_rMainWnd, CPath::OpenFile, pszFileExts, pszDefExt))
+	if (!Path.Select(oApp.m_rMainWnd, CPath::OpenFile, pszFileExts, pszDefExt))
 		return false;
 
-	// Close the current file.
-	if (!CloseFile())
-		return false;
-
-	// Create a new doc and set the path.
-	pApp->m_pDoc = pApp->CreateDoc();
-	pApp->m_pDoc->Path(Path);
-
-	// Load the document.
-	if (!pApp->m_pDoc->Load())
-	{
-		// Failed, cleanup.
-		delete pApp->m_pDoc;
-		pApp->m_pDoc = NULL;
-
-		return false;
-	}
-
-	// Create a new view and attach the doc.
-	pApp->m_pView = pApp->CreateView(*pApp->m_pDoc);
-	pApp->m_pDoc->m_pView = pApp->m_pView;
-
-	// Attach the view to the frame window.
-	pApp->FrameWnd().View(pApp->m_pView);
-
-	// Update the MRU.
-	pApp->m_MRUList.Add(Path);
-
-	// Update the UI.
-	pApp->m_rCmdControl.UpdateUI();
-	pApp->FrameWnd().UpdateTitle();
-
-	return true;
+	// Open it.
+	return OpenFile(Path);
 }
 
 /******************************************************************************
@@ -157,43 +126,62 @@ bool CSDICmds::OpenFile()
 bool CSDICmds::OpenMRUFile(int nIndex)
 {
 	// Get application object.
-	CSDIApp* pApp = CSDIApp::This();
-	ASSERT(pApp);
+	CSDIApp& oApp = CSDIApp::This();
+
+	// Open it.
+	return OpenFile(oApp.m_MRUList[nIndex]);
+}
+
+/******************************************************************************
+** Method:		OpenFile()
+**
+** Description:	Core method to open the specified file.
+**
+** Parameters:	strPath		The files' path.
+**
+** Returns:		true or false.
+**
+*******************************************************************************
+*/
+
+bool CSDICmds::OpenFile(const CPath& strPath)
+{
+	// Get application object.
+	CSDIApp& oApp = CSDIApp::This();
 
 	// Close the current file.
 	if (!CloseFile())
 		return false;
 
-	// Get the MRU file path.
-	CPath Path = pApp->m_MRUList[nIndex];
-
 	// Create a new doc and set the path.
-	pApp->m_pDoc = pApp->CreateDoc();
-	pApp->m_pDoc->Path(Path);
+	oApp.m_pDoc = oApp.CreateDoc();
+	oApp.m_pDoc->Path(strPath);
 
 	// Load the document.
-	if (!pApp->m_pDoc->Load())
+	if (!oApp.m_pDoc->Load())
 	{
 		// Failed, cleanup.
-		delete pApp->m_pDoc;
-		pApp->m_pDoc = NULL;
+		delete oApp.m_pDoc;
+		oApp.m_pDoc = NULL;
 
 		return false;
 	}
 
 	// Create a new view and attach the doc.
-	pApp->m_pView = pApp->CreateView(*pApp->m_pDoc);
-	pApp->m_pDoc->m_pView = pApp->m_pView;
+	oApp.m_pView = oApp.CreateView(*oApp.m_pDoc);
+	oApp.m_pDoc->m_pView = oApp.m_pView;
 
 	// Attach the view to the frame window.
-	pApp->FrameWnd().View(pApp->m_pView);
+	oApp.FrameWnd().View(oApp.m_pView);
 
 	// Update the MRU.
-	pApp->m_MRUList.Add(Path);
+	oApp.m_MRUList.Add(strPath);
+
+	OnFileOpened(*oApp.m_pDoc);
 
 	// Update the UI.
-	pApp->m_rCmdControl.UpdateUI();
-	pApp->FrameWnd().UpdateTitle();
+	oApp.m_rCmdControl.UpdateUI();
+	oApp.FrameWnd().UpdateTitle();
 
 	return true;
 }
@@ -214,22 +202,23 @@ bool CSDICmds::OpenMRUFile(int nIndex)
 bool CSDICmds::SaveFile()
 {
 	// Get application object.
-	CSDIApp* pApp = CSDIApp::This();
-	ASSERT(pApp);
+	CSDIApp& oApp = CSDIApp::This();
 
-	ASSERT(pApp->m_pDoc != NULL);
+	ASSERT(oApp.m_pDoc != NULL);
 
 	// File name specified yet?
-	if (pApp->m_pDoc->Untitled())
+	if (oApp.m_pDoc->Untitled())
 		return SaveFileAs();
 
 	// Save the document.
-	if (!pApp->m_pDoc->Save())
+	if (!oApp.m_pDoc->Save())
 		return false;
 
+	OnFileSaved(*oApp.m_pDoc);
+
 	// Update the UI.
-	pApp->m_rCmdControl.UpdateUI();
-	pApp->FrameWnd().UpdateTitle();
+	oApp.m_rCmdControl.UpdateUI();
+	oApp.FrameWnd().UpdateTitle();
 
 	return true;
 }
@@ -249,37 +238,38 @@ bool CSDICmds::SaveFile()
 bool CSDICmds::SaveFileAs()
 {
 	// Get application object.
-	CSDIApp* pApp = CSDIApp::This();
-	ASSERT(pApp);
+	CSDIApp& oApp = CSDIApp::This();
 
-	ASSERT(pApp->m_pDoc != NULL);
+	ASSERT(oApp.m_pDoc != NULL);
 
 	CPath Path;
 
 	// Get file extensions.
-	const char* pszFileExts = pApp->FileExts();
-	const char* pszDefExt   = pApp->DefFileExt();
+	const char* pszFileExts = oApp.FileExts();
+	const char* pszDefExt   = oApp.DefFileExt();
 
 	// Select a filename.
-	if (!Path.Select(pApp->m_rMainWnd, CPath::SaveFile, pszFileExts, pszDefExt))
+	if (!Path.Select(oApp.m_rMainWnd, CPath::SaveFile, pszFileExts, pszDefExt))
 		return false;
 
 	// Warn user if file exists.
 	if ( (Path.Exists())
-	  && (pApp->m_rMainWnd.QueryMsg("The file already exists:\n\n%s\n\nOverwrite?", Path) != IDYES) )
+	  && (oApp.m_rMainWnd.QueryMsg("The file already exists:\n\n%s\n\nOverwrite?", Path) != IDYES) )
 		return false;
 
 	// Save the document.
-	pApp->m_pDoc->Path(Path);
-	if (!pApp->m_pDoc->Save())
+	oApp.m_pDoc->Path(Path);
+	if (!oApp.m_pDoc->Save())
 		return false;
 
 	// Update the MRU.
-	pApp->m_MRUList.Add(Path);
+	oApp.m_MRUList.Add(Path);
+
+	OnFileSaved(*oApp.m_pDoc);
 
 	// Update the UI.
-	pApp->m_rCmdControl.UpdateUI();
-	pApp->FrameWnd().UpdateTitle();
+	oApp.m_rCmdControl.UpdateUI();
+	oApp.FrameWnd().UpdateTitle();
 
 	return true;
 }
@@ -299,18 +289,17 @@ bool CSDICmds::SaveFileAs()
 bool CSDICmds::CloseFile()
 {
 	// Get application object.
-	CSDIApp* pApp = CSDIApp::This();
-	ASSERT(pApp);
+	CSDIApp& oApp = CSDIApp::This();
 
 	// No file open?
-	if (pApp->m_pDoc == NULL)
+	if (oApp.m_pDoc == NULL)
 		return true;
 
 	// File modified?
-	if (pApp->m_pDoc->Modified())
+	if (oApp.m_pDoc->Modified())
 	{
 		// Query user to save changes.
-		int nRes = pApp->m_rMainWnd.QueryMsg("Save changes to: %s?", pApp->m_pDoc->Path());
+		int nRes = oApp.m_rMainWnd.QueryMsg("Save changes to: %s?", oApp.m_pDoc->Path());
 
 		// Abort?
 		if (nRes == IDCANCEL)
@@ -321,22 +310,24 @@ bool CSDICmds::CloseFile()
 			return false;
 	}
 
+	OnFileClosed(*oApp.m_pDoc);
+
 	// Detach the view from the frame window and doc.
-	pApp->FrameWnd().View(NULL);
-	pApp->m_pDoc->m_pView = NULL;
+	oApp.FrameWnd().View(NULL);
+	oApp.m_pDoc->m_pView = NULL;
 
 	// Destroy the open view.
-	pApp->m_pView->Destroy();
-	delete pApp->m_pView;
-	pApp->m_pView = NULL;
+	oApp.m_pView->Destroy();
+	delete oApp.m_pView;
+	oApp.m_pView = NULL;
 
 	// Destroy the open file.
-	delete pApp->m_pDoc;
-	pApp->m_pDoc = NULL;
+	delete oApp.m_pDoc;
+	oApp.m_pDoc = NULL;
 
 	// Update the UI.
-	pApp->m_rCmdControl.UpdateUI();
-	pApp->FrameWnd().UpdateTitle();
+	oApp.m_rCmdControl.UpdateUI();
+	oApp.FrameWnd().UpdateTitle();
 
 	return true;
 }
@@ -360,7 +351,39 @@ bool CSDICmds::ExitApp()
 		return false;
 
 	// Close the main window.
-	CSDIApp::This()->m_rMainWnd.Close();
+	CSDIApp::This().m_rMainWnd.Close();
 
 	return true;
+}
+
+/******************************************************************************
+** Method:		OnFileCreated()
+**				OnFileOpened()
+**				OnFileSaved()
+**				OnFileClosed()
+**
+** Description:	Template methods called when a file operation has happened.
+**
+** Parameters:	oDoc	The doc affected.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CSDICmds::OnFileCreated(CSDIDoc& oDoc)
+{
+	OnFileOpened(oDoc);
+}
+
+void CSDICmds::OnFileOpened(CSDIDoc& oDoc)
+{
+}
+
+void CSDICmds::OnFileSaved(CSDIDoc& oDoc)
+{
+}
+
+void CSDICmds::OnFileClosed(CSDIDoc& oDoc)
+{
 }

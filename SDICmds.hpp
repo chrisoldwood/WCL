@@ -31,10 +31,10 @@ public:
 	//
 	// File commands.
 	//
-
 	bool NewFile();
 	bool OpenFile();
 	bool OpenMRUFile(int nIndex);
+	bool OpenFile(const CPath& strPath);
 	bool SaveFile();
 	bool SaveFileAs();
 	bool CloseFile();
@@ -44,6 +44,14 @@ protected:
 	//
 	// Members.
 	//
+
+	//
+	// Template methods..
+	//
+	virtual void OnFileCreated(CSDIDoc& oDoc);
+	virtual void OnFileOpened(CSDIDoc& oDoc);
+	virtual void OnFileSaved(CSDIDoc& oDoc);
+	virtual void OnFileClosed(CSDIDoc& oDoc);
 };
 
 /******************************************************************************
