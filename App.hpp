@@ -39,6 +39,12 @@ public:
 	const CPen&   DarkestPen();
 
     //
+    // Timer methods.
+    //
+	uint StartTimer(uint nFrequency);
+	void StopTimer(uint nTimerID);
+
+    //
     // Message boxes.
     // For use when no window is available.
     //
@@ -83,6 +89,11 @@ protected:
 	virtual	bool OnOpen();
 	virtual	bool OnClose();
 
+	//
+	// Timer callback methods.
+	//
+	virtual void OnTimer(uint nTimerID);
+
 private:
 	//
 	// Startup and shutdown methods.
@@ -99,6 +110,9 @@ private:
 	//
 	CApp(const CApp&);
 	CApp& operator=(const CApp&);
+
+	// The timer callback function.
+	static void CALLBACK TimerProc(HWND hWnd, UINT uMsg, UINT nTimerID, DWORD dwTime);
 };
 
 /******************************************************************************
@@ -160,6 +174,16 @@ inline const CPen& CApp::DarkestPen()
 		m_DarkestPen.Create(PS_SOLID, 0, ::GetSysColor(COLOR_3DDKSHADOW));
 
 	return m_DarkestPen;
+}
+
+inline uint CApp::StartTimer(uint nFrequency)
+{
+	return ::SetTimer(NULL, 0, nFrequency, TimerProc);
+}
+
+inline void CApp::StopTimer(uint nTimerID)
+{
+	::KillTimer(NULL, nTimerID);
 }
 
 #endif //APP_HPP

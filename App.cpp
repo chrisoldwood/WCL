@@ -315,3 +315,39 @@ CString CApp::FormatError(DWORD dwError)
 
 	return strError;
 }
+
+/******************************************************************************
+** Method:		TimerProc()
+**
+** Description:	The timer callback function.
+**
+** Parameters:	See TimerProc.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CALLBACK CApp::TimerProc(HWND hWnd, UINT uMsg, UINT nTimerID, DWORD dwTime)
+{
+	ASSERT(pThis != NULL);
+
+	// Forward to instance method.
+	pThis->OnTimer(nTimerID);
+}
+
+/******************************************************************************
+** Method:		OnTimer()
+**
+** Description:	Default timer event handler.
+**
+** Parameters:	nTimerID	The timer ID.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CApp::OnTimer(uint nTimerID)
+{
+}
