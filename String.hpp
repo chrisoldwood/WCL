@@ -48,6 +48,7 @@ public:
 	//
 	// Mutation.
 	//
+	void     Insert(int nPos, const char* pszString);
 	void     Delete(int nFirst, int nCount = 1);
 	CString& Trim(bool bLeft = true, bool bRight = true);
 	CString& ToLower();
@@ -72,6 +73,7 @@ public:
 	// Formating.
 	//
 	void Format(const char* pszFormat, ...);
+	void FormatEx(const char* pszFormat, va_list args);
 
 	//
 	// Core operators.
@@ -90,6 +92,7 @@ public:
 	bool operator !=(const char* pszString) const;
 
 	int Compare(const char* pszString, bool bIgnoreCase = true) const;
+	int Compare(const char* pszString, int nChars, bool bIgnoreCase = true) const;
 
 	//
 	// Mutation operators.
@@ -246,6 +249,11 @@ inline bool CString::operator !=(const char* pszString) const
 inline int CString::Compare(const char* pszString, bool bIgnoreCase) const
 {
 	return (bIgnoreCase) ? stricmp(m_pszData, pszString) : strcmp(m_pszData, pszString);
+}
+
+inline int CString::Compare(const char* pszString, int nChars, bool bIgnoreCase) const
+{
+	return (bIgnoreCase) ? strnicmp(m_pszData, pszString, nChars) : strncmp(m_pszData, pszString, nChars);
 }
 
 inline void CString::Copy(const char* lpszBuffer)

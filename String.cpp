@@ -305,9 +305,30 @@ void CString::operator >>(CStream& rStream) const
 
 void CString::Format(const char* pszFormat, ...)
 {
-	// Setup arguments.
 	va_list	args;
 	va_start(args, pszFormat);
+
+	FormatEx(pszFormat, args);
+
+	va_end(args);
+}
+
+/******************************************************************************
+** Method:		FormatEx()
+**
+** Description:	Format the string using sprintf() style variable args.
+**
+** Parameters:	See sprintf().
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CString::FormatEx(const char* pszFormat, va_list args)
+{
+	// Copy arguments list.
+	va_list	argsOrig = args;
 
 	int nMaxLength  = 0;
 	int nRealLength = 0;
@@ -442,18 +463,14 @@ void CString::Format(const char* pszFormat, ...)
 		nMaxLength += nValLength;
 	}
 
-	// Reset arguments.
-    va_end(args);
-	va_start(args, pszFormat);
-	
 	// Set the buffer size.
 	BufferSize(nMaxLength+1);
 
 	// Format string.
-	nRealLength = vsprintf(m_pszData, pszFormat, args);
+	nRealLength = vsprintf(m_pszData, pszFormat, argsOrig);
 	ASSERT(nRealLength <= nMaxLength);
 
-	va_end(args);
+	va_end(argsOrig);
 }
 
 /******************************************************************************
@@ -615,6 +632,69 @@ CString CString::Right(int nCount)
 	str.m_pszData[nCount] = '\0';
 
 	return str;
+}
+
+/******************************************************************************
+** Method:		Insert()
+**
+** Description:	Inserts the given string at the position specified.
+**
+** Parameters:	nPos		The position of the insertion.
+**				pszString	The string to insert.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CString::Insert(int nPos, const char* pszString)
+{
+	ASSERT(pszString != NULL);
+	ASSERT(nPos >= 0);
+	ASSERT(nPos <= (int)strlen(m_pszData));
+
+	// Get extra text length.
+	int nTextLen = strlen(pszString);
+
+	if (nTextLen == 0)
+		return;
+
+	// Get current length.
+	int nThisLen = Length();
+
+	// Appending?
+	if (nPos == nThisLen)
+	{
+		// Use concat operator.
+		operator+=(pszString);
+	}
+	// Inserting.
+	else
+	{
+		StringData* pOldData = GetData();
+
+		// Detach old buffer.
+		m_pszData = pszNULL;
+
+		// Allocate a new buffer.
+		BufferSize(nThisLen+nTextLen+1);
+		
+		// Copy leading chars from old text.
+		strncpy(m_pszData, pOldData->m_acData, nPos);
+
+		// Copy new text.
+		strncpy(m_pszData+nPos, pszString, nTextLen);
+
+		// Copy trailing chars from old text.
+		strncpy(m_pszData+nPos+nTextLen, pOldData->m_acData+nPos, nThisLen-nPos);
+
+		// Terminate string.
+		m_pszData[nThisLen+nTextLen] = '\0';
+
+		// Free old string, if not empty string.
+		if (pOldData != &strNULL)
+			free(pOldData);
+	}
 }
 
 /******************************************************************************
