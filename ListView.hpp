@@ -65,13 +65,14 @@ public:
 	void ItemState(int nItem, int nState, int nMask);
 
 	CString ItemText(int nItem, int nSubItem);
-	int     ItemState(int nItem, int nMask = LVIS_SELECTED);
+	int     ItemState(int nItem, int nMask = LVIS_SELECTED) const;
 	LPARAM  ItemData(int nItem);
 	void*   ItemPtr(int nItem);
 
-	void Select(int nItem);
-	int  Selected() const;
+	void Select(int nItem, bool bSelect = true);
 	bool IsSelection() const;
+	int  Selection() const;
+	bool IsSelected(int nItem) const;
 	void RestoreSel(int nItem);
 
 	int  ItemCount() const;
@@ -193,24 +194,31 @@ inline void CListView::ItemState(int nItem, int nState, int nMask)
 	ListView_SetItemState(m_hWnd, nItem, nState, nMask);
 }
 
-inline int CListView::ItemState(int nItem, int nMask)
+inline int CListView::ItemState(int nItem, int nMask) const
 {
 	return ListView_GetItemState(m_hWnd, nItem, nMask);
 }
 
-inline void CListView::Select(int nItem)
+inline void CListView::Select(int nItem, bool bSelect)
 {
-	ItemState(nItem, LVIS_SELECTED | LVIS_FOCUSED, 0x000F);
-}
+	int nState = (bSelect) ? (LVIS_SELECTED | LVIS_FOCUSED) : 0;
 
-inline int CListView::Selected() const
-{
-	return ListView_GetNextItem(m_hWnd, -1, LVNI_SELECTED);
+	ItemState(nItem, nState, 0x000F);
 }
 
 inline bool CListView::IsSelection() const
 {
-	return (Selected() != -1);
+	return (Selection() != LB_ERR);
+}
+
+inline bool CListView::IsSelected(int nItem) const
+{
+	return (ItemState(nItem) & LVIS_SELECTED);
+}
+
+inline int CListView::Selection() const
+{
+	return ListView_GetNextItem(m_hWnd, -1, LVNI_SELECTED);
 }
 
 inline int CListView::ItemCount() const
