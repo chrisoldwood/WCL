@@ -62,8 +62,8 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				NMHDR* pMsgHdr = (NMHDR*) lParam;
 				ASSERT(pMsgHdr);
 
-				m_bMsgHandled = true;
 				m_lMsgResult  = OnCtrlMsg(*pMsgHdr);
+				m_bMsgHandled = true;
 				return 0;
 			}
 			break;
