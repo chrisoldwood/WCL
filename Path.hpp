@@ -41,9 +41,6 @@ public:
     bool Exists() const;
     bool ReadOnly() const;
 
-	// Max length of path.
-	enum { MAX_LENGTH = 260 };
-
 	//
 	// Path components.
 	//
@@ -67,13 +64,24 @@ public:
 	bool SelectComputer(const CWnd& rParent, const char* pszTitle);
 
 	//
-	// Common path root directories.
+	// Common root directories.
 	//
-	static CPath CurrWorkDir();
-	static CPath AppDir();
+	static CPath CurrentDir();
+	static CPath ApplicationDir();
+	static CPath ModuleDir();
 	static CPath WindowsDir();
-	static CPath WindowsSystemDir();
+	static CPath SystemDir();
 	static CPath TempDir();
+
+	static CPath ModuleDir(HMODULE hModule);
+
+	//
+	// Common full paths.
+	//
+	static CPath Application();
+	static CPath Module();
+
+	static CPath Module(HMODULE hModule);
 
 	//
 	// Operators.

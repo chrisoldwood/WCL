@@ -62,14 +62,15 @@ bool CPath::Exists() const
 
 bool CPath::ReadOnly() const
 {
-	return (_access(m_pszData, 02) == 0);
+	return (_access(m_pszData, 02) != 0);
 }
 
 /******************************************************************************
-** Method:		CurrWorkDir()
-**				AppDir()
+** Method:		CurrentDir()
+**				ApplicationDir()
+**				ModuleDir()
 **				WindowsDir()
-**				WindowsSystemDir()
+**				SystemDir()
 **				TempDir()
 **
 ** Description:	Retrieves one of the standard paths.
@@ -81,23 +82,35 @@ bool CPath::ReadOnly() const
 *******************************************************************************
 */
 
-CPath CPath::CurrWorkDir()
+CPath CPath::CurrentDir()
 {
-	char szPath[CPath::MAX_LENGTH];
+	char szPath[MAX_PATH];
 
-	_getcwd(szPath, sizeof(szPath));
+	::GetCurrentDirectory(sizeof(szPath), szPath);
 
 	return CPath(szPath);
 }
 
-CPath CPath::AppDir()
+CPath CPath::ApplicationDir()
 {
-	char szPath[CPath::MAX_LENGTH];
+	return ModuleDir(NULL);
+}
+
+CPath CPath::ModuleDir()
+{
+	ASSERT(CModule::This().Handle() != NULL);
+
+	return ModuleDir(CModule::This().Handle());
+}
+
+CPath CPath::ModuleDir(HMODULE hModule)
+{
+	char szPath[MAX_PATH];
 
 	// Get full executable path name.
-	::GetModuleFileName(NULL, szPath, sizeof(szPath));
+	::GetModuleFileName(hModule, szPath, sizeof(szPath));
 	
-	// Strip executable file name.
+	// Strip file name.
 	char* pszExeName = strrchr(szPath, '\\');
 	*pszExeName = '\0';
 
@@ -106,32 +119,51 @@ CPath CPath::AppDir()
 
 CPath CPath::WindowsDir()
 {
-	char szPath[CPath::MAX_LENGTH];
+	char szPath[MAX_PATH];
 
 	::GetWindowsDirectory(szPath, sizeof(szPath));
 
 	return CPath(szPath);
 }
 
-CPath CPath::WindowsSystemDir()
+CPath CPath::SystemDir()
 {
-	char szPath[CPath::MAX_LENGTH];
+	char szPath[MAX_PATH];
 
-	::GetWindowsDirectory(szPath, sizeof(szPath));
-	strcat(szPath, "\\SYSTEM");
+	::GetSystemDirectory(szPath, sizeof(szPath));
 
 	return CPath(szPath);
 }
 
 CPath CPath::TempDir()
 {
-	char* pszTempDir = getenv("TEMP");
-				
-	// User defined TEMP?
-	if (pszTempDir)
-		return CPath(pszTempDir);
-	else
-		return CPath::WindowsDir();
+	char szPath[MAX_PATH];
+
+	::GetTempPath(sizeof(szPath), szPath);
+
+	return CPath(szPath);
+}
+
+CPath CPath::Application()
+{
+	return Module(NULL);
+}
+
+CPath CPath::Module()
+{
+	ASSERT(CModule::This().Handle() != NULL);
+
+	return Module(CModule::This().Handle());
+}
+
+CPath CPath::Module(HMODULE hModule)
+{
+	char szPath[MAX_PATH];
+
+	// Get full executable path name.
+	::GetModuleFileName(hModule, szPath, sizeof(szPath));
+	
+	return CPath(szPath);
 }
 
 /******************************************************************************
@@ -150,7 +182,7 @@ CPath CPath::TempDir()
 
 CPath CPath::Directory() const
 {
-	char szDir[CPath::MAX_LENGTH];
+	char szDir[MAX_PATH];
 
 	_splitpath(m_pszData, NULL, szDir, NULL, NULL);
 
@@ -171,11 +203,10 @@ CPath CPath::Directory() const
 
 CString CPath::FileName() const
 {
-	char szFileName[CPath::MAX_LENGTH];
-	char szExt[CPath::MAX_LENGTH];
+	char szFileName[MAX_PATH];
+	char szExt[MAX_PATH];
 
 	_splitpath(m_pszData, NULL, NULL, szFileName, szExt);
-	strcat(szFileName, ".");
 	strcat(szFileName, szExt);
 
 	return CString(szFileName);
@@ -195,7 +226,7 @@ CString CPath::FileName() const
 
 CString CPath::FileTitle() const
 {
-	char szFileName[CPath::MAX_LENGTH];
+	char szFileName[MAX_PATH];
 
 	_splitpath(m_pszData, NULL, NULL, szFileName, NULL);
 
@@ -216,7 +247,7 @@ CString CPath::FileTitle() const
 
 CString CPath::FileExt() const
 {
-	char szExt[CPath::MAX_LENGTH];
+	char szExt[MAX_PATH];
 
 	_splitpath(m_pszData, NULL, NULL, NULL, szExt);
 
@@ -245,7 +276,7 @@ bool CPath::Select(const CWnd& rParent, DlgMode eMode, const char* pszExts,
 {
 	bool 			bOkay;
 	OPENFILENAME	ofnFile;
-	char			szFileName[CPath::MAX_LENGTH];
+	char			szFileName[MAX_PATH];
 
 	// Initialise filename.
 	szFileName[0] = '\0';
