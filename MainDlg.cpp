@@ -56,8 +56,16 @@ CMainDlg::~CMainDlg()
 
 void CMainDlg::OnPaint(CDC& rDC)
 {
-	// Draw etched line at top.
 	CRect rcClient = ClientRect();
-	rDC.HorzLine3D(rcClient.left, rcClient.right, rcClient.top,      false);
-	rDC.HorzLine3D(rcClient.left, rcClient.right, rcClient.bottom-2, false);
+
+	// Get the parent CFrameWnd.
+	CFrameWnd* pParentFrame = static_cast<CFrameWnd*>(m_pParentWnd);
+
+	// Draw toolbar border.
+	if (pParentFrame->ToolBar() != NULL)
+		rDC.HorzLine3D(rcClient.left, rcClient.right, rcClient.top, false);
+
+	// Draw status bar border.
+	if (pParentFrame->StatusBar() != NULL)
+		rDC.HorzLine3D(rcClient.left, rcClient.right, rcClient.bottom-2, false);
 }
