@@ -74,6 +74,7 @@
 #include "IntPtrMap.hpp"
 #include "StrPtrMap.hpp"
 #include "TTree.hpp"
+#include "TTreeIter.hpp"
 
 // Exception classes.
 #include "Exception.hpp"
