@@ -99,16 +99,20 @@ void CDlgFrame::OnCreate(const CRect& rcClient)
 	// Get the size of the dialog.
 	CSize DlgSize = m_rDialog.WindowRect().Size();
 	
-	// Get the toolbar and status bar dimensions.
+	// Get the tool bar dimensions, if one.
 	if (m_pToolBar)
 		ToolBar = m_pToolBar->ClientRect().Size();
     
+	// Get the status bar dimensions, if one.
 	if (m_pStatusBar)
 		StatusBar = m_pStatusBar->ClientRect().Size();
 
-	// Get frame border, menu and caption dimensions.
+	// Get the menu dimensions, if one.
+	if (m_pMenu)
+		Menu.cy = GetSystemMetrics(SM_CYMENU);
+
+	// Get frame border and caption dimensions.
 	Caption.cy = GetSystemMetrics(SM_CYCAPTION);
-	Menu.cy    = GetSystemMetrics(SM_CYMENU);
 	Border.cx  = GetSystemMetrics(m_bFixedSize ? SM_CXFIXEDFRAME : SM_CXSIZEFRAME);
 	Border.cy  = GetSystemMetrics(m_bFixedSize ? SM_CYFIXEDFRAME : SM_CYSIZEFRAME);
 
