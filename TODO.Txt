@@ -9,3 +9,5 @@
 - Move to STL.
 
 - Add recessed fields support to the status bar.
+
+- Tidy up CFileTree class (Add proper accessors etc).
