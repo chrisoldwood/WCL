@@ -54,6 +54,8 @@ public:
 	CString ToString() const;
 	CString ToString(uint nChars) const;
 
+	void FromString(const char* pszString);
+
 protected:
 	//
 	// Members.
@@ -94,6 +96,16 @@ inline CString CBuffer::ToString(uint nChars) const
 	ASSERT(nChars <= m_nSize);
 
 	return CString((char*)m_pBuffer, nChars);
+}
+
+inline void CBuffer::FromString(const char* pszString)
+{
+	ASSERT(pszString != NULL);
+
+	int nLength = strlen(pszString);
+
+	Size(nLength);
+	Set(pszString, nLength);
 }
 
 #endif // BUFFER_HPP
