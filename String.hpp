@@ -121,8 +121,7 @@ protected:
 
 	struct StringData
 	{
-		uint32	m_nRefs;		// Reference count (Unused).
-		uint32	m_nSize;		// Size of allocated buffer.
+		uint32	m_nAllocSize;	// Size of allocated buffer.
 		char	m_acData[1];	// Start of string data.
 	};
 
@@ -268,7 +267,7 @@ inline void CString::Copy(const char* lpszBuffer)
 
 inline CString::StringData* CString::GetData() const
 {
-	return (StringData*) (m_pszData - (2 * sizeof(uint32)));
+	return (StringData*) (m_pszData - sizeof(uint32));
 }
 
 /******************************************************************************

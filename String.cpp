@@ -67,24 +67,23 @@ void CString::LoadRsc(uint iRscID)
 *******************************************************************************
 */
 
-void CString::BufferSize(uint iSize)
+void CString::BufferSize(uint nSize)
 {
-	ASSERT(iSize);
+	ASSERT(nSize > 0);
 
 	StringData* pData = GetData();
 
 	// Increase buffer size?
-	if (pData->m_nSize < iSize)
+	if (pData->m_nAllocSize < nSize)
 	{
 		Free();
 		
 		// Allocate new buffer.
-		pData = (StringData*) malloc(iSize + sizeof(StringData));
+		pData = (StringData*) malloc(nSize + sizeof(StringData));
 		ASSERT(pData != NULL);
 
-		pData->m_nRefs     = 0;
-		pData->m_nSize     = iSize;
-		pData->m_acData[0] = '\0';
+		pData->m_nAllocSize = nSize;
+		pData->m_acData[0]  = '\0';
 
 		m_pszData = pData->m_acData;
 	}
@@ -175,7 +174,7 @@ void CString::operator +=(const char* pszString)
 	StringData* pOldData = GetData();
 
 	// Buffer big enough?
-	if (pOldData->m_nSize < (iStrLen+iParamLen+1))
+	if (pOldData->m_nAllocSize < (iStrLen+iParamLen+1))
 	{
 		// Detach old buffer.
 		m_pszData = pszNULL;
@@ -222,7 +221,7 @@ void CString::operator +=(char cChar)
 	StringData* pOldData = GetData();
 
 	// Buffer big enough?
-	if (pOldData->m_nSize < (iStrLen+2))
+	if (pOldData->m_nAllocSize < (iStrLen+2))
 	{
 		// Detach old buffer.
 		m_pszData = pszNULL;
@@ -290,10 +289,10 @@ void CString::operator >>(CStream& rStream) const
 {
 	StringData* pData = GetData();
 
-	rStream << pData->m_nSize;
+	rStream << pData->m_nAllocSize;
 
-	if (pData->m_nSize)
-		rStream.Write(m_pszData, pData->m_nSize);
+	if (pData->m_nAllocSize)
+		rStream.Write(m_pszData, pData->m_nAllocSize);
 }
 
 /******************************************************************************
