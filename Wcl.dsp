@@ -414,6 +414,14 @@ SOURCE=.\StdWnd.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\StrCvt.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\StrCvtException.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Stream.cpp
 # End Source File
 # Begin Source File
@@ -879,6 +887,14 @@ SOURCE=.\StdWnd.hpp
 # Begin Source File
 
 SOURCE=.\StrArray.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\StrCvt.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\StrCvtException.hpp
 # End Source File
 # Begin Source File
 

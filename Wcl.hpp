@@ -49,7 +49,7 @@
 // Debugging functions.
 #include "Assert.hpp"
 
-// Core classes.
+// Core data classes.
 #include "Point.hpp"
 #include "Size.hpp"
 #include "Rect.hpp"
@@ -77,7 +77,8 @@
 
 // Exception classes.
 #include "Exception.hpp"
-#include "STreamException.hpp"
+#include "StrCvtException.hpp"
+#include "StreamException.hpp"
 #include "FileException.hpp"
 #include "MemStreamException.hpp"
 
@@ -86,6 +87,7 @@
 #include "MsgFilter.hpp"
 
 // Persistance classes.
+#include "StrCvt.hpp"
 #include "FileFinder.hpp"
 #include "IniFile.hpp"
 #include "RegKey.hpp"
