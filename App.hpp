@@ -48,7 +48,7 @@ public:
 	int FatalMsg(const char* pszMsg, ...) const;
 
 	// Global access to the app object.
-	static CApp* This();
+	static CApp& This();
 	
 	//
 	// Members.
@@ -56,7 +56,7 @@ public:
 	CString			m_strTitle;
 	CFrameWnd&		m_rMainWnd;
 	CCmdControl&	m_rCmdControl;
-	HINSTANCE		m_hInstance;
+	CModule			m_Module;
 	CMsgThread		m_MainThread;
 	CString			m_strCmdLine;
 	int				m_iCmdShow;
@@ -86,7 +86,13 @@ private:
 	void Run();
 	void Close();
 
-	friend int PASCAL WinMain(HINSTANCE hCurrInst, HINSTANCE hPrevInst, LPSTR lpszCmdLine, int iCmdShow);
+	friend int WINAPI WinMain(HINSTANCE hCurrInst, HINSTANCE hPrevInst, LPSTR lpszCmdLine, int iCmdShow);
+
+	//
+	// Disallow copies and assignments.
+	//
+	CApp(const CApp&);
+	CApp& operator=(const CApp&);
 };
 
 /******************************************************************************

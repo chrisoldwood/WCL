@@ -28,7 +28,7 @@
 *******************************************************************************
 */
 
-//The application object.
+// The application object.
 static CApp* pThis = NULL;
 
 /******************************************************************************
@@ -47,7 +47,6 @@ static CApp* pThis = NULL;
 CApp::CApp(CFrameWnd& rFrameWnd, CCmdControl& rCmdControl)
 	: m_rMainWnd(rFrameWnd)
 	, m_rCmdControl(rCmdControl)
-	, m_hInstance(NULL)
 	, m_iCmdShow(SW_SHOW)
 {
 	pThis = this;
@@ -77,18 +76,20 @@ CApp::~CApp()
 /******************************************************************************
 ** Method:		This()
 **
-** Description:	Get a pointer to the application object.
+** Description:	Get the application object.
 **
 ** Parameters:	None.
 **
-** Returns:		Nothing.
+** Returns:		The app object.
 **
 *******************************************************************************
 */
 
-CApp* CApp::This()
+CApp& CApp::This()
 {
-	return pThis;
+	ASSERT(pThis != NULL);
+
+	return *pThis;
 }
 
 /******************************************************************************
