@@ -7,3 +7,5 @@
 - Two phase save support (SDI).
 
 - Move to STL.
+
+- DEBUG_NEW type macro.
