@@ -98,7 +98,11 @@ inline bool CEvent::Wait(DWORD dwWaitTime)
 {
 	ASSERT(m_hEvent != NULL);
 
-	return (::WaitForSingleObject(m_hEvent, dwWaitTime) == WAIT_OBJECT_0);
+	DWORD dwResult = ::WaitForSingleObject(m_hEvent, dwWaitTime);
+
+	ASSERT((dwResult == WAIT_OBJECT_0) || (dwResult == WAIT_TIMEOUT) );
+
+	return (dwResult == WAIT_OBJECT_0);
 }
 
 #endif // EVENT_HPP
