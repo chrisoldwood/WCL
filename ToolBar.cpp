@@ -142,7 +142,7 @@ void CToolBar::OnCreate(const CRect& rcClient)
 			pCtrl->pWnd->Create(*this, pCtrl->nID, CRect(ptOrigin, dmSize));
 			ptOrigin.x += iCtrlHt;
 
-			// Add to tooltip control?
+			// Add to tooltip control.
 			m_oToolTip.AddTool(*this, *pCtrl->pWnd, LPSTR_TEXTCALLBACK);
 		}
 		
