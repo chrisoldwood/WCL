@@ -23,9 +23,18 @@ class CException
 {
 public:
 	//
+	// Exception codes.
+	//
+	enum ErrCode
+	{
+		E_GENERIC = 0,	// Generic exception.
+	};
+
+	//
 	// Constructors/Destructor.
 	//
 	CException();
+	CException(ErrCode eCode, const char* pszText, ...);
 	virtual ~CException();
 
 	//
@@ -51,7 +60,17 @@ protected:
 
 inline CException::CException()
 {
-//	ASSERT(false);
+}
+
+inline CException::CException(ErrCode eCode, const char* pszText, ...)
+	: m_nErrorCode(eCode)
+{
+	// Setup arguments.
+	va_list	args;
+	va_start(args, pszText);
+	
+	// Format message.
+	m_strErrorText.FormatEx(pszText, args);
 }
 
 inline CException::~CException()
