@@ -275,3 +275,34 @@ int CApp::FatalMsg(const char* pszMsg, ...) const
 	
 	return MessageBox(NULL, strMsg, m_strTitle, MB_OK | MB_ICONSTOP | MB_TASKMODAL);
 }
+
+/******************************************************************************
+** Method:		FormatError()
+**
+** Description:	Converts a system error code to a string.
+**
+** Parameters:	dwError		The error code.
+**
+** Returns:		The error as string.
+**
+*******************************************************************************
+*/
+
+CString CApp::FormatError(DWORD dwError)
+{
+	CString strError;
+	char*   pszError;
+
+	// Format string using default language.
+	::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+					NULL, dwError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (char*)&pszError, 0, NULL);
+
+	// Copy message and free buffer.
+	strError = pszError;
+	::LocalFree(pszError);
+
+	// Trim excess whitespace.
+	strError.Trim();
+
+	return strError;
+}

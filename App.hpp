@@ -47,6 +47,11 @@ public:
 	int NotifyMsg(const char* pszMsg, ...) const;
 	int FatalMsg(const char* pszMsg, ...) const;
 
+	//
+	// Error handling.
+	//
+	static CString FormatError(DWORD dwError = ::GetLastError());
+
 	// Global access to the app object.
 	static CApp& This();
 	
