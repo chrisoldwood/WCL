@@ -14,6 +14,7 @@
 
 // Forward declarations.
 class CStream;
+class CStrArray;
 
 /******************************************************************************
 ** 
@@ -64,6 +65,7 @@ public:
 	CString Left(int nCount);
 	CString Mid(int nFirst, int nCount);
 	CString Right(int nCount);
+	uint    Split(const char* pszSeps, CStrArray& astrFields);
 
 	//
 	// Formating.

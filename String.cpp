@@ -658,3 +658,43 @@ void CString::Delete(int nFirst, int nCount)
 	// Move string contents down.
 	strcpy(pszDst, pszSrc);
 }
+
+/******************************************************************************
+** Method:		Split()
+**
+** Description:	Splits a string into separate fields.
+**
+** Parameters:	pszSeps		The list of separators.
+**				astrFields	The array into which the fields are returned.
+**
+** Returns:		The number of fields.
+**
+*******************************************************************************
+*/
+
+uint CString::Split(const char* pszSeps, CStrArray& astrFields)
+{
+	ASSERT(pszSeps != NULL);
+
+	int nSepPos = -1;
+	int nLength = Length();
+
+	// Until EoS...
+	while (nSepPos < (nLength-1))
+	{
+		int nFirstChar = nSepPos + 1;
+
+		// Find next occurence of a separator.
+		nSepPos = strcspn(m_pszData + nFirstChar, pszSeps) + nFirstChar;
+
+		int nCount = nSepPos - nFirstChar;
+
+		// Extract string.
+		CString strField(m_pszData + nFirstChar, nCount);
+
+		// Add to fields collection.
+		astrFields.Add(strField);
+	}
+
+	return astrFields.Size();
+}
