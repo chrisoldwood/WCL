@@ -77,6 +77,8 @@ public:
 
 	int  ItemCount() const;
 
+	void MakeItemVisible(int nItem);
+
 	//
 	// Column methods.
 	//
@@ -224,6 +226,11 @@ inline int CListView::Selection() const
 inline int CListView::ItemCount() const
 {
 	return ListView_GetItemCount(m_hWnd);
+}
+
+inline void CListView::MakeItemVisible(int nItem)
+{
+	ListView_EnsureVisible(m_hWnd, nItem, FALSE);
 }
 
 inline int CListView::NumColumns() const
