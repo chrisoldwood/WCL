@@ -25,7 +25,7 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CDecimalBox(bool bSigned, int nIntDigits, int nDecDigits);
+	CDecimalBox(bool bSigned, int nIntDigits, int nDecDigits, int nFlags = 0x00);
 	~CDecimalBox();
 	
 	//
@@ -33,6 +33,14 @@ public:
 	//
 	double Value() const;
 	void   Value(double dValue);
+
+	// Flags.
+	enum Flags
+	{
+		DEFAULTS		= 0x00,
+		NO_TRAIL_ZEROES	= 0x01,
+		ALLOW_FRACTIONS = 0x02,
+	};
 
 protected:
 	//
@@ -42,6 +50,7 @@ protected:
 	int		m_nIntDigits;	// Number of integer digits.
 	int		m_nDecDigits;	// Number of decimal digits.
 	int		m_nMaxChars;	// Maximum number of chars.
+	int		m_nFlags;		// Options.
 
 	//
 	// Message handlers.

@@ -23,24 +23,34 @@
 *******************************************************************************
 */
 
-CDecimalBox::CDecimalBox(bool bSigned, int nIntDigits, int nDecDigits)
+CDecimalBox::CDecimalBox(bool bSigned, int nIntDigits, int nDecDigits, int nFlags)
 	: m_bSigned(bSigned)
 	, m_nIntDigits(nIntDigits)
 	, m_nDecDigits(nDecDigits)
 	, m_nMaxChars(nIntDigits + nDecDigits)
+	, m_nFlags(nFlags)
 {
 	// Setup character filter.
 	CString strFilter("0123456789");
 
+	// Allow signed values?
 	if (m_bSigned)
 	{
 		strFilter += "+-";
 		m_nMaxChars++;
 	}
 
+	// Allow decimal point?
 	if (nDecDigits)
 	{
 		strFilter += '.';
+		m_nMaxChars++;
+	}
+
+	// Allow fractions?
+	if (m_nFlags & ALLOW_FRACTIONS)
+	{
+		strFilter += "/ ";
 		m_nMaxChars++;
 	}
 
@@ -77,7 +87,15 @@ CDecimalBox::~CDecimalBox()
 
 double CDecimalBox::Value() const
 {
-	return atof(Text());
+	CString str = Text();
+
+	// Not a fraction?
+	if (str.Find('/') < 0)
+		return atof(str);
+
+	ASSERT(false);
+	
+	return atof(str);
 }
 
 /******************************************************************************
@@ -97,6 +115,27 @@ void CDecimalBox::Value(double dValue)
 	char szText[50];
 
 	sprintf(szText, "%.*f", m_nDecDigits, dValue);
+
+	// Remove trailing zeroes?
+	if (m_nFlags & NO_TRAIL_ZEROES)
+	{
+		char* pszDecPt = strchr(szText, '.');
+
+		// Value has a decimal point?
+		if (pszDecPt != NULL)
+		{
+			// Calculate the end of the string.
+			char* pszEOS = pszDecPt + strlen(pszDecPt) - 1;
+
+			// Remove trailing zeroes.
+			while ( (pszEOS > pszDecPt) && (*pszEOS == '0') )
+				*pszEOS-- = '\0';
+
+			// Remove decimal point?
+			if (pszEOS == pszDecPt)
+				*pszDecPt = '\0';
+		}
+	}
 
 	Text(szText);
 }
@@ -137,16 +176,47 @@ bool CDecimalBox::FilterKey(char cChar)
 	if (CEditBox::FilterKey(cChar))
 		return true;
 
-	// Is a decimal point or sign character?
-	if ( (cChar == '.') || (cChar == '+') || (cChar == '-') )
+	char szText[100];
+	int	 nSelStart, nSelEnd;
+
+	// Get the current text.
+	SendMessage(WM_GETTEXT, 100, (LPARAM)(LPCSTR)szText);
+
+	// Get the current selection.
+	Selected(nSelStart, nSelEnd);
+
+	int nSelChars = nSelEnd - nSelStart;
+
+	// Is the sign char?
+	if ( (cChar == '+') || (cChar == '-') )
 	{
-		char szText[50];
+		// Caret not at start OR already have sign?
+		if ( (nSelStart > 0) || (strchr(szText, '+') != NULL) || (strchr(szText, '-') != NULL) )
+			return true;
+	}
 
-		// Get the current text.
-		SendMessage(WM_GETTEXT, 50, (LPARAM)(LPCSTR)szText);
+	// Is a decimal point AND already have one?
+	if ( (cChar == '.') && (strchr(szText, '.') != NULL) )
+		return true;
 
-		// Is a decimal point AND already have one?
-		if ( (cChar == '.') && (strchr(szText, '.') != NULL) )
+	// Is a fraction separator AND already have one?
+	if ( (cChar == '/') && (strchr(szText, '/') != NULL) )
+		return true;
+
+	// Is a fraction separator AND already have one?
+	if ( (cChar == ' ') && (strchr(szText, ' ') != NULL) )
+		return true;
+
+	// Allowing decimal places AND is a digit?
+	if ( (m_nDecDigits > 0) && (isdigit(cChar)) )
+	{
+		// Get decimal point position.
+		char* pszDecPt = strchr(szText, '.');
+
+		// Is decimal point AND caret after it AND no selection
+		// AND max decimal places entered?
+		if ( (pszDecPt != NULL) && (nSelStart > (pszDecPt - szText)) && (nSelChars < 1)
+		  && (strlen(pszDecPt + 1) >= (size_t)m_nDecDigits) )
 			return true;
 	}
 
