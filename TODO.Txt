@@ -1,12 +1,8 @@
-- Ref counted strings.
-
 - App helpers for reg file types/apps etc.
 
 - Two phase save support (SDI).
 
 - Move to STL.
-
-- Add recessed fields support to the status bar.
 
 - Tidy up CFileTree class (Add proper accessors etc).
 
