@@ -37,7 +37,7 @@ public:
 	virtual const char* DefFileExt() const = 0;
 
 	// Typed access to the app objects.
-	static CSDIApp* This();
+	static CSDIApp& This();
 	CSDIFrame& FrameWnd();
 
 	//
@@ -51,6 +51,19 @@ protected:
 	//
 	// Members.
 	//
+
+	//
+	// Startup and Shutdown template methods.
+	//
+	virtual	bool OnOpen();
+	virtual	bool OnClose();
+
+private:
+	//
+	// Disallow copies and assignments.
+	//
+	CSDIApp(const CSDIApp&);
+	CSDIApp& operator=(const CSDIApp&);
 };
 
 /******************************************************************************
@@ -60,9 +73,9 @@ protected:
 *******************************************************************************
 */
 
-inline CSDIApp* CSDIApp::This()
+inline CSDIApp& CSDIApp::This()
 {
-	return static_cast<CSDIApp*>(CApp::This());
+	return static_cast<CSDIApp&>(CApp::This());
 }
 
 inline CSDIFrame& CSDIApp::FrameWnd()
