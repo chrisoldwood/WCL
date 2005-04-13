@@ -26,6 +26,7 @@ public:
 	// Formatting methods.
 	//
 	static CString FormatInt     (int    nValue);
+	static CString FormatUInt    (uint   nValue);
 	static CString FormatLong    (long   lValue);
 	static CString FormatDouble  (double dValue);
 	static CString FormatDate    (time_t tValue);
@@ -35,6 +36,7 @@ public:
 	// Parsing methods.
 	//
 	static int    ParseInt   (const char* pszString);
+	static uint   ParseUInt  (const char* pszString);
 	static long   ParseLong  (const char* pszString);
 	static double ParseDouble(const char* pszString);
 };

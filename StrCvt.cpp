@@ -34,6 +34,13 @@ CString CStrCvt::FormatInt(int nValue)
 	return ltoa(nValue, szValue, 10);
 }
 
+CString CStrCvt::FormatUInt(uint nValue)
+{
+	char szValue[50];
+
+	return ltoa(nValue, szValue, 10);
+}
+
 /******************************************************************************
 ** Method:		FormatLong()
 **
@@ -123,6 +130,20 @@ int CStrCvt::ParseInt(const char* pszString)
 	char* pcEndChar = NULL;
 
 	int nValue = strtol(pszString, &pcEndChar, 0);
+	
+	if (*pcEndChar != '\0')
+		throw CStrCvtException(CStrCvtException::E_INVALID_FORMAT);
+
+	return nValue;
+}
+
+uint CStrCvt::ParseUInt(const char* pszString)
+{
+	ASSERT(pszString != NULL);
+
+	char* pcEndChar = NULL;
+
+	uint nValue = strtoul(pszString, &pcEndChar, 0);
 	
 	if (*pcEndChar != '\0')
 		throw CStrCvtException(CStrCvtException::E_INVALID_FORMAT);
