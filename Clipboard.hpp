@@ -12,6 +12,11 @@
 #ifndef CLIPBOARD_HPP
 #define CLIPBOARD_HPP
 
+/* WINVER >= 0x0500 */
+#ifndef CF_DIBV5
+#define CF_DIBV5	17
+#endif 
+
 /******************************************************************************
 ** 
 ** This is a CStream derived class used to access the clipboard.
@@ -55,8 +60,10 @@ public:
 	//
 	// Format methods.
 	//
+	static bool    IsStdFormat(uint nFormat);
 	static uint    RegisterFormat(const char* pszFormat);
 	static CString FormatName(uint nFormat);
+	static uint    FormatHandle(const char* pszFormat);
 
 protected:
 	//
@@ -65,6 +72,19 @@ protected:
 	CBuffer*	m_pBuffer;		// Buffer for stream.
 	CMemStream*	m_pStream;		// Used to implement stream methods.
 	uint		m_iFormat;		// The format of the clipboard data.
+
+private:
+	/**************************************************************************
+	** Structure used for standard formats table
+	*/
+
+	struct FmtEntry
+	{
+		uint		m_nFormat;		// Handle.
+		const char*	m_pszFormat;	// Name.
+	};
+
+	static FmtEntry s_oStdFormats[];
 };
 
 /******************************************************************************

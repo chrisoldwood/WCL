@@ -16,6 +16,35 @@
 #endif
 
 /******************************************************************************
+**
+** Class members.
+**
+*******************************************************************************
+*/
+
+CClipboard::FmtEntry CClipboard::s_oStdFormats[] = 
+{
+	{ CF_TEXT,			"CF_TEXT"         },
+	{ CF_BITMAP,		"CF_BITMAP"       },
+	{ CF_METAFILEPICT,	"CF_METAFILEPICT" },
+	{ CF_SYLK,			"CF_SYLK"         },
+	{ CF_DIF,			"CF_DIF"          },
+	{ CF_TIFF,			"CF_TIFF"         },
+	{ CF_OEMTEXT,		"CF_OEMTEXT"      },
+	{ CF_DIB,			"CF_DIB"          },
+	{ CF_PALETTE,		"CF_PALETTE"      },
+	{ CF_PENDATA,		"CF_PENDATA"      },
+	{ CF_RIFF,			"CF_RIFF"         },
+	{ CF_WAVE,			"CF_WAVE"         },
+	{ CF_UNICODETEXT,	"CF_UNICODETEXT"  },
+	{ CF_ENHMETAFILE,	"CF_ENHMETAFILE"  },
+	{ CF_HDROP,			"CF_HDROP"        },
+	{ CF_LOCALE,		"CF_LOCALE"       },
+	{ CF_DIBV5,			"CF_DIBV5"        },
+	{ NULL,				NULL              }
+};
+
+/******************************************************************************
 ** Method:		Constructor.
 **
 ** Description:	.
@@ -291,6 +320,23 @@ bool CClipboard::PasteText(CString& strString)
 }
 
 /******************************************************************************
+** Method:		IsStdFormat()
+**
+** Description:	Queries if the format is a standard one.
+**
+** Parameters:	nFormat		The format handle.
+**
+** Returns:		true or false.
+**
+*******************************************************************************
+*/
+
+bool CClipboard::IsStdFormat(uint nFormat)
+{
+	return (nFormat < 0xC000);
+}
+
+/******************************************************************************
 ** Method:		RegisterFormat()
 **
 ** Description:	Register the custom clipboard format.
@@ -311,7 +357,7 @@ uint CClipboard::RegisterFormat(const char* pszFormat)
 ** Method:		FormatName()
 **
 ** Description:	Gets the name of a clipboard format from its handle.
-**				NB: This handles both custom and re-defined formats.
+**				NB: This handles both custom and pre-defined formats.
 **
 ** Parameters:	nFormat		The format handle.
 **
@@ -323,28 +369,18 @@ uint CClipboard::RegisterFormat(const char* pszFormat)
 CString CClipboard::FormatName(uint nFormat)
 {
 	// Is predefined format?
-	if (nFormat < 0xC000)	
+	if (IsStdFormat(nFormat))	
 	{
-		switch (nFormat)
+		// Search lookup table.
+		for (FmtEntry* pEntry = s_oStdFormats; (pEntry->m_nFormat != NULL); ++pEntry)
 		{
-			case CF_TEXT:			return "CF_TEXT";
-			case CF_BITMAP:			return "CF_BITMAP";
-			case CF_METAFILEPICT:	return "CF_METAFILEPICT";
-			case CF_SYLK:			return "CF_SYLK";
-			case CF_DIF:			return "CF_DIF";
-			case CF_TIFF:			return "CF_TIFF";
-			case CF_OEMTEXT:		return "CF_OEMTEXT";
-			case CF_DIB:			return "CF_DIB";
-			case CF_PALETTE:		return "CF_PALETTE";
-			case CF_PENDATA:		return "CF_PENDATA";
-			case CF_RIFF:			return "CF_RIFF";
-			case CF_WAVE:			return "CF_WAVE";
-			case CF_UNICODETEXT:	return "CF_UNICODETEXT";
-			case CF_ENHMETAFILE:	return "CF_ENHMETAFILE";
-			case CF_HDROP:			return "CF_HDROP";
-			case CF_LOCALE:			return "CF_LOCALE";
-			default:				return "";
+			if (nFormat == pEntry->m_nFormat)
+				return pEntry->m_pszFormat;
 		}
+
+		ASSERT_FALSE();
+
+		return "CF_UNKNOWN";
 	}
 	// Is custom format.
 	else
@@ -356,4 +392,30 @@ CString CClipboard::FormatName(uint nFormat)
 
 		return szName;
 	}
+}
+
+/******************************************************************************
+** Method:		FormatHandle()
+**
+** Description:	Gets the handle of a standard clipboard format from its name.
+**
+** Parameters:	pszFormat	The format name.
+**
+** Returns:		The format handle or NULL.
+**
+*******************************************************************************
+*/
+
+uint CClipboard::FormatHandle(const char* pszFormat)
+{
+	ASSERT(pszFormat != NULL);
+
+	// Search standard formats lookup table first.
+	for (FmtEntry* pEntry = s_oStdFormats; (pEntry->m_nFormat != NULL); ++pEntry)
+	{
+		if (stricmp(pszFormat, pEntry->m_pszFormat) == 0)
+			return pEntry->m_nFormat;
+	}
+
+	return NULL;
 }
