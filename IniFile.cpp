@@ -135,12 +135,12 @@ void CIniFile::WriteString(const char* pszSection, const char* pszEntry, const c
 	::WritePrivateProfileString(pszSection, pszEntry, pszValue, m_strPath);
 }
 						
-int CIniFile::ReadInt(const char* pszSection, const char* pszEntry, int iDefault) const
+int CIniFile::ReadInt(const char* pszSection, const char* pszEntry, int nDefault) const
 {
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
 
-	return ::GetPrivateProfileInt(pszSection, pszEntry, iDefault, m_strPath);
+	return ::GetPrivateProfileInt(pszSection, pszEntry, nDefault, m_strPath);
 }
 						
 void CIniFile::WriteInt(const char* pszSection, const char* pszEntry, int iValue)
@@ -151,12 +151,39 @@ void CIniFile::WriteInt(const char* pszSection, const char* pszEntry, int iValue
 	::WritePrivateProfileString(pszSection, pszEntry, CStrCvt::FormatInt(iValue), m_strPath);
 }
 						
+uint CIniFile::ReadUInt(const char* pszSection, const char* pszEntry, uint nDefault) const
+{
+	ASSERT(pszSection);
+	ASSERT(pszEntry);
+
+	char szValue[50];
+
+	// Read as a string.
+	::GetPrivateProfileString(pszSection, pszEntry, "", szValue, 
+								sizeof(szValue), m_strPath);
+	
+	// Read anything?
+	if (szValue[0] == '\0')
+		return nDefault;
+		
+	// Convert to value and return
+	return CStrCvt::ParseUInt(szValue);
+}
+						
+void CIniFile::WriteUInt(const char* pszSection, const char* pszEntry, uint nValue)
+{
+	ASSERT(pszSection);
+	ASSERT(pszEntry);
+
+	::WritePrivateProfileString(pszSection, pszEntry, CStrCvt::FormatUInt(nValue), m_strPath);
+}
+						
 long CIniFile::ReadLong(const char* pszSection, const char* pszEntry, long lDefault) const
 {
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
 
-	char szValue[20];
+	char szValue[50];
 
 	// Read as a string.
 	::GetPrivateProfileString(pszSection, pszEntry, "", szValue, 

@@ -34,13 +34,15 @@ public:
 	// Entry read/write methods.
 	//
 	CString ReadString (const char* pszSection, const char* pszEntry, const char* pszDefault) const;
-	int     ReadInt    (const char* pszSection, const char* pszEntry, int iDefault) const;
+	int     ReadInt    (const char* pszSection, const char* pszEntry, int nDefault) const;
+	uint    ReadUInt   (const char* pszSection, const char* pszEntry, uint nDefault) const;
 	long    ReadLong   (const char* pszSection, const char* pszEntry, long lDefault) const;
 	bool    ReadBool   (const char* pszSection, const char* pszEntry, bool bDefault) const;
 	CRect   ReadRect   (const char* pszSection, const char* pszEntry, const CRect& rcDefault) const;
 
 	void    WriteString(const char* pszSection, const char* pszEntry, const char* pszValue);
-	void    WriteInt   (const char* pszSection, const char* pszEntry, int iValue);
+	void    WriteInt   (const char* pszSection, const char* pszEntry, int nValue);
+	void    WriteUInt  (const char* pszSection, const char* pszEntry, uint nValue);
 	void    WriteLong  (const char* pszSection, const char* pszEntry, long lValue);
 	void    WriteBool  (const char* pszSection, const char* pszEntry, bool bValue);
 	void    WriteRect  (const char* pszSection, const char* pszEntry, const CRect& rcValue);
