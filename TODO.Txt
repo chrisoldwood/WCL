@@ -7,3 +7,5 @@
 - Tidy up CFileTree class (Add proper accessors etc).
 
 - Add FullPath() method to make a FQ Path from a relative one.
+
+- Fix CentreWindow() so it doesn't put dialogs off screen.
