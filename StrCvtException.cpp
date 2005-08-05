@@ -37,6 +37,10 @@ CStrCvtException::CStrCvtException(int eErrCode)
 			m_strErrorText = "Invalid format";
 			break;
 
+		case E_INVALID_RANGE:
+			m_strErrorText = "Number out of range";
+			break;
+
 		// Shouldn't happen!
 		default:
 			ASSERT_FALSE();

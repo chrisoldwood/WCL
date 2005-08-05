@@ -27,7 +27,8 @@ public:
 	//
 	enum ErrCode
 	{
-		E_INVALID_FORMAT  = 10,		// String has invalid format.
+		E_INVALID_FORMAT = 10,		// String has an invalid format.
+		E_INVALID_RANGE  = 11,		// String value too small/large for type.
 	};
 
 	//
