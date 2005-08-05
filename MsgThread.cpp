@@ -48,6 +48,7 @@ CMsgThread::CMsgThread()
 
 CMsgThread::~CMsgThread()
 {
+	ASSERT(m_oMsgFilters.size() == 0);
 }
 
 /******************************************************************************
@@ -80,7 +81,46 @@ void CMsgThread::Run()
 }
 
 /******************************************************************************
-** Method:		ProcessMsgQueue.
+** Method:		AddMsgFilter()
+**
+** Description:	Add the filter to the subscribers list.
+**
+** Parameters:	pFilter		The msg filter.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CMsgThread::AddMsgFilter(IMsgFilter* pFilter)
+{
+	ASSERT(pFilter != NULL);
+	ASSERT(std::find(m_oMsgFilters.begin(), m_oMsgFilters.end(), pFilter) == m_oMsgFilters.end());
+
+	m_oMsgFilters.push_back(pFilter);
+}
+
+/******************************************************************************
+** Method:		RemoveMsgFilter()
+**
+** Description:	Remove the filter from the subscribers list.
+**
+** Parameters:	pFilter		The msg filter.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CMsgThread::RemoveMsgFilter(IMsgFilter* pFilter)
+{
+	ASSERT(std::find(m_oMsgFilters.begin(), m_oMsgFilters.end(), pFilter) != m_oMsgFilters.end());
+
+	m_oMsgFilters.remove(pFilter);
+}
+
+/******************************************************************************
+** Method:		ProcessMsgQueue()
 **
 ** Description:	Processes any waiting messages.
 **
@@ -107,13 +147,14 @@ bool CMsgThread::ProcessMsgQueue()
 		// Is standard message?
 		if ( (m_oMsg.hwnd != NULL) || (m_oMsg.message < WM_USER) )
 		{
-			bool				bProcessed = false;
-			CMsgFilter*			pFilter = NULL;
-			CMsgFilters::CIter	Iter(m_MsgFilters);
+			// Template shorthands.
+			typedef CMsgFilters::const_iterator CIter;
+
+			bool bProcessed = false;
 			
 			// Give message filters first crack at message.
-			while ( ((pFilter = Iter.Next()) != NULL) && (!bProcessed) )
-				bProcessed = pFilter->ProcessMsg(m_oMsg);
+			for (CIter oIter = m_oMsgFilters.begin(); ((oIter != m_oMsgFilters.end()) && (!bProcessed)); ++oIter)
+				bProcessed = (*oIter)->ProcessMsg(m_oMsg);
 
 			// Still not processed?
 			if (!bProcessed)

@@ -31,8 +31,8 @@ public:
 	//
 	// Message filtering.
 	//
-	void AddMsgFilter(CMsgFilter& rFilter);
-	void RemoveMsgFilter(CMsgFilter& rFilter);
+	void AddMsgFilter(IMsgFilter* pFilter);
+	void RemoveMsgFilter(IMsgFilter* pFilter);
 
 	//
 	// Message processing.
@@ -42,11 +42,14 @@ public:
 	const MSG& CurrentMsg() const;
 
 protected:
+	// Template shorthands.
+	typedef std::list<IMsgFilter*> CMsgFilters;
+
 	//
 	// Members.
 	//
 	MSG			m_oMsg;
-	CMsgFilters	m_MsgFilters;
+	CMsgFilters	m_oMsgFilters;
 
 	// The main thread function.
 	virtual void Run();
@@ -63,16 +66,6 @@ protected:
 **
 *******************************************************************************
 */
-
-inline void CMsgThread::AddMsgFilter(CMsgFilter& rFilter)
-{
-	m_MsgFilters.Add(rFilter);
-}
-
-inline void CMsgThread::RemoveMsgFilter(CMsgFilter& rFilter)
-{
-	m_MsgFilters.Remove(rFilter);
-}
 
 inline const MSG& CMsgThread::CurrentMsg() const
 {
