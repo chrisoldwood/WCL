@@ -265,13 +265,19 @@ BOOL DIALOGPROC DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	}
 	catch (CException& e)
 	{
-		TRACE5("EXCEPTION in WndProc(0x%p, 0x%08X, 0x%08X, 0x%08X) [%s]\n", hWnd, iMsg, wParam, lParam, e.ErrorText());
+		TRACE5("'CException' type exception caught in WndProc(0x%p, 0x%08X, 0x%08X, 0x%08X) [%s]\n", hWnd, iMsg, wParam, lParam, e.ErrorText());
+
+		ASSERT_FALSE();
+	}
+	catch (std::exception& e)
+	{
+		TRACE5("'std::exception' type exception caught in WndProc(0x%p, 0x%08X, 0x%08X, 0x%08X) [%s]\n", hWnd, iMsg, wParam, lParam, e.what());
 
 		ASSERT_FALSE();
 	}
 	catch (...)
 	{
-		TRACE4("EXCEPTION in WndProc(0x%p, 0x%08X, 0x%08X, 0x%08X) [unknown]\n", hWnd, iMsg, wParam, lParam);
+		TRACE4("'UNKNOWN' type exception caught in WndProc(0x%p, 0x%08X, 0x%08X, 0x%08X) [unknown]\n", hWnd, iMsg, wParam, lParam);
 
 		ASSERT_FALSE();
 	}
