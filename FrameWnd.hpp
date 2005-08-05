@@ -20,7 +20,7 @@
 *******************************************************************************
 */
 
-class CFrameWnd : public CPopupWnd, public CMsgFilter
+class CFrameWnd : public CPopupWnd, public IMsgFilter
 {
 public:
 	//

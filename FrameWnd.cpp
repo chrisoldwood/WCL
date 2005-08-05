@@ -36,7 +36,7 @@ CFrameWnd::CFrameWnd(uint iIconID)
 	, m_pActiveDlg(NULL)
 {
 	// Add to the main threads' msg filters.
-	CApp::This().m_MainThread.AddMsgFilter(*this);
+	CApp::This().m_MainThread.AddMsgFilter(this);
 }
 
 /******************************************************************************
@@ -54,7 +54,7 @@ CFrameWnd::CFrameWnd(uint iIconID)
 CFrameWnd::~CFrameWnd()
 {
 	// Remove from the main threads' msg filters.
-	CApp::This().m_MainThread.RemoveMsgFilter(*this);
+	CApp::This().m_MainThread.RemoveMsgFilter(this);
 }
 
 /******************************************************************************
