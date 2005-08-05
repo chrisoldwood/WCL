@@ -252,9 +252,9 @@ bool CDate::FromString(const char* pszDate)
 		return false;
 
 	// Convert to numbers.
-	int	iDate  = CStrCvt::ParseInt(pszDay);
-	int iMonth = CStrCvt::ParseInt(pszMonth);
-	int iYear  = CStrCvt::ParseInt(pszYear);
+	int	iDate  = CStrCvt::ParseInt(pszDay,   CStrCvt::PARSE_DECIMAL_ONLY);
+	int iMonth = CStrCvt::ParseInt(pszMonth, CStrCvt::PARSE_DECIMAL_ONLY);
+	int iYear  = CStrCvt::ParseInt(pszYear,  CStrCvt::PARSE_DECIMAL_ONLY);
 	
 	// Validate each componet.
 	if ( (iYear  < MIN_YEAR) || (iYear  > MAX_YEAR) )					return false;
