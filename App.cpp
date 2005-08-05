@@ -53,10 +53,7 @@ CApp::CApp(CFrameWnd& rFrameWnd, CCmdControl& rCmdControl)
 	: m_rMainWnd(rFrameWnd)
 	, m_rCmdControl(rCmdControl)
 	, m_iCmdShow(SW_SHOW)
-	, m_pComCtl32(NULL)
 {
-	m_pComCtl32 = new CComCtl32();
-
 	pThis = this;
 }
 
@@ -75,12 +72,6 @@ CApp::CApp(CFrameWnd& rFrameWnd, CCmdControl& rCmdControl)
 CApp::~CApp()
 {
 	pThis = NULL;
-
-	delete m_pComCtl32;
-
-#ifdef _DEBUG
-	_CrtDumpMemoryLeaks();
-#endif
 }
 
 /******************************************************************************
@@ -125,7 +116,7 @@ bool CApp::Open()
 	DWORD dwMajor, dwMinor;
 
 	// Get COMCTL32.DLL version.
-	if (!m_pComCtl32->IsLoaded() || !m_pComCtl32->GetVersion(dwMajor, dwMinor))
+	if (!m_oComCtl32.IsLoaded() || !m_oComCtl32.GetVersion(dwMajor, dwMinor))
 	{
 		FatalMsg("This application requires at least v%u.%u of COMCTL32.DLL.", dwMinMajor, dwMinMinor);
 		return false;
@@ -141,7 +132,7 @@ bool CApp::Open()
 	DWORD dwICC = ICC_DATE_CLASSES | ICC_LISTVIEW_CLASSES | ICC_PROGRESS_CLASS | ICC_TAB_CLASSES;
 
 	// Initialise COMCTL32.DLL window classes.
-	if (!m_pComCtl32->Initialise(dwICC))
+	if (!m_oComCtl32.Initialise(dwICC))
 	{
 		FatalMsg("Failed to initialise COMCTL32.DLL");
 		return false;

@@ -66,14 +66,15 @@ public:
 	//
 	// Members.
 	//
-	CString			m_strTitle;
-	CFrameWnd&		m_rMainWnd;
-	CCmdControl&	m_rCmdControl;
-	CModule			m_Module;
-	CMainThread		m_MainThread;
-	CString			m_strCmdLine;
-	int				m_iCmdShow;
-	CComCtl32*		m_pComCtl32;
+	CLeakCheck		m_oLeakChecker;		// Dumps memory leaks.
+	CString			m_strTitle;			// Application title.
+	CFrameWnd&		m_rMainWnd;			// Main window.
+	CCmdControl&	m_rCmdControl;		// Command controller.
+	CModule			m_Module;			// Application module.
+	CMainThread		m_MainThread;		// Main application thread.
+	CString			m_strCmdLine;		// Command line.
+	int				m_iCmdShow;			// Main window inital state.
+	CComCtl32		m_oComCtl32;		// COMCTL32.DLL loader.
 
 protected:
 	//
