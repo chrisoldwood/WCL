@@ -9,6 +9,7 @@
 */
 
 #include "wcl.hpp"
+#include <errno.h>
 
 #ifdef _DEBUG
 // For memory leak detection.
@@ -115,6 +116,7 @@ CString CStrCvt::FormatDateTime(time_t tValue)
 ** Description:	Convert a string to an integer value.
 **
 ** Parameters:	pszString	The string.
+**				nFlags		Any flags to control the parsing.
 **
 ** Returns:		The value.
 **
@@ -123,30 +125,46 @@ CString CStrCvt::FormatDateTime(time_t tValue)
 *******************************************************************************
 */
 
-int CStrCvt::ParseInt(const char* pszString)
+int CStrCvt::ParseInt(const char* pszString, int nFlags)
 {
 	ASSERT(pszString != NULL);
+	ASSERT((nFlags == PARSE_ANY_FORMAT) || (nFlags == PARSE_OCTAL_ONLY) || (nFlags == PARSE_DECIMAL_ONLY) || (nFlags == PARSE_HEX_ONLY));
+
+	errno = 0;
 
 	char* pcEndChar = NULL;
 
-	int nValue = strtol(pszString, &pcEndChar, 0);
+	int nValue = strtol(pszString, &pcEndChar, nFlags);
 	
 	if (*pcEndChar != '\0')
 		throw CStrCvtException(CStrCvtException::E_INVALID_FORMAT);
+
+	ASSERT((errno == 0) || (errno == ERANGE));
+
+	if (errno == ERANGE)
+		throw CStrCvtException(CStrCvtException::E_INVALID_RANGE);
 
 	return nValue;
 }
 
-uint CStrCvt::ParseUInt(const char* pszString)
+uint CStrCvt::ParseUInt(const char* pszString, int nFlags)
 {
 	ASSERT(pszString != NULL);
+	ASSERT((nFlags == PARSE_ANY_FORMAT) || (nFlags == PARSE_OCTAL_ONLY) || (nFlags == PARSE_DECIMAL_ONLY) || (nFlags == PARSE_HEX_ONLY));
+
+	errno = 0;
 
 	char* pcEndChar = NULL;
 
-	uint nValue = strtoul(pszString, &pcEndChar, 0);
+	uint nValue = strtoul(pszString, &pcEndChar, nFlags);
 	
 	if (*pcEndChar != '\0')
 		throw CStrCvtException(CStrCvtException::E_INVALID_FORMAT);
+
+	ASSERT((errno == 0) || (errno == ERANGE));
+
+	if (errno == ERANGE)
+		throw CStrCvtException(CStrCvtException::E_INVALID_RANGE);
 
 	return nValue;
 }
@@ -157,6 +175,7 @@ uint CStrCvt::ParseUInt(const char* pszString)
 ** Description:	Convert a string to a long value.
 **
 ** Parameters:	pszString	The string.
+**				nFlags		Any flags to control the parsing.
 **
 ** Returns:		The value.
 **
@@ -165,9 +184,9 @@ uint CStrCvt::ParseUInt(const char* pszString)
 *******************************************************************************
 */
 
-long CStrCvt::ParseLong(const char* pszString)
+long CStrCvt::ParseLong(const char* pszString, int nFlags)
 {
-	return ParseInt(pszString);
+	return ParseInt(pszString, nFlags);
 }
 
 /******************************************************************************
@@ -176,6 +195,7 @@ long CStrCvt::ParseLong(const char* pszString)
 ** Description:	Convert a string to a double value.
 **
 ** Parameters:	pszString	The string.
+**				nFlags		Any flags to control the parsing.
 **
 ** Returns:		The value.
 **
@@ -184,9 +204,11 @@ long CStrCvt::ParseLong(const char* pszString)
 *******************************************************************************
 */
 
-double CStrCvt::ParseDouble(const char* pszString)
+double CStrCvt::ParseDouble(const char* pszString, int /*nFlags*/)
 {
 	ASSERT(pszString != NULL);
+
+	errno = 0;
 
 	char* pcEndChar = NULL;
 
@@ -194,6 +216,11 @@ double CStrCvt::ParseDouble(const char* pszString)
 	
 	if (*pcEndChar != '\0')
 		throw CStrCvtException(CStrCvtException::E_INVALID_FORMAT);
+
+	ASSERT((errno == 0) || (errno == ERANGE));
+
+	if (errno == ERANGE)
+		throw CStrCvtException(CStrCvtException::E_INVALID_RANGE);
 
 	return dValue;
 }

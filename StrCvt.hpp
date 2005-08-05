@@ -32,13 +32,22 @@ public:
 	static CString FormatDate    (time_t tValue);
 	static CString FormatDateTime(time_t tValue);
 
+	// Parser flags.
+	enum ParseFlags
+	{
+		PARSE_ANY_FORMAT	= 0x0000,	// Determine format (see 'strtol').
+		PARSE_OCTAL_ONLY	= 0x0008,	// Allow octal only.
+		PARSE_DECIMAL_ONLY	= 0x000A,	// Allow decimal only.
+		PARSE_HEX_ONLY		= 0x0010,	// Allow hex only.
+	};
+
 	//
 	// Parsing methods.
 	//
-	static int    ParseInt   (const char* pszString);
-	static uint   ParseUInt  (const char* pszString);
-	static long   ParseLong  (const char* pszString);
-	static double ParseDouble(const char* pszString);
+	static int    ParseInt   (const char* pszString, int nFlags = PARSE_ANY_FORMAT);
+	static uint   ParseUInt  (const char* pszString, int nFlags = PARSE_ANY_FORMAT);
+	static long   ParseLong  (const char* pszString, int nFlags = PARSE_ANY_FORMAT);
+	static double ParseDouble(const char* pszString, int nFlags = PARSE_ANY_FORMAT);
 };
 
 /******************************************************************************
