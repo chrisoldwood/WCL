@@ -44,7 +44,7 @@ CToolBar::CToolBar()
 	: m_pCtrlTable(NULL)
 {
 	// Add to the main threads' msg filters.
-	CApp::This().m_MainThread.AddMsgFilter(*this);
+	CApp::This().m_MainThread.AddMsgFilter(this);
 }
 
 /******************************************************************************
@@ -62,7 +62,7 @@ CToolBar::CToolBar()
 CToolBar::~CToolBar()
 {
 	// Remove from the main threads' msg filters.
-	CApp::This().m_MainThread.RemoveMsgFilter(*this);
+	CApp::This().m_MainThread.RemoveMsgFilter(this);
 }
 
 /******************************************************************************

@@ -22,7 +22,7 @@
 *******************************************************************************
 */
 
-class CToolBar : public CCtrlWnd, public CMsgFilter
+class CToolBar : public CCtrlWnd, public IMsgFilter
 {
 public:
 	//
