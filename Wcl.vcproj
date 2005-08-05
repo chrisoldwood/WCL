@@ -923,24 +923,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="List.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="ListBox.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -1143,24 +1125,6 @@
 			</File>
 			<File
 				RelativePath="MRUList.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="MsgFilter.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
@@ -2169,10 +2133,10 @@
 				RelativePath="Label.hpp">
 			</File>
 			<File
-				RelativePath="Library.hpp">
+				RelativePath=".\LeakCheck.hpp">
 			</File>
 			<File
-				RelativePath="List.hpp">
+				RelativePath="Library.hpp">
 			</File>
 			<File
 				RelativePath="ListBox.hpp">
@@ -2212,9 +2176,6 @@
 			</File>
 			<File
 				RelativePath="MRUList.hpp">
-			</File>
-			<File
-				RelativePath="MsgFilter.hpp">
 			</File>
 			<File
 				RelativePath="MsgThread.hpp">
@@ -2260,9 +2221,6 @@
 			</File>
 			<File
 				RelativePath="PropertySheet.hpp">
-			</File>
-			<File
-				RelativePath="PtrList.hpp">
 			</File>
 			<File
 				RelativePath="RadioBtn.hpp">

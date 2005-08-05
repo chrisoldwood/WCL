@@ -42,6 +42,9 @@
 #include <commctrl.h>
 #include <time.h>
 #include <malloc.h>
+#include <vector>
+#include <list>
+#include <algorithm>
 
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC
@@ -61,6 +64,7 @@
 
 // Debugging functions.
 #include "Assert.hpp"
+#include "LeakCheck.hpp"
 
 // Core data classes.
 #include "Point.hpp"
@@ -77,9 +81,6 @@
 #include "Array.hpp"
 #include "TArray.hpp"
 #include "StrArray.hpp"
-#include "List.hpp"
-#include "TList.hpp"
-#include "PtrList.hpp"
 #include "Map.hpp"
 #include "MapIter.hpp"
 #include "TMap.hpp"
@@ -99,7 +100,6 @@
 
 // Specific collections.
 #include "WndMap.hpp"
-#include "MsgFilter.hpp"
 
 // Persistance classes.
 #include "StrCvt.hpp"
@@ -140,6 +140,7 @@
 #include "ImageList.hpp"
 
 // Base window classes.
+#include "IMsgFilter.hpp"
 #include "Wnd.hpp"
 #include "MsgWnd.hpp"
 #include "PopupWnd.hpp"
