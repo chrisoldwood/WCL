@@ -102,6 +102,9 @@ void CDate::Set(int iDay, int iMonth, int  iYear)
 
 	m_tDate = mktime(&oTM);
 
+	// Do what _mkgmtime() does.
+	m_tDate -= _timezone;
+
 	ASSERT(m_tDate != -1);
 }
 
