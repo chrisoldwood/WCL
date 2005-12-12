@@ -49,7 +49,7 @@ public:
 	void GridLines(bool bOn = true);
 
 	// Template shorthands.
-	typedef TArray<uint> CUIntArray;
+	typedef std::vector<uint> CUIntArray;
 
 	//
 	// Item methods.

@@ -232,16 +232,16 @@ LPARAM CListView::ItemData(int nItem) const
 
 uint CListView::Selections(CUIntArray& vItems) const
 {
-	ASSERT(vItems.Size() == 0);
+	ASSERT(vItems.size() == 0);
 
 	// For all items...
 	for (int i = 0; i < ItemCount(); ++i)
 	{
 		if (IsSelected(i))
-			vItems.Add(i);
+			vItems.push_back(i);
 	}
 
-	return vItems.Size();
+	return vItems.size();
 }
 
 /******************************************************************************
@@ -435,9 +435,9 @@ uint CListView::FindAllItems(const void* pData, CUIntArray& vItems) const
 	int n = -1;
 
 	while ((n = FindItem(pData, n)) != LB_ERR)
-		vItems.Add(n);
+		vItems.push_back(n);
 
-	return vItems.Size();
+	return vItems.size();
 }
 
 /******************************************************************************
