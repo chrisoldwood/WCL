@@ -49,12 +49,18 @@ CThreadPool::CThreadPool(int nThreads)
 CThreadPool::~CThreadPool()
 {
 	ASSERT(m_eStatus == STOPPED);
-	ASSERT(m_oPendingQ.Size()   == 0);
-	ASSERT(m_oRunningQ.Size()   == 0);
-	ASSERT(m_oCompletedQ.Size() == 0);
+	ASSERT(m_oPendingQ.empty());
+	ASSERT(m_oRunningQ.empty());
+	ASSERT(m_oCompletedQ.empty());
+
+	// Template shorthands.
+	typedef CThreads::const_iterator CIter;
 
 	// Free thread pool.
-	m_oPool.DeleteAll();
+	for (CIter oIter = m_oPool.begin(); oIter != m_oPool.end(); ++oIter)
+		delete *oIter;
+
+	m_oPool.clear();
 }
 
 /******************************************************************************
@@ -71,12 +77,12 @@ CThreadPool::~CThreadPool()
 
 void CThreadPool::Start()
 {
-	ASSERT(m_oPool.Size() == 0);
+	ASSERT(m_oPool.empty());
 	ASSERT(m_eStatus == STOPPED);
 
 	// Create the thread pool.
 	for (int i = 0; i < m_nThreads; ++i)
-		m_oPool.Add(new CWorkerThread(*this, i));
+		m_oPool.push_back(new CWorkerThread(*this, i));
 
 	// Start the pool threads.
 	for (int i = 0; i < m_nThreads; ++i)
@@ -99,7 +105,7 @@ void CThreadPool::Start()
 
 void CThreadPool::Stop()
 {
-	ASSERT(m_oPool.Size() != 0);
+	ASSERT(!m_oPool.empty());
 	ASSERT(m_eStatus == RUNNING);
 
 	// Stop the pool threads.
@@ -130,7 +136,7 @@ void CThreadPool::AddJob(CThreadJob* pJob)
 	CAutoThreadLock oAutoLock(m_oLock);
 
 	// Add to the pending queue.
-	m_oPendingQ.Add(pJob);
+	m_oPendingQ.push_back(pJob);
 
 	// Try and run it.
 	ScheduleJob();
@@ -153,21 +159,24 @@ void CThreadPool::CancelJob(CThreadJob* pJob)
 	ASSERT(pJob != NULL);
 	ASSERT(m_eStatus == RUNNING);
 
+	// Template shorthands.
+	typedef CJobQueue::iterator CIter;
+
 	// Lock queues.
 	CAutoThreadLock oAutoLock(m_oLock);
 
-	int i = m_oPendingQ.Find(pJob);
-
 	// If pending, move to completed queue.
 	// NB: If running, leave it to complete.
-	if (i != -1)
+	CIter oIter = std::find(m_oPendingQ.begin(), m_oPendingQ.end(), pJob);
+
+	if (oIter != m_oPendingQ.end())
 	{
 		ASSERT(pJob->Status() == CThreadJob::PENDING);
 
 		pJob->Status(CThreadJob::CANCELLED);
 
-		m_oPendingQ.Remove(i);
-		m_oCompletedQ.Add(pJob);
+		m_oCompletedQ.push_back(pJob);
+		m_oPendingQ.erase(oIter);
 	}
 }
 
@@ -187,21 +196,24 @@ void CThreadPool::CancelAllJobs()
 {
 	ASSERT(m_eStatus == RUNNING);
 
+	// Template shorthands.
+	typedef CJobQueue::const_iterator CIter;
+
 	// Lock queues.
 	CAutoThreadLock oAutoLock(m_oLock);
 
 	// Move all pending jobs to completed queue.
 	// NB: Leave all running jobs to complete.
-	for (int i = 0; i < m_oPendingQ.Size(); ++i)
+	for (CIter oIter = m_oPendingQ.begin(); oIter != m_oPendingQ.end(); ++oIter)
 	{
-		CThreadJob* pJob = m_oPendingQ[i];
+		CThreadJob* pJob = *oIter;
 
 		pJob->Status(CThreadJob::CANCELLED);
 
-		m_oCompletedQ.Add(pJob);
+		m_oCompletedQ.push_back(pJob);
 	}
 
-	m_oPendingQ.RemoveAll();
+	m_oPendingQ.clear();
 }
 
 /******************************************************************************
@@ -218,7 +230,7 @@ void CThreadPool::CancelAllJobs()
 
 void CThreadPool::ClearCompletedJobs()
 {
-	m_oCompletedQ.RemoveAll();
+	m_oCompletedQ.clear();
 }
 
 /******************************************************************************
@@ -235,7 +247,13 @@ void CThreadPool::ClearCompletedJobs()
 
 void CThreadPool::DeleteCompletedJobs()
 {
-	m_oCompletedQ.DeleteAll();
+	// Template shorthands.
+	typedef CJobQueue::const_iterator CIter;
+
+	for (CIter oIter = m_oCompletedQ.begin(); oIter != m_oCompletedQ.end(); ++oIter)
+		delete *oIter;
+
+	m_oCompletedQ.clear();
 }
 
 /******************************************************************************
@@ -254,11 +272,14 @@ void CThreadPool::ScheduleJob()
 {
 	ASSERT(m_eStatus == RUNNING);
 
+	// Template shorthands.
+	typedef CJobQueue::iterator CIter;
+
 	// Lock queues.
 	CAutoThreadLock oAutoLock(m_oLock);
 
-	// Pending queue empty?
-	if (m_oPendingQ.Size() == 0)
+	// Nothing to schedule?
+	if (m_oPendingQ.empty())
 		return;
 
 	// Find an idle thread.
@@ -270,14 +291,15 @@ void CThreadPool::ScheduleJob()
 		if (pThread->Status() == CWorkerThread::IDLE)
 		{
 			// Get next job.
-			CThreadJob* pJob = m_oPendingQ[0];
+			CIter       oIter = m_oPendingQ.begin();
+			CThreadJob* pJob  = *oIter;
 
 			// Assign to thread.
 			pThread->RunJob(pJob);
 
 			// Move from pending to running queue.
-			m_oPendingQ.Remove(0);
-			m_oRunningQ.Add(pJob);
+			m_oPendingQ.erase(oIter);
+			m_oRunningQ.push_back(pJob);
 			break;
 		}
 	}
@@ -301,14 +323,19 @@ void CThreadPool::OnJobCompleted(CThreadJob* pJob)
 	ASSERT(pJob->Status() == CThreadJob::COMPLETED);
 	ASSERT(m_eStatus == RUNNING);
 
+	// Template shorthands.
+	typedef CJobQueue::iterator CIter;
+
 	// Lock queues.
 	CAutoThreadLock oAutoLock(m_oLock);
 
 	// Move from running to completed queue.
-	int i = m_oRunningQ.Find(pJob);
+	CIter oIter = std::find(m_oRunningQ.begin(), m_oRunningQ.end(), pJob);
+	
+	ASSERT(oIter != m_oRunningQ.end());
 
-	m_oRunningQ.Remove(i);
-	m_oCompletedQ.Add(pJob);
+	m_oCompletedQ.push_back(pJob);
+	m_oRunningQ.erase(oIter);
 
 	// Try and run another.
 	ScheduleJob();

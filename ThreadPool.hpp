@@ -53,8 +53,8 @@ public:
 
 protected:
 	// Template shorthands.
-	typedef TPtrArray<CWorkerThread> CThreads;
-	typedef TPtrArray<CThreadJob> CJobQueue;
+	typedef std::vector<CWorkerThread*> CThreads;
+	typedef std::vector<CThreadJob*> CJobQueue;
 
 	// Thread pool status.
 	enum Status
@@ -93,17 +93,17 @@ protected:
 
 inline int CThreadPool::PendingJobCount() const
 {
-	return m_oPendingQ.Size();
+	return m_oPendingQ.size();
 }
 
 inline int CThreadPool::RunningJobCount() const
 {
-	return m_oRunningQ.Size();
+	return m_oRunningQ.size();
 }
 
 inline int CThreadPool::CompletedJobCount() const
 {
-	return m_oCompletedQ.Size();
+	return m_oCompletedQ.size();
 }
 
 #endif // THREADPOOL_HPP
