@@ -207,6 +207,9 @@ void CStatusBar::OnResize(int /*iFlag*/, const CSize& rNewSize)
 {
 	ASSERT(m_oHintBar.Handle());
 
+	// Template shorthands.
+	typedef CPanels::reverse_iterator CIter;
+
 	CSize dmSize = rNewSize;
 
 	// Adjust size for the grip, if one.
@@ -214,14 +217,14 @@ void CStatusBar::OnResize(int /*iFlag*/, const CSize& rNewSize)
 		dmSize.cx -= SIZE_GRIP_SIZE + PANEL_GAP_SIZE;
 
 	// Allocate DWP handle.
-	HDWP hDWP = ::BeginDeferWindowPos(m_apPanels.Size() + 1);
+	HDWP hDWP = ::BeginDeferWindowPos(m_apPanels.size() + 1);
 
 	ASSERT(hDWP != NULL);
 
 	// Reposition the child panels.
-	for (int i = m_apPanels.Size()-1; i >= 0; --i)
+	for (CIter oIter = m_apPanels.rbegin(); oIter != m_apPanels.rend(); ++oIter)
 	{
-		CStatusBarPanel* pPanel = m_apPanels[i];
+		CStatusBarPanel* pPanel = *oIter;
 		int              nWidth = pPanel->ClientRect().Width();
 
 		// Reposition window.
@@ -376,7 +379,7 @@ void CStatusBar::AddPanel(CStatusBarPanel& oPanel)
 {
 	ASSERT(oPanel.Handle() != NULL);
 
-	m_apPanels.Add(&oPanel);
+	m_apPanels.push_back(&oPanel);
 
 	// Force a layout change, if window created.
 	if (m_hWnd != NULL)

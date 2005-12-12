@@ -42,7 +42,7 @@ public:
 
 protected:
 	// Template shorthands.
-	typedef TPtrArray<CStatusBarPanel> CPanels;
+	typedef std::vector<CStatusBarPanel*> CPanels;
 
 	//
 	// Members.
