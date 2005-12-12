@@ -2271,6 +2271,9 @@
 				RelativePath="StdWnd.hpp">
 			</File>
 			<File
+				RelativePath=".\STLUtils.hpp">
+			</File>
+			<File
 				RelativePath="StrArray.hpp">
 			</File>
 			<File
