@@ -42,7 +42,16 @@
 #include <commctrl.h>
 #include <time.h>
 #include <malloc.h>
+
+#ifdef NDEBUG
+#pragma warning ( push )
+#pragma warning ( disable : 4702 )
 #include <vector>
+#pragma warning ( pop )
+#else
+#include <vector>
+#endif
+
 #include <list>
 #include <algorithm>
 
@@ -57,6 +66,9 @@
 **
 *******************************************************************************
 */
+
+// STL Helper functions.
+#include "STLUtils.hpp"
 
 // Core data types.
 #include "WclTypes.hpp"
