@@ -59,7 +59,8 @@ public:
 	//
 	// Conversion methods.
 	//
-	CString ToString(int nDateFields = CDate::DD_MM_YY, int nTimeFields = CTime::HH_MM_SS) const;
+	CString ToString(int nDateFormat, int nTimeFormat) const;
+	bool    FromString(const char* pszDateTime);
 
 	//
 	// Conversion operators.
@@ -229,9 +230,11 @@ inline void  CDateTime::Time(const CTime& rTime)
 	*this = CDateTime(oDate, rTime);
 }
 
-inline CString CDateTime::ToString(int nDateFields, int nTimeFields) const
+inline CString CDateTime::ToString(int nDateFormat, int nTimeFormat) const
 {
-	return Date().ToString(nDateFields) + " " + Time().ToString(nTimeFields);
+	const char* pszSep = (nDateFormat == CDate::FMT_ISO) ? "T": " ";
+
+	return Date().ToString(nDateFormat) + pszSep + Time().ToString(nTimeFormat);
 }
 
 inline void CDateTime::operator =(time_t tDateTime)
