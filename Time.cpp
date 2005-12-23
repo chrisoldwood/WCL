@@ -16,6 +16,16 @@
 #endif
 
 /******************************************************************************
+**
+** Constants.
+**
+*******************************************************************************
+*/
+
+// ISO Format string buffer size.
+const uint FMT_BUF_SIZE = 100;
+
+/******************************************************************************
 ** Method:		Set()
 **
 ** Description:	Sets the time to the current system time.
@@ -102,44 +112,65 @@ CTime CTime::Current()
 **
 ** Description:	Converts the time to a string.
 **
-** Parameters:	nFields		The fields to use in the string.
+** Parameters:	nFormat		The string format.
 **
 ** Returns:		The string.
 **
 *******************************************************************************
 */
 
-CString CTime::ToString(int nFields) const
+CString CTime::ToString(int nFormat) const
 {
-	CString strTime;
-	int		iHours, iMins, iSecs;
-	CString strHours, strMins, strSecs;
+	ASSERT((nFormat == FMT_ISO) || (nFormat == FMT_WIN_SHORT) || (nFormat == FMT_WIN_LONG));
+
+	int iHours, iMins, iSecs;
 
 	// Get the time components.
 	Get(iHours, iMins, iSecs);
 
-	// Convert components to strings.
-	strHours.Format("%02d:", iHours);
-	strMins.Format("%02d:", iMins);
-	strSecs.Format("%02d", iSecs);
+	char* pszValue = "";
 
-	// Format the string.
-	if (nFields & HH)
-		strTime += strHours;
+	// ISO standard format?
+	if (nFormat == FMT_ISO)
+	{
+		pszValue = (char*) alloca(FMT_BUF_SIZE);
 
-	if (nFields & MM)
-		strTime += strMins;
+		_snprintf(pszValue, FMT_BUF_SIZE, "%02d:%02d:%02d", iHours, iMins, iSecs);
+	}
+	// Windows locale derived format?
+	else if ((nFormat == FMT_WIN_SHORT) || (nFormat == FMT_WIN_LONG))
+	{
+		int nTimeFmt = TIME_FORCE24HOURFORMAT | TIME_NOTIMEMARKER;
 
-	if (nFields & SS)
-		strTime += strSecs;
+		if (nFormat == FMT_WIN_SHORT)
+			nTimeFmt |= TIME_NOSECONDS;
 
-	int nLen = strTime.Length();
+		SYSTEMTIME st = { 0 };
 
-	// Strip trailing ':', if one.
-	if (strTime[nLen-1] == ':')
-		strTime[nLen-1] = '\0';
+		// Convert from time to SYSTEMTIME.
+		// NB: Pretends its a time_t on 01/01/1970.
+		st.wYear   = 1970;
+		st.wMonth  = 1;
+		st.wDay    = 1;
+		st.wHour   = static_cast<WORD>(iHours);
+		st.wMinute = static_cast<WORD>(iMins);
+		st.wSecond = static_cast<WORD>(iSecs);
 
-	return strTime;
+		// Calculate buffer size.
+		int nTimeBufSize = ::GetTimeFormat(LOCALE_USER_DEFAULT, nTimeFmt, &st, NULL, pszValue, 0);
+
+		pszValue = (char*) alloca(nTimeBufSize);
+
+		// Format the string.
+		::GetTimeFormat(LOCALE_USER_DEFAULT, nTimeFmt, &st, NULL, pszValue, nTimeBufSize);
+	}
+	// Unsupported format.
+	else
+	{
+		ASSERT_FALSE();
+	}
+
+	return pszValue;
 }
 
 /******************************************************************************
@@ -157,19 +188,23 @@ CString CTime::ToString(int nFields) const
 
 bool CTime::FromString(const char* pszTime)
 {
-	char szTime[10];
-	
-	// Check length is at least "0:0:0" and at most "00:00:00".
-	if ( (strlen(pszTime) < 5) || (strlen(pszTime) > 8) )
+	ASSERT(pszTime != NULL);
+
+	int nLength = strlen(pszTime);
+
+	// Check length is at least "00:00" and at most "00:00:00".
+	if ( (nLength < 5) || (nLength > 8) )
 		return false;
 
-	// Copy to tmp buffer.
+	char szTime[FMT_BUF_SIZE];
+	
+	// Copy to non-const buffer.
 	strcpy(szTime, pszTime);
 	
 	// Break up string into time components.
-	char* pszHours = strtok(szTime, ":");
-	char* pszMins  = strtok(NULL,   ":");
-	char* pszSecs  = strtok(NULL,   ":");
+	const char* pszHours = strtok(szTime, ":");
+	const char* pszMins  = strtok(NULL,   ":");
+	const char* pszSecs  = strtok(NULL,   ":");
 
 	// Got at least 2 string parts?
 	if ( (pszHours == NULL) || (pszMins == NULL) )

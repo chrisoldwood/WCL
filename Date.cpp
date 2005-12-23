@@ -28,6 +28,9 @@ const int DAYS_PER_YEAR      = 365;
 const int DAYS_PER_LEAP_YEAR = 366;
 const int DAYS_PER_4_YEARS   = (DAYS_PER_YEAR * 3) + DAYS_PER_LEAP_YEAR;
 
+// ISO Format string buffer size.
+const uint FMT_BUF_SIZE = 100;
+
 /******************************************************************************
 **
 ** Local variables.
@@ -151,74 +154,81 @@ CDate CDate::Current()
 }
 
 /******************************************************************************
-** Method:		ToString()
+** Method:		DayOfWeekStr()
 **
-** Description:	Converts the date to a formatted string.
+** Description:	Converts the day of the week to a string.
 **
-** Parameters:	nFields		The fields to use in the string.
+** Parameters:	None.
 **
 ** Returns:		The string.
 **
 *******************************************************************************
 */
 
-CString CDate::ToString(int nFields) const
+CString CDate::DayOfWeekStr() const
 {
-	CString strDate;
-	int		iDay, iMonth, iYear;
-	CString strDay, strMonth, strYear, strYr;
+	int nDay = DayOfWeek();
+
+	ASSERT((nDay >= 0) && (nDay <= 6));
+
+	return DayNames[0][nDay];	
+}
+
+/******************************************************************************
+** Method:		ToString()
+**
+** Description:	Converts the date to a formatted string.
+**
+** Parameters:	nFormat		The string format.
+**
+** Returns:		The string.
+**
+*******************************************************************************
+*/
+
+CString CDate::ToString(int nFormat) const
+{
+	ASSERT((nFormat == FMT_ISO) || (nFormat == FMT_WIN_SHORT) || (nFormat == FMT_WIN_LONG));
+
+	int iDay, iMonth, iYear;
 
 	// Get the date components.
 	Get(iDay, iMonth, iYear);
 
-	// Get weekday and short year.
-	int iWkDay = DayOfWeek();
-	int iYr    = iYear % 100;
+	char* pszValue = "";
 
-	// Convert components to strings.
-	strDay.Format("%02d/", iDay);
-	strMonth.Format("%02d/", iMonth);
-	strYear.Format("%02d", iYear);
-	strYr.Format("%02d", iYr);
-
-	// Format the string.
-	if (nFields & SD)
+	// ISO standard format?
+	if (nFormat == FMT_ISO)
 	{
-		strDate += DayNames[0][iWkDay];
-		strDate += ' ';
+		pszValue = (char*) alloca(FMT_BUF_SIZE);
+
+		_snprintf(pszValue, FMT_BUF_SIZE, "%04d-%02d-%02d", iYear, iMonth, iDay);
+	}
+	// Windows locale derived format?
+	else if ((nFormat == FMT_WIN_SHORT) || (nFormat == FMT_WIN_LONG))
+	{
+		int nDateFmt = DATE_LONGDATE;
+
+		if (nFormat == FMT_WIN_SHORT)
+			nDateFmt = DATE_SHORTDATE;
+
+		SYSTEMTIME st = { 0 };
+
+		// Convert from time_t to SYSTEMTIME.
+		st.wYear  = static_cast<WORD>(iYear);
+		st.wMonth = static_cast<WORD>(iMonth);
+		st.wDay   = static_cast<WORD>(iDay);
+
+		// Calculate buffer size.
+		int nBufSize = ::GetDateFormat(LOCALE_USER_DEFAULT, nDateFmt, &st, NULL, pszValue, 0);
+
+		pszValue = (char*) alloca(nBufSize);
+
+		// Format the string.
+		::GetDateFormat(LOCALE_USER_DEFAULT, nDateFmt, &st, NULL, pszValue, nBufSize);
 	}
 
-	if (nFields & LD)
-	{
-		strDate += DayNames[1][iWkDay];
-		strDate += ' ';
-	}
-
-	if (nFields & DD)
-		strDate += strDay;
-
-	if (nFields & SM)
-		strDate += MonthNames[0][iMonth-1];
-
-	if (nFields & LM)
-		strDate += MonthNames[1][iMonth-1];
-
-	if (nFields & MM)
-		strDate += strMonth;
-
-	if (nFields & YY)
-		strDate += strYr;
-
-	if (nFields & Y4)
-		strDate += strYear;
-
-	int nLen = strDate.Length();
-
-	// Strip trailing '/' or ' ', if one.
-	if ( (strDate[nLen-1] == '/') || (strDate[nLen-1] == ' ') )
-		strDate[nLen-1] = '\0';
-
-	return strDate;
+	return pszValue;
 }
 
 /******************************************************************************
@@ -236,19 +246,23 @@ CString CDate::ToString(int nFields) const
 
 bool CDate::FromString(const char* pszDate)
 {
-	char szDate[20];
-	
-	// Check length is at least "0/0/0000" and at most "00/00/0000".
-	if ( (strlen(pszDate) < 8) || (strlen(pszDate) > 10) )
+	ASSERT(pszDate != NULL);
+
+	int nLength = strlen(pszDate);
+
+	// Check length is exactly "YYYY-MM-DD".
+	if (nLength != 10)
 		return false;
 
-	// Copy to tmp buffer.
+	char szDate[FMT_BUF_SIZE];
+	
+	// Copy to non-const buffer.
 	strcpy(szDate, pszDate);
 	
 	// Break up string.
-	char* pszDay   = strtok(szDate, "/");
-	char* pszMonth = strtok(NULL,   "/");
-	char* pszYear  = strtok(NULL,   "/");
+	const char* pszYear  = strtok(szDate, "-");
+	const char* pszMonth = strtok(NULL,   "-");
+	const char* pszDay   = strtok(NULL,   "-");
 
 	// Got all 3 string parts?
 	if ( (pszDay == NULL) || (pszMonth == NULL) || (pszYear == NULL) )

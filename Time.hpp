@@ -69,26 +69,19 @@ public:
 	static CTime Current();
 
 	//
-	// String conversion fields.
-	// and common formats.
+	// Time string formats.
 	//
-	enum Field
-	{
-		HH = 0x01,	// 2 digit hours
-		MM = 0x02,	// 2 digit minutes
-		SS = 0x04	// 2 digit seconds
-	};
-
 	enum Format
 	{
-		HH_MM    = HH | MM,
-		HH_MM_SS = HH | MM | SS
+		FMT_ISO			= 0x0001,		// ISO standard format (HH:MM:SS).
+		FMT_WIN_SHORT	= 0x0002,		// Windows locale short format (e.g. HH:MM).
+		FMT_WIN_LONG	= 0x0003,		// Windows locale long format (e.g. HH:MM:SS).
 	};
 
 	//
 	// Conversion methods.
 	//
-	CString ToString(int nFields = HH_MM_SS) const;
+	CString ToString(int nFormat) const;
 	bool    FromString(const char* pszTime);
 
 	//

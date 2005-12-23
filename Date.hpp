@@ -61,32 +61,20 @@ public:
 	static CDate Current();
 
 	//
-	// String conversion fields.
-	// and common formats.
+	// Date string formats.
 	//
-	enum Field
-	{
-		SD = 0x01,	// Short day name.
-		LD = 0x02,	// Long day name.
-		DD = 0x04,	// 2 digit day.
-		SM = 0x08,	// Short month name.
-		LM = 0x10,	// Long month name.
-		MM = 0x20,	// 2 digit month.
-		YY = 0x40,	// 2 digit year.
-		Y4 = 0x80	// 4 digit year.
-	};
-
 	enum Format
 	{
-		DD_MM_YY    = DD | MM | YY,
-		DD_MM_YYYY  = DD | MM | Y4,
-		SD_DD_MM_YY = SD | DD | MM | YY
+		FMT_ISO			= 0x0001,		// ISO standard format (YYYY-MM-DD).
+		FMT_WIN_SHORT	= 0x0002,		// Windows locale short format (e.g. DD/MM/YYYY).
+		FMT_WIN_LONG	= 0x0003,		// Windows locale long format (e.g. DD MONTH YYYY).
 	};
 
 	//
 	// Conversion methods.
 	//
-	CString ToString(int nFields = DD_MM_YY) const;
+	CString DayOfWeekStr() const;
+	CString ToString(int nFormat) const;
 	bool    FromString(const char* pszDate);
 
 	//
