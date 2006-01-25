@@ -130,6 +130,26 @@ void CEditBox::OnReflectedCtrlMsg(uint /*iMsg*/)
 }
 
 /******************************************************************************
+** Method:		SetFilterDefault()
+**
+** Description:	Sets the default mapping for the character filter.
+**
+** Parameters:	bAllow		Allow all characters by default?
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CEditBox::SetFilterDefault(bool bAllow)
+{
+	AllocFilterMap();
+
+	// Re-initialise map.
+	memset(m_pFilter, bAllow, sizeof(bool) * 256);
+}
+
+/******************************************************************************
 ** Method:		Filter()
 **
 ** Description:	Sets up the character filter or modifies the existing one.

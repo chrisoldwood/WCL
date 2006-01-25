@@ -46,6 +46,7 @@ public:
 	//
 	// Custom methods.
 	//
+	void SetFilterDefault(bool bAllow);
 	void Filter(const char* pszFilter, bool bAllow = true);
 	void Filter(char cFilter, bool bAllow = true);
 
