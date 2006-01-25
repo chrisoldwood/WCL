@@ -108,6 +108,33 @@ CTime CTime::Current()
 }
 
 /******************************************************************************
+** Method:		FieldSeparator()
+**
+** Description:	Gets the separator used between time fields.
+**
+** Parameters:	None.
+**
+** Returns:		The separator characters.
+**
+*******************************************************************************
+*/
+
+CString CTime::FieldSeparator()
+{
+	// Get the size of the buffer and allocate one.
+	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIME, NULL, 0);
+
+	char* pszBuffer = static_cast<char*>(alloca(nChars+1));
+
+	pszBuffer[0] = '\0';
+
+	// Get the locale string.
+	::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIME, pszBuffer, nChars+1);
+
+	return pszBuffer;
+}
+
+/******************************************************************************
 ** Method:		ToString()
 **
 ** Description:	Converts the time to a string.

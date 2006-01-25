@@ -79,9 +79,14 @@ public:
 	};
 
 	//
+	// Locale information.
+	//
+	static CString FieldSeparator();
+
+	//
 	// Conversion methods.
 	//
-	CString ToString(int nFormat) const;
+	CString ToString(int nFormat = FMT_WIN_LONG) const;
 	bool    FromString(const char* pszTime);
 
 	//
