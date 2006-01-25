@@ -44,16 +44,6 @@ static int DaysPerMonth[2][12] = {
 {   31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
 {   31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 } };
 
-// Short and long names for days of the week.
-static char* DayNames[2][7] = {
-{ "Mon",    "Tue",     "Wed",       "Thu",      "Fri",    "Sat",      "Sun" },
-{ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" } };
-
-// Short and long names for the months.
-static char* MonthNames[2][12] = {
-{ "Jan",     "Feb",      "Mar",   "Apr",   "May", "Jun",  "Jul",  "Aug",    "Sep",       "Oct",     "Nov",      "Dec" },
-{ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" } };
-
 /******************************************************************************
 ** Method:		Set()
 **
@@ -154,24 +144,165 @@ CDate CDate::Current()
 }
 
 /******************************************************************************
-** Method:		DayOfWeekStr()
+** Method:		DateFormatOrder()
 **
-** Description:	Converts the day of the week to a string.
+** Description:	Gets the order of the day, month & year for a date in short
+**				date format.
 **
 ** Parameters:	None.
 **
-** Returns:		The string.
+** Returns:		The date order.
 **
 *******************************************************************************
 */
 
-CString CDate::DayOfWeekStr() const
+CDate::DateOrder CDate::DateFormatOrder()
 {
-	int nDay = DayOfWeek();
+	DateOrder eOrder = YEAR_MONTH_DAY;
 
+	// Get the size of the buffer and allocate one.
+	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IDATE, NULL, 0);
+
+	char* pszBuffer = static_cast<char*>(alloca(nChars+1));
+
+	pszBuffer[0] = '\0';
+
+	// Get the locale string.
+	if (::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IDATE, pszBuffer, nChars+1) != 0)
+	{
+		eOrder = static_cast<DateOrder>(atoi(pszBuffer));
+
+		ASSERT((eOrder == MONTH_DAY_YEAR) || (eOrder == DAY_MONTH_YEAR) || (eOrder == YEAR_MONTH_DAY));
+	}
+
+	return eOrder;
+}
+
+/******************************************************************************
+** Method:		FieldSeparator()
+**
+** Description:	Gets the separator used between date fields.
+**
+** Parameters:	None.
+**
+** Returns:		The separator characters.
+**
+*******************************************************************************
+*/
+
+CString CDate::FieldSeparator()
+{
+	// Get the size of the buffer and allocate one.
+	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDATE, NULL, 0);
+
+	char* pszBuffer = static_cast<char*>(alloca(nChars+1));
+
+	pszBuffer[0] = '\0';
+
+	// Get the locale string.
+	::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDATE, pszBuffer, nChars+1);
+
+	return pszBuffer;
+}
+
+/******************************************************************************
+** Method:		DayOfWeekName()
+**
+** Description:	Gets the name for the day of the week specified.
+**
+** Parameters:	nDay		The day of the week [0..6] = [Mon..Sun].
+**				bFullName	Get the full name (true) or short name (false).
+**
+** Returns:		The name.
+**
+*******************************************************************************
+*/
+
+CString CDate::DayOfWeekName(int nDay, bool bFullName)
+{
 	ASSERT((nDay >= 0) && (nDay <= 6));
 
-	return DayNames[0][nDay];	
+	// Map day to locale type ID.
+	int nLCType = (bFullName) ? (LOCALE_SDAYNAME1 + nDay) : (LOCALE_SABBREVDAYNAME1 + nDay);
+
+	// Get the size of the buffer and allocate one.
+	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, nLCType, NULL, 0);
+
+	char* pszBuffer = static_cast<char*>(alloca(nChars+1));
+
+	pszBuffer[0] = '\0';
+
+	// Get the locale string.
+	::GetLocaleInfo(LOCALE_USER_DEFAULT, nLCType, pszBuffer, nChars+1);
+
+	return pszBuffer;
+}
+
+/******************************************************************************
+** Method:		MonthName()
+**
+** Description:	Gets the name for the day of the week specified.
+**
+** Parameters:	nMonth		The month [0..11] = [Jan..Dec].
+**				bFullName	Get the full name (true) or short name (false).
+**
+** Returns:		The name.
+**
+*******************************************************************************
+*/
+
+CString CDate::MonthName(int nMonth, bool bFullName)
+{
+	ASSERT((nMonth >= 0) && (nMonth <= 11));
+
+	// Map month to locale type ID.
+	int nLCType = (bFullName) ? (LOCALE_SMONTHNAME1 + nMonth) : (LOCALE_SABBREVMONTHNAME1 + nMonth);
+
+	// Get the size of the buffer and allocate one.
+	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, nLCType, NULL, 0);
+
+	char* pszBuffer = static_cast<char*>(alloca(nChars+1));
+
+	pszBuffer[0] = '\0';
+
+	// Get the locale string.
+	::GetLocaleInfo(LOCALE_USER_DEFAULT, nLCType, pszBuffer, nChars+1);
+
+	return pszBuffer;
+}
+
+/******************************************************************************
+** Method:		DayOfWeekStr()
+**
+** Description:	Converts the day of the week to a string.
+**
+** Parameters:	bFullName	Get the full name (true) or short name (false).
+**
+** Returns:		The name of the day.
+**
+*******************************************************************************
+*/
+
+CString CDate::DayOfWeekStr(bool bFullName) const
+{
+	return DayOfWeekName(DayOfWeek(), bFullName);
+}
+
+/******************************************************************************
+** Method:		MonthStr()
+**
+** Description:	Converts the month to a string.
+**
+** Parameters:	bFullName	Get the full name (true) or short name (false).
+**
+** Returns:		The name of the month.
+**
+*******************************************************************************
+*/
+
+CString CDate::MonthStr(bool bFullName) const
+{
+	return MonthName(Month(), bFullName);
 }
 
 /******************************************************************************

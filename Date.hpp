@@ -61,6 +61,16 @@ public:
 	static CDate Current();
 
 	//
+	// Date string ordering (See LOCALE_IDATE).
+	//
+	enum DateOrder
+	{
+		MONTH_DAY_YEAR	= 0x0000,
+		DAY_MONTH_YEAR	= 0x0001,
+		YEAR_MONTH_DAY	= 0x0002,
+	};
+
+	//
 	// Date string formats.
 	//
 	enum Format
@@ -71,10 +81,19 @@ public:
 	};
 
 	//
+	// Locale information.
+	//
+	static DateOrder DateFormatOrder();
+	static CString   FieldSeparator();
+	static CString   DayOfWeekName(int nDay, bool bFullName = true);
+	static CString   MonthName(int nMonth, bool bFullName = true);
+
+	//
 	// Conversion methods.
 	//
-	CString DayOfWeekStr() const;
-	CString ToString(int nFormat) const;
+	CString DayOfWeekStr(bool bFullName) const;
+	CString MonthStr(bool bFullName) const;
+	CString ToString(int nFormat = FMT_WIN_SHORT) const;
 	bool    FromString(const char* pszDate);
 
 	//
