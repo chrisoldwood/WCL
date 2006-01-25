@@ -2121,6 +2121,9 @@
 				RelativePath="ImageList.hpp">
 			</File>
 			<File
+				RelativePath=".\IMsgFilter.hpp">
+			</File>
+			<File
 				RelativePath="IniFile.hpp">
 			</File>
 			<File
