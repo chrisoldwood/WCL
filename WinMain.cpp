@@ -10,6 +10,7 @@
 
 #include "wcl.hpp"
 #include <stdio.h>
+#include <locale>
 
 #ifdef _DEBUG
 // For memory leak detection.
@@ -106,6 +107,9 @@ extern "C" int WINAPI WinMain(HINSTANCE hCurrInst, HINSTANCE /*hPrevInst*/,
 	// Set TRACE/ASSERT logging function.
 	_CrtSetReportHook(TraceLogger);
 #endif
+
+	// Use the Windows locale.
+	setlocale(LC_ALL, "");
 
 	// Get application object.
 	CApp& oApp = CApp::This();
