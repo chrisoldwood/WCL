@@ -27,6 +27,9 @@
 // Handle <-> Window map.
 CWndMap CWnd::s_WndMap;
 
+// Desktop window.
+CWnd CWnd::g_oDesktop;
+
 /******************************************************************************
 ** Method:		WindowRect()
 **

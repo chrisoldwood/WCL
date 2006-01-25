@@ -122,6 +122,9 @@ public:
 	// Handle <-> Window map.
 	static CWndMap s_WndMap;
 
+	// Special handle for the desktop.
+	static CWnd g_oDesktop;
+
 protected:
 	//
 	// Members.
