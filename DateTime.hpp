@@ -59,7 +59,7 @@ public:
 	//
 	// Conversion methods.
 	//
-	CString ToString(int nDateFormat, int nTimeFormat) const;
+	CString ToString(int nDateFormat = CDate::FMT_WIN_SHORT, int nTimeFormat = CTime::FMT_WIN_LONG) const;
 	bool    FromString(const char* pszDateTime);
 
 	//
