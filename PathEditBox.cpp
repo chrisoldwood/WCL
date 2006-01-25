@@ -22,8 +22,8 @@
 *******************************************************************************
 */
 
-// Character filter.
-static const char* pszFilter = " 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_~.\\:";
+// Character filter (invalid characters in a path).
+static const char* pszFilter = "*?\"<>|";
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -40,7 +40,8 @@ static const char* pszFilter = " 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijk
 CPathEditBox::CPathEditBox() : CEditBox()
 {
 	// Setup character filter.
-	Filter(pszFilter);
+	SetFilterDefault(true);
+	Filter(pszFilter, false);
 }
 
 /******************************************************************************
