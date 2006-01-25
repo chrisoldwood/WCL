@@ -130,7 +130,7 @@ int CDialog::RunModal(CWnd& rParent)
 	m_bModal     = true;
 	m_pParentWnd = &rParent;
 
-	ASSERT(rParent.Handle());
+	ASSERT((rParent.Handle() != NULL) || (&rParent == &CWnd::g_oDesktop));
 	ASSERT(CModule::This().Handle());
 	ASSERT(m_iRscID);
 	
