@@ -15,3 +15,5 @@
 - Change toolbar buttons to a more modern look.
 
 - Change app menus to contain button images.
+
+- More generic msg box function.
