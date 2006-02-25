@@ -392,6 +392,8 @@ void CString::FormatEx(const char* pszFormat, va_list args)
 		if ( (*pszBuf == 'h') || (*pszBuf == 'l') || (*pszBuf == 'F')
 		  || (*pszBuf == 'N') || (*pszBuf == 'L') )
 		{
+			ASSERT_FALSE();
+
 			pszBuf++;
 		}
 
