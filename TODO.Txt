@@ -17,3 +17,9 @@
 - Change app menus to contain button images.
 
 - More generic msg box function.
+
+- Derive CException from std::exception.
+
+- Enable full exception handlers for release builds and check they exist.
+
+- Add excpetion throwing to .ini file class.

@@ -22,11 +22,20 @@
 *******************************************************************************
 */
 
-// Border around controls.
-const int BORDER_SIZE = 3;
+// Top border height.
+const int TOP_BORDER = 2;
 
 // Border around controls.
+const int BORDER_SIZE = 0;
+
+// Tooltip control ID.
 const int TOOLTIP_ID = 10;
+
+// Control size (square).
+const int CONTROL_SIZE = 24;
+
+// Separator border indent.
+const int SEP_INDENT = 1;
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -104,12 +113,9 @@ void CToolBar::GetCreateParams(WNDCREATE& rParams)
 	// Get base class settings.
 	CCtrlWnd::GetCreateParams(rParams);
 
-	// Get height of controls.
-	int iCtrlHt = 24;
-
 	// Override any settings.
 	rParams.pszClassName = "ToolBar";
-	rParams.rcPos.Set(0, 0, 0, iCtrlHt + (BORDER_SIZE*2) + 2);
+	rParams.rcPos.Set(0, 0, 0, CONTROL_SIZE + (BORDER_SIZE*2) + TOP_BORDER);
 }
 
 /******************************************************************************
@@ -133,9 +139,8 @@ void CToolBar::OnCreate(const CRect& /*rcClient*/)
 	if (m_pCtrlTable == NULL)
 		return;
 
-	int		iCtrlHt = 24;
-	CPoint	ptOrigin(iCtrlHt/2, BORDER_SIZE+2);
-	CSize	dmSize(iCtrlHt, iCtrlHt);
+	CPoint	ptOrigin(0, BORDER_SIZE+TOP_BORDER);
+	CSize	dmSize(CONTROL_SIZE, CONTROL_SIZE);
 	CTRL*	pCtrl = m_pCtrlTable;
 
 	// For all controls.
@@ -145,14 +150,14 @@ void CToolBar::OnCreate(const CRect& /*rcClient*/)
 		if (pCtrl->nID == IDC_SEPARATOR)
 		{
 			// Leave a gap.
-			ptOrigin.x += iCtrlHt/2;
+			ptOrigin.x += CONTROL_SIZE/2;
 		}
 		// Control
 		else
 		{
 			// Create control.
 			pCtrl->pWnd->Create(*this, pCtrl->nID, CRect(ptOrigin, dmSize));
-			ptOrigin.x += iCtrlHt;
+			ptOrigin.x += CONTROL_SIZE;
 
 			// Add to tooltip control.
 			m_oToolTip.AddTool(*this, *pCtrl->pWnd, LPSTR_TEXTCALLBACK);
@@ -180,6 +185,25 @@ void CToolBar::OnPaint(CDC& rDC)
 	// Draw etched line at top.
 	CRect rcClient = ClientRect();
 	rDC.HorzLine3D(rcClient.left, rcClient.right, rcClient.top, false);
+
+	CPoint ptOrigin(0, BORDER_SIZE+TOP_BORDER);
+
+	// Draw all separators.
+	for (CTRL* pCtrl = m_pCtrlTable; (pCtrl) && (pCtrl->nID); ++pCtrl)
+	{
+		// Separator?
+		if (pCtrl->nID == IDC_SEPARATOR)
+		{
+			rDC.VertLine3D(ptOrigin.x+CONTROL_SIZE/4, rcClient.top+TOP_BORDER+(SEP_INDENT*2), rcClient.bottom-(SEP_INDENT*2), false);
+
+			ptOrigin.x += CONTROL_SIZE/2;
+		}
+		// Control
+		else
+		{
+			ptOrigin.x += CONTROL_SIZE;
+		}
+	}
 }
 
 /******************************************************************************
