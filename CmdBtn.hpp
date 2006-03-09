@@ -31,6 +31,8 @@ protected:
 	//
 	// Members.
 	//
+	bool	m_bOnToolbar;
+	bool	m_bTimerOn;
 
 	//
 	// Window creation template methods.
@@ -40,7 +42,16 @@ protected:
 	//
 	// Message processors.
 	//
+	virtual	LRESULT WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
+	virtual void OnNCDestroy();
 	virtual void OnDrawItem(uint iID, uint iAction, uint iState, CDC& rDC, uint iItem, const CRect& rcItem);
+	virtual void OnMouseMove(const CPoint& ptCursor, uint iKeyFlags);
+	virtual void OnTimer(uint iTimerID);
+
+	//
+	// Class members.
+	//
+	static CCmdButton* g_pActiveBtn;
 };
 
 /******************************************************************************
