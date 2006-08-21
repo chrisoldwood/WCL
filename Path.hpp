@@ -53,6 +53,7 @@ public:
 
 	//
 	// File Open dialog.
+	//
 	enum DlgMode
 	{
 		OpenFile,
