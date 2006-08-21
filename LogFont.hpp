@@ -19,7 +19,7 @@
 *******************************************************************************
 */
 
-class CLogFont : public tagLOGFONTA
+class CLogFont : public LOGFONT
 {
 public:
 	//
