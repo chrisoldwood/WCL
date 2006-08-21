@@ -47,6 +47,7 @@ public:
 	int CurSel() const;
 	void CurSel(int iItem) const;
 	int CurSel(const char* pszText, int iFirst = -1) const;
+	int Select(const char* pszText, int iFirst = -1) const;
 	int TextLength(int iPos) const;
 	int TextLength() const;
 	CString Text(int iPos) const;
@@ -166,6 +167,15 @@ inline void CComboBox::CurSel(int iItem) const
 inline int CComboBox::CurSel(const char* pszText, int iFirst) const
 {
 	return (int)SendMessage(CB_SELECTSTRING, iFirst, (LPARAM)(LPCSTR) pszText);
+}
+
+inline int CComboBox::Select(const char* pszText, int iFirst) const
+{
+	int nItem = FindExact(pszText, iFirst);
+
+	CurSel(nItem);
+
+	return nItem;
 }
 
 inline int CComboBox::TextLength(int iPos) const
