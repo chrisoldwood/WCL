@@ -40,6 +40,11 @@ public:
 	//
 	HFONT Handle() const;
 
+	//
+	// Choose font dialog.
+	//
+	bool Select(const CWnd& rParent);
+
 protected:
 	//
 	// Members.
