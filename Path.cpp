@@ -352,14 +352,14 @@ bool CPath::Select(const CWnd& rParent, DlgMode eMode, const char* pszExts,
 					const char* pszDefExt, const char* pszDir)
 {
 	bool 			bOkay;
-	OPENFILENAME	ofnFile;
+	OPENFILENAME	ofnFile = { 0 };
 	char			szFileName[MAX_PATH];
 
 	// Initialise filename.
 	szFileName[0] = '\0';
 
     // Fill in structure.
-	ofnFile.lStructSize       = sizeof(OPENFILENAME);
+	ofnFile.lStructSize       = sizeof(ofnFile);
 	ofnFile.hwndOwner         = rParent.Handle();
 	ofnFile.hInstance         = NULL;
 	ofnFile.lpstrFilter       = pszExts;
@@ -516,7 +516,7 @@ int CALLBACK CPath::BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPAR
 
 bool CPath::SelectComputer(const CWnd& rParent, const char* pszTitle)
 {
-	BROWSEINFO   oInfo;
+	BROWSEINFO   oInfo = { 0 };
 	char         szComputer[MAX_PATH];
 	LPITEMIDLIST pItemIDList;
 	LPMALLOC     pMalloc;
@@ -531,7 +531,6 @@ bool CPath::SelectComputer(const CWnd& rParent, const char* pszTitle)
 		return false;
 
 	// Intialise info structure to browse for only folders.
-	memset(&oInfo, 0, sizeof(oInfo));
 	oInfo.hwndOwner      = rParent.Handle();
 	oInfo.pszDisplayName = szComputer;
 	oInfo.lpszTitle      = pszTitle;
@@ -601,10 +600,11 @@ bool CPath::SelectFiles(const CWnd& rParent, const char* pszExts, const char* ps
 
 bool CPath::SelectFiles(const CWnd& rParent, const char* pszExts, const char* pszDefExt, const char* pszDir, CStrArray& astrFiles)
 {
-	OPENFILENAME ofnFile;
+	OPENFILENAME ofnFile = { 0 };
 	char         szFileName[MAX_PATH*100] = "";
 
-	ofnFile.lStructSize       = sizeof(OPENFILENAME);
+	// Initialise structure.
+	ofnFile.lStructSize       = sizeof(ofnFile);
 	ofnFile.hwndOwner         = rParent.Handle();
 	ofnFile.hInstance         = NULL;
 	ofnFile.lpstrFilter       = pszExts;
