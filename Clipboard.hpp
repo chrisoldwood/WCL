@@ -34,6 +34,11 @@ public:
 	~CClipboard();
 	
 	//
+	// Properties.
+	//
+	ulong Size() const;
+
+	//
 	// Open/Close operations.
 	//
 	void Open(uint nMode, uint iFormat);
@@ -93,6 +98,13 @@ private:
 **
 *******************************************************************************
 */
+
+inline ulong CClipboard::Size() const
+{
+	ASSERT(m_pStream != NULL);
+
+	return m_pStream->Size();
+}
 
 inline void CClipboard::Read(void* pBuffer, uint iNumBytes)
 {

@@ -29,6 +29,11 @@ public:
 	~CMemStream();
 	
 	//
+	// Properties.
+	//
+	ulong Size() const;
+
+	//
 	// Open/Close operations.
 	//
 	void Create();
@@ -64,5 +69,10 @@ protected:
 **
 *******************************************************************************
 */
+
+inline ulong CMemStream::Size() const
+{
+	return m_lEOF;
+}
 
 #endif //MEMSTREAM_HPP
