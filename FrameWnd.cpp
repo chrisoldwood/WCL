@@ -16,6 +16,16 @@
 #endif
 
 /******************************************************************************
+**
+** Constants.
+**
+*******************************************************************************
+*/
+
+// Window class name.
+const char* CFrameWnd::CLASS_NAME = "FrameWnd";
+
+/******************************************************************************
 ** Method:		Default constructor.
 **
 ** Description:	.
@@ -77,7 +87,7 @@ void CFrameWnd::GetClassParams(WNDCLASS& rParams)
 	// Override any settings.
 	rParams.hIcon         = ::LoadIcon(CModule::This().Handle(), MAKEINTRESOURCE(m_iIconID));
 	rParams.hbrBackground = (HBRUSH) (COLOR_BTNSHADOW + 1);
-	rParams.lpszClassName = "FrameWnd";
+	rParams.lpszClassName = CLASS_NAME;
 
 	ASSERT(rParams.hIcon);
 }
@@ -100,7 +110,7 @@ void CFrameWnd::GetCreateParams(WNDCREATE& rParams)
 	CPopupWnd::GetCreateParams(rParams);
 
 	// Override any settings.
-	rParams.pszClassName  = "FrameWnd";
+	rParams.pszClassName  = CLASS_NAME;
 	rParams.pszTitle      = CApp::This().m_strTitle;
 	rParams.dwStyle       = WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN;
 	rParams.hParent       = HWND_DESKTOP;

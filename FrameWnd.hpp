@@ -74,6 +74,13 @@ protected:
 	CDialog*	m_pActiveDlg;	// The active modeless dialog, if one.
 	
 	//
+	// Constants.
+	//
+
+	// Window class name.
+	static const char* CLASS_NAME;
+
+	//
 	// Window creation template methods.
 	//
 	virtual void GetClassParams(WNDCLASS& rParams);
