@@ -2,7 +2,7 @@
 
 - Two phase save support (SDI).
 
-- Move to STL (TMap/HandleMap & TArray/TRefArray/TPtrArray).
+- Move to STL (TMap/HandleMap & TArray/TRefArray/TPtrArray -> Legacy library).
 
 - Tidy up CFileTree class (Add proper accessors etc).
 
@@ -12,8 +12,6 @@
 
 - Add resource version info class.
 
-- Change toolbar buttons to a more modern look.
-
 - Change app menus to contain button images.
 
 - More generic msg box function.
@@ -22,4 +20,8 @@
 
 - Enable full exception handlers for release builds and check they exist.
 
-- Add excpetion throwing to .ini file class.
+- Add exception throwing to .ini file class.
+
+- Split CStream into In & Out Streams and make << & >> non-virtual non-member functions.
+
+- Add structured exception handler and exception class.
