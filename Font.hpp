@@ -29,21 +29,27 @@ public:
 	CFont(int iID);
 	CFont(const CLogFont& rLogFont);
 	CFont(HFONT hFont, bool bOwn = false);
+	CFont(const CFont& rhs);
 	~CFont();
 
-	void Create(int iID);
-	void Create(const CLogFont& rLogFont);
-	void Create(HFONT hFont, bool bOwn = false);
+	CFont& operator=(const CFont& rhs);
 
 	//
-	// Member access.
+	// Properties.
 	//
 	HFONT Handle() const;
 
 	//
-	// Choose font dialog.
+	// Methods.
 	//
+	bool Create(int iID);
+	bool Create(const CLogFont& rLogFont);
+	void Create(HFONT hFont, bool bOwn = false);
+
 	bool Select(const CWnd& rParent);
+
+	CString Format(CLogFont::FontFormat eFormat) const;
+	static bool Parse(const char* pszFont, CFont& oFont);
 
 protected:
 	//
@@ -51,6 +57,11 @@ protected:
 	//
 	HFONT	m_hFont;
 	bool	m_bOwner;
+
+	//
+	// Internal methods.
+	//
+	void Release();
 };
 
 /******************************************************************************
@@ -78,30 +89,6 @@ inline CFont::CFont(const CLogFont& rLogFont)
 inline CFont::CFont(HFONT hFont, bool bOwn)
 {
 	Create(hFont, bOwn);
-}
-
-inline void CFont::Create(int iID)
-{
-	m_hFont  = GetStockFont(iID);
-	m_bOwner = false;
-
-	ASSERT(m_hFont != NULL);
-}
-
-inline void CFont::Create(const CLogFont& rLogFont)
-{
-	m_hFont  = ::CreateFontIndirect(&rLogFont);
-	m_bOwner = true;
-
-	ASSERT(m_hFont != NULL);
-}
-
-inline void CFont::Create(HFONT hFont, bool bOwn)
-{
-	m_hFont  = hFont;
-	m_bOwner = bOwn;
-
-	ASSERT(m_hFont != NULL);
 }
 
 #endif //FONT_HPP
