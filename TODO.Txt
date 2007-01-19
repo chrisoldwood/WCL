@@ -18,10 +18,16 @@
 
 - Derive CException from std::exception.
 
-- Enable full exception handlers for release builds and check they exist.
+- Enable full try/catch handlers for release builds and check they exist.
 
 - Add exception throwing to .ini file class.
 
 - Split CStream into In & Out Streams and make << & >> non-virtual non-member functions.
 
 - Add structured exception handler and exception class.
+
+- Add copy ctors and assingment operators to GDI classes to check ownership.
+
+- Add Release() methods to CFont etc. to ensure resources are cleaned up correctly.
+
+- Add conversion from time_t (i.e. local time) to a DateTime.
