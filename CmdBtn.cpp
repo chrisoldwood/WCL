@@ -243,6 +243,7 @@ void CCmdButton::OnMouseMove(const CPoint& /*ptCursor*/, uint /*iKeyFlags*/)
 
 void CCmdButton::OnTimer(uint iTimerID)
 {
+	DEBUG_USE_ONLY(iTimerID);
 	ASSERT(iTimerID == TIMER_ID);
 	ASSERT(m_bOnToolbar);
 
