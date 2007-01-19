@@ -37,7 +37,9 @@ public:
 	// Methods.
 	//
 	void Add(const CWnd& oWnd, uint nTrayID, uint nMsgID, uint nRscID, const char* pszToolTip = NULL);
-	void Modify(uint nRscID, const  char* pszToolTip = NULL);
+	void Modify(uint nRscID, const char* pszToolTip);
+	void ModifyIcon(uint nRscID);
+	void ModifyToolTip(const char* pszToolTip);
 	void Remove();
 
 protected:
@@ -59,6 +61,16 @@ protected:
 inline bool CTrayIcon::IsVisible() const
 {
 	return (m_hWnd != NULL);
+}
+
+inline void CTrayIcon::ModifyIcon(uint nRscID)
+{
+	Modify(nRscID, NULL);
+}
+
+inline void CTrayIcon::ModifyToolTip(const char* pszToolTip)
+{
+	Modify(NULL, pszToolTip);
 }
 
 #endif // TRAYICON_HPP
