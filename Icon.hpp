@@ -26,6 +26,8 @@ public:
 	// Constructors/Destructor.
 	//
 	CIcon();
+	CIcon(uint nRscID);
+	CIcon(uint nRscID, int nWidth, int nHeight);
 	~CIcon();
 	
 	void LoadRsc(uint nRscID);
@@ -51,16 +53,6 @@ protected:
 **
 *******************************************************************************
 */
-
-inline void CIcon::LoadRsc(const char* pszRsc)
-{
-	ASSERT(m_hIcon == NULL);
-
-	m_hIcon  = ::LoadIcon(NULL, pszRsc);
-	m_bOwner = false;
-
-	ASSERT(m_hIcon != NULL);
-}
 
 inline HICON CIcon::Handle() const
 {
