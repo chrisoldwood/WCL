@@ -18,7 +18,7 @@
 /******************************************************************************
 ** Method:		Constructor.
 **
-** Description:	.
+** Description:	Default constructor.
 **
 ** Parameters:	None.
 **
@@ -30,6 +30,24 @@
 CBitmap::CBitmap()
 	: m_hBitmap(NULL)
 {
+}
+
+/******************************************************************************
+** Method:		Constructor.
+**
+** Description:	Construction from a resource.
+**
+** Parameters:	iRscID		The resource ID.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+CBitmap::CBitmap(uint iRscID)
+	: m_hBitmap(NULL)
+{
+	LoadRsc(iRscID);
 }
 
 /******************************************************************************

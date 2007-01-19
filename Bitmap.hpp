@@ -29,6 +29,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CBitmap();
+	CBitmap(uint iRscID);
 	~CBitmap();
 
 	void Create(const CSize& rSize);
