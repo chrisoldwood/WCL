@@ -32,7 +32,6 @@ public:
 	CPath();
     CPath(const char*    pszPath);
 	CPath(const CString& strSrc);
-	CPath(const CPath&   strSrc);
     CPath(const char*    pszDir, const char* pszFile);
 
 	//
@@ -45,7 +44,8 @@ public:
 	//
 	// Path components.
 	//
-	CPath   Drive() const;
+	CString Drive() const;
+	CPath	Root() const;
 	CPath   Directory() const;
 	CString FileName() const;
 	CString FileTitle() const;
@@ -92,16 +92,26 @@ public:
 	//
 	// Operators.
 	//
-	const CPath& operator=(const CString& rSrc);
-	const CPath& operator=(const char* pszBuffer);
+	char& operator[](int nChar);
+
+	CPath& operator=(const char* pszSrc);
+	CPath& operator=(const CString& strSrc);
 	
-	void operator+=(const char* pszPath);
+	void operator/=(const char* pszPath);
+
+	operator const char*() const;
+
+	//
+	// Friend functions.
+	//
+	friend CPath Append(const CPath& strLHS, const char* pszRHS);
+	friend bool Equals(const CPath& strLHS, const char* pszRHS);
 
 protected:
 	//
 	// Internal methods.
 	//
-	static void StripFinalSlash(char* pszPath);
+	static void Normalise(char* pszPath);
 
 	static int CALLBACK BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPARAM lpData);
 };
@@ -113,94 +123,101 @@ protected:
 *******************************************************************************
 */
 
-inline CPath::CPath(const char* pszPath)
+inline char& CPath::operator[](int nChar)
 {
-	ASSERT(pszPath != NULL);
+	ASSERT( (nChar >=0) && (nChar < Length()) );
 
-	Copy(pszPath);
+	return m_pszData[nChar];
 }
 
-inline CPath::CPath(const CString& strSrc)
+inline CPath::operator const char*() const
 {
-	Copy(strSrc);
+	ASSERT(m_pszData);
+	
+	return m_pszData;
 }
 
-inline CPath::CPath(const CPath& strSrc)
+inline CPath& CPath::operator=(const char* pszSrc)
 {
-	Copy(strSrc);
-}
+	ASSERT(pszSrc != NULL);
 
-inline CPath::CPath(const char* pszDir, const char* pszFile)
-{
-	ASSERT(pszDir  != NULL);
-	ASSERT(pszFile != NULL);
+	Copy(pszSrc);
 
-	Copy(pszDir);
-	operator +=(pszFile);
-}
-
-inline const CPath& CPath::operator=(const CString& rSrc)
-{
-	Copy(rSrc);
 	return *this;
 }
 
-inline const CPath& CPath::operator=(const char* pszBuffer)
+inline CPath& CPath::operator=(const CString& strSrc)
 {
-	ASSERT(pszBuffer != NULL);
+	Copy(strSrc);
 
-	Copy(pszBuffer);
 	return *this;
-}
-
-inline void CPath::operator+=(const char* pszPath)
-{
-	ASSERT(pszPath != NULL);
-
-	int nLength = Length();
-
-	// Add path separator?
-	if ( (nLength > 0) && ((*this)[nLength-1] != '\\') )
-		CString::operator +=('\\');
-
-	CString::operator +=(pszPath);
 }
 
 /******************************************************************************
 ** 
-** Global string operators.
+** Global CPath operators. The idea of using / as the concatenation operator
+** was shamelessly borrowed from Boost. 
 **
 *******************************************************************************
 */
 
-inline CPath operator+(const CPath& strLHS, const CPath& strRHS)
+inline CPath Append(const CPath& strLHS, const char* pszRHS)
 {
-	CPath str;
+	CPath str(strLHS);
 
-	str  = strLHS;
-	str += strRHS;
+	str /= pszRHS;
 
 	return str;
 }
 
-inline CPath operator+(const CPath& strLHS, const CString& strRHS)
+inline CPath operator/(const CPath& strLHS, const char* pszRHS)
 {
-	CPath str;
-
-	str  = strLHS;
-	str += strRHS;
-
-	return str;
+	return Append(strLHS, pszRHS);
 }
 
-inline CPath operator+(const CPath& strLHS, const char* pszRHS)
+inline CPath operator/(const CPath& strLHS, const CString& strRHS)
 {
-	CPath str;
+	return Append(strLHS, strRHS);
+}
 
-	str  = strLHS;
-	str += pszRHS;
+inline CPath operator/(const CPath& strLHS, const CPath& strRHS)
+{
+	return Append(strLHS, strRHS);
+}
 
-	return str;
+inline bool Equals(const CPath& strLHS, const char* pszRHS)
+{
+	return (strLHS.Compare(pszRHS, true) == 0);
+}
+
+inline bool operator==(const CPath& strLHS, const char* pszRHS)
+{
+	return Equals(strLHS, pszRHS);
+}
+
+inline bool operator==(const CPath& strLHS, const CString& strRHS)
+{
+	return Equals(strLHS, strRHS);
+}
+
+inline bool operator==(const CPath& strLHS, const CPath& strRHS)
+{
+	return Equals(strLHS, strRHS);
+}
+
+inline bool operator!=(const CPath& strLHS, const char* pszRHS)
+{
+	return !Equals(strLHS, pszRHS);
+}
+
+inline bool operator!=(const CPath& strLHS, const CString& strRHS)
+{
+	return !Equals(strLHS, strRHS);
+}
+
+inline bool operator!=(const CPath& strLHS, const CPath& strRHS)
+{
+	return !Equals(strLHS, strRHS);
 }
 
 #endif //PATH_HPP

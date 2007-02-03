@@ -21,11 +21,11 @@
 #endif
 
 /******************************************************************************
-** Method:		Constructor
+** Method:		Constructors
 **
-** Description:	Default constructor. Initialise base class.
+** Description:	.
 **
-** Parameters:	None.
+** Parameters:	Various.
 **
 ** Returns:		Nothing.
 **
@@ -34,6 +34,27 @@
 
 CPath::CPath()
 {
+}
+
+CPath::CPath(const char* pszPath)
+{
+	ASSERT(pszPath != NULL);
+
+	Copy(pszPath);
+}
+
+CPath::CPath(const CString& strSrc)
+{
+	Copy(strSrc);
+}
+
+CPath::CPath(const char* pszDir, const char* pszFile)
+{
+	ASSERT(pszDir  != NULL);
+	ASSERT(pszFile != NULL);
+
+	Copy(pszDir);
+	operator /=(pszFile);
 }
 
 /******************************************************************************
@@ -168,6 +189,7 @@ CPath CPath::TempDir()
 	char szPath[MAX_PATH];
 
 	::GetTempPath(sizeof(szPath), szPath);
+	Normalise(szPath);
 
 	return CPath(szPath);
 }
@@ -227,15 +249,75 @@ CPath CPath::SpecialDir(int nCSIDL)
 *******************************************************************************
 */
 
-CPath CPath::Drive() const
+CString CPath::Drive() const
 {
 	char szDrive[MAX_PATH];
 
 	_splitpath(m_pszData, szDrive, NULL, NULL, NULL);
 
-	strcat(szDrive, "\\");
+	return CString(szDrive);
+}
 
-	return CPath(szDrive);
+/******************************************************************************
+** Method:		Root()
+**
+** Description:	Get the root of the path. Unlike Drive() which returns the
+**				drive letter, this returns a valid path and handles UNCs.
+**
+** Parameters:	None.
+**
+** Returns:		The drive as a path.
+**
+*******************************************************************************
+*/
+
+CPath CPath::Root() const
+{
+	char  szDrive[MAX_PATH];
+	char  szDirectory[MAX_PATH];
+	CPath strRoot;
+
+	_splitpath(m_pszData, szDrive, szDirectory, NULL, NULL);
+
+	// Has a drive specifier?
+	if (strlen(szDrive) > 0)
+	{
+		strRoot = szDrive;
+
+		if (strRoot.Find('\\') == -1)
+			strRoot += '\\';
+	}
+	// Counld be a UNC share? ("\\m\d" is minimum).
+	else if (strlen(szDirectory) >= 5)
+	{
+		char* psz = szDirectory;
+
+		// Must begin with "\\"
+		if ( (psz[0] == '\\') && (psz[1] == '\\') )
+		{
+			psz += 2;
+
+			// Skip the machine name.
+			while ( (*psz != '\0') && (*psz != '\\') )
+				++psz;
+
+			if (*psz == '\\')
+			{
+				psz += 1;
+
+				// Skip the share name.
+				while ( (*psz != '\0') && (*psz != '\\') )
+					++psz;
+
+				*psz = '\0';
+
+				strRoot = szDirectory;
+			}
+
+		}
+	}
+
+	return strRoot;
 }
 
 /******************************************************************************
@@ -260,7 +342,7 @@ CPath CPath::Directory() const
 	_splitpath(m_pszData, szDrive, szDir, NULL, NULL);
 
 	strcat(szDrive, szDir);
-	StripFinalSlash(szDrive);
+	Normalise(szDrive);
 
 	return CPath(szDrive);
 }
@@ -554,9 +636,27 @@ bool CPath::SelectComputer(const CWnd& rParent, const char* pszTitle)
 }
 
 /******************************************************************************
-** Method:		StripFinalSlash()
+** Method:		IsPathSeparator()
 **
-** Description:	Removes the trailing path separator from the path, if it exists.
+** Description:	Helper functions to check if a character is a path separator.
+**
+** Parameters:	cChar	The character to test..
+**
+** Returns:		true or false.
+**
+*******************************************************************************
+*/
+
+inline bool IsPathSeparator(char cChar)
+{
+	return ((cChar == '\\') || (cChar == '/'));
+}
+
+/******************************************************************************
+** Method:		Normalise()
+**
+** Description:	Normalises the path by removing the trailing path separator if
+**				it exists and it's not the root folder.
 **
 ** Parameters:	pszPath		The path to modify.
 **
@@ -565,15 +665,21 @@ bool CPath::SelectComputer(const CWnd& rParent, const char* pszTitle)
 *******************************************************************************
 */
 
-void CPath::StripFinalSlash(char* pszPath)
+void CPath::Normalise(char* pszPath)
 {
 	ASSERT(pszPath != NULL);
 
 	int nLength = strlen(pszPath);
 
-	// Strip trailing slash, if it exists.
-	if ( (nLength > 0) && (pszPath[nLength-1] == '\\') )
-		pszPath[nLength-1] = '\0';
+	// "\" or "/" is a valid root. 
+	if (nLength > 1)
+	{
+		char* pszEnd = pszPath+nLength-1;
+
+		// "C:\" is a valid root.
+		if (IsPathSeparator(*pszEnd) && (*(pszEnd-1) != ':'))
+			*pszEnd = '\0';
+	}
 }
 
 /******************************************************************************
@@ -662,4 +768,34 @@ bool CPath::SelectFiles(const CWnd& rParent, const char* pszExts, const char* ps
 	}
 
 	return true;
+}
+
+/******************************************************************************
+** Method:		operator/=()
+**
+** Description:	Appends the string to the end of the path, adding a separator
+**				if required.
+**
+** Parameters:	pszPath		The path to append.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CPath::operator/=(const char* pszPath)
+{
+	ASSERT(pszPath != NULL);
+
+	// Check RHS path for leading separator.
+	if ((*pszPath != '\\') && (*pszPath != '/'))
+	{
+		int nLength = Length();
+
+		// Check LHS path for trailing separator.
+		if ( (nLength > 0) && (m_pszData[nLength-1] != '\\') )
+			operator +=('\\');
+	}
+
+	operator +=(pszPath);
 }
