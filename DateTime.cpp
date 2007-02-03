@@ -47,6 +47,26 @@ CDateTime CDateTime::Current()
 }
 
 /******************************************************************************
+** Method:		FromLocalTime()
+**
+** Description:	Convets the local time stored in a time_t to our DateTime.
+**
+** Parameters:	tDateTime	The local time.
+**
+** Returns:		The DateTime.
+**
+*******************************************************************************
+*/
+
+CDateTime CDateTime::FromLocalTime(time_t tDateTime)
+{
+	tm* pDateTime = localtime(&tDateTime);
+
+	return CDateTime(pDateTime->tm_mday, pDateTime->tm_mon+1, pDateTime->tm_year+1900,
+						pDateTime->tm_hour, pDateTime->tm_min, pDateTime->tm_sec);
+}
+
+/******************************************************************************
 ** Method:		FromString()
 **
 ** Description:	Converts the formatted string to a date & time.
@@ -103,12 +123,23 @@ bool CDateTime::FromString(const char* pszDateTime)
 *******************************************************************************
 */
 
+#pragma warning(push)
+// conditional expression is constant (caused by the ASSERTs).
+#pragma warning(disable:4127)
+
 void CDateTime::operator <<(CStream& rStream)
 {
+	ASSERT(sizeof(m_tDateTime) == sizeof(time_t));
+
 	rStream.Read(&m_tDateTime, sizeof(m_tDateTime));
 }
 
 void CDateTime::operator >>(CStream& rStream) const
 {
+	ASSERT(sizeof(m_tDateTime) == sizeof(time_t));
+
 	rStream.Write(&m_tDateTime, sizeof(m_tDateTime));
 }
+
+// C4127
+#pragma warning(pop)

@@ -18,7 +18,9 @@ class CDateTimeSpan;
 
 /******************************************************************************
 ** 
-** This class is used to wrap a time_t that represents a date & time in GMT.
+** This class is used to represent a date. It is stored and manipulated as if
+** it was a UTC time_t. Consequenetly there is no notion of Daylight Saving or
+** timezones, which makes date and time arithmetic easier.
 **
 *******************************************************************************
 */
@@ -30,7 +32,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CDateTime();
-	CDateTime(time_t tDateTime);
+	CDateTime(seconds_t tDateTime);
 	CDateTime(int iDay, int iMonth, int iYear, int iHours, int iMins, int iSecs);
 	CDateTime(const CDate& rDate, const CTime& rTime);
 
@@ -44,7 +46,7 @@ public:
 	// Core accessors & mutators.
 	//
 	void Set();
-	void Set(time_t tDateTime);
+	void Set(seconds_t tDateTime);
 	void Set(int  iDay, int  iMonth, int  iYear, int  iHours, int  iMins, int  iSecs);
 	void Get(int& iDay, int& iMonth, int& iYear, int& iHours, int& iMins, int& iSecs) const;
 
@@ -54,19 +56,17 @@ public:
 	CTime Time() const;
 	void  Time(const CTime& rTime);
 
+	seconds_t GetDateTimeInSecs() const;
+
 	static CDateTime Current();
+
+	static CDateTime FromLocalTime(time_t tDateTime);
 
 	//
 	// Conversion methods.
 	//
 	CString ToString(int nDateFormat = CDate::FMT_WIN_SHORT, int nTimeFormat = CTime::FMT_WIN_LONG) const;
 	bool    FromString(const char* pszDateTime);
-
-	//
-	// Conversion operators.
-	//
-	void operator =(time_t tDateTime);
-	operator time_t() const;
 
 	//
 	// Comparison operators.
@@ -94,7 +94,7 @@ protected:
 	//
 	// Members.
 	//
-	time_t	m_tDateTime;
+	seconds_t	m_tDateTime;
 
 	//
 	// Friends.
@@ -116,7 +116,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CDateTimeSpan();
-	CDateTimeSpan(time_t tSecs);
+	CDateTimeSpan(seconds_t tSecs);
 	CDateTimeSpan(const CDateTime& rDateTime);
 	
 	//
@@ -131,7 +131,7 @@ protected:
 	//
 	// Members.
 	//
-	time_t	m_tSpan;
+	seconds_t	m_tSpan;
 
 	//
 	// Friends.
@@ -151,7 +151,7 @@ inline CDateTime::CDateTime()
 {
 }
 
-inline CDateTime::CDateTime(time_t tDateTime)
+inline CDateTime::CDateTime(seconds_t tDateTime)
 {
 	Set(tDateTime);
 }
@@ -184,7 +184,7 @@ inline void CDateTime::Set()
 	*this = CDateTime(oDate, oTime);
 }
 
-inline void CDateTime::Set(time_t tDateTime)
+inline void CDateTime::Set(seconds_t tDateTime)
 {
 	m_tDateTime = tDateTime;
 }
@@ -237,12 +237,7 @@ inline CString CDateTime::ToString(int nDateFormat, int nTimeFormat) const
 	return Date().ToString(nDateFormat) + pszSep + Time().ToString(nTimeFormat);
 }
 
-inline void CDateTime::operator =(time_t tDateTime)
-{
-	Set(tDateTime);
-}
-
-inline CDateTime::operator time_t() const
+inline seconds_t CDateTime::GetDateTimeInSecs() const
 {
 	return m_tDateTime;
 }
@@ -299,7 +294,7 @@ inline CDateTimeSpan::CDateTimeSpan()
 {
 }
 
-inline CDateTimeSpan::CDateTimeSpan(time_t tSecs)
+inline CDateTimeSpan::CDateTimeSpan(seconds_t tSecs)
 	: m_tSpan(tSecs)
 {
 }
