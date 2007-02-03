@@ -428,15 +428,26 @@ bool CDate::FromString(const char* pszDate)
 *******************************************************************************
 */
 
+#pragma warning(push)
+// conditional expression is constant (caused by the ASSERTs).
+#pragma warning(disable:4127)
+
 void CDate::operator <<(CStream& rStream)
 {
+	ASSERT(sizeof(m_tDate) == sizeof(time_t));
+
 	rStream.Read(&m_tDate, sizeof(m_tDate));
 }
 
 void CDate::operator >>(CStream& rStream) const
 {
+	ASSERT(sizeof(m_tDate) == sizeof(time_t));
+
 	rStream.Write(&m_tDate, sizeof(m_tDate));
 }
+
+// C4127
+#pragma warning(pop)
 
 /******************************************************************************
 ** Method:		DaysInMonth()

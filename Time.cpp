@@ -270,12 +270,23 @@ bool CTime::FromString(const char* pszTime)
 *******************************************************************************
 */
 
+#pragma warning(push)
+// conditional expression is constant (caused by the ASSERTs).
+#pragma warning(disable:4127)
+
 void CTime::operator <<(CStream& rStream)
 {
+	ASSERT(sizeof(m_tTime) == sizeof(time_t));
+
 	rStream.Read(&m_tTime, sizeof(m_tTime));
 }
 
 void CTime::operator >>(CStream& rStream) const
 {
+	ASSERT(sizeof(m_tTime) == sizeof(time_t));
+
 	rStream.Write(&m_tTime, sizeof(m_tTime));
 }
+
+// C4127
+#pragma warning(pop)

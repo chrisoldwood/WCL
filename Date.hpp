@@ -19,7 +19,8 @@ class CDateTime;
 
 /******************************************************************************
 ** 
-** This class is used to wrap a time_t that represents a date in GMT.
+** This class is used to represent a date. It is stored and manipulated as if
+** it was a UTC time_t, with the time part set to midnight.
 **
 *******************************************************************************
 */
@@ -31,7 +32,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CDate();
-	CDate(time_t tDate);
+	CDate(seconds_t tSecs);
 	CDate(int iDay, int iMonth, int iYear);
 
 	//
@@ -44,7 +45,7 @@ public:
 	// Core accessors & mutators.
 	//
 	void Set();
-	void Set(time_t tDate);
+	void Set(seconds_t tSecs);
 	void Set(int  iDay, int  iMonth, int  iYear);
 	void Get(int& iDay, int& iMonth, int& iYear) const;
 
@@ -57,6 +58,8 @@ public:
 
 	int DayOfWeek() const;
 	int DaysInMonth() const;
+
+	seconds_t GetDateInSecs() const;
 
 	static CDate Current();
 
@@ -97,12 +100,6 @@ public:
 	bool    FromString(const char* pszDate);
 
 	//
-	// Conversion operators.
-	//
-	void operator =(time_t tDate);
-	operator time_t() const;
-
-	//
 	// Comparison operators.
 	//
 	bool operator ==(const CDate& rRHS) const;
@@ -130,7 +127,7 @@ protected:
 	//
 	// Members.
 	//
-	time_t	m_tDate;
+	seconds_t	m_tDate;
 
 	//
 	// Internal methods.
@@ -146,7 +143,7 @@ protected:
 
 /******************************************************************************
 ** 
-** This class is used to represent a period between two dates.
+** This class is used to represent the distance between two dates in days.
 **
 *******************************************************************************
 */
@@ -188,7 +185,7 @@ inline CDate::CDate()
 {
 }
 
-inline CDate::CDate(time_t tDate)
+inline CDate::CDate(seconds_t tDate)
 {
 	Set(tDate);
 }
@@ -208,7 +205,7 @@ inline CDate CDate::Max()
 	return CDate(1, 1, 2038);
 }
 
-inline void CDate::Set(time_t tDate)
+inline void CDate::Set(seconds_t tDate)
 {
 	m_tDate = (tDate - (tDate % SECS_PER_DAY));
 }
@@ -278,12 +275,7 @@ inline int CDate::DaysInMonth() const
 	return DaysInMonth(iMonth, iYear);
 }
 
-inline void CDate::operator =(time_t tDate)
-{
-	Set(tDate);
-}
-
-inline CDate::operator time_t() const
+inline seconds_t CDate::GetDateInSecs() const
 {
 	return m_tDate;
 }

@@ -24,13 +24,14 @@ class CDateTime;
 *******************************************************************************
 */
 
-const int SECS_PER_MIN  = 60;
-const int SECS_PER_HOUR = 60*60;
-const int SECS_PER_DAY  = 60*60*24;
+const seconds_t SECS_PER_MIN  = 60;
+const seconds_t SECS_PER_HOUR = 60*60;
+const seconds_t SECS_PER_DAY  = 60*60*24;
 
 /******************************************************************************
 ** 
-** This class is used to wrap a time_t that represents a time in GMT.
+** This class is used to represent a time. It is stored and manipulated as if
+** it was a UTC time_t, with the date part set 01/01/1970.
 **
 *******************************************************************************
 */
@@ -42,7 +43,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CTime();
-	CTime(time_t tTime);
+	CTime(seconds_t tTime);
 	CTime(int  iHours, int  iMins, int  iSecs);
 
 	//
@@ -55,7 +56,7 @@ public:
 	// Core accessors & mutators.
 	//
 	void Set();
-	void Set(time_t tTime);
+	void Set(seconds_t tTime);
 	void Set(int  iHours, int  iMins, int  iSecs);
 	void Get(int& iHours, int& iMins, int& iSecs) const;
 
@@ -65,6 +66,8 @@ public:
 	int  Mins() const;
 	void Secs(int iSecs);
 	int  Secs() const;
+
+	seconds_t GetTimeInSecs() const;
 
 	static CTime Current();
 
@@ -88,12 +91,6 @@ public:
 	//
 	CString ToString(int nFormat = FMT_WIN_LONG) const;
 	bool    FromString(const char* pszTime);
-
-	//
-	// Conversion operators.
-	//
-	void operator =(time_t tTime);
-	operator time_t() const;
 
 	//
 	// Comparison operators.
@@ -123,7 +120,7 @@ protected:
 	//
 	// Members.
 	//
-	time_t	m_tTime;
+	seconds_t	m_tTime;
 
 	//
 	// Friends.
@@ -134,7 +131,7 @@ protected:
 
 /******************************************************************************
 ** 
-** This class is used to represent a period between two times.
+** This class is used to represent a period between two times in seconds.
 **
 *******************************************************************************
 */
@@ -146,7 +143,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CTimeSpan();
-	CTimeSpan(int nSecs);
+	CTimeSpan(seconds_t tSecs);
 	CTimeSpan(const CTime& rTime);
 	
 	// Accessors.
@@ -159,7 +156,7 @@ protected:
 	//
 	// Members.
 	//
-	int	m_nSpan;
+	seconds_t	m_tSpan;
 
 	//
 	// Friends.
@@ -179,7 +176,7 @@ inline CTime::CTime()
 {
 }
 
-inline CTime::CTime(time_t tTime)
+inline CTime::CTime(seconds_t tTime)
 {
 	Set(tTime);
 }
@@ -199,7 +196,7 @@ inline CTime CTime::Max()
 	return CTime(23, 59, 59);
 }
 
-inline void CTime::Set(time_t tTime)
+inline void CTime::Set(seconds_t tTime)
 {
 	m_tTime = (tTime % SECS_PER_DAY);
 }
@@ -255,12 +252,7 @@ inline int CTime::Secs() const
 	return iSecs;
 }
 
-inline void CTime::operator =(time_t tTime)
-{
-	Set(tTime);
-}
-
-inline CTime::operator time_t() const
+inline seconds_t CTime::GetTimeInSecs() const
 {
 	return m_tTime;
 }
@@ -302,12 +294,12 @@ inline CTimeSpan CTime::operator -(const CTime& rRHS) const
 
 inline void CTime::operator +=(const CTimeSpan& rRHS)
 {
-	m_tTime += rRHS.m_nSpan;
+	m_tTime += rRHS.m_tSpan;
 }
 
 inline void CTime::operator -=(const CTimeSpan& rRHS)
 {
-	m_tTime -= rRHS.m_nSpan;
+	m_tTime -= rRHS.m_tSpan;
 }
 
 /******************************************************************************
@@ -318,38 +310,38 @@ inline void CTime::operator -=(const CTimeSpan& rRHS)
 */
 
 inline CTimeSpan::CTimeSpan()
-	: m_nSpan(0)
+	: m_tSpan(0)
 {
 }
 
-inline CTimeSpan::CTimeSpan(int nSecs)
-	: m_nSpan(nSecs)
+inline CTimeSpan::CTimeSpan(seconds_t tSecs)
+	: m_tSpan(tSecs)
 {
 }
 
 inline CTimeSpan::CTimeSpan(const CTime& rTime)
-	: m_nSpan(rTime.m_tTime)
+	: m_tSpan(rTime.m_tTime)
 {
 }
 
 inline int CTimeSpan::Secs() const
 {
-	return m_nSpan;
+	return m_tSpan;
 }
 
 inline int CTimeSpan::Mins() const
 {
-	return m_nSpan / SECS_PER_MIN;
+	return m_tSpan / SECS_PER_MIN;
 }
 
 inline int CTimeSpan::Hours() const
 {
-	return m_nSpan / SECS_PER_HOUR;
+	return m_tSpan / SECS_PER_HOUR;
 }
 
 inline int CTimeSpan::Days() const
 {
-	return m_nSpan / SECS_PER_DAY;
+	return m_tSpan / SECS_PER_DAY;
 }
 
 #endif //TIME_HPP
