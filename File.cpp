@@ -438,7 +438,8 @@ bool CFile::Delete(const char* pszPath)
 **
 ** Description:	Creates a folder.
 **
-** Parameters:	pszPath		The folder path.
+** Parameters:	pszPath			The folder path.
+**				bCreatePath		Create the in-between folders?
 **
 ** Returns:		true or false.
 **
@@ -455,10 +456,18 @@ bool CFile::CreateFolder(const char* pszPath, bool bCreatePath)
 
 	if (bCreatePath)
 	{
-		CPath strPath(pszPath);
+		// Failed for any reason other than an invalid path?
+		if (::GetLastError() != ERROR_PATH_NOT_FOUND)
+			return false;
+
+		CPath strParent(CPath(pszPath).Directory());
+
+		// Reached the root?
+		if (strParent == pszPath)
+			return false;
 
 		// Recursively create parent folders.
-		if (!CreateFolder(strPath.Directory(), true))
+		if (!CreateFolder(strParent, true))
 			return false;
 	
 		// Try and create it again.
