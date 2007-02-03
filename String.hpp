@@ -44,6 +44,7 @@ public:
 	//
 	bool Empty() const;
 	int  Length() const;
+	const char* Ptr() const;
 
 	//
 	// Mutation.
@@ -52,6 +53,7 @@ public:
 	void     Delete(int nFirst, int nCount = 1);
 	void     Replace(char cOldChar, char cNewChar);
 	void     Replace(char cChar, const char* pszString);
+	void     Replace(const char* pszOldString, const char* pszNewString, bool bIgnoreCase = true);
 	CString& RepCtrlChars();
 	CString& Trim(bool bLeft = true, bool bRight = true);
 	CString& ToLower();
@@ -94,7 +96,9 @@ public:
 	// Comparison.
 	//
 	bool operator ==(const char* pszString) const;
+	bool operator ==(const CString& strString) const;
 	bool operator !=(const char* pszString) const;
+	bool operator !=(const CString& strString) const;
 
 	int Compare(const char* pszString, bool bIgnoreCase = true) const;
 	int Compare(const char* pszString, int nChars, bool bIgnoreCase = true) const;
@@ -226,6 +230,13 @@ inline const CString& CString::operator=(const char* pszBuffer)
 	return *this;
 }
 
+inline const char* CString::Ptr() const
+{
+	ASSERT(m_pszData);
+	
+	return m_pszData;
+}
+
 inline CString::operator const char*() const
 {
 	ASSERT(m_pszData);
@@ -245,9 +256,19 @@ inline bool CString::operator ==(const char* pszString) const
 	return (strcmp(m_pszData, pszString) == 0);
 }
 
+inline bool CString::operator ==(const CString& strString) const
+{
+	return (strcmp(m_pszData, strString) == 0);
+}
+
 inline bool CString::operator !=(const char* pszString) const
 {
 	return (strcmp(m_pszData, pszString) != 0);
+}
+
+inline bool CString::operator !=(const CString& strString) const
+{
+	return (strcmp(m_pszData, strString) != 0);
 }
 
 inline int CString::Compare(const char* pszString, bool bIgnoreCase) const

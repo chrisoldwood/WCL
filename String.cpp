@@ -867,6 +867,55 @@ void CString::Replace(char cChar, const char* pszString)
 }
 
 /******************************************************************************
+** Method:		Replace()
+**
+** Description:	Replaces one string with another string, ignoring case if
+**				required.
+**
+** Parameters:	pszOldString	The string to replace.
+**				pszNewString	The string to replace it with.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CString::Replace(const char* pszOldString, const char* pszNewString, bool bIgnoreCase)
+{
+	ASSERT(pszOldString != NULL);
+	ASSERT(pszNewString != NULL);
+
+	typedef int (*CompareFn)(const char*, const char*, size_t);
+
+	CString     str;
+	const char* psz = m_pszData;
+
+	// Presize to current string length.
+	str.BufferSize(Length());
+
+	// Choose the compare function.
+	CompareFn lpfnCompare = (bIgnoreCase) ? strnicmp : strncmp;
+	size_t    nCmpLen     = strlen(pszOldString);
+
+	while (*psz != '\0')
+	{
+		// Found a match?
+		if (lpfnCompare(psz, pszOldString, nCmpLen) == 0)
+		{
+			psz += strlen(pszOldString);
+			str += pszNewString;
+		}
+		else
+		{
+			str += *psz;
+			psz += 1;
+		}
+	}
+
+	Copy(str);
+}
+
+/******************************************************************************
 ** Method:		RepCtrlChars()
 **
 ** Description:	Replaces any control characters with its "C" equivalent.
