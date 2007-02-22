@@ -27,10 +27,11 @@
 *******************************************************************************
 */
 
-CSDIApp::CSDIApp(CSDIFrame& rFrameWnd, CSDICmds& rCmdControl)
+CSDIApp::CSDIApp(CSDIFrame& rFrameWnd, CSDICmds& rCmdControl, int nMRUSize)
 	: CApp(rFrameWnd, rCmdControl)
 	, m_pDoc(NULL)
 	, m_pView(NULL)
+	, m_MRUList(nMRUSize)
 {
 }
 

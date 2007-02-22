@@ -25,7 +25,7 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CSDIApp(CSDIFrame& rFrameWnd, CSDICmds& rCmdControl);
+	CSDIApp(CSDIFrame& rFrameWnd, CSDICmds& rCmdControl, int nMRUSize);
 	~CSDIApp();
 
 	//
