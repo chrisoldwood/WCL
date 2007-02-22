@@ -234,7 +234,13 @@ CPath CPath::SpecialDir(int nCSIDL)
 
 	::SHGetSpecialFolderPath(NULL, szPath, nCSIDL, FALSE);
 
-	return CPath(szPath);
+	CPath str = szPath;
+
+	// "Program Files" folder is only available with IE 5.x and later.
+	if ( (nCSIDL == CSIDL_PROGRAM_FILES) && (str == "") )
+		str = CPath::WindowsDir().Root() / "Program Files";
+
+	return str;
 }
 
 /******************************************************************************
@@ -798,4 +804,28 @@ void CPath::operator/=(const char* pszPath)
 	}
 
 	operator +=(pszPath);
+}
+
+/******************************************************************************
+** Method:		ExpandVars()
+**
+** Description:	Expands any path variables such as %ProgramFiles%, %SystemRoot%
+**				and %Temp% into the actual path.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CPath::ExpandVars()
+{
+	// Do a crude search and replace on all possible matches.
+	if (Find('%') != -1)
+	{
+		Replace("%ProgramFiles%", CPath::SpecialDir(CSIDL_PROGRAM_FILES));
+		Replace("%SystemRoot%",   CPath::WindowsDir());
+		Replace("%Temp%",         CPath::TempDir());
+	}
 }

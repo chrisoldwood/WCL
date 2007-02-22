@@ -69,6 +69,11 @@ public:
 	static bool SelectFiles(const CWnd& rParent, const char* pszExts, const char* pszDefExt, const char* pszDir, CStrArray& astrFiles);
 
 	//
+	// Other methods.
+	//
+	void ExpandVars();
+
+	//
 	// Common root directories.
 	//
 	static CPath CurrentDir();
