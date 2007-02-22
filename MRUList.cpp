@@ -16,16 +16,6 @@
 #endif
 
 /******************************************************************************
-**
-** Local variables.
-**
-*******************************************************************************
-*/
-
-// MRU IniFile section.
-#define	MRU_SECTION	"MRU"
-
-/******************************************************************************
 ** Method:		Constructor.
 **
 ** Description:	.
@@ -144,8 +134,10 @@ void CMRUList::UpdateMenu(CMenu& rMenu, uint iCmdBase)
 *******************************************************************************
 */
 
-void CMRUList::Load(CIniFile& rCfgFile)
+void CMRUList::Load(CIniFile& rCfgFile, const char* pszSection)
 {
+	ASSERT(pszSection != NULL);
+
 	// For all MRU items.
 	for (int i = 0; i < m_nMaxSize; i++)
 	{
@@ -153,7 +145,7 @@ void CMRUList::Load(CIniFile& rCfgFile)
 
 		// Create section entry name and read value.
 		strEntry.Format("%d", i+1);
-		strValue = rCfgFile.ReadString(MRU_SECTION, strEntry, "");
+		strValue = rCfgFile.ReadString(pszSection, strEntry, "");
 
 		// Valid path?
 		if (strValue != "")
@@ -161,8 +153,10 @@ void CMRUList::Load(CIniFile& rCfgFile)
 	}
 }
 
-void CMRUList::Save(CIniFile& rCfgFile)
+void CMRUList::Save(CIniFile& rCfgFile, const char* pszSection)
 {
+	ASSERT(pszSection != NULL);
+
 	// For all MRU items.
 	for (int i = 0; i < m_nMaxSize; i++)
 	{
@@ -173,6 +167,6 @@ void CMRUList::Save(CIniFile& rCfgFile)
 
 		// Valid path for this item?
 		if ( (i < m_Paths.Size()) && (m_Paths[i] != "") )
-			rCfgFile.WriteString(MRU_SECTION, strEntry, m_Paths[i]);
+			rCfgFile.WriteString(pszSection, strEntry, m_Paths[i]);
 	}
 }

@@ -25,7 +25,7 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CMRUList(int nMaxSize = 4);
+	CMRUList(int nMaxSize);
 	~CMRUList();
 	
 	//
@@ -43,8 +43,8 @@ public:
 	//
 	// Persistance methods.
 	//
-	void Load(CIniFile& rCfgFile);
-	void Save(CIniFile& rCfgFile);
+	void Load(CIniFile& rCfgFile, const char* pszSection = "MRU");
+	void Save(CIniFile& rCfgFile, const char* pszSection = "MRU");
 
 protected:
 	//
