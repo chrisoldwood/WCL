@@ -77,6 +77,7 @@
 // Debugging functions.
 #include "Assert.hpp"
 #include "LeakCheck.hpp"
+#include "TraceLogger.hpp"
 
 // Core data classes.
 #include "Point.hpp"

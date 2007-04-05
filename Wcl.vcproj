@@ -3,6 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="Wcl"
+	ProjectGUID="{E74F146C-18AD-4083-BA5D-805DDF5CA2B3}"
 	SccProjectName="&quot;$/Win32/Wcl&quot;, UAAAAAAA"
 	SccAuxPath=""
 	SccLocalPath="."
@@ -1818,6 +1819,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\TraceLogger.cpp">
+			</File>
+			<File
 				RelativePath="TransparentBmp.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -2336,6 +2340,9 @@
 			</File>
 			<File
 				RelativePath="ToolTip.hpp">
+			</File>
+			<File
+				RelativePath=".\TraceLogger.hpp">
 			</File>
 			<File
 				RelativePath="TransparentBmp.hpp">
