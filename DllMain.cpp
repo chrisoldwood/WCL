@@ -15,6 +15,12 @@
 #define new DBGCRT_NEW
 #endif
 
+// Using declarations.
+using namespace WCL;
+
+// Symbol used to ensure DllMain.cpp is linked.
+bool g_bLinkDllMain = false;
+
 /******************************************************************************
 ** Function: 	DllMain()
 **
@@ -30,7 +36,8 @@
 *******************************************************************************
 */
 
-/*extern "C"*/ BOOL WINAPI DllMain(HINSTANCE hInst, DWORD dwReason, LPVOID /*lpvReserved*/)
+/*extern "C"*/
+BOOL WINAPI DllMain(HINSTANCE hInst, DWORD dwReason, LPVOID /*lpvReserved*/)
 {
 	// Get dll object.
 	CDll& oDll = CDll::This();
@@ -38,15 +45,21 @@
 	switch (dwReason)
 	{
 		case DLL_PROCESS_ATTACH:
+#ifdef _DEBUG
+			// Install TRACE/ASSERT logging function.
+			TraceLogger::Install();
+#endif
 			// Initialise members.
 			oDll.m_Module.m_hInstance = hInst;
 			oDll.Load();
 			break;
 
 		case DLL_THREAD_ATTACH:
+			oDll.ThreadAttached();
 			break;
 
 		case DLL_THREAD_DETACH:
+			oDll.ThreadDetached();
 			break;
 
 		case DLL_PROCESS_DETACH:
