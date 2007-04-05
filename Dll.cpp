@@ -15,6 +15,9 @@
 #define new DBGCRT_NEW
 #endif
 
+// Symbol used to ensure DllMain.cpp is linked.
+extern bool g_bLinkDllMain;
+
 /******************************************************************************
 **
 ** Local variables.
@@ -22,7 +25,7 @@
 *******************************************************************************
 */
 
-// The application object.
+// The component object.
 static CDll* pThis = NULL;
 
 /******************************************************************************
@@ -39,6 +42,9 @@ static CDll* pThis = NULL;
 
 CDll::CDll()
 {
+	// Ensure DllMain.cpp is linked in.
+	g_bLinkDllMain = true;
+
 	pThis = this;
 }
 
@@ -89,14 +95,14 @@ CDll& CDll::This()
 **
 ** Parameters:	None.
 **
-** Returns:		true or false.
+** Returns:		Nothing.
 **
 *******************************************************************************
 */
 
-bool CDll::Load()
+void CDll::Load()
 {
-	return OnLoad();
+	OnLoad();
 }
 
 /******************************************************************************
@@ -117,25 +123,67 @@ void CDll::Unload()
 }
 
 /******************************************************************************
-** Method:		OnLoad()
-**				OnUnload()
+** Method:		ThreadAttached()
 **
-** Description:	Default versions of the template methods called by the Load()
-**				and Unload() methods during dll startup and shutdown.
+** Description:	Called by DllMain when a new thread has started.
 **
 ** Parameters:	None.
 **
-** Returns:		true or false.
+** Returns:		Nothing.
 **
 *******************************************************************************
 */
 
-bool CDll::OnLoad()
+void CDll::ThreadAttached()
 {
-	return true;
+	OnThreadAttached();
 }
 
-bool CDll::OnUnload()
+/******************************************************************************
+** Method:		ThreadDetached()
+**
+** Description:	Called by DllMain when an existing thread has terminated.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CDll::ThreadDetached()
 {
-	return true;
+	OnThreadDetached();
+}
+
+/******************************************************************************
+** Methods:		OnLoad()
+**				OnUnload()
+**				OnThreadAttached()
+**				OnThreadDetached()
+**
+** Description:	Default versions of the template methods called by the private
+**				entry point methods from DllMain().
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void CDll::OnLoad()
+{
+}
+
+void CDll::OnUnload()
+{
+}
+
+void CDll::OnThreadAttached()
+{
+}
+
+void CDll::OnThreadDetached()
+{
 }

@@ -42,19 +42,23 @@ protected:
 	//
 
 	//
-	// Startup and Shutdown template methods.
+	// DllMain template methods.
 	// (Overriden in the derived class).
 	//
-	virtual	bool OnLoad();
-	virtual	bool OnUnload();
+	virtual	void OnLoad();
+	virtual	void OnUnload();
+	virtual	void OnThreadAttached();
+	virtual	void OnThreadDetached();	
 
 private:
 	//
 	// Startup and shutdown methods.
 	// (Called from DllMain).
 	//
-	bool Load();
+	void Load();
 	void Unload();
+	void ThreadAttached();
+	void ThreadDetached();	
 
 	friend BOOL WINAPI DllMain(HINSTANCE hInst, DWORD dwReason, LPVOID lpvReserved);
 };
