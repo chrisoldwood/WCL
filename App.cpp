@@ -28,13 +28,13 @@
 
 /******************************************************************************
 **
-** Local variables.
+** Class members.
 **
 *******************************************************************************
 */
 
-// The application object.
-static CApp* pThis = NULL;
+//! The singleton EXE component object.
+CApp* CApp::g_pThis = NULL;
 
 /******************************************************************************
 ** Method:		Default Constructor
@@ -54,7 +54,9 @@ CApp::CApp(CFrameWnd& rFrameWnd, CCmdControl& rCmdControl)
 	, m_rCmdControl(rCmdControl)
 	, m_iCmdShow(SW_SHOW)
 {
-	pThis = this;
+	ASSERT(g_pThis == NULL);
+
+	g_pThis = this;
 }
 
 /******************************************************************************
@@ -71,7 +73,9 @@ CApp::CApp(CFrameWnd& rFrameWnd, CCmdControl& rCmdControl)
 
 CApp::~CApp()
 {
-	pThis = NULL;
+	ASSERT(g_pThis == this);
+
+	g_pThis = NULL;
 }
 
 /******************************************************************************
@@ -88,9 +92,9 @@ CApp::~CApp()
 
 CApp& CApp::This()
 {
-	ASSERT(pThis != NULL);
+	ASSERT(g_pThis != NULL);
 
-	return *pThis;
+	return *g_pThis;
 }
 
 /******************************************************************************
@@ -295,21 +299,7 @@ int CApp::FatalMsg(const char* pszMsg, ...) const
 
 CString CApp::FormatError(DWORD dwError)
 {
-	CString strError;
-	char*   pszError;
-
-	// Format string using default language.
-	::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-					NULL, dwError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (char*)&pszError, 0, NULL);
-
-	// Copy message and free buffer.
-	strError = pszError;
-	::LocalFree(pszError);
-
-	// Trim excess whitespace.
-	strError.Trim();
-
-	return strError;
+	return CStrCvt::FormatError(dwError);
 }
 
 /******************************************************************************
@@ -326,10 +316,10 @@ CString CApp::FormatError(DWORD dwError)
 
 void CALLBACK CApp::TimerProc(HWND /*hWnd*/, UINT /*uMsg*/, UINT nTimerID, DWORD /*dwTime*/)
 {
-	ASSERT(pThis != NULL);
+	ASSERT(g_pThis != NULL);
 
 	// Forward to instance method.
-	pThis->OnTimer(nTimerID);
+	g_pThis->OnTimer(nTimerID);
 }
 
 /******************************************************************************

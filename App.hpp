@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CApp(CFrameWnd& rFrameWnd, CCmdControl& rCmdControl);
-	~CApp();
+	virtual ~CApp();
 
 	//
 	// For drawing 3D controls etc.
@@ -121,6 +121,13 @@ private:
 
 	// The timer callback function.
 	static void CALLBACK TimerProc(HWND hWnd, UINT uMsg, UINT nTimerID, DWORD dwTime);
+
+	//
+	// Class members.
+	//
+
+	//! The singleton EXE component object.
+	static CApp* g_pThis;
 };
 
 /******************************************************************************
