@@ -15,9 +15,6 @@
 #define new DBGCRT_NEW
 #endif
 
-// Using declarations.
-using namespace WCL;
-
 // Symbol used to ensure DllMain.cpp is linked.
 bool g_bLinkDllMain = false;
 
@@ -45,10 +42,6 @@ BOOL WINAPI DllMain(HINSTANCE hInst, DWORD dwReason, LPVOID /*lpvReserved*/)
 	switch (dwReason)
 	{
 		case DLL_PROCESS_ATTACH:
-#ifdef _DEBUG
-			// Install TRACE/ASSERT logging function.
-			TraceLogger::Install();
-#endif
 			// Initialise members.
 			oDll.m_Module.m_hInstance = hInst;
 			oDll.Load();
