@@ -39,7 +39,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CFileException(int eErrCode, const CPath& rPath);
-	~CFileException();
+	virtual	~CFileException();
 	
 protected:
 	//

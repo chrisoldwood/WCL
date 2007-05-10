@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CPropertyPage(uint nRscID);
-	~CPropertyPage();
+	virtual	~CPropertyPage();
 	
 protected:
 	//

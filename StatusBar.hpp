@@ -27,7 +27,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CStatusBar(bool bSizeGrip = true);
-	~CStatusBar();
+	virtual	~CStatusBar();
 
 	//
 	// Panel methods.

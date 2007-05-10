@@ -29,7 +29,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CWorkerThread(CThreadPool& oPool, uint nPoolID);
-	~CWorkerThread();
+	virtual	~CWorkerThread();
 
 	// Thread status.
 	enum ThreadStatus

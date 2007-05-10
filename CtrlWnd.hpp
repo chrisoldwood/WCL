@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CCtrlWnd();
-	~CCtrlWnd();
+	virtual ~CCtrlWnd();
 
 	virtual bool PreRegister();
 	virtual bool Create(CMsgWnd& rParent, uint iID, const CRect& rcPos);

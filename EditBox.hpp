@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CEditBox();
-	~CEditBox();
+	virtual	~CEditBox();
 
 	//
 	// Standard methods.

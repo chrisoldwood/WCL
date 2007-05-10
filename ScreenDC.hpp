@@ -33,7 +33,7 @@ public:
 	CScreenDC(const CWnd& rWnd);
 	CScreenDC(PAINTSTRUCT& psPaint);
 	CScreenDC(HDC hDC);
-	~CScreenDC();
+	virtual	~CScreenDC();
 	
 	// RTTI
 	virtual	Device Type() const;

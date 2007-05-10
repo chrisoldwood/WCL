@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CURLLabel();
-	~CURLLabel();
+	virtual	~CURLLabel();
 
 	//
 	// Methods.

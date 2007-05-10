@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CPropertySheet();
-	~CPropertySheet();
+	virtual	~CPropertySheet();
 	
 	//
 	// Creation methods (Overriden from CDialog).

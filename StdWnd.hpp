@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CStdWnd();
-	~CStdWnd();
+	virtual	~CStdWnd();
 
 protected:
 	//

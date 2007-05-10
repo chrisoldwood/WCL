@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CMainDlg(uint iRscID);
-	~CMainDlg();
+	virtual	~CMainDlg();
 	
 protected:
 	//

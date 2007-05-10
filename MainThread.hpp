@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CMainThread();
-	~CMainThread();
+	virtual	~CMainThread();
 	
 protected:
 	//

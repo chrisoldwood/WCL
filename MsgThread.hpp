@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CMsgThread();
-	~CMsgThread();
+	virtual	~CMsgThread();
 
 	//
 	// Message filtering.

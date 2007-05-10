@@ -27,7 +27,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CMemDC(const CDC& rDC);
-	~CMemDC();
+	virtual	~CMemDC();
 	
 	// RTTI
 	virtual	Device Type() const;

@@ -35,7 +35,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CStrCvtException(int eErrCode);
-	~CStrCvtException();
+	virtual	~CStrCvtException();
 };
 
 /******************************************************************************

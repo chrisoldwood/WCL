@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CMemStream(CBuffer& oBuffer);
-	~CMemStream();
+	virtual	~CMemStream();
 	
 	//
 	// Properties.

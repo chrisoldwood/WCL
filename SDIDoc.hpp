@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CSDIDoc();
-	~CSDIDoc();
+	virtual	~CSDIDoc();
 	
 	//
 	// Members.

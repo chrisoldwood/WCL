@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CSDICmds();
-	~CSDICmds();
+	virtual	~CSDICmds();
 	
 	//
 	// File commands.

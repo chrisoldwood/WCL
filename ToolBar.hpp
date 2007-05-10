@@ -29,7 +29,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CToolBar();
-	~CToolBar();
+	virtual	~CToolBar();
 
 	//
 	// Message filtering.

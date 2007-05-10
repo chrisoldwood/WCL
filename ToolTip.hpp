@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CToolTip();
-	~CToolTip();
+	virtual	~CToolTip();
 	
 	//
 	// Methods.

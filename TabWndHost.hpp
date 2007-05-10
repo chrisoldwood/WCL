@@ -27,7 +27,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CTabWndHost();
-	~CTabWndHost();
+	virtual	~CTabWndHost();
 	
 	//
 	// Methods.

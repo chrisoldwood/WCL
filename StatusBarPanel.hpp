@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CStatusBarPanel();
-	~CStatusBarPanel();
+	virtual	~CStatusBarPanel();
 	
 	//
 	// Constants.

@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CView(CDoc& rDoc);
-	~CView();
+	virtual	~CView();
 	
 protected:
 	//

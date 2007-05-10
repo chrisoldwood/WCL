@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CSDIApp(CSDIFrame& rFrameWnd, CSDICmds& rCmdControl, int nMRUSize);
-	~CSDIApp();
+	virtual	~CSDIApp();
 
 	//
 	// Template methods for getting doc and view specifics.

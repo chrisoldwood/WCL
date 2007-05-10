@@ -28,7 +28,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CSplitWnd(bool bVertSplit, bool bFixedPanes);
-	~CSplitWnd();
+	virtual	~CSplitWnd();
 
 	//
 	// Indexes of panes.

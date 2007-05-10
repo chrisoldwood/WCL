@@ -31,7 +31,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CDialog(uint iRscID);
-	~CDialog();
+	virtual ~CDialog();
 	
 	//
 	// Creation methods.

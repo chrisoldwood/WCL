@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CStatusBarLabel(int nChars);
-	~CStatusBarLabel();
+	virtual	~CStatusBarLabel();
 	
 	//
 	// Methods.

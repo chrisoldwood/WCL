@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CSDIFrame(uint iIconID);
-	~CSDIFrame();
+	virtual	~CSDIFrame();
 
 	//
 	// Methods.
