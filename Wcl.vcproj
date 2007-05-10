@@ -3,11 +3,11 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="Wcl"
-	ProjectGUID="{E74F146C-18AD-4083-BA5D-805DDF5CA2B3}"
-	SccProjectName="&quot;$/Win32/Wcl&quot;, UAAAAAAA"
-	SccAuxPath=""
-	SccLocalPath="."
-	SccProvider="MSSCCI:Microsoft Visual SourceSafe">
+	ProjectGUID="{9B0335B6-93BE-4604-8497-27431874D758}"
+	SccProjectName="SAK"
+	SccAuxPath="SAK"
+	SccLocalPath="SAK"
+	SccProvider="SAK">
 	<Platforms>
 		<Platform
 			Name="Win32"/>
@@ -25,6 +25,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="../../Lib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
@@ -79,6 +80,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="../../Lib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -170,24 +172,6 @@
 			</File>
 			<File
 				RelativePath="Array.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="Assert.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
@@ -437,6 +421,9 @@
 						PreprocessorDefinitions=""
 						BasicRuntimeChecks="3"/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\ComException.cpp">
 			</File>
 			<File
 				RelativePath="CriticalSection.cpp">
@@ -1894,6 +1881,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\Variant.cpp">
+			</File>
+			<File
 				RelativePath="View.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -1997,9 +1987,6 @@
 				RelativePath="Array.hpp">
 			</File>
 			<File
-				RelativePath="Assert.hpp">
-			</File>
-			<File
 				RelativePath=".\AutoBool.hpp">
 			</File>
 			<File
@@ -2043,6 +2030,12 @@
 			</File>
 			<File
 				RelativePath="ComCtl32.hpp">
+			</File>
+			<File
+				RelativePath=".\ComException.hpp">
+			</File>
+			<File
+				RelativePath=".\ComPtr.hpp">
 			</File>
 			<File
 				RelativePath="CriticalSection.hpp">
@@ -2237,6 +2230,9 @@
 				RelativePath="Rect.hpp">
 			</File>
 			<File
+				RelativePath=".\RegistryException.hpp">
+			</File>
+			<File
 				RelativePath="RegKey.hpp">
 			</File>
 			<File
@@ -2363,6 +2359,9 @@
 				RelativePath="URLLabel.hpp">
 			</File>
 			<File
+				RelativePath=".\Variant.hpp">
+			</File>
+			<File
 				RelativePath="View.hpp">
 			</File>
 			<File
@@ -2375,6 +2374,9 @@
 				RelativePath="WclTypes.hpp">
 			</File>
 			<File
+				RelativePath=".\Win32Exception.hpp">
+			</File>
+			<File
 				RelativePath="Wnd.hpp">
 			</File>
 			<File
@@ -2384,6 +2386,9 @@
 				RelativePath="WorkerThread.hpp">
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\Doxygen.cfg">
+		</File>
 		<File
 			RelativePath="ReadMe.txt">
 		</File>
