@@ -81,6 +81,7 @@ public:
 	void FormatEx(const char* pszFormat, va_list args);
 
 	static CString Fmt(const char* pszFormat, ...);
+	static CString FmtEx(const char* pszFormat, va_list args);
 
 	//
 	// Core operators.

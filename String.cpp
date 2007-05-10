@@ -480,7 +480,8 @@ void CString::FormatEx(const char* pszFormat, va_list args)
 }
 
 /******************************************************************************
-** Method:		Fmt()
+** Methods:		Fmt()
+**				FmtEx()
 **
 ** Description:	Format the string using sprintf() style variable args..
 **
@@ -501,6 +502,15 @@ CString CString::Fmt(const char* pszFormat, ...)
 	str.FormatEx(pszFormat, args);
 
 	va_end(args);
+
+	return str;
+}
+
+CString CString::FmtEx(const char* pszFormat, va_list args)
+{
+	CString str;
+
+	str.FormatEx(pszFormat, args);
 
 	return str;
 }
