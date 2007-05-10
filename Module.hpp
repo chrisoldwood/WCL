@@ -36,6 +36,13 @@ public:
 	// Global access to the object.
 	static CModule& This();
 
+	//
+	// Methods.
+	//
+
+	//! Get the full path to the module.
+	CPath Path() const;
+
 protected:
 	//
 	// Members.

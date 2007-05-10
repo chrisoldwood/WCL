@@ -78,3 +78,13 @@ CModule& CModule::This()
 
 	return *pThis;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the full path to the module.
+
+CPath CModule::Path() const
+{
+	ASSERT(m_hInstance != NULL);
+
+	return CPath::Module(m_hInstance);
+}
