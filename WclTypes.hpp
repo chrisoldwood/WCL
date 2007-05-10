@@ -18,19 +18,19 @@
 **
 *******************************************************************************
 */
-
+/*
 typedef unsigned char		uchar;
 typedef unsigned short		ushort;
 typedef unsigned int		uint;
 typedef unsigned long		ulong;
-
+*/
 /******************************************************************************
 **
 ** Size specific types.
 **
 *******************************************************************************
 */
-
+/*
 typedef unsigned char		byte;
 typedef unsigned short		word;
 typedef unsigned long		dword;
@@ -44,7 +44,7 @@ typedef unsigned char		uint8;
 typedef unsigned short		uint16;
 typedef unsigned long		uint32;
 typedef unsigned __int64	uint64;
-
+*/
 /******************************************************************************
 **
 ** Other primitive types.
