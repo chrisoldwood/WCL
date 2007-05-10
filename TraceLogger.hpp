@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \author Chris Oldwood
 //! \file   TraceLogger.hpp
 //! \brief  The TraceLogger class declaration.
+//! \author Chris Oldwood
 
 // Check for previous inclusion
 #ifndef TRACELOGGER_HPP
@@ -38,13 +38,6 @@ private:
 	//! The CRT callback.function.
 	static int ReportHook(int /*nType*/, char* pszMessage, int* piRetVal);
 };
-
-/******************************************************************************
-**
-** Implementation of inline functions.
-**
-*******************************************************************************
-*/
 
 //namespace WCL
 }

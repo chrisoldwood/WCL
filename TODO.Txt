@@ -16,9 +16,11 @@
 
 - More generic msg box function.
 
-- Derive CException from std::exception.
+- Change CException to just a string placeholder and remove the error codes.
 
 - Enable full try/catch handlers for release builds and check they exist.
+
+- Add global unhandled exception handler so that they can be reported effectively (GUI/Log etc).
 
 - Add exception throwing to .ini file class.
 

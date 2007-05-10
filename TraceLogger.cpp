@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \author Chris Oldwood
 //! \file   TraceLogger.cpp
 //! \brief  The TraceLogger class definition.
+//! \author Chris Oldwood
 
 #include "wcl.hpp"
 
@@ -26,11 +26,13 @@ bool TraceLogger::g_bNewLine = true;
 bool TraceLogger::g_bConsume = false;
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Install the logger..
+//! Install the logger.
 
 void TraceLogger::Install()
 {
+#ifdef _DEBUG
 	_CrtSetReportHook(ReportHook);
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////
