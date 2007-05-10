@@ -111,6 +111,37 @@ CString CStrCvt::FormatDateTime(time_t tValue)
 }
 
 /******************************************************************************
+** Method:		FormatError()
+**
+** Description:	Converts a system error code to a string.
+**
+** Parameters:	dwError		The error code.
+**
+** Returns:		The error as string.
+**
+*******************************************************************************
+*/
+
+CString CStrCvt::FormatError(DWORD dwError)
+{
+	CString strError;
+	char*   pszError;
+
+	// Format string using default language.
+	::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+					NULL, dwError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (char*)&pszError, 0, NULL);
+
+	// Copy message and free buffer.
+	strError = pszError;
+	::LocalFree(pszError);
+
+	// Trim excess whitespace.
+	strError.Trim();
+
+	return strError;
+}
+
+/******************************************************************************
 ** Method:		ParseInt()
 **
 ** Description:	Convert a string to an integer value.

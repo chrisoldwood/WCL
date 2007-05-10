@@ -31,6 +31,7 @@ public:
 	static CString FormatDouble  (double dValue);
 	static CString FormatDate    (time_t tValue);
 	static CString FormatDateTime(time_t tValue);
+	static CString FormatError   (DWORD dwError = ::GetLastError());
 
 	// Parser flags.
 	enum ParseFlags
