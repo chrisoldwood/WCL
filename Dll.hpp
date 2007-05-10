@@ -26,7 +26,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CDll();
-	~CDll();
+	virtual ~CDll();
 	
 	// Global access to the dll object.
 	static CDll& This();
@@ -34,6 +34,7 @@ public:
 	//
 	// Members.
 	//
+	CLeakCheck		m_oLeakChecker;		// Dumps memory leaks.
 	CModule		m_Module;
 
 protected:
@@ -61,6 +62,13 @@ private:
 	void ThreadDetached();	
 
 	friend BOOL WINAPI DllMain(HINSTANCE hInst, DWORD dwReason, LPVOID lpvReserved);
+
+	//
+	// Class members.
+	//
+
+	//! The singleton DLL component object.
+	static CDll* g_pThis;
 };
 
 /******************************************************************************

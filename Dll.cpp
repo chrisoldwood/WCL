@@ -20,13 +20,13 @@ extern bool g_bLinkDllMain;
 
 /******************************************************************************
 **
-** Local variables.
+** Class members.
 **
 *******************************************************************************
 */
 
-// The component object.
-static CDll* pThis = NULL;
+//! The singleton DLL component object.
+CDll* CDll::g_pThis = NULL;
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -42,10 +42,12 @@ static CDll* pThis = NULL;
 
 CDll::CDll()
 {
+	ASSERT(g_pThis == NULL);
+
 	// Ensure DllMain.cpp is linked in.
 	g_bLinkDllMain = true;
 
-	pThis = this;
+	g_pThis = this;
 }
 
 /******************************************************************************
@@ -62,11 +64,9 @@ CDll::CDll()
 
 CDll::~CDll()
 {
-	pThis = NULL;
+	ASSERT(g_pThis == this);
 
-#ifdef _DEBUG
-	_CrtDumpMemoryLeaks();
-#endif
+	g_pThis = NULL;
 }
 
 /******************************************************************************
@@ -83,9 +83,9 @@ CDll::~CDll()
 
 CDll& CDll::This()
 {
-	ASSERT(pThis != NULL);
+	ASSERT(g_pThis != NULL);
 
-	return *pThis;
+	return *g_pThis;
 }
 
 /******************************************************************************
@@ -102,7 +102,19 @@ CDll& CDll::This()
 
 void CDll::Load()
 {
-	OnLoad();
+	try
+	{
+#ifdef _DEBUG
+		// Install TRACE/ASSERT logging function.
+		WCL::TraceLogger::Install();
+#endif
+
+		OnLoad();
+	}
+	catch (const std::exception& e)
+	{
+		Core::DebugWrite("Unhandled exception caught in CDll::Load() - %s\n", e.what());
+	}
 }
 
 /******************************************************************************
@@ -119,7 +131,14 @@ void CDll::Load()
 
 void CDll::Unload()
 {
-	OnUnload();
+	try
+	{
+		OnUnload();
+	}
+	catch (const std::exception& e)
+	{
+		Core::DebugWrite("Unhandled exception caught in CDll::OnUnload() - %s\n", e.what());
+	}
 }
 
 /******************************************************************************
@@ -136,7 +155,14 @@ void CDll::Unload()
 
 void CDll::ThreadAttached()
 {
-	OnThreadAttached();
+	try
+	{
+		OnThreadAttached();
+	}
+	catch (const std::exception& e)
+	{
+		Core::DebugWrite("Unhandled exception caught in CDll::OnThreadAttached() - %s\n", e.what());
+	}
 }
 
 /******************************************************************************
@@ -153,7 +179,14 @@ void CDll::ThreadAttached()
 
 void CDll::ThreadDetached()
 {
-	OnThreadDetached();
+	try
+	{
+		OnThreadDetached();
+	}
+	catch (const std::exception& e)
+	{
+		Core::DebugWrite("Unhandled exception caught in CDll::OnThreadDetached() - %s\n", e.what());
+	}
 }
 
 /******************************************************************************

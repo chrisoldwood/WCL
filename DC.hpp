@@ -27,6 +27,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CDC();
+	virtual ~CDC();
 	
 	//
 	// Member access.
