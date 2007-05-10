@@ -19,7 +19,7 @@
 *******************************************************************************
 */
 
-class CException
+class CException : public std::exception
 {
 public:
 	//
@@ -27,7 +27,10 @@ public:
 	//
 	virtual int         ErrorCode() const;
 	virtual const char* ErrorText() const;
-	
+
+	//! Retrieve the error message.
+	virtual const char* what() const;
+
 protected:
 	//
 	// Members.
@@ -42,13 +45,6 @@ protected:
 	CException(int nCode, const char* pszText, ...);
 	virtual ~CException();
 };
-
-/******************************************************************************
-**
-** Implementation of inline functions.
-**
-*******************************************************************************
-*/
 
 inline CException::CException(int nCode)
 	: m_nErrorCode(nCode)
@@ -76,6 +72,14 @@ inline int CException::ErrorCode() const
 }
 
 inline const char* CException::ErrorText() const
+{
+	return m_strErrorText;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Retrieve the error message. This method is overriden from the base class.
+
+inline const char* CException::what() const
 {
 	return m_strErrorText;
 }
