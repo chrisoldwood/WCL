@@ -48,6 +48,7 @@ inline CLeakCheck::CLeakCheck()
 inline CLeakCheck::~CLeakCheck()
 {
 #ifdef _DEBUG
+	::OutputDebugString("Leak detection enabled.\n");
 	_CrtDumpMemoryLeaks();
 #endif
 }
