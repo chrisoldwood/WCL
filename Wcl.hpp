@@ -3,7 +3,7 @@
 **
 ** MODULE:		WCL.HPP
 ** COMPONENT:	Windows C++ Library.
-** DESCRIPTION:	Wrapper to include all the core library headers.
+** DESCRIPTION:	Wrapper to include all the library headers.
 **
 *******************************************************************************
 */
@@ -12,6 +12,12 @@
 #ifndef WCL_HPP
 #define WCL_HPP
 
+////////////////////////////////////////////////////////////////////////////////
+// Library documentation
+//
+//! \namespace WCL
+//! \brief     The Windows C++ Library namespace.
+
 /******************************************************************************
 **
 ** Build targets.
@@ -19,13 +25,13 @@
 *******************************************************************************
 */
 
-#define STRICT						// Use proper handle types.
-#define VC_EXTRALEAN				// Trim <windows.h>
+//#define STRICT						// Use proper handle types.
+//#define VC_EXTRALEAN				// Trim <windows.h>
 
-#define WINVER			0x0400		// Windows 95+
-#define _WIN32_WINNT	0x0400		// Windows NT 4.0+
-#define _WIN32_WINDOWS	0x0400		// Windows 95+
-#define _WIN32_IE		0x0400		// Internet Explorer 4.0+
+//#define WINVER			0x0400		// Windows 95+
+//#define _WIN32_WINNT	0x0400		// Windows NT 4.0+
+//#define _WIN32_WINDOWS	0x0400		// Windows 95+
+//#define _WIN32_IE		0x0400		// Internet Explorer 4.0+
 
 /******************************************************************************
 **
@@ -34,14 +40,23 @@
 *******************************************************************************
 */
 
-#include "Pragmas.hpp"
+#include <Core/Common.hpp>		// Core library common headers.
+
+/******************************************************************************
+**
+** Standard headers.
+**
+*******************************************************************************
+*/
+
+//#include "Pragmas.hpp"
 #include <windows.h>
 #include <windowsx.h>
-#include <stddef.h>
-#include <string.h>
+//#include <stddef.h>
+//#include <string.h>
 #include <commctrl.h>
 #include <time.h>
-#include <malloc.h>
+//#include <malloc.h>
 
 #ifdef NDEBUG
 #pragma warning ( push )
@@ -55,10 +70,10 @@
 #include <list>
 #include <algorithm>
 
-#ifdef _DEBUG
-#define _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
-#endif
+//#ifdef _DEBUG
+//#define _CRTDBG_MAP_ALLOC
+//#include <crtdbg.h>
+//#endif
 
 /******************************************************************************
 **
@@ -75,7 +90,7 @@
 #include "WclRsc.h"
 
 // Debugging functions.
-#include "Assert.hpp"
+//#include "Assert.hpp"
 #include "LeakCheck.hpp"
 #include "TraceLogger.hpp"
 
@@ -89,6 +104,11 @@
 #include "Date.hpp"
 #include "DateTime.hpp"
 #include "Buffer.hpp"
+#include "StrCvt.hpp"
+
+// COM classes.
+#include "ComPtr.hpp"
+#include "Variant.hpp"
 
 // Core collection classes.
 #include "Array.hpp"
@@ -106,16 +126,18 @@
 
 // Exception classes.
 #include "Exception.hpp"
+#include "Win32Exception.hpp"
 #include "StrCvtException.hpp"
 #include "StreamException.hpp"
 #include "FileException.hpp"
 #include "MemStreamException.hpp"
+#include "RegistryException.hpp"
+#include "ComException.hpp"
 
 // Specific collections.
 #include "WndMap.hpp"
 
 // Persistance classes.
-#include "StrCvt.hpp"
 #include "FileFinder.hpp"
 #include "IniFile.hpp"
 #include "RegKey.hpp"
