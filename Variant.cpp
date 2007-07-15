@@ -22,14 +22,14 @@ Variant::Variant()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Construction from a BSTR value.
+// Construction by taking ownership of a BSTR value.
 
-Variant::Variant(BSTR bstrValue)
+Variant::Variant(ComStr& bstrValue)
 {
 	::VariantInit(this);
 
 	V_VT(this)   = VT_BSTR;
-	V_BSTR(this) = bstrValue;
+	V_BSTR(this) = bstrValue.Detach();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

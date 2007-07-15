@@ -7,6 +7,8 @@
 #ifndef VARIANT_HPP
 #define VARIANT_HPP
 
+#include "ComStr.hpp"
+
 #if _MSC_VER > 1000
 #pragma once
 #endif
@@ -23,10 +25,10 @@ public:
 	//! Default constructor.
 	Variant();
 
-	// Construction from a BSTR value.
-	Variant(BSTR bstrValue);
+	//! Construction by taking ownership of a BSTR value.
+	explicit Variant(ComStr& bstrValue);
 
-	// Construction by coercing another variant to a different type.
+	//! Construction by coercing another variant to a different type.
 	Variant(const VARIANT& vtVariant, VARTYPE eType); // throw(ComException)
 
 	//! Destructor.
