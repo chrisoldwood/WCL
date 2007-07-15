@@ -286,23 +286,6 @@ int CApp::FatalMsg(const char* pszMsg, ...) const
 }
 
 /******************************************************************************
-** Method:		FormatError()
-**
-** Description:	Converts a system error code to a string.
-**
-** Parameters:	dwError		The error code.
-**
-** Returns:		The error as string.
-**
-*******************************************************************************
-*/
-
-CString CApp::FormatError(DWORD dwError)
-{
-	return CStrCvt::FormatError(dwError);
-}
-
-/******************************************************************************
 ** Method:		TimerProc()
 **
 ** Description:	The timer callback function.

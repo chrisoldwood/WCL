@@ -9,8 +9,8 @@
 */
 
 // Check for previous inclusion
-#ifndef APP_HPP
-#define APP_HPP
+#ifndef WCL_APP_HPP
+#define WCL_APP_HPP
 
 /******************************************************************************
 ** 
@@ -57,8 +57,6 @@ public:
 	// Other methods.
 	//
 	bool ShowNormal() const;
-
-	static CString FormatError(DWORD dwError = ::GetLastError());
 
 	// Global access to the app object.
 	static CApp& This();
@@ -207,4 +205,4 @@ inline bool CApp::ShowNormal() const
 		  || (m_iCmdShow == SW_SHOW)       || (m_iCmdShow == SW_SHOWNA) );
 }
 
-#endif //APP_HPP
+#endif // WCL_APP_HPP
