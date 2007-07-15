@@ -318,3 +318,36 @@ void CBuffer::FromString(const char* pszString, bool bIncNull)
 	Size(nLength);
 	Set(pszString, nLength);
 }
+
+/******************************************************************************
+** Methods:		operator>>()
+**				operator<<()
+**
+** Description:	Methods to read/write to/from a stream.
+**
+** Parameters:	rStream		The stream to read/write to/from.
+**				rBuffer		The buffer to read/write to/from.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+void operator >>(WCL::IInputStream& rStream, CBuffer& rBuffer)
+{
+	uint32 nSize;
+
+	rStream.Read(&nSize, sizeof(uint32));
+
+	rBuffer.Size(nSize);
+
+	rStream.Read(rBuffer.Buffer(), nSize);
+}
+
+void operator <<(WCL::IOutputStream& rStream, const CBuffer& rBuffer)
+{
+	uint32 nSize = rBuffer.Size();
+
+	rStream.Write(&nSize, sizeof(uint32));
+	rStream.Write(rBuffer.Buffer(), nSize);
+}

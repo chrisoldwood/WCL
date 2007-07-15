@@ -9,8 +9,8 @@
 */
 
 // Check for previous inclusion
-#ifndef BUFFER_HPP
-#define BUFFER_HPP
+#ifndef WCL_BUFFER_HPP
+#define WCL_BUFFER_HPP
 
 /******************************************************************************
 ** 
@@ -68,6 +68,12 @@ protected:
 	//
 	uint	m_nSize;
 	void*	m_pBuffer;
+
+	//
+	// Persistance.
+	//
+	friend void operator >>(WCL::IInputStream&  rStream, CBuffer& rBuffer);
+	friend void operator <<(WCL::IOutputStream& rStream, const CBuffer& rBuffer);
 };
 
 /******************************************************************************
@@ -112,4 +118,4 @@ inline CString CBuffer::ToString(uint nChars) const
 	return CString((char*)m_pBuffer, nChars);
 }
 
-#endif // BUFFER_HPP
+#endif // WCL_BUFFER_HPP
