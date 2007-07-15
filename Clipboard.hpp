@@ -9,8 +9,10 @@
 */
 
 // Check for previous inclusion
-#ifndef CLIPBOARD_HPP
-#define CLIPBOARD_HPP
+#ifndef WCL_CLIPBOARD_HPP
+#define WCL_CLIPBOARD_HPP
+
+#include "MemStream.hpp"
 
 /* WINVER >= 0x0500 */
 #ifndef CF_DIBV5
@@ -141,4 +143,4 @@ inline void CClipboard::Throw(int eErrCode)
 	m_pStream->Throw(eErrCode);
 }
 
-#endif //CLIPBOARD_HPP
+#endif // WCL_CLIPBOARD_HPP

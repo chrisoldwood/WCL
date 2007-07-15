@@ -9,8 +9,8 @@
 */
 
 // Check for previous inclusion
-#ifndef STREAMEXCEPTION_HPP
-#define STREAMEXCEPTION_HPP
+#ifndef WCL_STREAMEXCEPTION_HPP
+#define WCL_STREAMEXCEPTION_HPP
 
 /******************************************************************************
 ** 
@@ -22,12 +22,6 @@
 class CStreamException : public CException
 {
 public:
-	//
-	// Constructors/Destructor.
-	//
-	CStreamException(int nCode);
-	virtual ~CStreamException();
-
 	//
 	// Exception codes (0 - 9).
 	//
@@ -43,20 +37,4 @@ public:
 	};
 };
 
-/******************************************************************************
-**
-** Implementation of inline functions.
-**
-*******************************************************************************
-*/
-
-inline CStreamException::CStreamException(int nCode)
-	: CException(nCode)
-{
-}
-
-inline CStreamException::~CStreamException()
-{
-}
-
-#endif //STREAMEXCEPTION_HPP
+#endif // WCL_STREAMEXCEPTION_HPP

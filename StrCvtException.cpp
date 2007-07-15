@@ -28,7 +28,6 @@
 */
 
 CStrCvtException::CStrCvtException(int eErrCode)
-	: CException(eErrCode)
 {
 	// Convert error to string.
 	switch(eErrCode)
