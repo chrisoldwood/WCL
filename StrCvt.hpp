@@ -9,8 +9,8 @@
 */
 
 // Check for previous inclusion
-#ifndef STRCVT_HPP
-#define STRCVT_HPP
+#ifndef WCL_STRCVT_HPP
+#define WCL_STRCVT_HPP
 
 /******************************************************************************
 ** 
@@ -58,4 +58,4 @@ public:
 *******************************************************************************
 */
 
-#endif // STRCVT_HPP
+#endif // WCL_STRCVT_HPP

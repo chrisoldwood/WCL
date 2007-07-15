@@ -9,8 +9,11 @@
 */
 
 // Check for previous inclusion
-#ifndef DLL_HPP
-#define DLL_HPP
+#ifndef WCL_DLL_HPP
+#define WCL_DLL_HPP
+
+#include "LeakCheck.hpp"
+#include "Module.hpp"
 
 /******************************************************************************
 ** 
@@ -34,8 +37,8 @@ public:
 	//
 	// Members.
 	//
-	CLeakCheck		m_oLeakChecker;		// Dumps memory leaks.
-	CModule		m_Module;
+	CLeakCheck	m_oLeakChecker;		//! Dumps memory leaks.
+	CModule		m_Module;			//! The component.
 
 protected:
 	//
@@ -78,4 +81,4 @@ private:
 *******************************************************************************
 */
 
-#endif //DLL_HPP
+#endif // WCL_DLL_HPP

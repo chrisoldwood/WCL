@@ -9,8 +9,10 @@
 */
 
 // Check for previous inclusion
-#ifndef MEMSTREAM_HPP
-#define MEMSTREAM_HPP
+#ifndef WCL_MEMSTREAM_HPP
+#define WCL_MEMSTREAM_HPP
+
+#include "Stream.hpp"
 
 /******************************************************************************
 ** 
@@ -75,4 +77,4 @@ inline ulong CMemStream::Size() const
 	return m_lEOF;
 }
 
-#endif //MEMSTREAM_HPP
+#endif // WCL_MEMSTREAM_HPP

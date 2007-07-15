@@ -4,13 +4,15 @@
 //! \author Chris Oldwood
 
 // Check for previous inclusion
-#ifndef COMPTR_HPP
-#define COMPTR_HPP
+#ifndef WCL_COMPTR_HPP
+#define WCL_COMPTR_HPP
 
 #if _MSC_VER > 1000
 #pragma once
 #endif
 
+#include <Core/IFacePtr.hpp>
+#include "ComException.hpp"
 #include <guiddef.h>
 #include <objbase.h>
 #include <atlconv.h>
@@ -18,18 +20,13 @@
 namespace WCL
 {
 
-// Forward declarations.
-template <typename T>
-class ComPtr;
-
-template <typename T>
-T** AttachTo(ComPtr<T>& ptr);
-
 ////////////////////////////////////////////////////////////////////////////////
-//! A smart-pointer type for use with COM objects and interfaces.
+//! A smart-pointer type for use with COM objects and interfaces. This IFacePtr
+//! derived class adds the ability to create objects via their CLSIDs as well
+//! as managing the lifetimes of COM interfaces.
 
 template <typename T>
-class ComPtr
+class ComPtr : public Core::IFacePtr<T>
 {
 public:
 	//! Default constructor.
@@ -39,10 +36,14 @@ public:
 	explicit ComPtr(T* pInterface, bool bAddRef = false);
 
 	//! Construction by creating an object of the CLSID.
-	explicit ComPtr(const CLSID& rCLSID);
+	explicit ComPtr(const CLSID& rCLSID); // throw(ComException)
 
 	//! Copy constructor.
-	ComPtr(const ComPtr<T>& oPtr);
+	ComPtr(const ComPtr<T>& rhs);
+
+	//! Aquire a different interface for another COM object.
+	template <typename U>
+	explicit ComPtr(const ComPtr<U>& rhs); // throw(ComException)
 
 	//! Destructor.
 	~ComPtr();
@@ -52,41 +53,30 @@ public:
 	//
 
 	//! Assignment operator.
-	ComPtr& operator=(const ComPtr<T>& oPtr);
+	ComPtr<T>& operator=(const ComPtr<T>& rhs);
 
-	//! Pointer dereference operator.
-	T& operator*() const;
-
-	//! Pointer-to-member operator.
-	const T* operator->() const;
-
-	//! Pointer-to-member operator.
-	T* operator->();
-
-	//! Not operator.
-    bool operator!() const;
+	//! Aquire a different interface for another COM object.
+	template <typename U>
+	ComPtr<T>& operator=(const ComPtr<U>& rhs);
 
 	//
 	// Methods.
 	//
 
-	//! Access owned interface.
-	T* Get() const;
+	//! Create an instance of the object.
+	void CreateInstance(const CLSID& rCLSID); // throw(ComException)
 
-	//! Access owned pointer as a reference.
-	T& GetRef() const;
+	//! Aquire a different interface for another COM object.
+	template <typename U>
+	void QueryInterface(const ComPtr<U>& rhs); // throw(ComException)
 
-	//! Release the interface.
-	void Release();
-	
 private:
 	//
 	// Members.
 	//
-	T*	m_pInterface;		//!< The interface.
 
-	//! Allow attachment via an output parameter.
-	friend T** AttachTo<>(ComPtr<T>& ptr);
+	//! Maximum number of characters in a GUID string.
+	static const size_t MAX_GUID_CHARS = 38;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -94,7 +84,6 @@ private:
 
 template <typename T>
 inline ComPtr<T>::ComPtr()
-	: m_pInterface(nullptr)
 {
 }
 
@@ -103,14 +92,8 @@ inline ComPtr<T>::ComPtr()
 
 template <typename T>
 inline ComPtr<T>::ComPtr(T* pInterface, bool bAddRef)
-	: m_pInterface(pInterface)
+	: Core::IFacePtr<T>(pInterface, bAddRef)
 {
-	if (bAddRef)
-	{
-		ASSERT(m_pInterface != nullptr);
-
-		m_pInterface->AddRef();
-	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -118,18 +101,77 @@ inline ComPtr<T>::ComPtr(T* pInterface, bool bAddRef)
 
 template <typename T>
 inline ComPtr<T>::ComPtr(const CLSID& rCLSID)
-	: m_pInterface(nullptr)
+	: Core::IFacePtr<T>(nullptr)
 {
+	CreateInstance(rCLSID);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Copy constructor.
+
+template <typename T>
+inline ComPtr<T>::ComPtr(const ComPtr<T>& rhs)
+	: Core::IFacePtr<T>(rhs)
+{
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Aquire a different interface for another COM object.
+
+template <typename T> template <typename U>
+inline ComPtr<T>::ComPtr(const ComPtr<U>& rhs)
+{
+	QueryInterface(rhs);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Destructor.
+
+template <typename T>
+inline ComPtr<T>::~ComPtr()
+{
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Assignment operator.
+
+template <typename T>
+inline ComPtr<T>& ComPtr<T>::operator=(const ComPtr<T>& rhs)
+{
+	Core::IFacePtr<T>::operator=(rhs);
+
+	return *this;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Aquire a different interface for another COM object.
+
+template <typename T> template <typename U>
+inline ComPtr<T>& ComPtr<T>::operator=(const ComPtr<U>& rhs)
+{
+	QueryInterface(rhs);
+
+	return *this;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Create an instance of the object.
+
+template <typename T>
+inline void ComPtr<T>::CreateInstance(const CLSID& rCLSID)
+{
+	// Release the current interface.
+	Release();
+
 	IID oIID = __uuidof(T);
 
 	// Create the object.
-	HRESULT hr = ::CoCreateInstance(rCLSID, nullptr, CLSCTX_ALL, oIID, reinterpret_cast<LPVOID*>(&m_pInterface));
+	HRESULT hr = ::CoCreateInstance(rCLSID, nullptr, CLSCTX_ALL, oIID, reinterpret_cast<LPVOID*>(&m_pPointer));
 
 	if (FAILED(hr))
 	{
 		USES_CONVERSION;
 
-		const size_t MAX_GUID_CHARS = 38;
 		wchar_t szBuffer[MAX_GUID_CHARS+1];
 
 		// Convert the CLSID to a string.		
@@ -149,123 +191,35 @@ inline ComPtr<T>::ComPtr(const CLSID& rCLSID)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Copy constructor.
+//! Aquire a different interface for another COM object.
 
-template <typename T>
-inline ComPtr<T>::ComPtr(const ComPtr<T>& oPtr)
-	: m_pInterface(oPtr.m_pInterface)
+template <typename T> template <typename U>
+inline void ComPtr<T>::QueryInterface(const ComPtr<U>& rhs)
 {
-	if (m_pInterface != nullptr)
-		m_pInterface->AddRef();
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//! Destructor.
-
-template <typename T>
-inline ComPtr<T>::~ComPtr()
-{
+	// Release the current interface.
 	Release();
-}
 
-////////////////////////////////////////////////////////////////////////////////
-//! Assignment operator.
+	IID oIID = __uuidof(T);
 
-template <typename T>
-inline ComPtr<T>& ComPtr<T>::operator=(const ComPtr<T>& oPtr)
-{
-	// Check for self-assignment.
-	if ( (this != &oPtr) && (this->m_pInterface != oPtr.m_pInterface) )
+	HRESULT hr = rhs.Get()->QueryInterface(oIID, reinterpret_cast<LPVOID*>(&m_pPointer));
+
+	if (FAILED(hr))
 	{
-		Release();
+		USES_CONVERSION;
 
-		m_pInterface = oPtr.m_pInterface;
+		wchar_t szBuffer[MAX_GUID_CHARS+1];
 
-		if (m_pInterface != nullptr)
-			m_pInterface->AddRef();
+		// Convert the IID to a string.		
+		if (::StringFromGUID2(oIID, szBuffer, MAX_GUID_CHARS+1) == 0)
+			throw std::logic_error("Invalid buffer size passed to StringFromGUID2()");
+
+		CString strIID = W2T(szBuffer);
+
+		throw ComException(hr, CString::Fmt("Failed to obtain the interface %s", strIID));
 	}
-
-	return *this;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//! Pointer dereference operator. Returns the currently owned interface.
-
-template <typename T>
-inline T& ComPtr<T>::operator*() const
-{
-	return *m_pInterface;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//! Pointer-to-member operator. Returns the currently owned interface.
-
-template <typename T>
-inline const T* ComPtr<T>::operator->() const
-{
-	return m_pInterface;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//! Pointer-to-member operator. Returns the currently owned interface.
-
-template <typename T>
-inline T* ComPtr<T>::operator->()
-{
-	return m_pInterface;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//! Not operator. Tests for a NULL pointer.
-
-template <typename T>
-bool ComPtr<T>::operator!() const
-{
-	return (m_pInterface == nullptr);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//! Access owned interface. Returns the currently owned interface.
-
-template <typename T>
-inline T* ComPtr<T>::Get() const
-{
-	return m_pInterface;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//! Access owned pointer as a reference.
-
-template <typename T>
-inline T& ComPtr<T>::GetRef() const
-{
-	return *m_pInterface;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//! Release the interface.
-
-template <typename T>
-inline void ComPtr<T>::Release()
-{
-	if (m_pInterface != nullptr)
-	{
-		m_pInterface->Release();
-		m_pInterface = nullptr;
-	}
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//! Helper function to gain access to the internal member so that it can be
-//! passed as an output parameter, e.g. LoadTypeLib().
-
-template <typename T>
-inline T** AttachTo(ComPtr<T>& ptr)
-{
-	return &ptr.m_pInterface;
 }
 
 //namespace WCL
 }
 
-#endif // COMPTR_HPP
+#endif // WCL_COMPTR_HPP

@@ -9,8 +9,10 @@
 */
 
 // Check for previous inclusion
-#ifndef STRARRAY_HPP
-#define STRARRAY_HPP
+#ifndef WCL_STRARRAY_HPP
+#define WCL_STRARRAY_HPP
+
+#include <vector>
 
 /******************************************************************************
 ** 
@@ -181,4 +183,4 @@ inline int CStrArray::Find(const char* pszString, bool bIgnoreCase) const
 #undef new
 #endif
 
-#endif //STRARRAY_HPP
+#endif // WCL_STRARRAY_HPP

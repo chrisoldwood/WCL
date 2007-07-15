@@ -9,8 +9,10 @@
 */
 
 // Check for previous inclusion
-#ifndef MODULE_HPP
-#define MODULE_HPP
+#ifndef WCL_MODULE_HPP
+#define WCL_MODULE_HPP
+
+#include "Path.hpp"
 
 /******************************************************************************
 ** 
@@ -65,4 +67,4 @@ inline HINSTANCE CModule::Handle() const
 	return m_hInstance;
 }
 
-#endif //MODULE_HPP
+#endif // WCL_MODULE_HPP
