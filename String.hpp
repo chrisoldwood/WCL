@@ -9,12 +9,17 @@
 */
 
 // Check for previous inclusion
-#ifndef STRING_HPP
-#define STRING_HPP
+#ifndef WCL_STRING_HPP
+#define WCL_STRING_HPP
 
 // Forward declarations.
-class CStream;
 class CStrArray;
+
+namespace WCL
+{
+class IInputStream;
+class IOutputStream;
+}
 
 /******************************************************************************
 ** 
@@ -110,12 +115,6 @@ public:
 	void operator +=(const char* pszString);
 	void operator +=(char cChar);
 
-	//
-	// Persistance.
-	//
-	void operator <<(CStream& rStream);
-	void operator >>(CStream& rStream) const;
-	
 protected:
 	/******************************************************************************
 	** 
@@ -146,6 +145,12 @@ protected:
 	// NULL string.
 	static StringData strNULL;
 	static char*      pszNULL;
+
+	//
+	// Persistance.
+	//
+	friend void operator >>(WCL::IInputStream&  rStream, CString& rString);
+	friend void operator <<(WCL::IOutputStream& rStream, const CString& rString);
 };
 
 /******************************************************************************
@@ -329,4 +334,4 @@ inline CString operator+(const CString& strLHS, const CString& strRHS)
 	return str;
 }
 
-#endif //STRING_HPP
+#endif // WCL_STRING_HPP
