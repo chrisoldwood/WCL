@@ -1,75 +1,58 @@
-/******************************************************************************
-** (C) Chris Oldwood
-**
-** MODULE:		EXCEPTION.HPP
-** COMPONENT:	Windows C++ Library.
-** DESCRIPTION:	The CException class declaration.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! \file   Exception.hpp
+//! \brief  The Exception class declaration.
+//! \author Chris Oldwood
 
 // Check for previous inclusion
-#ifndef EXCEPTION_HPP
-#define EXCEPTION_HPP
+#ifndef WCL_EXCEPTION_HPP
+#define WCL_EXCEPTION_HPP
 
-/******************************************************************************
-** 
-** This is the base class for all exception classes.
-**
-*******************************************************************************
-*/
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+////////////////////////////////////////////////////////////////////////////////
+//! The base class for all WCL exceptions.
 
 class CException : public std::exception
 {
 public:
-	//
-	// Access to exception details.
-	//
-	virtual int         ErrorCode() const;
+	//! Retrieve the error message.
 	virtual const char* ErrorText() const;
 
 	//! Retrieve the error message.
 	virtual const char* what() const;
 
 protected:
+	//! Default constructor.
+	CException();
+
+	//! Destructor.
+	virtual ~CException();
+
 	//
 	// Members.
 	//
-	int		m_nErrorCode;
-	CString	m_strErrorText;
-
-	//
-	// Make abstract.
-	//
-	CException(int nCode);
-	CException(int nCode, const char* pszText, ...);
-	virtual ~CException();
+	CString	m_strErrorText;		//!< The error message.
 };
 
-inline CException::CException(int nCode)
-	: m_nErrorCode(nCode)
+////////////////////////////////////////////////////////////////////////////////
+//! Default constructor.
+
+inline CException::CException()
 {
 }
 
-inline CException::CException(int nCode, const char* pszText, ...)
-	: m_nErrorCode(nCode)
-{
-	// Setup arguments.
-	va_list	args;
-	va_start(args, pszText);
-	
-	// Format message.
-	m_strErrorText.FormatEx(pszText, args);
-}
+////////////////////////////////////////////////////////////////////////////////
+//! Destructor.
 
 inline CException::~CException()
 {
 }
 
-inline int CException::ErrorCode() const
-{
-	return m_nErrorCode;
-}
+////////////////////////////////////////////////////////////////////////////////
+//! Retrieve the error message.
+//! \deprecated This should be removed and what() used instead.
 
 inline const char* CException::ErrorText() const
 {
@@ -84,4 +67,4 @@ inline const char* CException::what() const
 	return m_strErrorText;
 }
 
-#endif //EXCEPTION_HPP
+#endif // WCL_EXCEPTION_HPP
