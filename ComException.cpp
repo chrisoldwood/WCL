@@ -4,6 +4,7 @@
 //! \author Chris Oldwood
 
 #include "wcl.hpp"
+#include "ComStr.hpp"
 
 #ifdef _DEBUG
 // For memory leak detection.
@@ -14,14 +15,13 @@ namespace WCL
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Default constructor. The pszOperation parameter is used as the prefix for
-//! the message and the error code is appended.
+//! Constructor for use with non-IErrorInfo errors. The pszOperation parameter
+//! is used as the prefix for the message and the error code is appended.
 
 ComException::ComException(HRESULT hResult, const char* pszOperation)
-	: CException(hResult)
-	, m_hResult(hResult)
+	: m_hResult(hResult)
 {
-	m_strErrorText.Format("%s [0x%08X - %s]", pszOperation, hResult, CApp::FormatError(hResult));
+	m_strErrorText.Format("%s [0x%08X - %s]", pszOperation, hResult, CStrCvt::FormatError(hResult));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -29,6 +29,53 @@ ComException::ComException(HRESULT hResult, const char* pszOperation)
 
 ComException::~ComException()
 {
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Format the error using the IErrorInfo details.
+
+void ComException::FormatError(HRESULT hResult, IUnknown* pObject, const IID& rIID, const char* pszOperation)
+{
+	USES_CONVERSION;
+
+	// Type shorthands.
+	typedef WCL::ComPtr<ISupportErrorInfo> ISupportErrorInfoPtr;
+	typedef WCL::ComPtr<IErrorInfo> IErrorInfoPtr;
+
+	std::tstring strSource;
+	std::tstring strDescription;
+
+	ISupportErrorInfoPtr pSupportErrorInfo;
+
+	// Query if the object supports IErrorInfo on the interface.
+	if ( (SUCCEEDED(pObject->QueryInterface(AttachTo(pSupportErrorInfo))))
+	  && (pSupportErrorInfo->InterfaceSupportsErrorInfo(rIID) == S_OK) )
+	{
+		IErrorInfoPtr pErrorInfo;
+
+		// Get the IErrorInfo object.
+		if (::GetErrorInfo(0, AttachTo(pErrorInfo)) == S_OK)
+		{
+			WCL::ComStr bstrSource;
+			WCL::ComStr bstrDescription;
+
+			// Get the exception details.
+			pErrorInfo->GetSource(AttachTo(bstrSource));
+			pErrorInfo->GetDescription(AttachTo(bstrDescription));
+
+			// Convert to C++ strings.
+			strSource      = OLE2T(bstrSource.Get());
+			strDescription = OLE2T(bstrDescription.Get());
+		}
+	}
+
+	std::tstring strResCode = CStrCvt::FormatError(hResult);
+
+	// Format the error string.
+	if (!strSource.empty() || !strDescription.empty())
+		m_strErrorText.Format("%s [0x%08X - %s] {%s : %s}", pszOperation, hResult, strResCode.c_str(), strSource.c_str(), strDescription.c_str());
+	else
+		m_strErrorText.Format("%s [0x%08X - %s]", pszOperation, hResult, strResCode.c_str());
 }
 
 //namespace WCL
