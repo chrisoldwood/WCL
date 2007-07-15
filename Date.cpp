@@ -432,18 +432,18 @@ bool CDate::FromString(const char* pszDate)
 // conditional expression is constant (caused by the ASSERTs).
 #pragma warning(disable:4127)
 
-void CDate::operator <<(CStream& rStream)
+void operator >>(WCL::IInputStream& rStream, CDate& rDate)
 {
-	ASSERT(sizeof(m_tDate) == sizeof(time_t));
+	ASSERT(sizeof(rDate.m_tDate) == sizeof(time_t));
 
-	rStream.Read(&m_tDate, sizeof(m_tDate));
+	rStream.Read(&rDate.m_tDate, sizeof(rDate.m_tDate));
 }
 
-void CDate::operator >>(CStream& rStream) const
+void operator <<(WCL::IOutputStream& rStream, const CDate& rDate)
 {
-	ASSERT(sizeof(m_tDate) == sizeof(time_t));
+	ASSERT(sizeof(rDate.m_tDate) == sizeof(time_t));
 
-	rStream.Write(&m_tDate, sizeof(m_tDate));
+	rStream.Write(&rDate.m_tDate, sizeof(rDate.m_tDate));
 }
 
 // C4127

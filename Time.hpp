@@ -9,13 +9,18 @@
 */
 
 // Check for previous inclusion
-#ifndef TIME_HPP
-#define TIME_HPP
+#ifndef WCL_TIME_HPP
+#define WCL_TIME_HPP
 
 // Forward declarations.
-class CStream;
 class CTimeSpan;
 class CDateTime;
+
+namespace WCL
+{
+class IInputStream;
+class IOutputStream;
+}
 
 /******************************************************************************
 ** 
@@ -110,12 +115,6 @@ public:
 	void operator +=(const CTimeSpan& rRHS);
 	void operator -=(const CTimeSpan& rRHS);
 
-	//
-	// Persistance.
-	//
-	void operator <<(CStream& rStream);
-	void operator >>(CStream& rStream) const;
-	
 protected:
 	//
 	// Members.
@@ -127,6 +126,12 @@ protected:
 	//
 	friend class CTimeSpan;
 	friend class CDateTime;
+
+	//
+	// Persistance.
+	//
+	friend void operator >>(WCL::IInputStream&  rStream, CTime& rTime);
+	friend void operator <<(WCL::IOutputStream& rStream, const CTime& rTime);
 };
 
 /******************************************************************************
@@ -344,4 +349,4 @@ inline int CTimeSpan::Days() const
 	return m_tSpan / SECS_PER_DAY;
 }
 
-#endif //TIME_HPP
+#endif // WCL_TIME_HPP
