@@ -259,7 +259,7 @@ void CString::operator +=(char cChar)
 *******************************************************************************
 */
 
-void CString::operator <<(CStream& rStream)
+void operator >>(WCL::IInputStream& rStream, CString& rString)
 {
 	uint32 iSize = 0;
 
@@ -267,8 +267,8 @@ void CString::operator <<(CStream& rStream)
 
 	if (iSize)
 	{
-		BufferSize(iSize);
-		rStream.Read(m_pszData, iSize);
+		rString.BufferSize(iSize);
+		rStream.Read(rString.m_pszData, iSize);
 	}
 }
 
@@ -285,14 +285,14 @@ void CString::operator <<(CStream& rStream)
 *******************************************************************************
 */
 
-void CString::operator >>(CStream& rStream) const
+void operator <<(WCL::IOutputStream& rStream, const CString& rString)
 {
-	StringData* pData = GetData();
+	CString::StringData* pData = rString.GetData();
 
 	rStream << pData->m_nAllocSize;
 
 	if (pData->m_nAllocSize)
-		rStream.Write(m_pszData, pData->m_nAllocSize);
+		rStream.Write(rString.m_pszData, pData->m_nAllocSize);
 }
 
 /******************************************************************************

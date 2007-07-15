@@ -40,12 +40,6 @@ public:
 	const CPath& Path() const;
 	void Path(const char* pszPath);
 
-	//
-	// Persistance methods.
-	//
-	virtual void operator <<(CStream& rStream);
-	virtual void operator >>(CStream& rStream);
-
 	virtual bool Load();
 	virtual bool Save();
 
@@ -54,6 +48,12 @@ protected:
 	// Members.
 	//
 	CPath	m_Path;
+
+	//
+	// Persistance methods.
+	//
+	virtual void Read (WCL::IInputStream&  rStream);
+	virtual void Write(WCL::IOutputStream& rStream);
 
 private:
 	// Disallow copies.

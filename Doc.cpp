@@ -49,10 +49,10 @@ CDoc::~CDoc()
 }
 
 /******************************************************************************
-** Methods:		operator <<()
-**				operator >>()
+** Methods:		Read()
+**				Write()
 **
-** Description:	Operators to read/write from/to a stream.
+** Description:	Template Methods to read/write from/to a stream.
 **
 ** Parameters:	rStream		The stream containg the document.
 **
@@ -61,12 +61,12 @@ CDoc::~CDoc()
 *******************************************************************************
 */
 
-void CDoc::operator <<(CStream& /*rStream*/)
+void CDoc::Read(WCL::IInputStream& /*rStream*/)
 {
 	ASSERT_FALSE();
 }
 
-void CDoc::operator >>(CStream& /*rStream*/)
+void CDoc::Write(WCL::IOutputStream& /*rStream*/)
 {
 	ASSERT_FALSE();
 }
@@ -94,7 +94,7 @@ bool CDoc::Load()
 		// Open, read and close.
 		File.Open(m_Path, GENERIC_READ);
 
-		*this << File;
+		Read(File);
 
 		File.Close();
 	}
@@ -117,7 +117,7 @@ bool CDoc::Save()
 		// Open, write and close.
 		File.Create(m_Path);
 
-		*this >> File;
+		Write(File);
 
 		File.Close();
 	}
