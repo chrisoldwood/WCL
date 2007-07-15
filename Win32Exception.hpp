@@ -4,8 +4,8 @@
 //! \author Chris Oldwood
 
 // Check for previous inclusion
-#ifndef WIN32EXCEPTION_HPP
-#define WIN32EXCEPTION_HPP
+#ifndef WCL_WIN32EXCEPTION_HPP
+#define WCL_WIN32EXCEPTION_HPP
 
 #if _MSC_VER > 1000
 #pragma once
@@ -38,8 +38,7 @@ public:
 //! Partial constructor.
 
 inline Win32Exception::Win32Exception(DWORD dwError)
-	: CException(-1)
-	, m_dwError(dwError)
+	: m_dwError(dwError)
 {
 }
 
@@ -47,8 +46,7 @@ inline Win32Exception::Win32Exception(DWORD dwError)
 //! Full constructor.
 
 inline Win32Exception::Win32Exception(DWORD dwError, const char* pszOperation)
-	: CException(-1)
-	, m_dwError(dwError)
+	: m_dwError(dwError)
 {
 	m_strErrorText.Format("%s [0x%08X - %s]", pszOperation, dwError, CStrCvt::FormatError(dwError));
 }
@@ -56,4 +54,4 @@ inline Win32Exception::Win32Exception(DWORD dwError, const char* pszOperation)
 //namespace WCL
 }
 
-#endif // WIN32EXCEPTION_HPP
+#endif // WCL_WIN32EXCEPTION_HPP
