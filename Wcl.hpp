@@ -109,6 +109,7 @@
 // COM classes.
 #include "ComPtr.hpp"
 #include "Variant.hpp"
+//#include "ComStr.hpp"
 
 // Core collection classes.
 #include "Array.hpp"
@@ -132,7 +133,7 @@
 #include "FileException.hpp"
 #include "MemStreamException.hpp"
 #include "RegistryException.hpp"
-#include "ComException.hpp"
+//#include "ComException.hpp"
 
 // Specific collections.
 #include "WndMap.hpp"
