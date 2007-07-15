@@ -1,69 +1,35 @@
-/******************************************************************************
-** (C) Chris Oldwood
-**
-** MODULE:		WCLTYPES.HPP
-** COMPONENT:	Windows C++ Library.
-** DESCRIPTION:	Common data types, defines and macros.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! \file   WCLTypes.hpp
+//! \brief  Windows C++ library common types and macros.
+//! \author Chris Oldwood
 
 // Check for previous inclusion
-#ifndef WCLTYPES_HPP
-#define WCLTYPES_HPP
+#ifndef WCL_WCLTYPES_HPP
+#define WCL_WCLTYPES_HPP
 
-/******************************************************************************
-**
-** Standard types.
-**
-*******************************************************************************
-*/
-/*
-typedef unsigned char		uchar;
-typedef unsigned short		ushort;
-typedef unsigned int		uint;
-typedef unsigned long		ulong;
-*/
-/******************************************************************************
-**
-** Size specific types.
-**
-*******************************************************************************
-*/
-/*
-typedef unsigned char		byte;
-typedef unsigned short		word;
-typedef unsigned long		dword;
+#if _MSC_VER > 1000
+#pragma once
+#endif
 
-typedef signed char			int8;
-typedef signed short		int16;
-typedef signed long			int32;
-typedef signed __int64		int64;
+////////////////////////////////////////////////////////////////////////////////
+// Primitive types.
 
-typedef unsigned char		uint8;
-typedef unsigned short		uint16;
-typedef unsigned long		uint32;
-typedef unsigned __int64	uint64;
-*/
-/******************************************************************************
-**
-** Other primitive types.
-**
-*******************************************************************************
-*/
-
-//! Value type used in CDate, CTime & CDateTime.
+//! GMT based time_t used internally.
 typedef long seconds_t;
 
-/******************************************************************************
-**
-** Windows specific defines.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+// Definitions.
 
+//! Specfifier used to export functions.
 #define EXPORT		__declspec(dllexport)
+
+//! Specifier used on Window callback functions.
 #define WINDOWPROC	CALLBACK
+
+//! Specifier used on Dialog callback functions.
 #define DIALOGPROC	CALLBACK
 
-#endif //WCLTYPES_HPP
+//! Helper for specifying Read and Write access.
+#define GENERIC_READWRITE	(GENERIC_READ | GENERIC_WRITE)
+
+#endif // WCL_WCLTYPES_HPP
