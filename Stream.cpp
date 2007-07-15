@@ -1,12 +1,7 @@
-/******************************************************************************
-** (C) Chris Oldwood
-**
-** MODULE:		STREAM.CPP
-** COMPONENT:	Windows C++ Library.
-** DESCRIPTION:	CStream class definition.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! \file   Stream.cpp
+//! \brief  The CStream class definition.
+//! \author Chris Oldwood
 
 #include "wcl.hpp"
 
@@ -15,17 +10,8 @@
 #define new DBGCRT_NEW
 #endif
 
-/******************************************************************************
-** Method:		Constructor.
-**
-** Description:	.
-**
-** Parameters:	None.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! Constructor.
 
 CStream::CStream()
 	: m_nMode(NULL)
@@ -34,33 +20,16 @@ CStream::CStream()
 {
 }
 
-/******************************************************************************
-** Method:		Destructor.
-**
-** Description:	.
-**
-** Parameters:	None.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! Destructor.
 
 CStream::~CStream()
 {
 }
 
-/******************************************************************************
-** Method:		ReadLine()
-**
-** Description:	Read a line of text from the stream.
-**
-** Parameters:	None.
-**
-** Returns:		A line of text without the CRLF pair.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! Read a line of text. This returns the line of text without the ending line
+//! terminators.
 
 CString CStream::ReadLine()
 {
@@ -90,20 +59,44 @@ CString CStream::ReadLine()
 	return strLine;
 }
 
-/******************************************************************************
-** Method:		WriteLine()
-**
-** Description:	Write a line of text to the stream appending a CRLF pair.
-**
-** Parameters:	pszLine		The line of text.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! Write a line of text. This writes a line of text and appends the line
+//! terminator.
 
 void CStream::WriteLine(const char* pszLine)
 {
 	Write(pszLine, strlen(pszLine));
 	Write("\r\n", 2);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the stream contents format.
+
+uint32 CStream::Format() const
+{
+	return m_nFormat;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Set the stream contents format.
+
+void CStream::SetFormat(uint32 nFormat)
+{
+	m_nFormat = nFormat;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the stream contents version.
+
+uint32 CStream::Version() const
+{
+	return m_nVersion;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Set the stream contents version.
+
+void CStream::SetVersion(uint32 nVersion)
+{
+	m_nVersion = nVersion;
 }
