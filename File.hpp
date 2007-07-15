@@ -9,9 +9,10 @@
 */
 
 // Check for previous inclusion
-#ifndef FILE_HPP
-#define FILE_HPP
+#ifndef WCL_FILE_HPP
+#define WCL_FILE_HPP
 
+#include "Stream.hpp"
 #include <sys/stat.h>
 
 /******************************************************************************
@@ -100,4 +101,4 @@ inline CPath CFile::Path() const
 	return m_Path;
 }
 
-#endif //FILE_HPP
+#endif // WCL_FILE_HPP
