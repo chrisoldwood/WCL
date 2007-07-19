@@ -11,23 +11,12 @@
 #include "wcl.hpp"
 #include <io.h>
 #include <shlobj.h>
+#include <atlconv.h>
 
 #ifdef _DEBUG
 // For memory leak detection.
 #define new DBGCRT_NEW
 #endif
-
-#ifndef _DEBUG
-#define	ATLASSERT
-#endif
-
-// conditional expression is constant
-#pragma warning ( disable : 4127 )
-
-#include <atlconv.h>
-
-// conditional expression is constant
-#pragma warning ( default : 4127 )
 
 /******************************************************************************
 ** Method:		Default constructor
