@@ -9,6 +9,7 @@
 */
 
 #include "wcl.hpp"
+#include <algorithm>
 
 #ifdef _DEBUG
 // For memory leak detection.
