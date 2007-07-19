@@ -58,17 +58,8 @@
 #include <time.h>
 //#include <malloc.h>
 
-#ifdef NDEBUG
-#pragma warning ( push )
-#pragma warning ( disable : 4702 )
-#include <vector>
-#pragma warning ( pop )
-#else
-#include <vector>
-#endif
-
-#include <list>
-#include <algorithm>
+//#include <list>
+//#include <algorithm>
 
 //#ifdef _DEBUG
 //#define _CRTDBG_MAP_ALLOC
