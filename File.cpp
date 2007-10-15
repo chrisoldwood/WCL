@@ -8,15 +8,12 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
+#include "Common.hpp"
+#include "File.hpp"
+#include "FileException.hpp"
 #include <io.h>
 #include <shlobj.h>
-#include <atlconv.h>
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include <Core/AnsiWide.hpp>
 
 /******************************************************************************
 ** Method:		Default constructor
@@ -531,10 +528,8 @@ bool CFile::CreateShortcut(const char* pszLink, const char* pszTarget, const cha
 
 			if (SUCCEEDED(hResult))
 			{ 
-				USES_CONVERSION;
-
 				// Create the shortcut.
-				hResult = pIPersistFile->Save(A2W(pszLink), TRUE);
+				hResult = pIPersistFile->Save(T2W(pszLink), TRUE);
 
 				pIPersistFile->Release(); 
 			} 
