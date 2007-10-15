@@ -12,6 +12,10 @@
 #ifndef AUTOTHREADLOCK_HPP
 #define AUTOTHREADLOCK_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 /******************************************************************************
 ** 
 ** Helper class to automatically aquire and release a thread lock.

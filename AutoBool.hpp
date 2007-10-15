@@ -12,6 +12,10 @@
 #ifndef AUTOBOOL_HPP
 #define AUTOBOOL_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 /******************************************************************************
 ** 
 ** A class for toggling a boolean value on/off that is exception safe.

@@ -12,6 +12,10 @@
 #ifndef WCL_BUFFER_HPP
 #define WCL_BUFFER_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 /******************************************************************************
 ** 
 ** Class used to store a buffer of data.

@@ -12,6 +12,12 @@
 #ifndef CHECKBOXLIST_HPP
 #define CHECKBOXLIST_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "ListView.hpp"
+
 /******************************************************************************
 ** 
 ** This is a ListView derived class used to display a list of check boxes.

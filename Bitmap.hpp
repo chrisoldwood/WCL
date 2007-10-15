@@ -12,6 +12,12 @@
 #ifndef BITMAP_HPP
 #define BITMAP_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Size.hpp"
+
 // Forward reference.
 class CDC;
 

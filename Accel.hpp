@@ -12,6 +12,10 @@
 #ifndef ACCEL_HPP
 #define ACCEL_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 /******************************************************************************
 ** 
 ** This encapsulates a Windows accelerator table.

@@ -12,6 +12,16 @@
 #ifndef CMDBMP_HPP
 #define CMDBMP_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Bitmap.hpp"
+
+// Forward declarations.
+class CRect;
+class CDC;
+
 /******************************************************************************
 ** 
 ** The class used to store the visual representation (enabled and disabled) of

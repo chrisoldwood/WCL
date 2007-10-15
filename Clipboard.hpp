@@ -12,6 +12,10 @@
 #ifndef WCL_CLIPBOARD_HPP
 #define WCL_CLIPBOARD_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 #include "MemStream.hpp"
 
 /* WINVER >= 0x0500 */

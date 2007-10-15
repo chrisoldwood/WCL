@@ -12,6 +12,12 @@
 #ifndef CMDCTRL_HPP
 #define CMDCTRL_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "CmdBmp.hpp"
+
 /******************************************************************************
 ** 
 ** The base class from which the application command controller is derived. It

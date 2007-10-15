@@ -12,6 +12,12 @@
 #ifndef COMCTL32_HPP
 #define COMCTL32_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Library.hpp"
+
 /******************************************************************************
 ** 
 ** Helper class used to interogate and initialise COMCTL32.DLL.

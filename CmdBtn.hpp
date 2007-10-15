@@ -12,6 +12,12 @@
 #ifndef CMDBTN_HPP
 #define CMDBTN_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Button.hpp"
+
 /******************************************************************************
 ** 
 ** This is a bitmap based button control used on a toolbar.

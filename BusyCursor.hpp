@@ -12,6 +12,10 @@
 #ifndef BUSYCURSOR_HPP
 #define BUSYCURSOR_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 /******************************************************************************
 ** 
 ** Shows the hourglass cursor on construction and restores it on destruction.
