@@ -3,13 +3,9 @@
 //! \brief  The ComStr class definition.
 //! \author Chris Oldwood
 
-#include "wcl.hpp"
+#include "Common.hpp"
 #include "ComStr.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include <Core/AnsiWide.hpp>
 
 namespace WCL
 {
@@ -36,8 +32,6 @@ ComStr::ComStr(BSTR bstr)
 ComStr::ComStr(const char* psz)
 	: m_bstr(nullptr)
 {
-	USES_CONVERSION;
-
 	m_bstr = ::SysAllocString(A2W(psz));
 
 	if (m_bstr == nullptr)

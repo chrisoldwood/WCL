@@ -3,13 +3,12 @@
 //! \brief  The ComException class definition.
 //! \author Chris Oldwood
 
-#include "wcl.hpp"
+#include "Common.hpp"
+#include "ComException.hpp"
 #include "ComStr.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include <Core/AnsiWide.hpp>
+#include "StrCvt.hpp"
+#include "ComPtr.hpp"
 
 namespace WCL
 {
@@ -36,8 +35,6 @@ ComException::~ComException()
 
 void ComException::FormatError(HRESULT hResult, IUnknown* pObject, const IID& rIID, const char* pszOperation)
 {
-	USES_CONVERSION;
-
 	// Type shorthands.
 	typedef WCL::ComPtr<ISupportErrorInfo> ISupportErrorInfoPtr;
 	typedef WCL::ComPtr<IErrorInfo> IErrorInfoPtr;
@@ -64,8 +61,8 @@ void ComException::FormatError(HRESULT hResult, IUnknown* pObject, const IID& rI
 			pErrorInfo->GetDescription(AttachTo(bstrDescription));
 
 			// Convert to C++ strings.
-			strSource      = OLE2T(bstrSource.Get());
-			strDescription = OLE2T(bstrDescription.Get());
+			strSource      = W2T(bstrSource.Get());
+			strDescription = W2T(bstrDescription.Get());
 		}
 	}
 
