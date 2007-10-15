@@ -12,6 +12,12 @@
 #ifndef CTRLWND_HPP
 #define CTRLWND_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "PopupWnd.hpp"
+
 /******************************************************************************
 ** 
 ** This is the base class for all window child controls.

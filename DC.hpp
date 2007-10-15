@@ -12,6 +12,20 @@
 #ifndef DC_HPP
 #define DC_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Point.hpp"
+#include "Rect.hpp"
+#include "Pen.hpp"
+#include "Brush.hpp"
+#include "Font.hpp"
+#include "Bitmap.hpp"
+
+// Forward declaraations.
+class CTransparentBmp;
+
 /******************************************************************************
 ** 
 ** This is an abstract base class from which all DCs are derived. All the

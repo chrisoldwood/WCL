@@ -12,6 +12,15 @@
 #ifndef DLGFRAME_HPP
 #define DLGFRAME_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "FrameWnd.hpp"
+
+// Forward declarations.
+class CMainDlg;
+
 /******************************************************************************
 ** 
 ** This is a frame window derived class used in applications that have a dialog

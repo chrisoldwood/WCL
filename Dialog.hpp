@@ -12,6 +12,12 @@
 #ifndef DIALOG_HPP
 #define DIALOG_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "MsgWnd.hpp"
+
 // Forward declarations.
 class CCtrlWnd;
 

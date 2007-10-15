@@ -12,6 +12,14 @@
 #ifndef DATETIMEPICKER_HPP
 #define DATETIMEPICKER_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "StdWnd.hpp"
+#include "Date.hpp"
+#include <commctrl.h>
+
 /******************************************************************************
 ** 
 ** This is a date-time picker control.

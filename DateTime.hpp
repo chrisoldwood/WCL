@@ -12,6 +12,13 @@
 #ifndef WCL_DATETIME_HPP
 #define WCL_DATETIME_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Time.hpp"
+#include "Date.hpp"
+
 // Forward declarations.
 class CDateTimeSpan;
 

@@ -12,6 +12,12 @@
 #ifndef CRITICALSECTION_HPP
 #define CRITICALSECTION_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "IThreadLock.hpp"
+
 /******************************************************************************
 ** 
 ** A Critical Section thread lock.

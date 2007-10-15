@@ -12,6 +12,12 @@
 #ifndef CURSOR_HPP
 #define CURSOR_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Point.hpp"
+
 /******************************************************************************
 ** 
 ** This class wraps a standard GDI cursor.

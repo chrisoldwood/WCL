@@ -12,6 +12,12 @@
 #ifndef DECIMALBOX_HPP
 #define DECIMALBOX_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "EditBox.hpp"
+
 /******************************************************************************
 ** 
 ** This class is used for EditBoxes which only allow decimal numbers.
