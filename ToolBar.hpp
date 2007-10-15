@@ -12,6 +12,14 @@
 #ifndef TOOLBAR_HPP
 #define TOOLBAR_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "CtrlWnd.hpp"
+#include "IMsgFilter.hpp"
+#include "ToolTip.hpp"
+
 // A space between controls.
 #define IDC_SEPARATOR	(uint)-1
 

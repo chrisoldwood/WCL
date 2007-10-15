@@ -12,6 +12,16 @@
 #ifndef THREADPOOL_HPP
 #define THREADPOOL_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "CriticalSection.hpp"
+
+// Forward declarations.
+class CWorkerThread;
+class CThreadJob;
+
 /******************************************************************************
 ** 
 ** A pool of worker threads which run thread jobs.

@@ -12,6 +12,10 @@
 #ifndef STRTOK_HPP
 #define STRTOK_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 /******************************************************************************
 ** 
 ** A string tokeniser.

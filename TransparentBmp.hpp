@@ -12,6 +12,12 @@
 #ifndef TRANSPARENTBMP_HPP
 #define TRANSPARENTBMP_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Bitmap.hpp"
+
 /******************************************************************************
 ** 
 ** This class is used to create transparent bitmaps.

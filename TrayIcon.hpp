@@ -12,6 +12,12 @@
 #ifndef TRAYICON_HPP
 #define TRAYICON_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Wnd.hpp"
+
 /******************************************************************************
 ** 
 ** A class to encapsulate a system tray icon.

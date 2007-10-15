@@ -11,6 +11,9 @@
 #pragma once
 #endif
 
+#include "Exception.hpp"
+#include "StrCvt.hpp"
+
 namespace WCL
 {
 

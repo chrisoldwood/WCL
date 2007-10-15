@@ -12,6 +12,10 @@
 #ifndef SYSINFO_HPP
 #define SYSINFO_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 /******************************************************************************
 ** 
 ** A class of static methods to get system information.

@@ -12,6 +12,10 @@
 #ifndef THREAD_HPP
 #define THREAD_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 /******************************************************************************
 ** 
 ** The base class from which threads are derived.

@@ -12,6 +12,12 @@
 #ifndef TABWNDHOST_HPP
 #define TABWNDHOST_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "TabCtrl.hpp"
+
 /******************************************************************************
 ** 
 ** This is a Tab Control used to one window per tab, swapping windows as the

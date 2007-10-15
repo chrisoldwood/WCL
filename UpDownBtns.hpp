@@ -12,6 +12,13 @@
 #ifndef UPDOWNBTNS_HPP
 #define UPDOWNBTNS_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "StdWnd.hpp"
+#include <commctrl.h>
+
 /******************************************************************************
 ** 
 ** This is an up-down buttons control.

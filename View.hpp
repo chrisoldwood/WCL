@@ -12,6 +12,15 @@
 #ifndef VIEW_HPP
 #define VIEW_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "CtrlWnd.hpp"
+
+// Forward declarations.
+class CDoc;
+
 /******************************************************************************
 ** 
 ** This is the base class for all View windows.

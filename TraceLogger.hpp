@@ -7,6 +7,10 @@
 #ifndef TRACELOGGER_HPP
 #define TRACELOGGER_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 namespace WCL
 {
 

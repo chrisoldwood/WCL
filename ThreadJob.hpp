@@ -12,6 +12,10 @@
 #ifndef THREADJOB_HPP
 #define THREADJOB_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 /******************************************************************************
 ** 
 ** A job that runs on a worker thread in a thread pool.

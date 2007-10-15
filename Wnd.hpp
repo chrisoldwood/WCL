@@ -12,6 +12,16 @@
 #ifndef WND_HPP
 #define WND_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "WndMap.hpp"
+#include "Font.hpp"
+#include "Rect.hpp"
+
+// Forward declarations.
+
 /******************************************************************************
 ** 
 ** This is the base class from which all window classes are derived. It

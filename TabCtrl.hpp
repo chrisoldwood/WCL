@@ -12,6 +12,13 @@
 #ifndef TABCTRL_HPP
 #define TABCTRL_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "StdWnd.hpp"
+#include <commctrl.h>
+
 /******************************************************************************
 ** 
 ** This is a Tab Control.
