@@ -8,14 +8,14 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
+#include "Common.hpp"
+#include "Dialog.hpp"
 #include <stdlib.h>
 #include <stdio.h>
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Module.hpp"
+#include "Exception.hpp"
+#include "CtrlWnd.hpp"
+#include "DC.hpp"
 
 /******************************************************************************
 **
@@ -179,113 +179,93 @@ void CDialog::EndDialog(int nResult)
 
 BOOL DIALOGPROC DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
-	CDialog* pDialog;
-	
-	// Get the window object.
-	pDialog = (CDialog*) CWnd::s_WndMap.Find(hWnd);
+	// Store the return values for this message.
+	BOOL     bMsgHandled = false;
+	LRESULT  lMsgResult  = 0;
 
-	// Do we have a mapping?
-	if (!pDialog)
+	try
 	{
-		// Time to initialise?
-		if (iMsg == WM_INITDIALOG)
-		{
-			// Get object from LPARAM.
-			pDialog = (CDialog*)lParam;
+		CDialog* pDialog;
+		
+		// Get the window object.
+		pDialog = (CDialog*) CWnd::s_WndMap.Find(hWnd);
 
+		// Do we have a mapping?
+		if (pDialog == nullptr)
+		{
+			// Time to initialise?
+			// NB: We will receive other messages first.
+			if (iMsg == WM_INITDIALOG)
+			{
+				// Get object from LPARAM.
+				pDialog = (CDialog*)lParam;
+
+				//
+				// This function can be called recursively so we need to use
+				// the program stack to hold the return values for each
+				// message whilst it is being precessed.
+				//
+
+				// Push the existing messages' return values onto the stack.
+				BOOL*	 pbMsgHandled = pDialog->MsgHandledBuffer(&bMsgHandled);
+				LRESULT* plMsgResult  = pDialog->MsgResultBuffer (&lMsgResult);
+				
+				// Save handle/result.
+				pDialog->m_hWnd = hWnd;
+				pDialog->MsgHandled(true);
+				pDialog->MsgResult (0);
+
+				// Setup Window mapping.
+				CWnd::s_WndMap.Add(*pDialog);
+
+				// Centre only if modal.
+				if (pDialog->m_bModal)
+					pDialog->Centre();
+				
+				// Initialise child controls.
+				pDialog->InitControls();
+				pDialog->InitGravityTable();
+				
+				// Now call initialise method.
+				pDialog->OnCreate(pDialog->ClientRect());
+
+				// Pop the old messages' return values back off the stack.
+				pDialog->MsgHandledBuffer(pbMsgHandled);
+				pDialog->MsgResultBuffer (plMsgResult);
+			}
+		}
+		else
+		{
 			//
 			// This function can be called recursively so we need to use
 			// the program stack to hold the return values for each
 			// message whilst it is being precessed.
 			//
 
-			// Store the return values for this message.
-			BOOL     bMsgHandled = false;
-			LRESULT  lMsgResult  = 0;
-
 			// Push the existing messages' return values onto the stack.
 			BOOL*	 pbMsgHandled = pDialog->MsgHandledBuffer(&bMsgHandled);
 			LRESULT* plMsgResult  = pDialog->MsgResultBuffer (&lMsgResult);
-			
-			// Save handle/result.
-			pDialog->m_hWnd = hWnd;
-			pDialog->MsgHandled(true);
-			pDialog->MsgResult (0);
 
-			// Setup Window mapping.
-			CWnd::s_WndMap.Add(*pDialog);
-
-			// Centre only if modal.
-			if (pDialog->m_bModal)
-				pDialog->Centre();
-			
-			// Initialise child controls.
-			pDialog->InitControls();
-			pDialog->InitGravityTable();
-			
-			// Now call initialise method.
-			pDialog->OnCreate(pDialog->ClientRect());
+			// Call real message handler.
+			pDialog->WndProc(hWnd, iMsg, wParam, lParam);
 
 			// Pop the old messages' return values back off the stack.
 			pDialog->MsgHandledBuffer(pbMsgHandled);
 			pDialog->MsgResultBuffer (plMsgResult);
-
-			return bMsgHandled;
-		}
-		else
-		{
-			// Ignore it.
-			return FALSE;
 		}
 	}
-
-	//
-	// This function can be called recursively so we need to use
-	// the program stack to hold the return values for each
-	// message whilst it is being precessed.
-	//
-
-	// Store the return values for this message.
-	BOOL     bMsgHandled = false;
-	LRESULT  lMsgResult  = 0;
-
-	// Push the existing messages' return values onto the stack.
-	BOOL*	 pbMsgHandled = pDialog->MsgHandledBuffer(&bMsgHandled);
-	LRESULT* plMsgResult  = pDialog->MsgResultBuffer (&lMsgResult);
-
-#ifdef _DEBUG
-	try
+	catch (const std::exception& e)
 	{
-#endif
-
-	// Call real message handler.
-	pDialog->WndProc(hWnd, iMsg, wParam, lParam);
-
-#ifdef _DEBUG
-	}
-	catch (CException& e)
-	{
-		TRACE5("'CException' type exception caught in WndProc(0x%p, 0x%08X, 0x%08X, 0x%08X) [%s]\n", hWnd, iMsg, wParam, lParam, e.ErrorText());
-
-		ASSERT_FALSE();
-	}
-	catch (std::exception& e)
-	{
-		TRACE5("'std::exception' type exception caught in WndProc(0x%p, 0x%08X, 0x%08X, 0x%08X) [%s]\n", hWnd, iMsg, wParam, lParam, e.what());
-
-		ASSERT_FALSE();
+		WCL::ReportUnhandledException("Unexpected exception caught in DlgProc()\n\n"
+										"Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X\n\n%s",
+										hWnd, iMsg, wParam, lParam, e.what());
 	}
 	catch (...)
 	{
-		TRACE4("'UNKNOWN' type exception caught in WndProc(0x%p, 0x%08X, 0x%08X, 0x%08X) [unknown]\n", hWnd, iMsg, wParam, lParam);
-
-		ASSERT_FALSE();
+		WCL::ReportUnhandledException("Unexpected unknown exception caught in DlgProc()\n\n"
+										"Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X",
+										hWnd, iMsg, wParam, lParam);
 	}
-#endif
-
-	// Pop the old messages' return values back off the stack.
-	pDialog->MsgHandledBuffer(pbMsgHandled);
-	pDialog->MsgResultBuffer (plMsgResult);
 
 	// Set the return value.
 	::SetWindowLong(hWnd, DWL_MSGRESULT, lMsgResult);

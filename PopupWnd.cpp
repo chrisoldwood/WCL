@@ -8,12 +8,14 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Common.hpp"
+#include "PopupWnd.hpp"
+#include "Module.hpp"
+#include "Exception.hpp"
+#include "StatusBar.hpp"
+#include "App.hpp"
+#include "FrameWnd.hpp"
+#include "CmdCtrl.hpp"
 
 /******************************************************************************
 ** Method:		Default constructor.
@@ -238,59 +240,47 @@ bool CPopupWnd::Create(DWORD dwExStyle, DWORD dwStyle)
 
 LRESULT WINDOWPROC PopupWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
-	CPopupWnd* pWnd;
-	
-	// Get the window object.
-	pWnd = (CPopupWnd*) CWnd::s_WndMap.Find(hWnd);
-	ASSERT(pWnd);
-
-	//
-	// This function can be called recursively so we need to use
-	// the program stack to hold the return values for each
-	// message whilst it is being precessed.
-	//
-
 	// Store the return values for this message.
-	BOOL     bMsgHandled = false;
-	LRESULT  lMsgResult  = 0;
+	BOOL    bMsgHandled = false;
+	LRESULT lMsgResult  = 0;
 
-	// Push the existing messages' return values onto the stack.
-	BOOL*	 pbMsgHandled = pWnd->MsgHandledBuffer(&bMsgHandled);
-	LRESULT* plMsgResult  = pWnd->MsgResultBuffer (&lMsgResult);
-	
-#ifdef _DEBUG
 	try
 	{
-#endif
+		CPopupWnd* pWnd;
+		
+		// Get the window object.
+		pWnd = (CPopupWnd*) CWnd::s_WndMap.Find(hWnd);
+		ASSERT(pWnd);
 
-	// Call real message handler.
-	pWnd->WndProc(hWnd, iMsg, wParam, lParam);
+		//
+		// This function can be called recursively so we need to use
+		// the program stack to hold the return values for each
+		// message whilst it is being processed.
+		//
 
-#ifdef _DEBUG
+		// Push the existing messages' return values onto the stack.
+		BOOL*	 pbMsgHandled = pWnd->MsgHandledBuffer(&bMsgHandled);
+		LRESULT* plMsgResult  = pWnd->MsgResultBuffer (&lMsgResult);
+		
+		// Call real message handler.
+		pWnd->WndProc(hWnd, iMsg, wParam, lParam);
+
+		// Pop the old messages' return values back off the stack.
+		pWnd->MsgHandledBuffer(pbMsgHandled);
+		pWnd->MsgResultBuffer (plMsgResult);
 	}
-	catch (CException& e)
+	catch (const std::exception& e)
 	{
-		TRACE5("'CException' type exception caught in WndProc(0x%p, 0x%08X, 0x%08X, 0x%08X) [%s]\n", hWnd, iMsg, wParam, lParam, e.ErrorText());
-
-		ASSERT_FALSE();
-	}
-	catch (std::exception& e)
-	{
-		TRACE5("'std::exception' type exception caught in WndProc(0x%p, 0x%08X, 0x%08X, 0x%08X) [%s]\n", hWnd, iMsg, wParam, lParam, e.what());
-
-		ASSERT_FALSE();
+		WCL::ReportUnhandledException("Unexpected exception caught in PopupWndProc()\n\n"
+										"Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X\n\n%s",
+										hWnd, iMsg, wParam, lParam, e.what());
 	}
 	catch (...)
 	{
-		TRACE4("'UNKNOWN' type exception caught in WndProc(0x%p, 0x%08X, 0x%08X, 0x%08X) [unknown]\n", hWnd, iMsg, wParam, lParam);
-
-		ASSERT_FALSE();
+		WCL::ReportUnhandledException("Unexpected unknown exception caught in PopupWndProc()\n\n"
+										"Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X",
+										hWnd, iMsg, wParam, lParam);
 	}
-#endif
-
-	// Pop the old messages' return values back off the stack.
-	pWnd->MsgHandledBuffer(pbMsgHandled);
-	pWnd->MsgResultBuffer (plMsgResult);
 
 	return lMsgResult;
 }
