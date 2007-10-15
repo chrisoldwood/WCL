@@ -12,6 +12,10 @@
 #ifndef WCL_DLL_HPP
 #define WCL_DLL_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 #include "LeakCheck.hpp"
 #include "Module.hpp"
 
@@ -31,7 +35,10 @@ public:
 	CDll();
 	virtual ~CDll();
 	
-	// Global access to the dll object.
+	//! Check if the dll singleton is valid.
+	static bool IsValid();
+	
+	//! Global access to the dll singleton.
 	static CDll& This();
 
 	//
