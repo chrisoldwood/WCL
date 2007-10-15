@@ -12,6 +12,10 @@
 #ifndef PATH_HPP
 #define PATH_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 // Forward declarations.
 class CWnd;
 

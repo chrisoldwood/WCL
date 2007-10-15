@@ -12,6 +12,15 @@
 #ifndef INIFILE_HPP
 #define INIFILE_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Path.hpp"
+
+// Forward declarations.
+class CRect;
+
 /******************************************************************************
 ** 
 ** This class encapsulates the behaviour of accessing a Windows .INI file.

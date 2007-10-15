@@ -12,6 +12,12 @@
 #ifndef POPUPWND_HPP
 #define POPUPWND_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "MsgWnd.hpp"
+
 /******************************************************************************
 ** 
 ** This is a CMsgWnd derived class that provides defualt handlers for all

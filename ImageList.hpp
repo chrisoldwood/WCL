@@ -12,6 +12,12 @@
 #ifndef IMAGELIST_HPP
 #define IMAGELIST_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include <commctrl.h>
+
 /******************************************************************************
 ** 
 ** This class wraps the ImageList image collection.

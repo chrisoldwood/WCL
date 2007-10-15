@@ -12,6 +12,20 @@
 #ifndef FRAMEWND_HPP
 #define FRAMEWND_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "PopupWnd.hpp"
+#include "IMsgFilter.hpp"
+
+// Forward declaratons.
+class CAccel;
+class CFrameMenu;
+class CToolBar;
+class CStatusBar;
+class CDialog;
+
 /******************************************************************************
 ** 
 ** This is the base class for the main application window. It contains the menu

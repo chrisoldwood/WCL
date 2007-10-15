@@ -12,6 +12,10 @@
 #ifndef EVENT_HPP
 #define EVENT_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 /******************************************************************************
 ** 
 ** An Event thread lock.

@@ -12,6 +12,15 @@
 #ifndef PROPERTYSHEET_HPP
 #define PROPERTYSHEET_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Wnd.hpp"
+
+// Forward declarations.
+class CPropertyPage;
+
 /******************************************************************************
 ** 
 ** This is the base class for all property style dialogs.

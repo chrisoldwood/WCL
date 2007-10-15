@@ -12,6 +12,10 @@
 #ifndef ITHREADLOCK_HPP
 #define ITHREADLOCK_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 /******************************************************************************
 ** 
 ** Interface for controlling a thread lock.

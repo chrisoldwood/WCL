@@ -12,6 +12,12 @@
 #ifndef MEMDC_HPP
 #define MEMDC_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "DC.hpp"
+
 /******************************************************************************
 ** 
 ** This is a Device derived class that is used when creating a dc compatible

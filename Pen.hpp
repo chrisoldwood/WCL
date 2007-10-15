@@ -12,6 +12,10 @@
 #ifndef PEN_HPP
 #define PEN_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 /******************************************************************************
 ** 
 ** This class wraps a standard GDI pen.

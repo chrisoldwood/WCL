@@ -12,6 +12,13 @@
 #ifndef PRINTER_HPP
 #define PRINTER_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+// Forward declarations.
+class CWnd;
+
 /******************************************************************************
 ** 
 ** A wrapper class used to hold the parameters required to create a printer DC.

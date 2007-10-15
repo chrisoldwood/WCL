@@ -12,6 +12,13 @@
 #ifndef FRAMEMENU_HPP
 #define FRAMEMENU_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Menu.hpp"
+#include "PopupMenu.hpp"
+
 /******************************************************************************
 ** 
 ** This is a menu derived class for frame window menus.

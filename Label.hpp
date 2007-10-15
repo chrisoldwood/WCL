@@ -12,6 +12,12 @@
 #ifndef LABEL_HPP
 #define LABEL_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "StdWnd.hpp"
+
 /******************************************************************************
 ** 
 ** This is a text label.

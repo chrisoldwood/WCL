@@ -12,6 +12,10 @@
 #ifndef NETFINDER_HPP
 #define NETFINDER_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 /******************************************************************************
 ** 
 ** Class used to enumerate network resources.

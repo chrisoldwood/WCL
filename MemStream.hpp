@@ -12,7 +12,14 @@
 #ifndef WCL_MEMSTREAM_HPP
 #define WCL_MEMSTREAM_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 #include "Stream.hpp"
+
+// Forward declarations.
+class CBuffer;
 
 /******************************************************************************
 ** 

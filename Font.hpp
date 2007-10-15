@@ -12,6 +12,12 @@
 #ifndef FONT_HPP
 #define FONT_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "LogFont.hpp"
+
 /******************************************************************************
 ** 
 ** This class wraps a standard GDI font.

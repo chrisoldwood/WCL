@@ -12,6 +12,12 @@
 #ifndef PATHEDITBOX_HPP
 #define PATHEDITBOX_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "EditBox.hpp"
+
 /******************************************************************************
 ** 
 ** This edit box derived control is used for entering file paths.

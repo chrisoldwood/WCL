@@ -12,6 +12,12 @@
 #ifndef MAINTHREAD_HPP
 #define MAINTHREAD_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "MsgThread.hpp"
+
 /******************************************************************************
 ** 
 ** The main application thread.

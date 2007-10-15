@@ -12,7 +12,12 @@
 #ifndef WCL_FILE_HPP
 #define WCL_FILE_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 #include "Stream.hpp"
+#include "Path.hpp"
 #include <sys/stat.h>
 
 /******************************************************************************

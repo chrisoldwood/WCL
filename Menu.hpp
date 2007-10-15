@@ -12,6 +12,10 @@
 #ifndef MENU_HPP
 #define MENU_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 // Forward declarations.
 class CPopupMenu;
 

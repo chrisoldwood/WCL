@@ -7,6 +7,10 @@
 #ifndef REGKEY_HPP
 #define REGKEY_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 namespace WCL
 {
 

@@ -12,6 +12,16 @@
 #ifndef MSGWND_HPP
 #define MSGWND_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Wnd.hpp"
+
+// Forward declarations.
+class CPoint;
+class CDC;
+
 /******************************************************************************
 ** 
 ** This is a Wnd derived class that provides a base class for all message

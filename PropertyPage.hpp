@@ -12,6 +12,12 @@
 #ifndef PROPERTYPAGE_HPP
 #define PROPERTYPAGE_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Dialog.hpp"
+
 /******************************************************************************
 ** 
 ** This is the base class for all property page dialogs.

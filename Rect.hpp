@@ -12,6 +12,13 @@
 #ifndef RECT_HPP
 #define RECT_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Point.hpp"
+#include "Size.hpp"
+
 /******************************************************************************
 ** 
 ** This is a class based version of the standard Windows RECT structure.

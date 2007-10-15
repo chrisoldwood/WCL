@@ -12,6 +12,13 @@
 #ifndef LOGFONT_HPP
 #define LOGFONT_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+// Forward declarations
+class CWnd;
+
 /******************************************************************************
 ** 
 ** A thin wrapper around the LOGFONT structure.

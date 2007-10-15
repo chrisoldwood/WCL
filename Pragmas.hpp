@@ -12,6 +12,10 @@
 #ifndef PRAGMAS_HPP
 #define PRAGMAS_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 // Nameless struct/union.
 #pragma warning ( disable : 4201 )
 

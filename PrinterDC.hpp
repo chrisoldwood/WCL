@@ -12,6 +12,15 @@
 #ifndef PRINTERDC_HPP
 #define PRINTERDC_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "DC.hpp"
+
+// Forward declarations.
+class CPrinter;
+
 /******************************************************************************
 ** 
 ** This is a CDC derived class that is used for printing. 

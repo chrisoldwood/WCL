@@ -12,6 +12,10 @@
 #ifndef HELPFILE_HPP
 #define HELPFILE_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 /******************************************************************************
 ** 
 ** This class provides a simple wrapper around a Windows Help File.

@@ -12,6 +12,12 @@
 #ifndef MAINDLG_HPP
 #define MAINDLG_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Dialog.hpp"
+
 /******************************************************************************
 ** 
 ** This is the base class for the main dialog in a dialog based app.

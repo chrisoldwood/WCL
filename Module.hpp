@@ -12,6 +12,10 @@
 #ifndef WCL_MODULE_HPP
 #define WCL_MODULE_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 #include "Path.hpp"
 
 /******************************************************************************

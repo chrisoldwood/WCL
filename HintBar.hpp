@@ -12,6 +12,12 @@
 #ifndef HINTBAR_HPP
 #define HINTBAR_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "CtrlWnd.hpp"
+
 /******************************************************************************
 ** 
 ** This is a child window used to display hints.

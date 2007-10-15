@@ -12,6 +12,16 @@
 #ifndef POPUPMENU_HPP
 #define POPUPMENU_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Menu.hpp"
+
+// Forward declarations.
+class CWnd;
+class CPoint;
+
 /******************************************************************************
 ** 
 ** This is a menu derived class for popup (context) menus.

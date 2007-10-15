@@ -11,6 +11,8 @@
 #pragma once
 #endif
 
+#include "Win32Exception.hpp"
+
 namespace WCL
 {
 

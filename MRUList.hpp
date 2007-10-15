@@ -12,6 +12,16 @@
 #ifndef MRULIST_HPP
 #define MRULIST_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "StrArray.hpp"
+
+// Forward declarations.
+class CMenu;
+class CIniFile;
+
 /******************************************************************************
 ** 
 ** This class manages the list of Most Recently Used files for an App.

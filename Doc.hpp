@@ -12,6 +12,12 @@
 #ifndef DOC_HPP
 #define DOC_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Path.hpp"
+
 /******************************************************************************
 ** 
 ** This is the base class for all documents.

@@ -12,6 +12,12 @@
 #ifndef ICONCTRL_HPP
 #define ICONCTRL_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "StdWnd.hpp"
+
 /******************************************************************************
 ** 
 ** This is a static control used to display an Icon.

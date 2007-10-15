@@ -12,6 +12,12 @@
 #ifndef LIBRARY_HPP
 #define LIBRARY_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Path.hpp"
+
 /******************************************************************************
 ** 
 ** A class to encapsulate a component such as a DLL.

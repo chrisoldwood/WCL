@@ -12,6 +12,10 @@
 #ifndef LEAKCHECK_HPP
 #define LEAKCHECK_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 /******************************************************************************
 ** 
 ** Utility class used to dump out any memory leaks on application exit.
