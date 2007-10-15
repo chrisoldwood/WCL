@@ -12,6 +12,10 @@
 #ifndef WCL_STRARRAY_HPP
 #define WCL_STRARRAY_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 #include <vector>
 
 /******************************************************************************
@@ -66,11 +70,6 @@ private:
 **
 *******************************************************************************
 */
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
 
 inline CStrArray::CStrArray()
 {
@@ -178,9 +177,5 @@ inline int CStrArray::Find(const char* pszString, bool bIgnoreCase) const
 
 	return -1;
 }
-
-#ifdef _DEBUG
-#undef new
-#endif
 
 #endif // WCL_STRARRAY_HPP
