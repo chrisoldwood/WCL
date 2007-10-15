@@ -12,6 +12,12 @@
 #ifndef STRCVTEXCEPTION_HPP
 #define STRCVTEXCEPTION_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Exception.hpp"
+
 /******************************************************************************
 ** 
 ** The exception class thrown by the CStrCvt functions.

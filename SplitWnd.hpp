@@ -12,6 +12,12 @@
 #ifndef SPLITWND_HPP
 #define SPLITWND_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "CtrlWnd.hpp"
+
 /******************************************************************************
 ** 
 ** This is a window which hosts 2 other windows either side by side or one

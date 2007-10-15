@@ -12,6 +12,10 @@
 #ifndef SIZE_HPP
 #define SIZE_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 /******************************************************************************
 ** 
 ** This is a class based version of the standard Windows SIZE structure.

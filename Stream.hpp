@@ -7,6 +7,10 @@
 #ifndef WCL_STREAM_HPP
 #define WCL_STREAM_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 #include "IStreamBase.hpp"
 #include "IInputStream.hpp"
 #include "IOutputStream.hpp"

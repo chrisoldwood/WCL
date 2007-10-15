@@ -12,6 +12,20 @@
 #ifndef SDIAPP_HPP
 #define SDIAPP_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "App.hpp"
+#include "MRUList.hpp"
+#include "SDIFrame.hpp"
+
+// Forward declarations.
+class CSDICmds;
+class CSDIDoc;
+class CView;
+class CDoc;
+
 /******************************************************************************
 ** 
 ** This is the application base class for SDI applications.

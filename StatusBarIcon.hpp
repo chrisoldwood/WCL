@@ -12,6 +12,15 @@
 #ifndef STATUSBARICON_HPP
 #define STATUSBARICON_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "StatusBarPanel.hpp"
+
+// Forward declarations.
+class CTransparentBmp;
+
 /******************************************************************************
 ** 
 ** A status bar field which contains an icon.

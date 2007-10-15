@@ -12,6 +12,12 @@
 #ifndef STATUSBARPANEL_HPP
 #define STATUSBARPANEL_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "CtrlWnd.hpp"
+
 /******************************************************************************
 ** 
 ** The base class for child windows that sit on the right of the status bar.

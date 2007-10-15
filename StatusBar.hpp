@@ -12,6 +12,15 @@
 #ifndef STATUSBAR_HPP
 #define STATUSBAR_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "HintBar.hpp"
+
+// Forward declarations.
+class CStatusBarPanel;
+
 /******************************************************************************
 ** 
 ** This is a child window that acts as a placeholder for other child windows

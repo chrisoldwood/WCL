@@ -12,6 +12,12 @@
 #ifndef STATUSBARLABEL_HPP
 #define STATUSBARLABEL_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "StatusBarPanel.hpp"
+
 /******************************************************************************
 ** 
 ** A status bar field which contains text.

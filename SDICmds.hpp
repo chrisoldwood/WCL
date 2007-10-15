@@ -12,6 +12,16 @@
 #ifndef SDICMDS_HPP
 #define SDICMDS_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "CmdCtrl.hpp"
+
+// Forward declarations.
+class CSDIDoc;
+class CPath;
+
 /******************************************************************************
 ** 
 ** This is the base class for SDI application commands.

@@ -12,6 +12,10 @@
 #ifndef WCL_STRCVT_HPP
 #define WCL_STRCVT_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 /******************************************************************************
 ** 
 ** Functions to convert values <-> strings.

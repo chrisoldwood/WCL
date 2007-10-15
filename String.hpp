@@ -12,6 +12,10 @@
 #ifndef WCL_STRING_HPP
 #define WCL_STRING_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
 // Forward declarations.
 class CStrArray;
 

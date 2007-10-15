@@ -12,6 +12,12 @@
 #ifndef STDWND_HPP
 #define STDWND_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "CtrlWnd.hpp"
+
 /******************************************************************************
 ** 
 ** This is the base class for all built-in window controls.

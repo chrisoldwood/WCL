@@ -12,6 +12,12 @@
 #ifndef WCL_STREAMEXCEPTION_HPP
 #define WCL_STREAMEXCEPTION_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Exception.hpp"
+
 /******************************************************************************
 ** 
 ** This is the base class for all exceptions thrown from streams.

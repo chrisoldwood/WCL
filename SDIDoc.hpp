@@ -12,6 +12,15 @@
 #ifndef SDIDOC_HPP
 #define SDIDOC_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Doc.hpp"
+
+// Forward declarations.
+class CView;
+
 /******************************************************************************
 ** 
 ** This is the base class for documents used with a SDI app.
