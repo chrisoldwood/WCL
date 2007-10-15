@@ -12,6 +12,22 @@
 #ifndef WCL_APP_HPP
 #define WCL_APP_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Font.hpp"
+#include "Brush.hpp"
+#include "Pen.hpp"
+#include "LeakCheck.hpp"
+#include "Module.hpp"
+#include "MainThread.hpp"
+#include "ComCtl32.hpp"
+
+// Forward declarations.
+class CFrameWnd;
+class CCmdControl;
+
 /******************************************************************************
 ** 
 ** This is base class from which the application class is derived.
@@ -58,7 +74,10 @@ public:
 	//
 	bool ShowNormal() const;
 
-	// Global access to the app object.
+	//! Check if the app singleton is valid.
+	static bool IsValid();
+	
+	//! Global access to the app singleton.
 	static CApp& This();
 	
 	//
