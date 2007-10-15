@@ -8,12 +8,9 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Common.hpp"
+#include "Dll.hpp"
+#include "TraceLogger.hpp"
 
 // Symbol used to ensure DllMain.cpp is linked.
 extern bool g_bLinkDllMain;
@@ -67,6 +64,14 @@ CDll::~CDll()
 	ASSERT(g_pThis == this);
 
 	g_pThis = NULL;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Check if the app singleton is valid.
+
+bool CDll::IsValid()
+{
+	return (g_pThis != NULL);
 }
 
 /******************************************************************************
