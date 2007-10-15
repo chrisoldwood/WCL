@@ -2,10 +2,6 @@
 
 - Two phase save support (SDI).
 
-- Move to STL (TMap/HandleMap & TArray/TRefArray/TPtrArray -> Legacy library).
-
-- Tidy up CFileTree class (Add proper accessors etc).
-
 - Add FullPath() method to make a FQ Path from a relative one.
 
 - Fix CentreWindow() so it doesn't put dialogs off screen.
@@ -16,13 +12,7 @@
 
 - More generic msg box function.
 
-- Enable full try/catch handlers for release builds and check they exist.
-
-- Add global unhandled exception handler so that they can be reported effectively (GUI/Log etc).
-
 - Add exception throwing to .ini file class.
-
-- Add structured exception handler and exception class.
 
 - Add copy ctors and assingment operators to GDI classes to check ownership.
 
