@@ -8,12 +8,9 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Common.hpp"
+#include "DateTimePicker.hpp"
+#include "DateTime.hpp"
 
 /******************************************************************************
 ** Method:		Default constructor.

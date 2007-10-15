@@ -8,13 +8,10 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
+#include "Common.hpp"
+#include "DecimalBox.hpp"
 #include <stdio.h>
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "StrCvt.hpp"
 
 /******************************************************************************
 ** Method:		Constructor.

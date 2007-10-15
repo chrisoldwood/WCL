@@ -8,12 +8,11 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Common.hpp"
+#include "DateTime.hpp"
+#include <time.h>
+#include "IInputStream.hpp"
+#include "IOutputStream.hpp"
 
 /******************************************************************************
 **

@@ -8,12 +8,11 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Common.hpp"
+#include "DC.hpp"
+#include "App.hpp"
+#include "MemDC.hpp"
+#include "TransparentBmp.hpp"
 
 /******************************************************************************
 ** Method:		Default Constructor.

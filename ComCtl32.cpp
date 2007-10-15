@@ -8,13 +8,10 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
+#include "Common.hpp"
+#include "ComCtl32.hpp"
 #include <shlwapi.h>
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include <commctrl.h>
 
 /******************************************************************************
 **
