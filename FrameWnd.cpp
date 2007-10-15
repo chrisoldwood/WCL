@@ -8,12 +8,16 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Common.hpp"
+#include "FrameWnd.hpp"
+#include "App.hpp"
+#include "FrameMenu.hpp"
+#include "ToolBar.hpp"
+#include "StatusBar.hpp"
+#include "DC.hpp"
+#include "Accel.hpp"
+#include "Dialog.hpp"
+#include "MsgThread.hpp"
 
 /******************************************************************************
 **
@@ -285,7 +289,7 @@ LRESULT CFrameWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		// Main window destroyed.
 		case WM_DESTROY:
 			// Terminate message loop.
-			PostQuitMessage(0);
+			::PostQuitMessage(CMsgThread::THREAD_EXIT_SUCCESS);
 			return CPopupWnd::WndProc(hWnd, iMsg, wParam, lParam);
 
 		// Call the default handler.
