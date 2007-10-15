@@ -15,7 +15,7 @@
 #include "ComException.hpp"
 #include <guiddef.h>
 #include <objbase.h>
-#include <atlconv.h>
+#include <Core/AnsiWide.hpp>
 
 namespace WCL
 {
@@ -170,8 +170,6 @@ inline void ComPtr<T>::CreateInstance(const CLSID& rCLSID)
 
 	if (FAILED(hr))
 	{
-		USES_CONVERSION;
-
 		wchar_t szBuffer[MAX_GUID_CHARS+1];
 
 		// Convert the CLSID to a string.		
@@ -205,8 +203,6 @@ inline void ComPtr<T>::QueryInterface(const ComPtr<U>& rhs)
 
 	if (FAILED(hr))
 	{
-		USES_CONVERSION;
-
 		wchar_t szBuffer[MAX_GUID_CHARS+1];
 
 		// Convert the IID to a string.		
