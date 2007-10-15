@@ -8,14 +8,12 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
+#include "Common.hpp"
+#include "App.hpp"
 #include <stdio.h>
 #include <stdarg.h>
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include <commctrl.h>
+#include "FrameWnd.hpp"
 
 /******************************************************************************
 **
@@ -76,6 +74,14 @@ CApp::~CApp()
 	ASSERT(g_pThis == this);
 
 	g_pThis = NULL;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Check if the app singleton is valid.
+
+bool CApp::IsValid()
+{
+	return (g_pThis != NULL);
 }
 
 /******************************************************************************
@@ -142,13 +148,11 @@ bool CApp::Open()
 		return false;
 	}
 
-	bool bOK = OnOpen();
+	// Call Template Method.
+	if (!OnOpen())
+		::PostQuitMessage(CMsgThread::THREAD_EXIT_FAILURE);
 
-	// Initialisation failed?
-	if (!bOK)
-		PostQuitMessage(0);
-
-	return bOK;
+	return true;
 }
 
 /******************************************************************************
