@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //! \file   Exception.hpp
-//! \brief  The Exception class declaration.
+//! \brief  The Exception class declaration and utility functions.
 //! \author Chris Oldwood
 
 // Check for previous inclusion
@@ -36,35 +36,15 @@ protected:
 	CString	m_strErrorText;		//!< The error message.
 };
 
-////////////////////////////////////////////////////////////////////////////////
-//! Default constructor.
-
-inline CException::CException()
+namespace WCL
 {
-}
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Destructor.
+//! Report an unhandled exception.
 
-inline CException::~CException()
-{
-}
+void ReportUnhandledException(const tchar* pszMsg, ...);
 
-////////////////////////////////////////////////////////////////////////////////
-//! Retrieve the error message.
-//! \deprecated This should be removed and what() used instead.
-
-inline const char* CException::ErrorText() const
-{
-	return m_strErrorText;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//! Retrieve the error message. This method is overriden from the base class.
-
-inline const char* CException::what() const
-{
-	return m_strErrorText;
+//namespace WCL
 }
 
 #endif // WCL_EXCEPTION_HPP
