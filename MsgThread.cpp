@@ -8,13 +8,10 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
+#include "Common.hpp"
+#include "MsgThread.hpp"
 #include <algorithm>
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "IMsgFilter.hpp"
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -29,6 +26,7 @@
 */
 
 CMsgThread::CMsgThread()
+	: m_nResult(THREAD_EXIT_FAILURE)
 {
 #ifdef _DEBUG
 	memset(&m_oMsg, 0, sizeof(MSG));
@@ -73,7 +71,7 @@ void CMsgThread::Run()
 #endif
 
 	// Process message queue until WM_QUIT.
-	while (ProcessMsgQueue())
+	while (ProcessMsgQueue(false))
 		WaitMessage();
 
 #ifdef _DEBUG
@@ -123,16 +121,18 @@ void CMsgThread::RemoveMsgFilter(IMsgFilter* pFilter)
 /******************************************************************************
 ** Method:		ProcessMsgQueue()
 **
-** Description:	Processes any waiting messages.
+** Description:	Processes any waiting messages. If called from a busy loop
+**				WM_QUIT should be reposted so that it is picked up again by the
+**				threads main message loop.
 **
-** Parameters:	None.
+** Parameters:	bRepostQuitMsg	Whether to repost a WM_QUIT message.
 **
 ** Returns:		false if WM_QUIT was seen, else true.
 **
 *******************************************************************************
 */
 
-bool CMsgThread::ProcessMsgQueue()
+bool CMsgThread::ProcessMsgQueue(bool bRepostQuitMsg)
 {
 	// Message waiting?
 	while (PeekMessage(&m_oMsg, NULL, NULL, NULL, PM_NOREMOVE))
@@ -140,8 +140,11 @@ bool CMsgThread::ProcessMsgQueue()
 		// Is WM_QUIT?
 		if (!GetMessage(&m_oMsg, NULL, NULL, NULL))
 		{
-			// Put back on the queue.
-			::PostQuitMessage(0);
+			m_nResult = m_oMsg.wParam;
+
+			if (bRepostQuitMsg)
+				::PostQuitMessage(m_nResult);
+
 			return false;
 		}
 

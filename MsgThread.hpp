@@ -12,6 +12,15 @@
 #ifndef MSGTHREAD_HPP
 #define MSGTHREAD_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include "Thread.hpp"
+
+// Forward declarations.
+class IMsgFilter;
+
 /******************************************************************************
 ** 
 ** A thread derived class which is message driven.
@@ -29,6 +38,13 @@ public:
 	virtual	~CMsgThread();
 
 	//
+	// Properties.
+	//
+
+	//! Get the result from the WM_QUIT message.
+	int Result() const;
+
+	//
 	// Message filtering.
 	//
 	void AddMsgFilter(IMsgFilter* pFilter);
@@ -37,9 +53,19 @@ public:
 	//
 	// Message processing.
 	//
-	bool ProcessMsgQueue();
+	bool ProcessMsgQueue(bool bRepostQuitMsg = true);
 
 	const MSG& CurrentMsg() const;
+
+	//
+	// Constants.
+	//
+
+	//! The thread result code for failure.
+	static const int THREAD_EXIT_FAILURE = 0;
+
+	//! The thread result code for succeess.
+	static const int THREAD_EXIT_SUCCESS = 1;
 
 protected:
 	// Template shorthands.
@@ -50,6 +76,7 @@ protected:
 	//
 	MSG			m_oMsg;
 	CMsgFilters	m_oMsgFilters;
+	int			m_nResult;			//!< The WM_QUIT result.
 
 	// The main thread function.
 	virtual void Run();
@@ -66,6 +93,14 @@ protected:
 **
 *******************************************************************************
 */
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the result from the WM_QUIT message.
+
+inline int CMsgThread::Result() const
+{
+	return m_nResult;
+}
 
 inline const MSG& CMsgThread::CurrentMsg() const
 {
