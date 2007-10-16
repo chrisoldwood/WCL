@@ -8,14 +8,15 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
+#include "Common.hpp"
+#include "String.hpp"
 #include <stdio.h>
 #include <stdarg.h>
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Module.hpp"
+#include "IInputStream.hpp"
+#include "IOutputStream.hpp"
+#include <Core/StringUtils.hpp>
+#include <tchar.h>
 
 /******************************************************************************
 **
@@ -331,152 +332,21 @@ void CString::Format(const char* pszFormat, ...)
 
 void CString::FormatEx(const char* pszFormat, va_list args)
 {
-	// Copy arguments list.
-	va_list	argsOrig = args;
+	// Allocate the buffer.
+	int nLength = _vsctprintf(pszFormat, args);
 
-	int nMaxLength  = 0;
-	int nRealLength = 0;
-
-	// Parse the string to calculate its max length.
-	for (const char* pszBuf = pszFormat; *pszBuf != '\0'; pszBuf++)
-	{
-		// Is not a format start char OR is a "%%" sequence?
-		if ( (*pszBuf != '%') || (*(++pszBuf) == '%') )
-		{
-			nMaxLength++;
-			continue;
-		}
-
-		// Process flags.
-		while ( (*pszBuf == '-') || (*pszBuf == '+') || (*pszBuf == '0')
-			 || (*pszBuf == ' ') || (*pszBuf == '#') )
-		{
-			// Allow for "0x"
-			if (*pszBuf == '#') 
-				nMaxLength += 2;
-
-			pszBuf++;
-		}
-
-		int nWidth = 0;
-
-		// Width is an argument?
-		if (*pszBuf == '*')
-			nWidth = va_arg(args, int);
-		else
-			nWidth = atoi(pszBuf);
-
-		// Skip width chars.
-		while ( (*pszBuf == '*') || (isdigit(*pszBuf)) )
-			pszBuf++;
-
-		int nPrecision = 0;
-
-		// Precision specified?
-		if (*pszBuf == '.')
-		{
-			pszBuf++;
-
-			// Precision is an argument?
-			if (*pszBuf == '*')
-				nPrecision = va_arg(args, int);
-			else
-				nPrecision = atoi(pszBuf);
-
-			// Skip precision chars.
-			while ( (*pszBuf == '*') || (isdigit(*pszBuf)) )
-				pszBuf++;
-		}
-
-		// Skip optional prefixes.
-		if ( (*pszBuf == 'h') || (*pszBuf == 'l') || (*pszBuf == 'F')
-		  || (*pszBuf == 'N') || (*pszBuf == 'L') )
-		{
-			ASSERT_FALSE();
-
-			pszBuf++;
-		}
-
-		// Default value length to specifiers.
-		int nValLength = nWidth + nPrecision;
-
-		// Process type.
-		switch (*pszBuf)
-		{
-			// Single char.
-			case 'c':
-				{
-					va_arg(args, char);
-					nValLength = 1;
-				}
-				break;
-
-			// String.
-			case 's':
-				{
-					const char* psz = va_arg(args, const char*);
-					nValLength = max(strlen(psz), (size_t)nValLength);
-				}
-				break;
-
-			// Integral number.
-			case 'd':
-			case 'i':
-			case 'u':
-			case 'x':
-			case 'X':
-			case 'o':
-				{
-					va_arg(args, int);
-					nValLength = max(32, nValLength);
-				}
-				break;
-
-			// Floating point number.
-			case 'e':
-			case 'f':
-			case 'g':
-			case 'G':
-				{
-					va_arg(args, double);
-					nValLength = max(32, nValLength);
-				}
-				break;
-
-			// Pointer.
-			case 'p':
-				{
-					va_arg(args, void*);
-					nValLength = max(32, nValLength);
-				}
-				break;
-
-			// Chars written so far.
-			case 'n':
-				{
-					va_arg(args, int*);
-				}
-				break;
-
-			default:
-				{
-					ASSERT_FALSE();
-				}
-				break;
-		}
-
-		// Add length of value on.
-		nMaxLength += nValLength;
-	}
-
-	// Set the buffer size.
-	BufferSize(nMaxLength+1);
+	BufferSize(nLength+1);
 
 	// Format string.
-	nRealLength = vsprintf(m_pszData, pszFormat, argsOrig);
-	ASSERT(nRealLength <= nMaxLength);
+	int nResult = _vsntprintf(m_pszData, nLength, pszFormat, args);
 
-	va_end(argsOrig);
+	ASSERT(nResult == nLength);
+
+	// Check for buffer overrun.
+	if (nResult < 0)
+		throw std::logic_error(Core::Fmt("Insufficient buffer size calculated in CString::FormatEx(). Result: %d", nResult));
+
+	m_pszData[nResult] = '\0';
 }
 
 /******************************************************************************
