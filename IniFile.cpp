@@ -8,13 +8,13 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
+#include "Common.hpp"
+#include "IniFile.hpp"
 #include <stdlib.h>
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "StrCvt.hpp"
+#include "StrTok.hpp"
+#include "StrArray.hpp"
+#include "Rect.hpp"
 
 /******************************************************************************
 ** Method:		Constructor.

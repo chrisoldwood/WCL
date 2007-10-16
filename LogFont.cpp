@@ -8,12 +8,13 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Common.hpp"
+#include "LogFont.hpp"
+#include "Wnd.hpp"
+#include "StrCvt.hpp"
+#include "StrArray.hpp"
+#include "StrTok.hpp"
+#include "StrCvtException.hpp"
 
 /******************************************************************************
 **
@@ -226,7 +227,7 @@ bool CLogFont::Parse(const char* pszFont, CLogFont& oLogFont)
 			oLogFont.lfPitchAndFamily = static_cast<BYTE>(CStrCvt::ParseUInt(astrFields[13]));
 		}		
 	}
-	catch (CStrCvtException& e)
+	catch (const CStrCvtException& e)
 	{
 		DEBUG_USE_ONLY(e);
 		TRACE1("CLogFont::Parse() failed - %s", e.ErrorText());

@@ -8,12 +8,8 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Common.hpp"
+#include "Dll.hpp"
 
 // Symbol used to ensure DllMain.cpp is linked.
 bool g_bLinkDllMain = false;

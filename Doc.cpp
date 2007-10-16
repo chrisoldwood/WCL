@@ -8,12 +8,13 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Common.hpp"
+#include "Doc.hpp"
+#include "File.hpp"
+#include "FileException.hpp"
+#include "App.hpp"
+#include "FrameWnd.hpp"
+#include "DC.hpp"
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -98,7 +99,7 @@ bool CDoc::Load()
 
 		File.Close();
 	}
-	catch(CFileException& rException)
+	catch (const CFileException& rException)
 	{
 		// Notify user.
 		CApp::This().m_rMainWnd.AlertMsg(rException.ErrorText());
@@ -121,7 +122,7 @@ bool CDoc::Save()
 
 		File.Close();
 	}
-	catch(CFileException& rException)
+	catch (const CFileException& rException)
 	{
 		// Notify user.
 		CApp::This().m_rMainWnd.AlertMsg(rException.ErrorText());
