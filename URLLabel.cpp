@@ -8,12 +8,8 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Common.hpp"
+#include "URLLabel.hpp"
 
 /******************************************************************************
 ** Only available for Win98 and Win2K upwards.

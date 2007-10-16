@@ -8,13 +8,9 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
+#include "Common.hpp"
+#include "SysInfo.hpp"
 #include <lmcons.h>
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
 
 /******************************************************************************
 ** Method:		ComputerName()

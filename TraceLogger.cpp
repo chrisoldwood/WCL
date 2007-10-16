@@ -3,12 +3,9 @@
 //! \brief  The TraceLogger class definition.
 //! \author Chris Oldwood
 
-#include "wcl.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Common.hpp"
+#include "TraceLogger.hpp"
+#include "Path.hpp"
 
 namespace WCL
 {

@@ -8,12 +8,13 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Common.hpp"
+#include "ToolBar.hpp"
+#include "App.hpp"
+#include "DC.hpp"
+#include "CmdCtrl.hpp"
+#include "StatusBar.hpp"
+#include "FrameWnd.hpp"
 
 /******************************************************************************
 **

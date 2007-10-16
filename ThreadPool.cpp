@@ -8,13 +8,12 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
+#include "Common.hpp"
+#include "ThreadPool.hpp"
+#include "WorkerThread.hpp"
+#include "ThreadJob.hpp"
 #include <algorithm>
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "AutoThreadLock.hpp"
 
 /******************************************************************************
 ** Method:		Constructor.
