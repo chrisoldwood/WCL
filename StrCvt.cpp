@@ -8,13 +8,11 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
+#include "Common.hpp"
+#include "StrCvt.hpp"
 #include <errno.h>
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include <time.h>
+#include "StrCvtException.hpp"
 
 /******************************************************************************
 ** Method:		FormatInt()

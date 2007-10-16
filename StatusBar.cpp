@@ -8,12 +8,11 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Common.hpp"
+#include "StatusBar.hpp"
+#include "StatusBarPanel.hpp"
+#include "ScreenDC.hpp"
+#include "App.hpp"
 
 /******************************************************************************
 **

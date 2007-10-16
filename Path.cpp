@@ -8,17 +8,18 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
+#include "Common.hpp"
+#include "Path.hpp"
 #include <stdlib.h>
 #include <io.h>
 #include <direct.h>
 #include <commdlg.h>
 #include <shlobj.h>
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Module.hpp"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include "Wnd.hpp"
+#include "StrArray.hpp"
 
 /******************************************************************************
 ** Method:		Constructors

@@ -8,12 +8,10 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Common.hpp"
+#include "PropertySheet.hpp"
+#include "PropertyPage.hpp"
+#include "Module.hpp"
 
 /******************************************************************************
 ** Method:		Constructor.

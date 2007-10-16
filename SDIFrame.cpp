@@ -8,12 +8,12 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Common.hpp"
+#include "SDIFrame.hpp"
+#include "View.hpp"
+#include "SDIApp.hpp"
+#include "SDIDoc.hpp"
+#include "SDICmds.hpp"
 
 /******************************************************************************
 ** Method:		Constructor.
