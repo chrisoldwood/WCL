@@ -8,12 +8,12 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Common.hpp"
+#include "WorkerThread.hpp"
+#include "ThreadPool.hpp"
+#include "ThreadJob.hpp"
+#include "SeTranslator.hpp"
+#include "Exception.hpp"
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -69,6 +69,9 @@ CWorkerThread::~CWorkerThread()
 
 DWORD WINAPI CWorkerThread::ThreadFunction(LPVOID lpParam)
 {
+	// Translate structured exceptions.
+	WCL::SeTranslator::Install();
+
 	CWorkerThread* pThread = reinterpret_cast<CWorkerThread*>(lpParam);
 
 	// Force creation of a message queue.
@@ -83,9 +86,13 @@ DWORD WINAPI CWorkerThread::ThreadFunction(LPVOID lpParam)
 		// Call the threads main function.
 		pThread->Run();
 	}
+	catch (const std::exception& e)
+	{
+		WCL::ReportUnhandledException("Unexpected exception caught in CWorkerThread::Run()\n\n%s", e.what());
+	}
 	catch (...)
 	{
-		TRACE1("Unhandled exception in worker thread: %d\n", pThread->m_nPoolID);
+		WCL::ReportUnhandledException("Unexpected unknown exception caught in CWorkerThread::Run()");
 	}
 
 	// Signal calling thread that we've stopped.
@@ -252,9 +259,13 @@ void CWorkerThread::OnRunJob()
 		// Notify thread pool.
 		m_oPool.OnJobCompleted(pJob);
 	}
+	catch (const std::exception& e)
+	{
+		WCL::ReportUnhandledException("Unexpected exception caught in CWorkerThread::OnRunJob()\n\n%s", e.what());
+	}
 	catch (...)
 	{
-		ASSERT_FALSE();
+		WCL::ReportUnhandledException("Unexpected unknown exception caught in CWorkerThread::OnRunJob()");
 	}
 }
 
@@ -272,5 +283,5 @@ void CWorkerThread::OnRunJob()
 
 void CWorkerThread::OnStopThread()
 {
-	::PostQuitMessage(0);
+	::PostQuitMessage(CMsgThread::THREAD_EXIT_SUCCESS);
 }
