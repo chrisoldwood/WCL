@@ -8,12 +8,9 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "Common.hpp"
+#include "WndMap.hpp"
+#include "Wnd.hpp"
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -29,7 +26,6 @@
 
 CWndMap::CWndMap()
 {
-	Reserve(MAX_WINDOWS);
 }
 
 /******************************************************************************
@@ -46,8 +42,7 @@ CWndMap::CWndMap()
 
 CWndMap::~CWndMap()
 {
-	ASSERT(m_iCount == 0);
-	ASSERT(m_pMap   == NULL);
+	ASSERT(m_oMap.empty());
 }
 
 /******************************************************************************
@@ -66,7 +61,7 @@ void CWndMap::Add(CWnd& rWnd)
 {
 	ASSERT(rWnd.Handle() != NULL);
 
-	CHandleMap::Add(rWnd.Handle(), &rWnd);
+	m_oMap.insert(std::make_pair(rWnd.Handle(), &rWnd));
 }
 
 /******************************************************************************
@@ -84,8 +79,9 @@ void CWndMap::Add(CWnd& rWnd)
 void CWndMap::Remove(CWnd& rWnd)
 {
 	ASSERT(rWnd.Handle() != NULL);
+	ASSERT(m_oMap.find(rWnd.Handle()) != m_oMap.end());
 
-	CHandleMap::Remove(rWnd.Handle());
+	m_oMap.erase(m_oMap.find(rWnd.Handle()));
 }
 
 /******************************************************************************
@@ -104,5 +100,7 @@ CWnd* CWndMap::Find(HWND hWnd) const
 {
 	ASSERT(hWnd != NULL);
 
-	return (CWnd*) CHandleMap::Find(hWnd);
+	Map::const_iterator it = m_oMap.find(hWnd);
+
+	return (it != m_oMap.end()) ? it->second : NULL;
 }
