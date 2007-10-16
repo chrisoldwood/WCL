@@ -23,17 +23,19 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/EHa"
 				Optimization="2"
-				InlineFunctionExpansion="1"
+				InlineFunctionExpansion="0"
 				AdditionalIncludeDirectories="../../Lib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				StringPooling="TRUE"
+				ExceptionHandling="FALSE"
 				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="TRUE"
+				EnableFunctionLevelLinking="FALSE"
 				ForceConformanceInForLoopScope="TRUE"
 				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="wcl.hpp"
+				UsePrecompiledHeader="3"
+				PrecompiledHeaderThrough="Common.hpp"
 				PrecompiledHeaderFile=".\Release/Wcl.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
@@ -41,7 +43,8 @@
 				WarningLevel="4"
 				WarnAsError="TRUE"
 				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="3"/>
+				DebugInformationFormat="3"
+				CompileAs="0"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -79,19 +82,21 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/EHa"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../Lib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="TRUE"
+				ExceptionHandling="FALSE"
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="TRUE"
 				RuntimeLibrary="1"
 				BufferSecurityCheck="TRUE"
-				EnableFunctionLevelLinking="TRUE"
+				EnableFunctionLevelLinking="FALSE"
 				ForceConformanceInForLoopScope="TRUE"
 				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="wcl.hpp"
+				UsePrecompiledHeader="3"
+				PrecompiledHeaderThrough="Common.hpp"
 				PrecompiledHeaderFile=".\Debug/Wcl.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
@@ -99,7 +104,8 @@
 				WarningLevel="4"
 				WarnAsError="TRUE"
 				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="3"/>
+				DebugInformationFormat="3"
+				CompileAs="0"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -139,9 +145,6 @@
 			</File>
 			<File
 				RelativePath="App.cpp">
-			</File>
-			<File
-				RelativePath="Array.cpp">
 			</File>
 			<File
 				RelativePath="Bitmap.cpp">
@@ -231,13 +234,13 @@
 				RelativePath="EditBox.cpp">
 			</File>
 			<File
+				RelativePath=".\Exception.cpp">
+			</File>
+			<File
 				RelativePath="File.cpp">
 			</File>
 			<File
 				RelativePath="FileException.cpp">
-			</File>
-			<File
-				RelativePath="FileFinder.cpp">
 			</File>
 			<File
 				RelativePath="Font.cpp">
@@ -285,12 +288,6 @@
 				RelativePath=".\MainThread.cpp">
 			</File>
 			<File
-				RelativePath="Map.cpp">
-			</File>
-			<File
-				RelativePath="MapIter.cpp">
-			</File>
-			<File
 				RelativePath="MemDC.cpp">
 			</File>
 			<File
@@ -322,6 +319,21 @@
 			</File>
 			<File
 				RelativePath="PathEditBox.cpp">
+			</File>
+			<File
+				RelativePath=".\pch.cpp">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="Pen.cpp">
@@ -369,6 +381,9 @@
 				RelativePath="SDIFrame.cpp">
 			</File>
 			<File
+				RelativePath=".\SeTranslator.cpp">
+			</File>
+			<File
 				RelativePath="SplitWnd.cpp">
 			</File>
 			<File
@@ -390,6 +405,9 @@
 				RelativePath="StdWnd.cpp">
 			</File>
 			<File
+				RelativePath=".\StrConvs.cpp">
+			</File>
+			<File
 				RelativePath="StrCvt.cpp">
 			</File>
 			<File
@@ -403,6 +421,9 @@
 			</File>
 			<File
 				RelativePath="StrTok.cpp">
+			</File>
+			<File
+				RelativePath=".\StructuredException.cpp">
 			</File>
 			<File
 				RelativePath="SysInfo.cpp">
@@ -472,9 +493,6 @@
 				RelativePath="App.hpp">
 			</File>
 			<File
-				RelativePath="Array.hpp">
-			</File>
-			<File
 				RelativePath=".\AutoBool.hpp">
 			</File>
 			<File
@@ -527,6 +545,9 @@
 			</File>
 			<File
 				RelativePath=".\Common.hpp">
+			</File>
+			<File
+				RelativePath=".\CommonUI.hpp">
 			</File>
 			<File
 				RelativePath=".\ComPtr.hpp">
@@ -586,9 +607,6 @@
 				RelativePath="FileException.hpp">
 			</File>
 			<File
-				RelativePath="FileFinder.hpp">
-			</File>
-			<File
 				RelativePath="Font.hpp">
 			</File>
 			<File
@@ -596,9 +614,6 @@
 			</File>
 			<File
 				RelativePath="FrameWnd.hpp">
-			</File>
-			<File
-				RelativePath="HandleMap.hpp">
 			</File>
 			<File
 				RelativePath="HelpFile.hpp">
@@ -623,9 +638,6 @@
 			</File>
 			<File
 				RelativePath="IniFile.hpp">
-			</File>
-			<File
-				RelativePath="IntPtrMap.hpp">
 			</File>
 			<File
 				RelativePath=".\IOutputStream.hpp">
@@ -659,12 +671,6 @@
 			</File>
 			<File
 				RelativePath="MainThread.hpp">
-			</File>
-			<File
-				RelativePath="Map.hpp">
-			</File>
-			<File
-				RelativePath="MapIter.hpp">
 			</File>
 			<File
 				RelativePath="MemDC.hpp">
@@ -760,6 +766,9 @@
 				RelativePath="SDIFrame.hpp">
 			</File>
 			<File
+				RelativePath=".\SeTranslator.hpp">
+			</File>
+			<File
 				RelativePath="Size.hpp">
 			</File>
 			<File
@@ -784,10 +793,10 @@
 				RelativePath="StdWnd.hpp">
 			</File>
 			<File
-				RelativePath=".\STLUtils.hpp">
+				RelativePath="StrArray.hpp">
 			</File>
 			<File
-				RelativePath="StrArray.hpp">
+				RelativePath=".\StrConvs.hpp">
 			</File>
 			<File
 				RelativePath="StrCvt.hpp">
@@ -805,10 +814,10 @@
 				RelativePath="String.hpp">
 			</File>
 			<File
-				RelativePath="StrPtrMap.hpp">
+				RelativePath="StrTok.hpp">
 			</File>
 			<File
-				RelativePath="StrTok.hpp">
+				RelativePath=".\StructuredException.hpp">
 			</File>
 			<File
 				RelativePath="SysInfo.hpp">
@@ -818,9 +827,6 @@
 			</File>
 			<File
 				RelativePath="TabWndHost.hpp">
-			</File>
-			<File
-				RelativePath="TArray.hpp">
 			</File>
 			<File
 				RelativePath="Thread.hpp">
@@ -833,12 +839,6 @@
 			</File>
 			<File
 				RelativePath="Time.hpp">
-			</File>
-			<File
-				RelativePath="TMap.hpp">
-			</File>
-			<File
-				RelativePath="TMapIter.hpp">
 			</File>
 			<File
 				RelativePath="ToolBar.hpp">
@@ -854,12 +854,6 @@
 			</File>
 			<File
 				RelativePath="TrayIcon.hpp">
-			</File>
-			<File
-				RelativePath="TTree.hpp">
-			</File>
-			<File
-				RelativePath="TTreeIter.hpp">
 			</File>
 			<File
 				RelativePath="UpDownBtns.hpp">
