@@ -12,26 +12,9 @@
 #ifndef WCL_HPP
 #define WCL_HPP
 
-////////////////////////////////////////////////////////////////////////////////
-// Library documentation
-//
-//! \namespace WCL
-//! \brief     The Windows C++ Library namespace.
-
-/******************************************************************************
-**
-** Build targets.
-**
-*******************************************************************************
-*/
-
-//#define STRICT						// Use proper handle types.
-//#define VC_EXTRALEAN				// Trim <windows.h>
-
-//#define WINVER			0x0400		// Windows 95+
-//#define _WIN32_WINNT	0x0400		// Windows NT 4.0+
-//#define _WIN32_WINDOWS	0x0400		// Windows 95+
-//#define _WIN32_IE		0x0400		// Internet Explorer 4.0+
+#if _MSC_VER > 1000
+#pragma once
+#endif
 
 /******************************************************************************
 **
@@ -49,22 +32,10 @@
 *******************************************************************************
 */
 
-//#include "Pragmas.hpp"
 #include <windows.h>
 #include <windowsx.h>
-//#include <stddef.h>
-//#include <string.h>
 #include <commctrl.h>
 #include <time.h>
-//#include <malloc.h>
-
-//#include <list>
-//#include <algorithm>
-
-//#ifdef _DEBUG
-//#define _CRTDBG_MAP_ALLOC
-//#include <crtdbg.h>
-//#endif
 
 /******************************************************************************
 **
@@ -74,14 +45,13 @@
 */
 
 // STL Helper functions.
-#include "STLUtils.hpp"
+//#include "STLUtils.hpp"		// Moved to Lib/Legacy.
 
 // Core data types.
 #include "WclTypes.hpp"
 #include "WclRsc.h"
 
 // Debugging functions.
-//#include "Assert.hpp"
 #include "LeakCheck.hpp"
 #include "TraceLogger.hpp"
 
@@ -100,21 +70,20 @@
 // COM classes.
 #include "ComPtr.hpp"
 #include "Variant.hpp"
-//#include "ComStr.hpp"
 
 // Core collection classes.
-#include "Array.hpp"
-#include "TArray.hpp"
+//#include "Array.hpp"			// Moved to Lib/Legacy.
+//#include "TArray.hpp"			// Moved to Lib/Legacy.
 #include "StrArray.hpp"
-#include "Map.hpp"
-#include "MapIter.hpp"
-#include "TMap.hpp"
-#include "TMapIter.hpp"
-#include "HandleMap.hpp"
-#include "IntPtrMap.hpp"
-#include "StrPtrMap.hpp"
-#include "TTree.hpp"
-#include "TTreeIter.hpp"
+//#include "Map.hpp"			// Moved to Lib/Legacy.
+//#include "MapIter.hpp"		// Moved to Lib/Legacy.
+//#include "TMap.hpp"			// Moved to Lib/Legacy.
+//#include "TMapIter.hpp"		// Moved to Lib/Legacy.
+//#include "HandleMap.hpp"		// Moved to Lib/Legacy.
+//#include "IntPtrMap.hpp"		// Moved to Lib/Legacy.
+//#include "StrPtrMap.hpp"		// Moved to Lib/Legacy.
+//#include "TTree.hpp"			// Moved to Lib/Legacy.
+//#include "TTreeIter.hpp"		// Moved to Lib/Legacy.
 
 // Exception classes.
 #include "Exception.hpp"
@@ -124,13 +93,12 @@
 #include "FileException.hpp"
 #include "MemStreamException.hpp"
 #include "RegistryException.hpp"
-//#include "ComException.hpp"
 
 // Specific collections.
 #include "WndMap.hpp"
 
 // Persistance classes.
-#include "FileFinder.hpp"
+//#include "FileFinder.hpp"		// Moved to Lib/Legacy.
 #include "IniFile.hpp"
 #include "RegKey.hpp"
 #include "Stream.hpp"
