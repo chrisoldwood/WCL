@@ -8,14 +8,11 @@
 *******************************************************************************
 */
 
-#include "wcl.hpp"
+#include "Common.hpp"
+#include "Wnd.hpp"
 #include <stdio.h>
 #include <stdarg.h>
-
-#ifdef _DEBUG
-// For memory leak detection.
-#define new DBGCRT_NEW
-#endif
+#include "App.hpp"
 
 /******************************************************************************
 **
