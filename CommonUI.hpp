@@ -20,10 +20,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Library headers.
 
+// Conrainer windows.
 #include <WCL/Dialog.hpp>
+#include <WCL/PropertyPage.hpp>
+
+// Controls.
+#include <WCL/Button.hpp>
 #include <WCL/CheckBox.hpp>
+#include <WCL/CheckBoxList.hpp>
 #include <WCL/ComboBox.hpp>
+#include <WCL/DateTimePicker.hpp>
+#include <WCL/DecimalBox.hpp>
 #include <WCL/EditBox.hpp>
+#include <WCL/IconCtrl.hpp>
 #include <WCL/Label.hpp>
 #include <WCL/ListBox.hpp>
 #include <WCL/ListView.hpp>
