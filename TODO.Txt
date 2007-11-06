@@ -19,3 +19,7 @@
 - Add Release() methods to CFont etc. to ensure resources are cleaned up correctly.
 
 - Add conversion from time_t (i.e. local time) to a DateTime.
+
+- Move AutoBool to Core.
+
+- Add Forward declarations header.
