@@ -23,3 +23,9 @@
 - Move AutoBool to Core.
 
 - Add Forward declarations header.
+
+- Add days_t type for use with DateSpan.
+
+- Move TimeSpan and DateSpan to separate files.
+
+- Check declaration of seconds_t under VC++ 7/8.
