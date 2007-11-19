@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include <tchar.h>
 #include <WCL/SeTranslator.hpp>
 #include <WCL/StructuredException.hpp>
 

@@ -5,9 +5,6 @@
 
 #pragma once
 
-
-#include <iostream>
-#include <tchar.h>
-
 #include <Core/Common.hpp>
 #include <WCL/Common.hpp>
+#include <iostream>
