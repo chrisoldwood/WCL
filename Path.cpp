@@ -21,6 +21,11 @@
 #include "Wnd.hpp"
 #include "StrArray.hpp"
 
+// Directive to link to the Shell library.
+#pragma comment(lib, "shell32")
+// Directive to link to the Common Dialog library.
+#pragma comment(lib, "comdlg32")
+
 /******************************************************************************
 ** Method:		Constructors
 **

@@ -275,7 +275,7 @@ bool CFont::Parse(const char* pszFont, CFont& oFont)
 		// Search the font mapping table...
 		for (; pEntry->m_pszName != NULL; ++pEntry)
 		{
-			if (stricmp(pEntry->m_pszName, pszFont) == 0)
+			if (_stricmp(pEntry->m_pszName, pszFont) == 0)
 				break;
 		}
 

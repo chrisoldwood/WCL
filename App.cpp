@@ -15,14 +15,12 @@
 #include <commctrl.h>
 #include "FrameWnd.hpp"
 
-/******************************************************************************
-**
-** Linker directives.
-**
-*******************************************************************************
-*/
-
-#pragma comment(lib, "comctl32.lib")	// For COMCTL32.DLL support.
+// Linker directives.
+#pragma comment(lib, "user32")
+#pragma comment(lib, "gdi32")
+#pragma comment(lib, "advapi32")
+#pragma comment(lib, "comctl32")
+#pragma comment(lib, "ole32")
 
 /******************************************************************************
 **

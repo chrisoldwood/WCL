@@ -30,14 +30,14 @@ CString CStrCvt::FormatInt(int nValue)
 {
 	char szValue[50];
 
-	return ltoa(nValue, szValue, 10);
+	return _ltoa(nValue, szValue, 10);
 }
 
 CString CStrCvt::FormatUInt(uint nValue)
 {
 	char szValue[50];
 
-	return ltoa(nValue, szValue, 10);
+	return _ltoa(nValue, szValue, 10);
 }
 
 /******************************************************************************
@@ -56,7 +56,7 @@ CString CStrCvt::FormatLong(long lValue)
 {
 	char szValue[50];
 
-	return ltoa(lValue, szValue, 10);
+	return _ltoa(lValue, szValue, 10);
 }
 
 /******************************************************************************

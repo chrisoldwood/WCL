@@ -411,7 +411,7 @@ uint CClipboard::FormatHandle(const char* pszFormat)
 	// Search standard formats lookup table first.
 	for (FmtEntry* pEntry = s_oStdFormats; (pEntry->m_nFormat != NULL); ++pEntry)
 	{
-		if (stricmp(pszFormat, pEntry->m_pszFormat) == 0)
+		if (_stricmp(pszFormat, pEntry->m_pszFormat) == 0)
 			return pEntry->m_nFormat;
 	}
 

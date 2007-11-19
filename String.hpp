@@ -283,12 +283,12 @@ inline bool CString::operator !=(const CString& strString) const
 
 inline int CString::Compare(const char* pszString, bool bIgnoreCase) const
 {
-	return (bIgnoreCase) ? stricmp(m_pszData, pszString) : strcmp(m_pszData, pszString);
+	return (bIgnoreCase) ? _stricmp(m_pszData, pszString) : strcmp(m_pszData, pszString);
 }
 
 inline int CString::Compare(const char* pszString, int nChars, bool bIgnoreCase) const
 {
-	return (bIgnoreCase) ? strnicmp(m_pszData, pszString, nChars) : strncmp(m_pszData, pszString, nChars);
+	return (bIgnoreCase) ? _strnicmp(m_pszData, pszString, nChars) : strncmp(m_pszData, pszString, nChars);
 }
 
 inline void CString::Copy(const char* lpszBuffer)

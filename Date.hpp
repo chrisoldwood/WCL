@@ -274,7 +274,7 @@ inline int CDate::Year() const
 
 inline int CDate::DayOfWeek() const
 {
-	return (((m_tDate / SECS_PER_DAY) + 3) % 7);
+	return static_cast<int>(((m_tDate / SECS_PER_DAY) + 3) % 7);
 }
 
 inline int CDate::DaysInMonth() const
@@ -323,7 +323,7 @@ inline bool CDate::operator >=(const CDate& rRHS) const
 
 inline CDateSpan CDate::operator -(const CDate& rRHS) const
 {
-	return CDateSpan((m_tDate - rRHS.m_tDate) / SECS_PER_DAY);
+	return CDateSpan(static_cast<int>((m_tDate - rRHS.m_tDate) / SECS_PER_DAY));
 }
 
 inline void CDate::operator +=(const CDateSpan& rRHS)
@@ -354,7 +354,7 @@ inline CDateSpan::CDateSpan(int nDays)
 }
 
 inline CDateSpan::CDateSpan(const CDate& rDate)
-	: m_nSpan(rDate.m_tDate / SECS_PER_DAY)
+	: m_nSpan(static_cast<int>(rDate.m_tDate / SECS_PER_DAY))
 {
 }
 

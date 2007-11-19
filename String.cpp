@@ -774,7 +774,7 @@ void CString::Replace(const char* pszOldString, const char* pszNewString, bool b
 	str.BufferSize(Length());
 
 	// Choose the compare function.
-	CompareFn lpfnCompare = (bIgnoreCase) ? strnicmp : strncmp;
+	CompareFn lpfnCompare = (bIgnoreCase) ? _strnicmp : strncmp;
 	size_t    nCmpLen     = strlen(pszOldString);
 
 	while (*psz != '\0')

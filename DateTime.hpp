@@ -319,22 +319,22 @@ inline CDateTimeSpan::CDateTimeSpan(const CDateTime& rDateTime)
 
 inline int CDateTimeSpan::Secs() const
 {
-	return m_tSpan;
+	return static_cast<int>(m_tSpan);
 }
 
 inline int CDateTimeSpan::Mins() const
 {
-	return (m_tSpan / SECS_PER_MIN);
+	return static_cast<int>(m_tSpan / SECS_PER_MIN);
 }
 
 inline int CDateTimeSpan::Hours() const
 {
-	return (m_tSpan / SECS_PER_HOUR);
+	return static_cast<int>(m_tSpan / SECS_PER_HOUR);
 }
 
 inline int CDateTimeSpan::Days() const
 {
-	return (m_tSpan / SECS_PER_DAY);
+	return static_cast<int>(m_tSpan / SECS_PER_DAY);
 }
 
 #endif // WCL_DATETIME_HPP

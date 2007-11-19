@@ -15,7 +15,7 @@
 // Primitive types.
 
 //! GMT based time_t used internally.
-typedef long seconds_t;
+typedef time_t seconds_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Definitions.

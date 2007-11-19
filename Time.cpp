@@ -80,9 +80,9 @@ void CTime::Set(int iHours, int iMins, int iSecs)
 
 void CTime::Get(int& iHours, int& iMins, int& iSecs) const
 {
-	iSecs  = m_tTime % 60;
-	iMins  = (m_tTime % SECS_PER_HOUR) / SECS_PER_MIN;
-	iHours = m_tTime / SECS_PER_HOUR;
+	iSecs  = static_cast<int>(m_tTime % 60);
+	iMins  = static_cast<int>((m_tTime % SECS_PER_HOUR) / SECS_PER_MIN);
+	iHours = static_cast<int>(m_tTime / SECS_PER_HOUR);
 }
 
 /******************************************************************************

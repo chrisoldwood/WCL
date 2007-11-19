@@ -335,22 +335,22 @@ inline CTimeSpan::CTimeSpan(const CTime& rTime)
 
 inline int CTimeSpan::Secs() const
 {
-	return m_tSpan;
+	return static_cast<int>(m_tSpan);
 }
 
 inline int CTimeSpan::Mins() const
 {
-	return m_tSpan / SECS_PER_MIN;
+	return static_cast<int>(m_tSpan / SECS_PER_MIN);
 }
 
 inline int CTimeSpan::Hours() const
 {
-	return m_tSpan / SECS_PER_HOUR;
+	return static_cast<int>(m_tSpan / SECS_PER_HOUR);
 }
 
 inline int CTimeSpan::Days() const
 {
-	return m_tSpan / SECS_PER_DAY;
+	return static_cast<int>(m_tSpan / SECS_PER_DAY);
 }
 
 #endif // WCL_TIME_HPP
