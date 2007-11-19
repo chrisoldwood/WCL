@@ -549,6 +549,9 @@
 				RelativePath=".\Common.hpp">
 			</File>
 			<File
+				RelativePath=".\CommonRsc.h">
+			</File>
+			<File
 				RelativePath=".\CommonUI.hpp">
 			</File>
 			<File
@@ -874,9 +877,6 @@
 			</File>
 			<File
 				RelativePath="Wcl.hpp">
-			</File>
-			<File
-				RelativePath="WclRsc.h">
 			</File>
 			<File
 				RelativePath="WclTypes.hpp">
