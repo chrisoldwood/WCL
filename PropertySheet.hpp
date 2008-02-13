@@ -48,19 +48,23 @@ protected:
 	// Structure to define an entry in the property page table.
 	/////////////////////////////////////////////////////////////////
 
-	typedef struct tagPAGE
+	struct PAGE_ENTRY
 	{
 		CPropertyPage*	m_pPage;		// The page.
-		const char*		m_pszLabel;		// The tab label.
-	} PAGE;
+		const tchar*	m_pszLabel;		// The tab label.
+	};
+
+	//! The collection of property page.
+	typedef std::vector<PAGE_ENTRY> Pages;
+	//! The collection of property page handles.
+	typedef std::vector<HPROPSHEETPAGE> PageHandles;
 
 	//
 	// Members.
 	//
 	CString			m_strTitle;		// Title for the property sheet.
-	int				m_nPages;		// Number of pages.
-	PAGE*			m_pPageTable;	// Table of pages.
-	HPROPSHEETPAGE*	m_phPages;		// Array of page handles.
+	Pages			m_vPages;		//!< The collection of pages.
+	PageHandles		m_vHandles;		//!< The collection of page handles.
 
 	//
 	// General message handlers.
@@ -75,7 +79,7 @@ protected:
 	//
 	// Internal methods.
 	//
-	void PageTable(PAGE* pPageTable);
+	void PageTable(PAGE_ENTRY* pPageTable);
 };
 
 /******************************************************************************
@@ -85,9 +89,9 @@ protected:
 *******************************************************************************
 */
 
-#define DEFINE_PAGE_TABLE	PAGE Pages[] = {
+#define DEFINE_PAGE_TABLE	PAGE_ENTRY Pages[] = {
 
-#define PAGE(page, label)	{ (page), (label) },
+#define PAGE(page, label)	{ (page), (label), },
 
 #define END_PAGE_TABLE		{  NULL,   NULL } }; \
 							PageTable(Pages);

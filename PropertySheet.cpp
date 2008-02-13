@@ -26,9 +26,6 @@
 */
 
 CPropertySheet::CPropertySheet()
-	: m_nPages(0)
-	, m_pPageTable(NULL)
-	, m_phPages(NULL)
 {
 }
 
@@ -46,13 +43,6 @@ CPropertySheet::CPropertySheet()
 
 CPropertySheet::~CPropertySheet()
 {
-	// Free page table.
-	if (m_pPageTable)
-		delete[] m_pPageTable;
-
-	// Free page handle array.
-	if (m_phPages)
-		delete[] m_phPages;
 }
 
 /******************************************************************************
@@ -106,38 +96,33 @@ int CPropertySheet::RunModal(CWnd& rParent)
 	ASSERT(rParent.Handle()         != NULL);
 	ASSERT(CModule::This().Handle() != NULL);
 
-	// Create the page handle array.
-	m_phPages = new HPROPSHEETPAGE[m_nPages];
-
 	// Add the pages.
-	for (int i = 0; i < m_nPages; i++)
+	for (size_t i = 0; i < m_vPages.size(); ++i)
 	{
-		// Initialise the page.
-		PROPSHEETPAGE oPage;
+		PAGE_ENTRY& rPage = m_vPages[i];
 
-		memset(&oPage, 0, sizeof(oPage));
+		// Initialise the page.
+		PROPSHEETPAGE oPage = { 0 };
 
 		oPage.dwSize      = sizeof(oPage);
 		oPage.dwFlags     = PSP_DEFAULT | PSP_PREMATURE | PSP_USETITLE;
 		oPage.hInstance   = CModule::This().Handle();
-		oPage.pszTemplate = MAKEINTRESOURCE(m_pPageTable[i].m_pPage->m_iRscID);
+		oPage.pszTemplate = MAKEINTRESOURCE(rPage.m_pPage->m_iRscID);
 		oPage.hIcon       = NULL;
-		oPage.pszTitle    = m_pPageTable[i].m_pszLabel;
+		oPage.pszTitle    = rPage.m_pszLabel;
 		oPage.pfnDlgProc  = PropPageProc;
-		oPage.lParam      = (LPARAM) m_pPageTable[i].m_pPage;
+		oPage.lParam      = (LPARAM) rPage.m_pPage;
 		oPage.pfnCallback = NULL;
 		oPage.pcRefParent = NULL;
 
 		// Create it.
-		m_phPages[i] = ::CreatePropertySheetPage(&oPage);
+		m_vHandles[i] = ::CreatePropertySheetPage(&oPage);
 
-		ASSERT(m_phPages[i] != NULL);
+		ASSERT(m_vHandles[i] != NULL);
 	}
 
 	// Initialise the header.
-	PROPSHEETHEADER oHeader;
-
-	memset(&oHeader, 0, sizeof(oHeader));
+	PROPSHEETHEADER oHeader = { 0 };
 
 	oHeader.dwSize      = sizeof(oHeader);
 	oHeader.dwFlags     = PSH_DEFAULT | PSH_NOAPPLYNOW;
@@ -145,9 +130,9 @@ int CPropertySheet::RunModal(CWnd& rParent)
 	oHeader.hInstance   = CModule::This().Handle();
 	oHeader.hIcon       = NULL;
 	oHeader.pszCaption  = m_strTitle;
-	oHeader.nPages      = m_nPages;
+	oHeader.nPages      = m_vPages.size();
 	oHeader.nStartPage  = 0;
-	oHeader.phpage      = m_phPages;
+	oHeader.phpage      = (!m_vHandles.empty()) ? &m_vHandles.front() : nullptr;
 	oHeader.pfnCallback = NULL;
 
 	// Create it.
@@ -171,37 +156,20 @@ int CPropertySheet::RunModal(CWnd& rParent)
 *******************************************************************************
 */
 
-void CPropertySheet::PageTable(PAGE* pPageTable)
+void CPropertySheet::PageTable(PAGE_ENTRY* pPageTable)
 {
-	ASSERT(m_pPageTable == NULL);
+	ASSERT(m_vPages.empty());
 	ASSERT(pPageTable != NULL);
 
-	PAGE* pPage = pPageTable;
+	size_t nPages = 0;
 
 	// Count the number of pages.
-	while (pPage->m_pPage != NULL)
-	{
-		m_nPages++;
-	    pPage++;
-	}
+	for (PAGE_ENTRY* pPage = pPageTable; (pPage->m_pPage != NULL); ++pPage)
+	    ++nPages;
 
-	// Allocate memory for the copy.
-	m_pPageTable = new PAGE[m_nPages];
-	ASSERT(m_pPageTable);
-	
-	pPage = pPageTable;
+	m_vPages.resize(nPages);
 
-	// Copy the table.
-	for (int i = 0; i < m_nPages; i++)
-	{
-		ASSERT(pPage->m_pPage    != NULL);
-		ASSERT(pPage->m_pszLabel != NULL);
-
-		m_pPageTable[i].m_pPage    = pPage->m_pPage;
-		m_pPageTable[i].m_pszLabel = pPage->m_pszLabel;
-
-	    pPage++;
-	}
+	std::copy(pPageTable, pPageTable+nPages, m_vPages.begin());
 }
 
 /******************************************************************************
@@ -221,8 +189,10 @@ int CALLBACK PropSheetProc(HWND hWnd, UINT iMsg, LPARAM /*lParam*/)
 	// Initialised?
 	if (iMsg == PSCB_INITIALIZED)
 	{
+		ASSERT_FALSE();
+
 		// Get object from property page info.
-		CPropertySheet* pDialog = (CPropertySheet*) NULL;
+		CPropertySheet* pDialog = reinterpret_cast<CPropertySheet*>(NULL);
 
 		// Save handle.
 		pDialog->m_hWnd = hWnd;
