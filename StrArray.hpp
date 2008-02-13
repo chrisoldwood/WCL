@@ -27,7 +27,7 @@
 *******************************************************************************
 */
 
-class CStrArray : protected std::vector<CString*>
+class CStrArray
 {
 public:
 	//
@@ -45,23 +45,30 @@ public:
 	//
 	// Methods.
 	//
-	int Size() const;
+	size_t Size() const;
 
-	const CString& At(int nIndex) const;
-	const CString& operator[](int nIndex) const;
+	const CString& At(size_t nIndex) const;
+	const CString& operator[](size_t nIndex) const;
 
-	void Set(int nIndex, const CString& rString);
-	int  Add(const CString& rString);
-	void Insert(int nIndex, const CString& rString);
+	void Set(size_t nIndex, const CString& rString);
+	size_t Add(const CString& rString);
+	void Insert(size_t nIndex, const CString& rString);
 
-	void Delete(int nIndex);
+	void Delete(size_t nIndex);
 	void DeleteAll();
 
-	int Find(const char* pszString, bool bIgnoreCase = false) const;
+	int Find(const tchar* pszString, bool bIgnoreCase = false) const;
 
 private:
-	// Template shorthands.
-	typedef std::vector<CString*> CStringVector;
+	//! The underlying array type..
+	typedef std::vector<CString*> StringVector;
+	//! A const iterator for the strings vector.
+	typedef StringVector::const_iterator CIter;
+
+	//
+	// Members.
+	//
+	StringVector	m_vStrings;		//!< The underlying collection of strings.
 };
 
 /******************************************************************************
@@ -77,10 +84,8 @@ inline CStrArray::CStrArray()
 
 inline CStrArray::CStrArray(const CStrArray& oRHS)
 {
-	typedef CStringVector::const_iterator CIter;
-
-	for (CIter oIter = oRHS.begin(); oIter != oRHS.end(); ++oIter)
-		push_back(new CString(*(*oIter)));
+	for (CIter it = oRHS.m_vStrings.begin(); it != oRHS.m_vStrings.end(); ++it)
+		m_vStrings.push_back(new CString(*(*it)));
 }
 
 inline CStrArray::~CStrArray()
@@ -90,89 +95,83 @@ inline CStrArray::~CStrArray()
 
 inline CStrArray& CStrArray::operator=(const CStrArray& oRHS)
 {
-	typedef CStringVector::const_iterator CIter;
-
 	if (this != &oRHS)
 	{
 		DeleteAll();
 
-		for (CIter oIter = oRHS.begin(); oIter != oRHS.end(); ++oIter)
-			push_back(new CString(*(*oIter)));
+		for (CIter it = oRHS.m_vStrings.begin(); it != oRHS.m_vStrings.end(); ++it)
+			m_vStrings.push_back(new CString(*(*it)));
 	}
 
 	return *this;
 }
 
-inline int CStrArray::Size() const
+inline size_t CStrArray::Size() const
 {
-	return CStringVector::size();
+	return m_vStrings.size();
 }
 
-inline const CString& CStrArray::At(int nIndex) const
+inline const CString& CStrArray::At(size_t nIndex) const
 {
-	ASSERT((nIndex >= 0) && (nIndex < Size()));
+	ASSERT(nIndex < Size());
 
-	return *(CStringVector::at(nIndex));
+	return *(m_vStrings.at(nIndex));
 }
 
-inline const CString& CStrArray::operator[](int nIndex) const
+inline const CString& CStrArray::operator[](size_t nIndex) const
 {
-	ASSERT((nIndex >= 0) && (nIndex < Size()));
+	ASSERT(nIndex < Size());
 
-	return *(CStringVector::operator[](nIndex));
+	return *(m_vStrings[nIndex]);
 }
 
-inline void CStrArray::Set(int nIndex, const CString& rString)
+inline void CStrArray::Set(size_t nIndex, const CString& rString)
 {
-	ASSERT((nIndex >= 0) && (nIndex < Size()));
+	ASSERT(nIndex < Size());
 
-	*(CStringVector::operator[](nIndex)) = rString;
+	*(m_vStrings[nIndex]) = rString;
 }
 
-inline int CStrArray::Add(const CString& rString)
+inline size_t CStrArray::Add(const CString& rString)
 {
-	push_back(new CString(rString));
+	m_vStrings.push_back(new CString(rString));
 
-	return size()-1;
+	return m_vStrings.size()-1;
 }
 
-inline void CStrArray::Insert(int nIndex, const CString& rString)
+inline void CStrArray::Insert(size_t nIndex, const CString& rString)
 {
-	ASSERT((nIndex >= 0) && (nIndex <= Size()));
+	ASSERT(nIndex <= Size());
 
-	insert(begin()+nIndex, new CString(rString));
+	m_vStrings.insert(m_vStrings.begin()+nIndex, new CString(rString));
 }
 
-inline void CStrArray::Delete(int nIndex)
+inline void CStrArray::Delete(size_t nIndex)
 {
-	ASSERT((nIndex >= 0) && (nIndex < Size()));
+	ASSERT(nIndex < Size());
 
-	delete CStringVector::operator[](nIndex);
-	erase(begin()+nIndex);
+	delete m_vStrings[nIndex];
+	m_vStrings.erase(m_vStrings.begin()+nIndex);
 }
 
 inline void CStrArray::DeleteAll()
 {
-	typedef CStringVector::const_iterator CIter;
+	for (CIter it = m_vStrings.begin(); it != m_vStrings.end(); ++it)
+		delete *it;
 
-	for (CIter oIter = begin(); oIter != end(); ++oIter)
-		delete *oIter;
-
-	clear();
+	m_vStrings.clear();
 }
 
-inline int CStrArray::Find(const char* pszString, bool bIgnoreCase) const
+inline int CStrArray::Find(const tchar* pszString, bool bIgnoreCase) const
 {
 	ASSERT(pszString != NULL);
 
-	typedef CStringVector::const_iterator CIter;
-
-	for (CIter oIter = begin(); oIter != end(); ++oIter)
+	for (CIter it = m_vStrings.begin(); it != m_vStrings.end(); ++it)
 	{
-		CString* pString = *oIter;
+		CString* pString = *it;
 
 		if (pString->Compare(pszString, bIgnoreCase) == 0)
-			return oIter-begin();
+			return std::distance(m_vStrings.begin(), it);
 	}
 
 	return -1;
