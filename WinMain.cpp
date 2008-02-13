@@ -10,12 +10,14 @@
 
 #include "Common.hpp"
 #include <stdio.h>
-#include <locale>
+#include <locale.h>
 #include "TraceLogger.hpp"
 #include "App.hpp"
 #include "SeTranslator.hpp"
 #include "MsgThread.hpp"
 #include "Exception.hpp"
+#include <Core/AnsiWide.hpp>
+#include <tchar.h>
 
 // Using declarations.
 using namespace WCL;
@@ -59,7 +61,7 @@ extern "C" int WINAPI WinMain(HINSTANCE hCurrInst, HINSTANCE /*hPrevInst*/,
 
 		// Initialise members.
 		oApp.m_Module.m_hInstance = hCurrInst;
-		oApp.m_strCmdLine         = lpszCmdLine;	
+		oApp.m_strCmdLine         = A2T(lpszCmdLine);	
 		oApp.m_iCmdShow           = iCmdShow;
 
 		// Open, run and close the app...
@@ -73,11 +75,11 @@ extern "C" int WINAPI WinMain(HINSTANCE hCurrInst, HINSTANCE /*hPrevInst*/,
 	}
 	catch (const std::exception& e)
 	{
-		WCL::ReportUnhandledException("Unexpected exception caught in WinMain()\n\n%s", e.what());
+		WCL::ReportUnhandledException(TXT("Unexpected exception caught in WinMain()\n\n%hs"), e.what());
 	}
 	catch (...)
 	{
-		WCL::ReportUnhandledException("Unexpected unknown exception caught in WinMain()");
+		WCL::ReportUnhandledException(TXT("Unexpected unknown exception caught in WinMain()"));
 	}
 
 	return nResult;
