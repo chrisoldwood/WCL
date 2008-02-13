@@ -41,10 +41,10 @@ public:
 	//
 
 	//! Create a key and open it for writing.
-	void Create(HKEY hParentKey, const char* pszSubKey); // throw(RegistryException)
+	void Create(HKEY hParentKey, const tchar* pszSubKey); // throw(RegistryException)
 
 	//! Open the key for reading or writing.
-	void Open(HKEY hParentKey, const char* pszSubKey, REGSAM dwAccess); // throw(RegistryException)
+	void Open(HKEY hParentKey, const tchar* pszSubKey, REGSAM dwAccess); // throw(RegistryException)
 
 	//! Close the key.
 	void Close();
@@ -57,32 +57,35 @@ public:
 	CString ReadDefaultValue() const; // throw(RegistryException)
 
 	//! Read a named string value under the key.
-	CString ReadStringValue(const char* pszName, const char* pszDefault) const;
+	CString ReadStringValue(const tchar* pszName, const tchar* pszDefault) const;
 
 	//! Write the default value for the key.
-	void WriteDefaultValue(const char* pszValue); // throw(RegistryException)
+	void WriteDefaultValue(const tchar* pszValue); // throw(RegistryException)
 
 	//! Write a named string value under the key.
-	void WriteStringValue(const char* pszName, const char* pszValue); // throw(RegistryException)
+	void WriteStringValue(const tchar* pszName, const tchar* pszValue); // throw(RegistryException)
 
 	//
 	// Class methods.
 	//
 
 	//! Query if the key exists.
-	static bool Exists(HKEY hParentKey, const char* pszSubKey);
+	static bool Exists(HKEY hParentKey, const tchar* pszSubKey);
 
 	//! Delete the key.
-	static bool Delete(HKEY hParentKey, const char* pszSubKey);
+	static bool Delete(HKEY hParentKey, const tchar* pszSubKey);
 
 	//! Read the default value for a key.
-	static CString ReadKeyDefaultValue(HKEY hParentKey, const char* pszSubKey);
+	static CString ReadKeyDefaultValue(HKEY hParentKey, const tchar* pszSubKey);
 
 	//! Write the default value for a key.
-	static void WriteKeyDefaultValue(HKEY hParentKey, const char* pszSubKey, const char* pszValue);
+	static void WriteKeyDefaultValue(HKEY hParentKey, const tchar* pszSubKey, const tchar* pszValue);
 
 	//! Write a named string value under a key.
-	static void WriteKeyStringValue(HKEY hParentKey, const char* pszSubKey, const char* pszName, const char* pszValue);
+	static void WriteKeyStringValue(HKEY hParentKey, const tchar* pszSubKey, const tchar* pszName, const tchar* pszValue);
+
+	//! Convert a registry key type to the symbolic name.
+	static const tchar* KeyTypeToStr(DWORD dwType);
 
 private:
 	//

@@ -35,15 +35,15 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CMRUList(int nMaxSize);
+	CMRUList(size_t nMaxSize);
 	~CMRUList();
 	
 	//
 	// Accessors & mutators.
 	//
-	void Add(const char* pszPath);
+	void Add(const tchar* pszPath);
 
-	const CString& operator[](int nIndex) const;
+	const CString& operator[](size_t nIndex) const;
 
 	//
 	// GUI methods.
@@ -53,14 +53,14 @@ public:
 	//
 	// Persistance methods.
 	//
-	void Load(CIniFile& rCfgFile, const char* pszSection = "MRU");
-	void Save(CIniFile& rCfgFile, const char* pszSection = "MRU");
+	void Load(CIniFile& rCfgFile, const tchar* pszSection = TXT("MRU"));
+	void Save(CIniFile& rCfgFile, const tchar* pszSection = TXT("MRU"));
 
 protected:
 	//
 	// Members.
 	//
-	int			m_nMaxSize;		// Max size of list.
+	size_t		m_nMaxSize;		// Max size of list.
 	CStrArray	m_Paths;		// The list of MRU files.
 };
 
@@ -71,7 +71,7 @@ protected:
 *******************************************************************************
 */
 
-inline const CString& CMRUList::operator[](int nIndex) const
+inline const CString& CMRUList::operator[](size_t nIndex) const
 {
 	return m_Paths[nIndex];
 }

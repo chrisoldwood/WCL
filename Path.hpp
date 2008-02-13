@@ -34,9 +34,9 @@ public:
 	// Constructors/Destructor.
 	//
 	CPath();
-    CPath(const char*    pszPath);
+    CPath(const tchar* pszPath);
 	CPath(const CString& strSrc);
-    CPath(const char*    pszDir, const char* pszFile);
+    CPath(const tchar* pszDir, const tchar* pszFile);
 
 	//
 	// File/Dir attributes.
@@ -65,12 +65,12 @@ public:
 		SelectFile
 	};
     
-	bool Select(const CWnd& rParent, DlgMode eMode, const char* pszExts, const char* pszDefExt, const char* pszDir = NULL);
-	bool SelectDir(const CWnd& rParent, const char* pszTitle, const char* pszDir = NULL);
-	bool SelectComputer(const CWnd& rParent, const char* pszTitle);
+	bool Select(const CWnd& rParent, DlgMode eMode, const tchar* pszExts, const tchar* pszDefExt, const tchar* pszDir = NULL);
+	bool SelectDir(const CWnd& rParent, const tchar* pszTitle, const tchar* pszDir = NULL);
+	bool SelectComputer(const CWnd& rParent, const tchar* pszTitle);
 
-	static bool SelectFiles(const CWnd& rParent, const char* pszExts, const char* pszDefExt, CStrArray& astrFiles);
-	static bool SelectFiles(const CWnd& rParent, const char* pszExts, const char* pszDefExt, const char* pszDir, CStrArray& astrFiles);
+	static bool SelectFiles(const CWnd& rParent, const tchar* pszExts, const tchar* pszDefExt, CStrArray& astrFiles);
+	static bool SelectFiles(const CWnd& rParent, const tchar* pszExts, const tchar* pszDefExt, const tchar* pszDir, CStrArray& astrFiles);
 
 	//
 	// Other methods.
@@ -101,26 +101,26 @@ public:
 	//
 	// Operators.
 	//
-	char& operator[](int nChar);
+	tchar& operator[](size_t nChar);
 
-	CPath& operator=(const char* pszSrc);
+	CPath& operator=(const tchar* pszSrc);
 	CPath& operator=(const CString& strSrc);
 	
-	void operator/=(const char* pszPath);
+	void operator/=(const tchar* pszPath);
 
-	operator const char*() const;
+	operator const tchar*() const;
 
 	//
 	// Friend functions.
 	//
-	friend CPath Append(const CPath& strLHS, const char* pszRHS);
-	friend bool Equals(const CPath& strLHS, const char* pszRHS);
+	friend CPath Append(const CPath& strLHS, const tchar* pszRHS);
+	friend bool Equals(const CPath& strLHS, const tchar* pszRHS);
 
 protected:
 	//
 	// Internal methods.
 	//
-	static void Normalise(char* pszPath);
+	static void Normalise(tchar* pszPath);
 
 	static int CALLBACK BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPARAM lpData);
 };
@@ -132,21 +132,21 @@ protected:
 *******************************************************************************
 */
 
-inline char& CPath::operator[](int nChar)
+inline tchar& CPath::operator[](size_t nChar)
 {
 	ASSERT( (nChar >=0) && (nChar < Length()) );
 
 	return m_pszData[nChar];
 }
 
-inline CPath::operator const char*() const
+inline CPath::operator const tchar*() const
 {
 	ASSERT(m_pszData);
 	
 	return m_pszData;
 }
 
-inline CPath& CPath::operator=(const char* pszSrc)
+inline CPath& CPath::operator=(const tchar* pszSrc)
 {
 	ASSERT(pszSrc != NULL);
 
@@ -170,7 +170,7 @@ inline CPath& CPath::operator=(const CString& strSrc)
 *******************************************************************************
 */
 
-inline CPath Append(const CPath& strLHS, const char* pszRHS)
+inline CPath Append(const CPath& strLHS, const tchar* pszRHS)
 {
 	CPath str(strLHS);
 
@@ -179,7 +179,7 @@ inline CPath Append(const CPath& strLHS, const char* pszRHS)
 	return str;
 }
 
-inline CPath operator/(const CPath& strLHS, const char* pszRHS)
+inline CPath operator/(const CPath& strLHS, const tchar* pszRHS)
 {
 	return Append(strLHS, pszRHS);
 }
@@ -194,12 +194,12 @@ inline CPath operator/(const CPath& strLHS, const CPath& strRHS)
 	return Append(strLHS, strRHS);
 }
 
-inline bool Equals(const CPath& strLHS, const char* pszRHS)
+inline bool Equals(const CPath& strLHS, const tchar* pszRHS)
 {
 	return (strLHS.Compare(pszRHS, true) == 0);
 }
 
-inline bool operator==(const CPath& strLHS, const char* pszRHS)
+inline bool operator==(const CPath& strLHS, const tchar* pszRHS)
 {
 	return Equals(strLHS, pszRHS);
 }
@@ -214,7 +214,7 @@ inline bool operator==(const CPath& strLHS, const CPath& strRHS)
 	return Equals(strLHS, strRHS);
 }
 
-inline bool operator!=(const CPath& strLHS, const char* pszRHS)
+inline bool operator!=(const CPath& strLHS, const tchar* pszRHS)
 {
 	return !Equals(strLHS, pszRHS);
 }

@@ -100,7 +100,7 @@ inline SafeVector<T>::SafeVector(size_t nSize, VARTYPE eVarType)
 	SAFEARRAY* pSafeArray = ::SafeArrayCreateVector(eVarType, 0, nSize);
 
 	if (pSafeArray == nullptr)
-		throw WCL::ComException(E_OUTOFMEMORY, "Failed to allocate a SAFEARRAY");
+		throw WCL::ComException(E_OUTOFMEMORY, TXT("Failed to allocate a SAFEARRAY"));
 
 	T* pData = nullptr;
 
@@ -110,7 +110,7 @@ inline SafeVector<T>::SafeVector(size_t nSize, VARTYPE eVarType)
 	if (FAILED(hr))
 	{
 		::SafeArrayDestroy(pSafeArray);
-		throw WCL::ComException(hr, "Failed to lock the SAFEARRAY for access");
+		throw WCL::ComException(hr, TXT("Failed to lock the SAFEARRAY for access"));
 	}
 
 	// Update state.
@@ -136,13 +136,13 @@ inline SafeVector<T>::SafeVector(SAFEARRAY* pSafeArray, VARTYPE eVarType)
 	if (FAILED(hr))
 	{
 		::SafeArrayDestroy(pSafeArray);
-		throw WCL::ComException(hr, "Failed to get the SAFEARRAY value type");
+		throw WCL::ComException(hr, TXT("Failed to get the SAFEARRAY value type"));
 	}
 
 	if (eArrayType != eVarType)
 	{
 		::SafeArrayDestroy(pSafeArray);
-		throw WCL::ComException(E_INVALIDARG, "The SAFEARRAY does not contain the correct value type");
+		throw WCL::ComException(E_INVALIDARG, TXT("The SAFEARRAY does not contain the correct value type"));
 	}
 
 	// Check the number of dimensions.
@@ -151,7 +151,7 @@ inline SafeVector<T>::SafeVector(SAFEARRAY* pSafeArray, VARTYPE eVarType)
 	if (nDims != 1)
 	{
 		::SafeArrayDestroy(pSafeArray);
-		throw WCL::ComException(E_INVALIDARG, "The SAFEARRAY does not contain a single dimension");
+		throw WCL::ComException(E_INVALIDARG, TXT("The SAFEARRAY does not contain a single dimension"));
 	}
 
 	LONG lLowerBound;
@@ -163,7 +163,7 @@ inline SafeVector<T>::SafeVector(SAFEARRAY* pSafeArray, VARTYPE eVarType)
 	if (FAILED(hr))
 	{
 		::SafeArrayDestroy(pSafeArray);
-		throw WCL::ComException(hr, "Failed to get the SAFEARRAY lower bound");
+		throw WCL::ComException(hr, TXT("Failed to get the SAFEARRAY lower bound"));
 	}
 
 	hr = ::SafeArrayGetUBound(pSafeArray, 1, &lUpperBound);
@@ -171,7 +171,7 @@ inline SafeVector<T>::SafeVector(SAFEARRAY* pSafeArray, VARTYPE eVarType)
 	if (FAILED(hr))
 	{
 		::SafeArrayDestroy(pSafeArray);
-		throw WCL::ComException(hr, "Failed to get the SAFEARRAY upper bound");
+		throw WCL::ComException(hr, TXT("Failed to get the SAFEARRAY upper bound"));
 	}
 
 	T* pData = nullptr;
@@ -182,7 +182,7 @@ inline SafeVector<T>::SafeVector(SAFEARRAY* pSafeArray, VARTYPE eVarType)
 	if (FAILED(hr))
 	{
 		::SafeArrayDestroy(pSafeArray);
-		throw WCL::ComException(hr, "Failed to lock the SAFEARRAY for access");
+		throw WCL::ComException(hr, TXT("Failed to lock the SAFEARRAY for access"));
 	}
 
 	// Update state.

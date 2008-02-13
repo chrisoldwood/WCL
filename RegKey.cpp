@@ -6,6 +6,9 @@
 #include "Common.hpp"
 #include "RegKey.hpp"
 #include "RegistryException.hpp"
+#include <Core/StringUtils.hpp>
+#include <limits>
+#include <tchar.h>
 
 // Using declarations.
 using WCL::RegistryException;
@@ -32,7 +35,7 @@ RegKey::~RegKey()
 ////////////////////////////////////////////////////////////////////////////////
 //! Create a key and open it for writing.
 
-void RegKey::Create(HKEY hParentKey, const char* pszSubKey)
+void RegKey::Create(HKEY hParentKey, const tchar* pszSubKey)
 {
 	ASSERT(m_hKey     == NULL);
 	ASSERT(hParentKey != NULL);
@@ -41,13 +44,13 @@ void RegKey::Create(HKEY hParentKey, const char* pszSubKey)
 	LONG lResult = ::RegCreateKey(hParentKey, pszSubKey, &m_hKey);
 
 	if (lResult != ERROR_SUCCESS)
-		throw RegistryException(lResult, "Failed to create a registry key");
+		throw RegistryException(lResult, TXT("Failed to create a registry key"));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Open the key for reading or writing.
 
-void RegKey::Open(HKEY hParentKey, const char* pszSubKey, REGSAM dwAccess)
+void RegKey::Open(HKEY hParentKey, const tchar* pszSubKey, REGSAM dwAccess)
 {
 	ASSERT(m_hKey     == NULL);
 	ASSERT(hParentKey != NULL);
@@ -56,7 +59,7 @@ void RegKey::Open(HKEY hParentKey, const char* pszSubKey, REGSAM dwAccess)
 	LONG lResult = ::RegOpenKeyEx(hParentKey, pszSubKey, NULL, dwAccess, &m_hKey);
 
 	if (lResult != ERROR_SUCCESS)
-		throw RegistryException(lResult, "Failed to open a registry key");
+		throw RegistryException(lResult, TXT("Failed to open a registry key"));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -82,17 +85,17 @@ CString RegKey::ReadDefaultValue() const
 	
 	LONG lSize = 0;
 
-	// Get the data type and size;
+	// Get the data type and size in bytes.
 	LONG lResult = ::RegQueryValue(m_hKey, NULL, NULL, &lSize);
 
 	if (lResult != ERROR_SUCCESS)
-		throw RegistryException(lResult, "Failed to read the default key value size");
+		throw RegistryException(lResult, TXT("Failed to read the default key value size"));
 
 	// Allow for a nul terminator.
-	++lSize;
+	lSize += sizeof(tchar);
 
 	// Allocate a temporary buffer.
-	char* pszBuffer = (char*) _alloca(lSize);
+	tchar* pszBuffer = static_cast<tchar*>(_alloca(lSize));
 
 	memset(pszBuffer, 0, lSize);
 
@@ -100,7 +103,7 @@ CString RegKey::ReadDefaultValue() const
 	lResult = ::RegQueryValue(m_hKey, NULL, pszBuffer, &lSize);
 
 	if (lResult != ERROR_SUCCESS)
-		throw RegistryException(lResult, "Failed to read the default key value");
+		throw RegistryException(lResult, TXT("Failed to read the default key value"));
 
 	return pszBuffer;
 }
@@ -108,7 +111,7 @@ CString RegKey::ReadDefaultValue() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Read a named string value under the key.
 
-CString RegKey::ReadStringValue(const char* pszName, const char* pszDefault) const
+CString RegKey::ReadStringValue(const tchar* pszName, const tchar* pszDefault) const
 {
 	ASSERT(m_hKey     != NULL);
 	ASSERT(pszName    != NULL);
@@ -121,13 +124,14 @@ CString RegKey::ReadStringValue(const char* pszName, const char* pszDefault) con
 	if (::RegQueryValueEx(m_hKey, pszName, NULL, &dwType, NULL, &dwSize) != ERROR_SUCCESS)
 		return pszDefault;
 
-	ASSERT(dwType == REG_SZ);
+	if (dwType != REG_SZ)
+		throw RegistryException(Core::Fmt(TXT("Failed to read a string registry key because its type is %s"), KeyTypeToStr(dwType)));
 
 	// Allow for a nul terminator.
-	dwSize++;
+	dwSize += sizeof(tchar);
 
 	// Allocate a temporary buffer.
-	char* pszBuffer = (char*) _alloca(dwSize);
+	tchar* pszBuffer = static_cast<tchar*>(_alloca(dwSize));
 
 	memset(pszBuffer, 0, dwSize);
 
@@ -141,35 +145,38 @@ CString RegKey::ReadStringValue(const char* pszName, const char* pszDefault) con
 ////////////////////////////////////////////////////////////////////////////////
 //! Write the default value for the key.
 
-void RegKey::WriteDefaultValue(const char* pszValue)
+void RegKey::WriteDefaultValue(const tchar* pszValue)
 {
 	ASSERT(m_hKey   != NULL);
 	ASSERT(pszValue != NULL);
 
-	LONG lResult = ::RegSetValue(m_hKey, NULL, REG_SZ, pszValue, strlen(pszValue));
+	LONG lResult = ::RegSetValue(m_hKey, NULL, REG_SZ, pszValue, tstrlen(pszValue));
 
 	if (lResult != ERROR_SUCCESS)
-		throw RegistryException(lResult, "Failed to write the default key value");
+		throw RegistryException(lResult, TXT("Failed to write the default key value"));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Write a named string value under the key.
 
-void RegKey::WriteStringValue(const char* pszName, const char* pszValue)
+void RegKey::WriteStringValue(const tchar* pszName, const tchar* pszValue)
 {
 	ASSERT(m_hKey   != NULL);
 	ASSERT(pszValue != NULL);
 
-	LONG lResult = ::RegSetValueEx(m_hKey, pszName, 0, REG_SZ, reinterpret_cast<CONST BYTE*>(pszValue), strlen(pszValue)+1);
+	size_t nChars = tstrlen(pszValue);
+	size_t nBytes = Core::NumBytes<tchar>(nChars) + sizeof(tchar);
+
+	LONG lResult = ::RegSetValueEx(m_hKey, pszName, 0, REG_SZ, reinterpret_cast<CONST BYTE*>(pszValue), nBytes);
 
 	if (lResult != ERROR_SUCCESS)
-		throw RegistryException(lResult, "Failed to write a regsitry value");
+		throw RegistryException(lResult, TXT("Failed to write a regsitry value"));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Query if the key exists.
 
-bool RegKey::Exists(HKEY hParentKey, const char* pszSubKey)
+bool RegKey::Exists(HKEY hParentKey, const tchar* pszSubKey)
 {
 	ASSERT(hParentKey != NULL);
 	ASSERT(pszSubKey  != NULL);
@@ -190,7 +197,7 @@ bool RegKey::Exists(HKEY hParentKey, const char* pszSubKey)
 //! recursively delete any subkeys.
 //! If the method fails the error code can be retrieved with GetLastError().
 
-bool RegKey::Delete(HKEY hParentKey, const char* pszSubKey)
+bool RegKey::Delete(HKEY hParentKey, const tchar* pszSubKey)
 {
 	ASSERT(hParentKey != NULL);
 	ASSERT(pszSubKey  != NULL);
@@ -207,7 +214,7 @@ bool RegKey::Delete(HKEY hParentKey, const char* pszSubKey)
 ////////////////////////////////////////////////////////////////////////////////
 //! Read the default value for a key.
 
-CString RegKey::ReadKeyDefaultValue(HKEY hParentKey, const char* pszSubKey)
+CString RegKey::ReadKeyDefaultValue(HKEY hParentKey, const tchar* pszSubKey)
 {
 	ASSERT(hParentKey != NULL);
 	ASSERT(pszSubKey  != NULL);
@@ -222,7 +229,7 @@ CString RegKey::ReadKeyDefaultValue(HKEY hParentKey, const char* pszSubKey)
 ////////////////////////////////////////////////////////////////////////////////
 //! Write the default value for a key. The key is created if it doesn't exist.
 
-void RegKey::WriteKeyDefaultValue(HKEY hParentKey, const char* pszSubKey, const char* pszValue)
+void RegKey::WriteKeyDefaultValue(HKEY hParentKey, const tchar* pszSubKey, const tchar* pszValue)
 {
 	ASSERT(hParentKey != NULL);
 	ASSERT(pszSubKey  != NULL);
@@ -244,7 +251,7 @@ void RegKey::WriteKeyDefaultValue(HKEY hParentKey, const char* pszSubKey, const 
 //! Write a named string value under a key. The key is created if it doesn't
 //! exist.
 
-void RegKey::WriteKeyStringValue(HKEY hParentKey, const char* pszSubKey, const char* pszName, const char* pszValue)
+void RegKey::WriteKeyStringValue(HKEY hParentKey, const tchar* pszSubKey, const tchar* pszName, const tchar* pszValue)
 {
 	ASSERT(hParentKey != NULL);
 	ASSERT(pszSubKey  != NULL);
@@ -261,6 +268,35 @@ void RegKey::WriteKeyStringValue(HKEY hParentKey, const char* pszSubKey, const c
 
 	// Set the value.
 	oKey.WriteStringValue(pszName, pszValue);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Convert a registry key type to the symbolic name.
+
+const tchar* RegKey::KeyTypeToStr(DWORD dwType)
+{
+	switch (dwType)
+	{
+		case REG_NONE:							return TXT("REG_NONE");
+		case REG_SZ:							return TXT("REG_SZ");
+		case REG_EXPAND_SZ:						return TXT("REG_EXPAND_SZ");
+		case REG_BINARY:						return TXT("REG_BINARY");
+		case REG_DWORD:							return TXT("REG_DWORD");
+//		case REG_DWORD_LITTLE_ENDIAN:			return TXT("REG_DWORD_LITTLE_ENDIAN");
+		case REG_DWORD_BIG_ENDIAN:				return TXT("REG_DWORD_BIG_ENDIAN");
+		case REG_LINK:							return TXT("REG_LINK");
+		case REG_MULTI_SZ:						return TXT("REG_MULTI_SZ");
+		case REG_RESOURCE_LIST:					return TXT("REG_RESOURCE_LIST");
+		case REG_FULL_RESOURCE_DESCRIPTOR:		return TXT("REG_FULL_RESOURCE_DESCRIPTOR");
+		case REG_RESOURCE_REQUIREMENTS_LIST:	return TXT("REG_RESOURCE_REQUIREMENTS_LIST");
+		case REG_QWORD:							return TXT("REG_QWORD");
+//		case REG_QWORD_LITTLE_ENDIAN:			return TXT("REG_QWORD_LITTLE_ENDIAN");
+		default:								ASSERT_FALSE();	break;
+	};
+
+	tchar szType[std::numeric_limits<DWORD>::digits10] = { 0 };
+
+	return _ltot(dwType, szType, 10);
 }
 
 //namespace WCL

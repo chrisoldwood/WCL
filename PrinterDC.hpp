@@ -43,7 +43,7 @@ public:
 	//
 	// Commands.
 	//
-	bool Start(const char* pszTitle);
+	bool Start(const tchar* pszTitle);
 	void Abort();
 	bool End();
 	bool StartPage();
@@ -54,13 +54,13 @@ public:
 	//
 	CRect PageArea() const;
 	CRect PrintableArea() const;
-	int   PageNum() const;
+	size_t PageNum() const;
 	
 protected:
 	//
 	// Members.
 	//
-	int	m_nPage;
+	size_t	m_nPage;
 };
 
 /******************************************************************************
@@ -71,7 +71,7 @@ protected:
 */
 
 
-inline int CPrinterDC::PageNum() const
+inline size_t CPrinterDC::PageNum() const
 {
 	return m_nPage;
 }

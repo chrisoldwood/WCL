@@ -100,9 +100,9 @@ CPopupMenu CMenu::GetItemPopup(int nPos)
 *******************************************************************************
 */
 
-void CMenu::SetItemPopup(int nPos, const CPopupMenu& rMenu, const char* pszText)
+void CMenu::SetItemPopup(int nPos, const CPopupMenu& rMenu, const tchar* pszText)
 {
-	::ModifyMenu(m_hMenu, nPos, MF_BYPOSITION | MF_POPUP | MF_STRING, (UINT) rMenu.Handle(), pszText);
+	::ModifyMenu(m_hMenu, nPos, MF_BYPOSITION | MF_POPUP | MF_STRING, reinterpret_cast<uint>(rMenu.Handle()), pszText);
 }
 
 /******************************************************************************
@@ -120,11 +120,12 @@ void CMenu::SetItemPopup(int nPos, const CPopupMenu& rMenu, const char* pszText)
 CString CMenu::GetItemText(int nPos)
 {
 	CString str;
-	int     nLen = ::GetMenuString(m_hMenu, nPos, NULL, 0, MF_BYPOSITION) + 1;
+	size_t  nChars = ::GetMenuString(m_hMenu, nPos, NULL, 0, MF_BYPOSITION);
 
 	// Get the string.
-	str.BufferSize(nLen);
-	::GetMenuString(m_hMenu, nPos, (LPSTR)(LPCSTR) str, nLen, MF_BYPOSITION);
+	str.BufferSize(nChars+1);
+
+	::GetMenuString(m_hMenu, nPos, str.Buffer(), nChars+1, MF_BYPOSITION);
 
 	return str;
 }

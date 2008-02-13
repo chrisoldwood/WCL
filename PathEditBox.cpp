@@ -19,7 +19,7 @@
 */
 
 // Character filter (invalid characters in a path).
-static const char* pszFilter = "*?\"<>|";
+static const tchar* s_pszFilter = TXT("*?\"<>|");
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -37,7 +37,7 @@ CPathEditBox::CPathEditBox() : CEditBox()
 {
 	// Setup character filter.
 	SetFilterDefault(true);
-	Filter(pszFilter, false);
+	Filter(s_pszFilter, false);
 }
 
 /******************************************************************************

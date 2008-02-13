@@ -87,7 +87,7 @@ CDC::Device CPrinterDC::Type() const
 *******************************************************************************
 */
 
-bool CPrinterDC::Start(const char* pszTitle)
+bool CPrinterDC::Start(const tchar* pszTitle)
 {
 	DOCINFO DocInfo;
 
@@ -160,7 +160,7 @@ bool CPrinterDC::StartPage()
 {
 	ASSERT(m_hDC);
 
-	m_nPage++;
+	++m_nPage;
 
 	int iError = ::StartPage(m_hDC);
 

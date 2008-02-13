@@ -25,7 +25,7 @@
 *******************************************************************************
 */
 
-CMRUList::CMRUList(int nMaxSize)
+CMRUList::CMRUList(size_t nMaxSize)
 	: m_nMaxSize(nMaxSize)
 {
 }
@@ -59,7 +59,7 @@ CMRUList::~CMRUList()
 *******************************************************************************
 */
 
-void CMRUList::Add(const char* pszPath)
+void CMRUList::Add(const tchar* pszPath)
 {
 	// See if the path exists already.
 	int iOldPos = m_Paths.Find(pszPath, true);
@@ -96,16 +96,16 @@ void CMRUList::Add(const char* pszPath)
 void CMRUList::UpdateMenu(CMenu& rMenu, uint iCmdBase)
 {
 	// For all MRU items.
-	for (int i = 0; i < m_nMaxSize; i++)
+	for (size_t i = 0; i < m_nMaxSize; ++i)
 	{
 		CString strText;
 		bool	bEnable = false;
 
 		// Create item number.
-		strText.Format("&%d ", i+1);
+		strText.Format(TXT("&%d "), i+1);
 
 		// Valid path for this item?
-		if ( (i < m_Paths.Size()) && (m_Paths[i] != "") )
+		if ( (i < m_Paths.Size()) && (m_Paths[i] != TXT("")) )
 		{
 			strText += m_Paths[i];
 			bEnable  = true;
@@ -115,7 +115,7 @@ void CMRUList::UpdateMenu(CMenu& rMenu, uint iCmdBase)
 		rMenu.SetCmdText(iCmdBase, strText);
 		rMenu.EnableCmd(iCmdBase, bEnable);
 
-		iCmdBase++;
+		++iCmdBase;
 	}
 }
 
@@ -132,39 +132,39 @@ void CMRUList::UpdateMenu(CMenu& rMenu, uint iCmdBase)
 *******************************************************************************
 */
 
-void CMRUList::Load(CIniFile& rCfgFile, const char* pszSection)
+void CMRUList::Load(CIniFile& rCfgFile, const tchar* pszSection)
 {
 	ASSERT(pszSection != NULL);
 
 	// For all MRU items.
-	for (int i = 0; i < m_nMaxSize; i++)
+	for (size_t i = 0; i < m_nMaxSize; ++i)
 	{
 		CString strEntry, strValue;
 
 		// Create section entry name and read value.
-		strEntry.Format("%d", i+1);
-		strValue = rCfgFile.ReadString(pszSection, strEntry, "");
+		strEntry.Format(TXT("%d"), i+1);
+		strValue = rCfgFile.ReadString(pszSection, strEntry, TXT(""));
 
 		// Valid path?
-		if (strValue != "")
+		if (strValue != TXT(""))
 			m_Paths.Add(strValue);
 	}
 }
 
-void CMRUList::Save(CIniFile& rCfgFile, const char* pszSection)
+void CMRUList::Save(CIniFile& rCfgFile, const tchar* pszSection)
 {
 	ASSERT(pszSection != NULL);
 
 	// For all MRU items.
-	for (int i = 0; i < m_nMaxSize; i++)
+	for (size_t i = 0; i < m_nMaxSize; ++i)
 	{
 		CString strEntry;
 
 		// Create section entry name.
-		strEntry.Format("%d", i+1);
+		strEntry.Format(TXT("%d"), i+1);
 
 		// Valid path for this item?
-		if ( (i < m_Paths.Size()) && (m_Paths[i] != "") )
+		if ( (i < m_Paths.Size()) && (m_Paths[i] != TXT("")) )
 			rCfgFile.WriteString(pszSection, strEntry, m_Paths[i]);
 	}
 }

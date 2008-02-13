@@ -44,13 +44,13 @@ public:
 	//
 	// General methods.
 	//
-	void InsertCmd(uint nPos, uint iCmdID, const char* pszText);
-	void AppendCmd(uint iCmdID, const char* pszText);
+	void InsertCmd(uint nPos, uint iCmdID, const tchar* pszText);
+	void AppendCmd(uint iCmdID, const tchar* pszText);
 
 	//
 	// Item by command methods.
 	//
-	void SetCmdText(uint iCmdID, const char* pszText);
+	void SetCmdText(uint iCmdID, const tchar* pszText);
 	void EnableCmd(uint iCmdID, bool bEnable = true);
 	void CheckCmd(uint iCmdID, bool bCheck = true);
 	void RemoveCmd(uint iCmdID);
@@ -62,7 +62,7 @@ public:
 	void    EnableItem(int nPos, bool bEnable = true);
 	CString GetItemText(int nPos);
 	CPopupMenu GetItemPopup(int nPos);
-	void    SetItemPopup(int nPos, const CPopupMenu& rMenu, const char* pszText);
+	void    SetItemPopup(int nPos, const CPopupMenu& rMenu, const tchar* pszText);
 	void    RemoveItem(int nPos);
 
 protected:
@@ -84,17 +84,17 @@ inline HMENU CMenu::Handle() const
 	return m_hMenu;
 }
 
-inline void CMenu::InsertCmd(uint nPos, uint iCmdID, const char* pszText)
+inline void CMenu::InsertCmd(uint nPos, uint iCmdID, const tchar* pszText)
 {
 	::InsertMenu(m_hMenu, nPos, MF_BYPOSITION | MF_STRING, iCmdID, pszText);
 }
 
-inline void CMenu::AppendCmd(uint iCmdID, const char* pszText)
+inline void CMenu::AppendCmd(uint iCmdID, const tchar* pszText)
 {
 	::AppendMenu(m_hMenu, MF_STRING, iCmdID, pszText);
 }
 
-inline void CMenu::SetCmdText(uint iCmdID, const char* pszText)
+inline void CMenu::SetCmdText(uint iCmdID, const tchar* pszText)
 {
 	::ModifyMenu(m_hMenu, iCmdID, MF_BYCOMMAND | MF_STRING, iCmdID, pszText);
 }

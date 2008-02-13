@@ -26,18 +26,19 @@
 
 CPrinter::CPrinter()
 {
-	char szDefault[256];
+	const size_t MAX_LEN = 1024;
+	tchar szPrinter[MAX_LEN+1] = { 0 };
 	
 	// Get the defualt printer.
-	GetProfileString("Windows", "Device", "", szDefault, sizeof(szDefault));
+	GetProfileString(TXT("Windows"), TXT("Device"), TXT(""), szPrinter, MAX_LEN);
 	
 	// Is a default?
-	if ( (szDefault[0] != '\0') && (strcmp(szDefault, ",,,") != 0) )
+	if ( (szPrinter[0] != TXT('\0')) && (tstrcmp(szPrinter, TXT(",,,")) != 0) )
 	{
 		// Extract details.
-		m_strName   = strtok(szDefault, ",");
-		m_strDriver = strtok(NULL,      ",");
-		m_strPort   = strtok(NULL,      ",");
+		m_strName   = tstrtok(szPrinter, TXT(","));
+		m_strDriver = tstrtok(NULL,      TXT(","));
+		m_strPort   = tstrtok(NULL,      TXT(","));
 	}
 }
 
@@ -89,8 +90,8 @@ bool CPrinter::Select(const CWnd& rParent)
 		ASSERT(PrtDlg.hDevNames);
 		
 		// Get a pointer to the description.
-		LPCSTR 		lpszDevNames = (LPCSTR) GlobalLock(PrtDlg.hDevNames);
-		LPDEVNAMES	lpDevNames   = (LPDEVNAMES) lpszDevNames;
+		const tchar* lpszDevNames = static_cast<const tchar*>(GlobalLock(PrtDlg.hDevNames));
+		LPDEVNAMES	 lpDevNames   = (LPDEVNAMES) lpszDevNames;
 		
 		// Copy description.
 		m_strName   = lpszDevNames + lpDevNames->wDeviceOffset;

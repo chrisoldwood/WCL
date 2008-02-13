@@ -44,14 +44,14 @@ protected:
 	///////////////////////////////////////////////////////
 	struct WNDCREATE
 	{
-		DWORD		dwExStyle;			// Extended style flags.
-		const char*	pszClassName;		// Class name.
-		const char*	pszTitle;			// Title.
-		DWORD		dwStyle;			// Normal style flags.
-		CRect		rcPos;				// Initial position.
-		HWND		hParent;			// Parent window.
-		HMENU		hMenu;				// Menu handle or child ID.
-		void*		lpCreation;			// Window creation params or NULL.
+		DWORD			dwExStyle;			// Extended style flags.
+		const tchar*	pszClassName;		// Class name.
+		const tchar*	pszTitle;			// Title.
+		DWORD			dwStyle;			// Normal style flags.
+		CRect			rcPos;				// Initial position.
+		HWND			hParent;			// Parent window.
+		HMENU			hMenu;				// Menu handle or child ID.
+		void*			lpCreation;			// Window creation params or NULL.
 	};
 
 	//

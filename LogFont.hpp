@@ -52,7 +52,7 @@ public:
 	};
 
 	CString Format(FontFormat eFormat) const;
-	static bool Parse(const char* pszFont, CLogFont& oLogFont);
+	static bool Parse(const tchar* pszFont, CLogFont& oLogFont);
 
 protected:
 	//

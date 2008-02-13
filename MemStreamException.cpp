@@ -29,23 +29,23 @@ CMemStreamException::CMemStreamException(int eErrCode)
 	switch(eErrCode)
 	{
 		case E_OPEN_FAILED:
-			m_strErrorText.Format("An error occured opening a memory stream");
+			m_strErrorText = TXT("An error occured opening a memory stream");
 			break;
 
 		case E_CREATE_FAILED:
-			m_strErrorText.Format("An error occured creating a memory stream");
+			m_strErrorText = TXT("An error occured creating a memory stream");
 			break;
 
 		case E_READ_FAILED:
-			m_strErrorText.Format("An error occured reading from a memory stream");
+			m_strErrorText = TXT("An error occured reading from a memory stream");
 			break;
 
 		case E_WRITE_FAILED:
-			m_strErrorText.Format("An error occured writing to a memory stream");
+			m_strErrorText = TXT("An error occured writing to a memory stream");
 			break;
 
 		case E_SEEK_FAILED:
-			m_strErrorText.Format("An error occured seeking to a memory stream position");
+			m_strErrorText = TXT("An error occured seeking to a memory stream position");
 			break;
 
 		// Shouldn't happen!

@@ -53,7 +53,7 @@ CLogFont::CLogFont()
 	lfClipPrecision  = CLIP_DEFAULT_PRECIS;
 	lfQuality        = DEFAULT_QUALITY;
 	lfPitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
-	lfFaceName[0]    = '\0';
+	lfFaceName[0]    = TXT('\0');
 }
 
 /******************************************************************************
@@ -149,19 +149,19 @@ CString CLogFont::Format(FontFormat eFormat) const
 	// Always contains FaceName & Height.
 	if (nFields >= FMT_MINIMAL)
 	{
-		strFont += CString::Fmt("%s,%d", lfFaceName, lfHeight);
+		strFont += CString::Fmt(TXT("%s,%d"), lfFaceName, lfHeight);
 	}
 
 	// Includes Weight, Italic, Underline & Strikeout?
 	if (nFields >= FMT_SHORT)
 	{
-		strFont += CString::Fmt(",%u,%u,%u,%u", lfWeight, lfItalic, lfUnderline, lfStrikeOut);
+		strFont += CString::Fmt(TXT(",%u,%u,%u,%u"), lfWeight, lfItalic, lfUnderline, lfStrikeOut);
 	}
 
 	// Includes all fields?
 	if (nFields >= FMT_FULL)
 	{
-		strFont += CString::Fmt(",%d,%d,%d,%u,%u,%u,%u,%u", lfWidth, lfEscapement, lfOrientation,
+		strFont += CString::Fmt(TXT(",%d,%d,%d,%u,%u,%u,%u,%u"), lfWidth, lfEscapement, lfOrientation,
 								lfCharSet, lfOutPrecision, lfClipPrecision, lfQuality, lfPitchAndFamily);
 	}		
 
@@ -184,7 +184,7 @@ CString CLogFont::Format(FontFormat eFormat) const
 *******************************************************************************
 */
 
-bool CLogFont::Parse(const char* pszFont, CLogFont& oLogFont)
+bool CLogFont::Parse(const tchar* pszFont, CLogFont& oLogFont)
 {
 	ASSERT(pszFont != NULL);
 
@@ -193,7 +193,7 @@ bool CLogFont::Parse(const char* pszFont, CLogFont& oLogFont)
 		CStrArray astrFields;
 
 		// Split the font defintions into separate fields.
-		uint nFields = CStrTok::Split(pszFont, ",", astrFields);
+		uint nFields = CStrTok::Split(pszFont, TXT(","), astrFields);
 
 		ASSERT((nFields == FMT_MINIMAL) || (nFields == FMT_SHORT) || (nFields == FMT_FULL));
 
@@ -201,7 +201,7 @@ bool CLogFont::Parse(const char* pszFont, CLogFont& oLogFont)
 		if (nFields >= FMT_MINIMAL)
 		{
 			memset(oLogFont.lfFaceName, 0, MAX_FACE_LEN);
-			strncpy(oLogFont.lfFaceName, astrFields[0], MAX_FACE_LEN-1);
+			tstrncpy(oLogFont.lfFaceName, astrFields[0], MAX_FACE_LEN-1);
 			oLogFont.lfHeight = CStrCvt::ParseInt(astrFields[1]);
 		}
 
@@ -230,7 +230,7 @@ bool CLogFont::Parse(const char* pszFont, CLogFont& oLogFont)
 	catch (const CStrCvtException& e)
 	{
 		DEBUG_USE_ONLY(e);
-		TRACE1("CLogFont::Parse() failed - %s", e.ErrorText());
+		TRACE1(TXT("CLogFont::Parse() failed - %s"), e.ErrorText());
 		return false;
 	}
 

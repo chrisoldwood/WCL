@@ -20,6 +20,7 @@
 #include <sys/stat.h>
 #include "Wnd.hpp"
 #include "StrArray.hpp"
+#include <tchar.h>
 
 // Directive to link to the Shell library.
 #pragma comment(lib, "shell32")
@@ -42,7 +43,7 @@ CPath::CPath()
 {
 }
 
-CPath::CPath(const char* pszPath)
+CPath::CPath(const tchar* pszPath)
 {
 	ASSERT(pszPath != NULL);
 
@@ -54,7 +55,7 @@ CPath::CPath(const CString& strSrc)
 	Copy(strSrc);
 }
 
-CPath::CPath(const char* pszDir, const char* pszFile)
+CPath::CPath(const tchar* pszDir, const tchar* pszFile)
 {
 	ASSERT(pszDir  != NULL);
 	ASSERT(pszFile != NULL);
@@ -77,7 +78,7 @@ CPath::CPath(const char* pszDir, const char* pszFile)
 
 bool CPath::Exists() const
 {
-	return (_access(m_pszData, 0) == 0);
+	return (_taccess(m_pszData, 0) == 0);
 }
 
 /******************************************************************************
@@ -94,7 +95,7 @@ bool CPath::Exists() const
 
 bool CPath::ReadOnly() const
 {
-	return (_access(m_pszData, 02) != 0);
+	return (_taccess(m_pszData, 02) != 0);
 }
 
 /******************************************************************************
@@ -111,9 +112,9 @@ bool CPath::ReadOnly() const
 
 bool CPath::IsFolder() const
 {
-	struct stat oInfo = { 0 };
+	struct _stat oInfo = { 0 };
 
-	int nResult = ::stat(m_pszData, &oInfo);
+	int nResult = ::_tstat(m_pszData, &oInfo);
 
 	ASSERT(nResult == 0);
 
@@ -139,9 +140,9 @@ bool CPath::IsFolder() const
 
 CPath CPath::CurrentDir()
 {
-	char szPath[MAX_PATH];
+	tchar szPath[MAX_PATH+1] = { 0 };
 
-	::GetCurrentDirectory(sizeof(szPath), szPath);
+	::GetCurrentDirectory(MAX_PATH+1, szPath);
 
 	return CPath(szPath);
 }
@@ -160,41 +161,43 @@ CPath CPath::ModuleDir()
 
 CPath CPath::ModuleDir(HMODULE hModule)
 {
-	char szPath[MAX_PATH];
+	tchar szPath[MAX_PATH+1] = { 0 };
 
 	// Get full executable path name.
-	::GetModuleFileName(hModule, szPath, sizeof(szPath));
+	::GetModuleFileName(hModule, szPath, MAX_PATH+1);
 	
 	// Strip file name.
-	char* pszExeName = strrchr(szPath, '\\');
-	*pszExeName = '\0';
+	tchar* pszExeName = tstrrchr(szPath, TXT('\\'));
+
+	if (pszExeName != nullptr)
+		*pszExeName = TXT('\0');
 
 	return CPath(szPath);
 }
 
 CPath CPath::WindowsDir()
 {
-	char szPath[MAX_PATH];
+	tchar szPath[MAX_PATH+1] = { 0 };
 
-	::GetWindowsDirectory(szPath, sizeof(szPath));
+	::GetWindowsDirectory(szPath, MAX_PATH+1);
 
 	return CPath(szPath);
 }
 
 CPath CPath::SystemDir()
 {
-	char szPath[MAX_PATH];
+	tchar szPath[MAX_PATH+1] = { 0 };
 
-	::GetSystemDirectory(szPath, sizeof(szPath));
+	::GetSystemDirectory(szPath, MAX_PATH+1);
 
 	return CPath(szPath);
 }
 
 CPath CPath::TempDir()
 {
-	char szPath[MAX_PATH];
+	tchar szPath[MAX_PATH+1] = { 0 };
 
-	::GetTempPath(sizeof(szPath), szPath);
+	::GetTempPath(MAX_PATH+1, szPath);
 	Normalise(szPath);
 
 	return CPath(szPath);
@@ -214,10 +217,10 @@ CPath CPath::Module()
 
 CPath CPath::Module(HMODULE hModule)
 {
-	char szPath[MAX_PATH];
+	tchar szPath[MAX_PATH+1] = { 0 };
 
 	// Get full executable path name.
-	::GetModuleFileName(hModule, szPath, sizeof(szPath));
+	::GetModuleFileName(hModule, szPath, MAX_PATH+1);
 	
 	return CPath(szPath);
 }
@@ -236,15 +239,15 @@ CPath CPath::Module(HMODULE hModule)
 
 CPath CPath::SpecialDir(int nCSIDL)
 {
-	char szPath[MAX_PATH] = "";
+	tchar szPath[MAX_PATH+1] = { 0 };
 
 	::SHGetSpecialFolderPath(NULL, szPath, nCSIDL, FALSE);
 
 	CPath str = szPath;
 
 	// "Program Files" folder is only available with IE 5.x and later.
-	if ( (nCSIDL == CSIDL_PROGRAM_FILES) && (str == "") )
-		str = CPath::WindowsDir().Root() / "Program Files";
+	if ( (nCSIDL == CSIDL_PROGRAM_FILES) && (str == TXT("")) )
+		str = CPath::WindowsDir().Root() / TXT("Program Files");
 
 	return str;
 }
@@ -263,9 +266,9 @@ CPath CPath::SpecialDir(int nCSIDL)
 
 CString CPath::Drive() const
 {
-	char szDrive[MAX_PATH];
+	tchar szDrive[MAX_PATH+1] = { 0 };
 
-	_splitpath(m_pszData, szDrive, NULL, NULL, NULL);
+	_tsplitpath(m_pszData, szDrive, NULL, NULL, NULL);
 
 	return CString(szDrive);
 }
@@ -285,43 +288,43 @@ CString CPath::Drive() const
 
 CPath CPath::Root() const
 {
-	char  szDrive[MAX_PATH];
-	char  szDirectory[MAX_PATH];
+	tchar szDrive[MAX_PATH+1] = { 0 };
+	tchar szDirectory[MAX_PATH+1] = { 0 };
 	CPath strRoot;
 
-	_splitpath(m_pszData, szDrive, szDirectory, NULL, NULL);
+	_tsplitpath(m_pszData, szDrive, szDirectory, NULL, NULL);
 
 	// Has a drive specifier?
-	if (strlen(szDrive) > 0)
+	if (tstrlen(szDrive) > 0)
 	{
 		strRoot = szDrive;
 
-		if (strRoot.Find('\\') == -1)
-			strRoot += '\\';
+		if (strRoot.Find(TXT('\\')) == -1)
+			strRoot += TXT('\\');
 	}
 	// Counld be a UNC share? ("\\m\d" is minimum).
-	else if (strlen(szDirectory) >= 5)
+	else if (tstrlen(szDirectory) >= 5)
 	{
-		char* psz = szDirectory;
+		tchar* psz = szDirectory;
 
 		// Must begin with "\\"
-		if ( (psz[0] == '\\') && (psz[1] == '\\') )
+		if ( (psz[0] == TXT('\\')) && (psz[1] == TXT('\\')) )
 		{
 			psz += 2;
 
 			// Skip the machine name.
-			while ( (*psz != '\0') && (*psz != '\\') )
+			while ( (*psz != TXT('\0')) && (*psz != TXT('\\')) )
 				++psz;
 
-			if (*psz == '\\')
+			if (*psz == TXT('\\'))
 			{
 				psz += 1;
 
 				// Skip the share name.
-				while ( (*psz != '\0') && (*psz != '\\') )
+				while ( (*psz != TXT('\0')) && (*psz != TXT('\\')) )
 					++psz;
 
-				*psz = '\0';
+				*psz = TXT('\0');
 
 				strRoot = szDirectory;
 			}
@@ -348,12 +351,12 @@ CPath CPath::Root() const
 
 CPath CPath::Directory() const
 {
-	char szDrive[MAX_PATH];
-	char szDir[MAX_PATH];
+	tchar szDrive[MAX_PATH+1] = { 0 };
+	tchar szDir[MAX_PATH+1] = { 0 };
 
-	_splitpath(m_pszData, szDrive, szDir, NULL, NULL);
+	_tsplitpath(m_pszData, szDrive, szDir, NULL, NULL);
 
-	strcat(szDrive, szDir);
+	tstrcat(szDrive, szDir);
 	Normalise(szDrive);
 
 	return CPath(szDrive);
@@ -373,12 +376,12 @@ CPath CPath::Directory() const
 
 CString CPath::FileName() const
 {
-	char szFileName[MAX_PATH];
-	char szExt[MAX_PATH];
+	tchar szFileName[MAX_PATH+1] = { 0 };
+	tchar szExt[MAX_PATH+1] = { 0 };
 
-	_splitpath(m_pszData, NULL, NULL, szFileName, szExt);
+	_tsplitpath(m_pszData, NULL, NULL, szFileName, szExt);
 
-	strcat(szFileName, szExt);
+	tstrcat(szFileName, szExt);
 
 	return CString(szFileName);
 }
@@ -397,9 +400,9 @@ CString CPath::FileName() const
 
 CString CPath::FileTitle() const
 {
-	char szFileName[MAX_PATH];
+	tchar szFileName[MAX_PATH+1] = { 0 };
 
-	_splitpath(m_pszData, NULL, NULL, szFileName, NULL);
+	_tsplitpath(m_pszData, NULL, NULL, szFileName, NULL);
 
 	return CString(szFileName);
 }
@@ -418,9 +421,9 @@ CString CPath::FileTitle() const
 
 CString CPath::FileExt() const
 {
-	char szExt[MAX_PATH];
+	tchar szExt[MAX_PATH+1] = { 0 };
 
-	_splitpath(m_pszData, NULL, NULL, NULL, szExt);
+	_tsplitpath(m_pszData, NULL, NULL, NULL, szExt);
 
 	return CString(szExt);
 }
@@ -442,15 +445,12 @@ CString CPath::FileExt() const
 *******************************************************************************
 */
 
-bool CPath::Select(const CWnd& rParent, DlgMode eMode, const char* pszExts,
-					const char* pszDefExt, const char* pszDir)
+bool CPath::Select(const CWnd& rParent, DlgMode eMode, const tchar* pszExts,
+					const tchar* pszDefExt, const tchar* pszDir)
 {
 	bool 			bOkay;
 	OPENFILENAME	ofnFile = { 0 };
-	char			szFileName[MAX_PATH];
-
-	// Initialise filename.
-	szFileName[0] = '\0';
+	tchar			szFileName[MAX_PATH+1] = { 0 };
 
     // Fill in structure.
 	ofnFile.lStructSize       = sizeof(ofnFile);
@@ -486,7 +486,7 @@ bool CPath::Select(const CWnd& rParent, DlgMode eMode, const char* pszExts,
 	}
 	else // SelectFile
 	{
-		ofnFile.lpstrTitle = "Select";
+		ofnFile.lpstrTitle = TXT("Select");
 		bOkay = GetOpenFileName(&ofnFile);
 	}
 	
@@ -515,10 +515,10 @@ bool CPath::Select(const CWnd& rParent, DlgMode eMode, const char* pszExts,
 *******************************************************************************
 */
 
-bool CPath::SelectDir(const CWnd& rParent, const char* pszTitle, const char* pszDir)
+bool CPath::SelectDir(const CWnd& rParent, const tchar* pszTitle, const tchar* pszDir)
 {
 	BROWSEINFO   oInfo;
-	char         szDir[MAX_PATH];
+	tchar        szDir[MAX_PATH+1] = { 0 };
 	LPITEMIDLIST pItemIDList;
 	LPMALLOC     pMalloc;
 	HRESULT      hResult;
@@ -583,7 +583,7 @@ int CALLBACK CPath::BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPAR
 
 		case BFFM_SELCHANGED:
 		{
-			char szDir[MAX_PATH];
+			tchar szDir[MAX_PATH+1] = { 0 };
 
 			if (::SHGetPathFromIDList((LPITEMIDLIST) lParam, szDir))
 				::SendMessage(hWnd, BFFM_SETSTATUSTEXT, 0, (LPARAM)szDir);
@@ -608,10 +608,10 @@ int CALLBACK CPath::BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPAR
 *******************************************************************************
 */
 
-bool CPath::SelectComputer(const CWnd& rParent, const char* pszTitle)
+bool CPath::SelectComputer(const CWnd& rParent, const tchar* pszTitle)
 {
 	BROWSEINFO   oInfo = { 0 };
-	char         szComputer[MAX_PATH];
+	tchar        szComputer[MAX_PATH+1] = { 0 };
 	LPITEMIDLIST pItemIDList;
 	LPMALLOC     pMalloc;
 	HRESULT      hResult;
@@ -659,9 +659,9 @@ bool CPath::SelectComputer(const CWnd& rParent, const char* pszTitle)
 *******************************************************************************
 */
 
-inline bool IsPathSeparator(char cChar)
+inline bool IsPathSeparator(tchar cChar)
 {
-	return ((cChar == '\\') || (cChar == '/'));
+	return ((cChar == TXT('\\')) || (cChar == TXT('/')));
 }
 
 /******************************************************************************
@@ -677,20 +677,20 @@ inline bool IsPathSeparator(char cChar)
 *******************************************************************************
 */
 
-void CPath::Normalise(char* pszPath)
+void CPath::Normalise(tchar* pszPath)
 {
 	ASSERT(pszPath != NULL);
 
-	int nLength = strlen(pszPath);
+	int nLength = tstrlen(pszPath);
 
 	// "\" or "/" is a valid root. 
 	if (nLength > 1)
 	{
-		char* pszEnd = pszPath+nLength-1;
+		tchar* pszEnd = pszPath+nLength-1;
 
 		// "C:\" is a valid root.
-		if (IsPathSeparator(*pszEnd) && (*(pszEnd-1) != ':'))
-			*pszEnd = '\0';
+		if (IsPathSeparator(*pszEnd) && (*(pszEnd-1) != TXT(':')))
+			*pszEnd = TXT('\0');
 	}
 }
 
@@ -711,15 +711,15 @@ void CPath::Normalise(char* pszPath)
 *******************************************************************************
 */
 
-bool CPath::SelectFiles(const CWnd& rParent, const char* pszExts, const char* pszDefExt, CStrArray& astrFiles)
+bool CPath::SelectFiles(const CWnd& rParent, const tchar* pszExts, const tchar* pszDefExt, CStrArray& astrFiles)
 {
 	return SelectFiles(rParent, pszExts, pszDefExt, NULL, astrFiles);
 }
 
-bool CPath::SelectFiles(const CWnd& rParent, const char* pszExts, const char* pszDefExt, const char* pszDir, CStrArray& astrFiles)
+bool CPath::SelectFiles(const CWnd& rParent, const tchar* pszExts, const tchar* pszDefExt, const tchar* pszDir, CStrArray& astrFiles)
 {
 	OPENFILENAME ofnFile = { 0 };
-	char         szFileName[MAX_PATH*100] = "";
+	tchar        szFileName[MAX_PATH*100] = { 0 };
 
 	// Initialise structure.
 	ofnFile.lStructSize       = sizeof(ofnFile);
@@ -734,7 +734,7 @@ bool CPath::SelectFiles(const CWnd& rParent, const char* pszExts, const char* ps
 	ofnFile.lpstrFileTitle    = NULL;
 	ofnFile.nMaxFileTitle     = NULL;
 	ofnFile.lpstrInitialDir   = pszDir;
-	ofnFile.lpstrTitle        = "Select";
+	ofnFile.lpstrTitle        = TXT("Select");
 	ofnFile.Flags             = OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_ALLOWMULTISELECT;
 	ofnFile.nFileOffset       = NULL;
 	ofnFile.nFileExtension    = NULL;
@@ -747,30 +747,30 @@ bool CPath::SelectFiles(const CWnd& rParent, const char* pszExts, const char* ps
 		return false;
 
 	// Returned path must exist to check its type.
-	if (_access(szFileName, 0) != 0)
+	if (_taccess(szFileName, 0) != 0)
 		return false;
 
-	struct stat oInfo = { 0 };
+	struct _stat oInfo = { 0 };
 
 	// Get the returned paths type.
-	if (::stat(szFileName, &oInfo) != 0)
+	if (::_tstat(szFileName, &oInfo) != 0)
 		return false;
 
 	// Multiple files?
 	if ((oInfo.st_mode & _S_IFDIR))
 	{
 		// First path is the directory.
-		const char* pszDir = szFileName;
+		const tchar* pszDir = szFileName;
 
 		// Convert filename list to full paths.
 		// NB: Files are separated by '\0' and the list is terminated by a "\0\0".
-		const char *pszFileName = pszDir + strlen(pszDir) + 1;
+		const tchar *pszFileName = pszDir + tstrlen(pszDir) + 1;
 
 		while (*pszFileName != 0)
 		{ 
 			astrFiles.Add(CPath(pszDir, pszFileName));
 
-			pszFileName += strlen(pszFileName) + 1;
+			pszFileName += tstrlen(pszFileName) + 1;
 		}
 	}
 	// Single file.
@@ -795,18 +795,18 @@ bool CPath::SelectFiles(const CWnd& rParent, const char* pszExts, const char* ps
 *******************************************************************************
 */
 
-void CPath::operator/=(const char* pszPath)
+void CPath::operator/=(const tchar* pszPath)
 {
 	ASSERT(pszPath != NULL);
 
 	// Check RHS path for leading separator.
-	if ((*pszPath != '\\') && (*pszPath != '/'))
+	if ((*pszPath != TXT('\\')) && (*pszPath != TXT('/')))
 	{
 		int nLength = Length();
 
 		// Check LHS path for trailing separator.
-		if ( (nLength > 0) && (m_pszData[nLength-1] != '\\') )
-			operator +=('\\');
+		if ( (nLength > 0) && (m_pszData[nLength-1] != TXT('\\')) )
+			operator +=(TXT('\\'));
 	}
 
 	operator +=(pszPath);
@@ -828,10 +828,10 @@ void CPath::operator/=(const char* pszPath)
 void CPath::ExpandVars()
 {
 	// Do a crude search and replace on all possible matches.
-	if (Find('%') != -1)
+	if (Find(TXT('%')) != -1)
 	{
-		Replace("%ProgramFiles%", CPath::SpecialDir(CSIDL_PROGRAM_FILES));
-		Replace("%SystemRoot%",   CPath::WindowsDir());
-		Replace("%Temp%",         CPath::TempDir());
+		Replace(TXT("%ProgramFiles%"), CPath::SpecialDir(CSIDL_PROGRAM_FILES));
+		Replace(TXT("%SystemRoot%"),   CPath::WindowsDir());
+		Replace(TXT("%Temp%"),         CPath::TempDir());
 	}
 }

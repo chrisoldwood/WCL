@@ -249,7 +249,7 @@ LRESULT WINDOWPROC PopupWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lPar
 		CPopupWnd* pWnd;
 		
 		// Get the window object.
-		pWnd = (CPopupWnd*) CWnd::s_WndMap.Find(hWnd);
+		pWnd = static_cast<CPopupWnd*>(CWnd::s_WndMap.Find(hWnd));
 		ASSERT(pWnd);
 
 		//
@@ -271,14 +271,14 @@ LRESULT WINDOWPROC PopupWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lPar
 	}
 	catch (const std::exception& e)
 	{
-		WCL::ReportUnhandledException("Unexpected exception caught in PopupWndProc()\n\n"
-										"Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X\n\n%s",
+		WCL::ReportUnhandledException(	TXT("Unexpected exception caught in PopupWndProc()\n\n")
+										TXT("Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X\n\n%hs"),
 										hWnd, iMsg, wParam, lParam, e.what());
 	}
 	catch (...)
 	{
-		WCL::ReportUnhandledException("Unexpected unknown exception caught in PopupWndProc()\n\n"
-										"Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X",
+		WCL::ReportUnhandledException(	TXT("Unexpected unknown exception caught in PopupWndProc()\n\n")
+										TXT("Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X"),
 										hWnd, iMsg, wParam, lParam);
 	}
 
@@ -662,7 +662,7 @@ void CPopupWnd::OnShowSystemMenuHint()
 
 	// Display hint.
 	if (pStatusBar != NULL)
-		pStatusBar->Hint("System Menu");
+		pStatusBar->Hint(TXT("System Menu"));
 }
 
 /******************************************************************************
@@ -685,5 +685,5 @@ void CPopupWnd::OnShowDefaultMenuHint()
 
 	// Remove previous hint.
 	if (pStatusBar != NULL)
-		pStatusBar->Hint("");
+		pStatusBar->Hint(TXT(""));
 }
