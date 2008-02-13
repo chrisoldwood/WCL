@@ -61,11 +61,11 @@ public:
 	// Constants.
 	//
 
-	//! The thread result code for failure.
-	static const int THREAD_EXIT_FAILURE = 0;
-
 	//! The thread result code for succeess.
-	static const int THREAD_EXIT_SUCCESS = 1;
+	static const int THREAD_EXIT_SUCCESS = EXIT_SUCCESS;
+
+	//! The thread result code for failure.
+	static const int THREAD_EXIT_FAILURE = EXIT_FAILURE;
 
 protected:
 	// Template shorthands.
