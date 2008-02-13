@@ -37,8 +37,8 @@ public:
 	//
 	// Methods.
 	//
-	void ItemCheck(int nItem, bool bChecked);
-	bool IsItemChecked(int nItem);
+	void ItemCheck(size_t nItem, bool bChecked);
+	bool IsItemChecked(size_t nItem);
 
 protected:
 	//
@@ -58,14 +58,14 @@ protected:
 *******************************************************************************
 */
 
-inline void CCheckBoxList::ItemCheck(int nItem, bool bChecked)
+inline void CCheckBoxList::ItemCheck(size_t nItem, bool bChecked)
 {
-	int nState = INDEXTOSTATEIMAGEMASK((bChecked ? 2 : 1));
+	uint nState = INDEXTOSTATEIMAGEMASK((bChecked ? 2 : 1));
 
 	ListView_SetItemState(m_hWnd, nItem, nState, LVIS_STATEIMAGEMASK);
 }
 
-inline bool CCheckBoxList::IsItemChecked(int nItem)
+inline bool CCheckBoxList::IsItemChecked(size_t nItem)
 {
 	return ListView_GetCheckState(m_hWnd, nItem);
 }

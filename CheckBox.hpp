@@ -64,7 +64,7 @@ inline void CCheckBox::Check(bool bCheck) const
 
 inline bool CCheckBox::IsChecked() const
 {
-	return (bool)SendMessage(BM_GETCHECK, 0, 0);
+	return static_cast<bool>(SendMessage(BM_GETCHECK, 0, 0));
 }
 
 #endif //CHECKBOX_HPP
