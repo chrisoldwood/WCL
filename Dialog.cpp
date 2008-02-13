@@ -42,8 +42,6 @@ const int SIZE_GRIP_SIZE = 12;
 CDialog::CDialog(uint iRscID)
 	: CMsgWnd()
 	, m_iRscID(iRscID)
-	, m_pCtrlTable(NULL)
-	, m_pGravTable(NULL)
 	, m_pParentWnd(NULL)
 	, m_bNoSizeGrip(false)
 	, m_rcOldGrip(0, 0, 0, 0)
@@ -64,13 +62,6 @@ CDialog::CDialog(uint iRscID)
 
 CDialog::~CDialog()
 {
-	// Free control table.
-	if (m_pCtrlTable)
-		delete[] m_pCtrlTable;
-
-	// Free gravity table.
-	if (m_pGravTable)
-		delete[] m_pGravTable;
 }
 
 /******************************************************************************
@@ -188,7 +179,7 @@ BOOL DIALOGPROC DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		CDialog* pDialog;
 		
 		// Get the window object.
-		pDialog = (CDialog*) CWnd::s_WndMap.Find(hWnd);
+		pDialog = static_cast<CDialog*>(CWnd::s_WndMap.Find(hWnd));
 
 		// Do we have a mapping?
 		if (pDialog == nullptr)
@@ -198,7 +189,7 @@ BOOL DIALOGPROC DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			if (iMsg == WM_INITDIALOG)
 			{
 				// Get object from LPARAM.
-				pDialog = (CDialog*)lParam;
+				pDialog = reinterpret_cast<CDialog*>(lParam);
 
 				//
 				// This function can be called recursively so we need to use
@@ -256,14 +247,14 @@ BOOL DIALOGPROC DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	}
 	catch (const std::exception& e)
 	{
-		WCL::ReportUnhandledException("Unexpected exception caught in DlgProc()\n\n"
-										"Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X\n\n%s",
+		WCL::ReportUnhandledException(	TXT("Unexpected exception caught in DlgProc()\n\n")
+										TXT("Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X\n\n%hs"),
 										hWnd, iMsg, wParam, lParam, e.what());
 	}
 	catch (...)
 	{
-		WCL::ReportUnhandledException("Unexpected unknown exception caught in DlgProc()\n\n"
-										"Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X",
+		WCL::ReportUnhandledException(	TXT("Unexpected unknown exception caught in DlgProc()\n\n")
+										TXT("Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X"),
 										hWnd, iMsg, wParam, lParam);
 	}
 
@@ -430,78 +421,63 @@ bool CDialog::OnCancel()
 
 void CDialog::OnResize(int /*iFlag*/, const CSize& rNewSize)
 {
-	// No table specified?
-	if (m_pGravTable == NULL)
+	// No controls to reposition?
+	if (m_vGravities.empty())
 		return;
 
-	CTLGRAVITY* pGrav = m_pGravTable;
-	int			nWnds = 0;
-
-	// Count the number of entries.
-	while (pGrav->iID != 0)
-	{
-		nWnds++;
-		pGrav++;
-	}
-
 	// Allocate DWP handle.
-	HDWP hDWP = ::BeginDeferWindowPos(nWnds);
+	HDWP hDWP = ::BeginDeferWindowPos(m_vGravities.size());
 
 	ASSERT(hDWP != NULL);
 
 	// Resize all controls.
-	pGrav = m_pGravTable;
-	
-	while (pGrav->iID != 0)
+	for (Gravities::const_iterator it = m_vGravities.begin(); it != m_vGravities.end(); ++it)
 	{
 		CRect rcNewPos;
 
 		// Process controls' left edge.
-		if (pGrav->eLeft == LEFT_EDGE)
+		if (it->eLeft == LEFT_EDGE)
 		{
-			rcNewPos.left = pGrav->rcStart.left;
+			rcNewPos.left = it->rcStart.left;
 		}
-		else // pGrav->eLeft == RIGHT_EDGE
+		else // it->eLeft == RIGHT_EDGE
 		{
-			rcNewPos.left = rNewSize.cx - (m_StartSize.cx - pGrav->rcStart.left);
+			rcNewPos.left = rNewSize.cx - (m_StartSize.cx - it->rcStart.left);
 		}
 
 		// Process controls' top edge.
-		if (pGrav->eTop == TOP_EDGE)
+		if (it->eTop == TOP_EDGE)
 		{
-			rcNewPos.top = pGrav->rcStart.top;
+			rcNewPos.top = it->rcStart.top;
 		}
-		else // pGrav->eTop == BOTTOM_EDGE
+		else // it->eTop == BOTTOM_EDGE
 		{
-			rcNewPos.top = rNewSize.cy - (m_StartSize.cy - pGrav->rcStart.top);
+			rcNewPos.top = rNewSize.cy - (m_StartSize.cy - it->rcStart.top);
 		}
 
 		// Process controls' right edge.
-		if (pGrav->eRight == LEFT_EDGE)
+		if (it->eRight == LEFT_EDGE)
 		{
-			rcNewPos.right = pGrav->rcStart.right;
+			rcNewPos.right = it->rcStart.right;
 		}
-		else // pGrav->eRight == RIGHT_EDGE
+		else // it->eRight == RIGHT_EDGE
 		{
-			rcNewPos.right = rNewSize.cx - (m_StartSize.cx - pGrav->rcStart.right);
+			rcNewPos.right = rNewSize.cx - (m_StartSize.cx - it->rcStart.right);
 		}
 
 		// Process controls' bottom edge.
-		if (pGrav->eBottom == TOP_EDGE)
+		if (it->eBottom == TOP_EDGE)
 		{
-			rcNewPos.bottom = pGrav->rcStart.bottom;
+			rcNewPos.bottom = it->rcStart.bottom;
 		}
-		else // pGrav->eBottom == BOTTOM_EDGE
+		else // it->eBottom == BOTTOM_EDGE
 		{
-			rcNewPos.bottom = rNewSize.cy - (m_StartSize.cy - pGrav->rcStart.bottom);
+			rcNewPos.bottom = rNewSize.cy - (m_StartSize.cy - it->rcStart.bottom);
 		}
 
 		// Resize the window.
-		::DeferWindowPos(hDWP, pGrav->hWnd, NULL, rcNewPos.left, rcNewPos.top,
+		::DeferWindowPos(hDWP, it->hWnd, NULL, rcNewPos.left, rcNewPos.top,
 							rcNewPos.Width(), rcNewPos.Height(), SWP_NOZORDER | SWP_NOCOPYBITS);
-
-		// Next control.
-	    pGrav++;
 	}
 
 	::EndDeferWindowPos(hDWP);
@@ -525,38 +501,19 @@ void CDialog::OnResize(int /*iFlag*/, const CSize& rNewSize)
 
 void CDialog::ControlTable(CTRL* pCtrlTable)
 {
-	ASSERT(m_pCtrlTable == NULL);
+	ASSERT(m_vControls.empty());
 	ASSERT(pCtrlTable != NULL);
 
-	CTRL* pCtrl     = pCtrlTable;
-	int	  iNumCtrls = 0;
+	size_t nCount = 0;
 
 	// Count the number of controls.
-	while (pCtrl->iID)
-	{
-		iNumCtrls++;
-	    pCtrl++;
-	}
+	for (CTRL* pCtrl = pCtrlTable; pCtrl->iID; ++pCtrl)
+		++nCount;
 
-	// Allocate memory for the copy.
-	m_pCtrlTable = new CTRL[iNumCtrls+1];
-	ASSERT(m_pCtrlTable);
-	
-	pCtrl = pCtrlTable;
-	int i = 0;
+	m_vControls.resize(nCount);
 
 	// Copy the table.
-	while (i < iNumCtrls)
-	{
-		m_pCtrlTable[i].iID  = pCtrl->iID;
-		m_pCtrlTable[i].pWnd = pCtrl->pWnd;
-	    pCtrl++;
-	    i++;
-	}
-	
-	// Append table terminator.
-	m_pCtrlTable[i].iID  = 0;
-	m_pCtrlTable[i].pWnd = NULL;
+	std::copy(pCtrlTable, pCtrlTable+nCount, m_vControls.begin());
 }
 
 /******************************************************************************
@@ -574,18 +531,9 @@ void CDialog::ControlTable(CTRL* pCtrlTable)
 
 void CDialog::InitControls()
 {
-	CTRL* pCtrl = m_pCtrlTable;
-	
-	// For all controls.
-	while( (pCtrl) && (pCtrl->iID) )
-	{
-		uint iID = pCtrl->iID;
-		
-	    // Attach object to window.
-	    pCtrl->pWnd->Create(*this, iID, CtrlHandle(iID));
-
-	    pCtrl++;
-	}
+	// Attach the window handles to the controls.
+	for (Controls::const_iterator it = m_vControls.begin(); it != m_vControls.end(); ++it)
+	    it->pWnd->Create(*this, it->iID, CtrlHandle(it->iID));
 }
 
 /******************************************************************************
@@ -602,37 +550,19 @@ void CDialog::InitControls()
 
 void CDialog::GravityTable(CTLGRAVITY* pGravTable)
 {
-	ASSERT(m_pGravTable == NULL);
+	ASSERT(m_vGravities.empty());
 	ASSERT(pGravTable != NULL);
 
-	CTLGRAVITY* pGrav = pGravTable;
-	int			iNumCtrls = 0;
+	size_t nCount = 0;
 
 	// Count the number of entries.
-	while (pGrav->iID)
-	{
-		iNumCtrls++;
-	    pGrav++;
-	}
+	for (CTLGRAVITY* pGrav = pGravTable; pGrav->iID; ++pGrav)
+		++nCount;
 
-	// Allocate memory for the copy.
-	m_pGravTable = new CTLGRAVITY[iNumCtrls+1];
-	ASSERT(m_pGravTable != NULL);
-	
-	pGrav = pGravTable;
-	int i = 0;
+	m_vGravities.resize(nCount);
 
 	// Copy the table.
-	while (i < iNumCtrls)
-	{
-		m_pGravTable[i] = *pGrav;
-	    pGrav++;
-	    i++;
-	}
-	
-	// Append table terminator.
-	m_pGravTable[i].iID  = 0;
-	m_pGravTable[i].hWnd = NULL;
+	std::copy(pGravTable, pGravTable+nCount, m_vGravities.begin());
 }
 
 /******************************************************************************
@@ -650,27 +580,23 @@ void CDialog::GravityTable(CTLGRAVITY* pGravTable)
 
 void CDialog::InitGravityTable()
 {
-	// No table specified?
-	if (m_pGravTable == NULL)
+	// No controls to initialise?
+	if (m_vGravities.empty())
 		return;
 
 	// Get the dialogs initial size.
 	m_StartSize = ClientRect().Size();
 
-	CTLGRAVITY* pGrav = m_pGravTable;
-	
-	// For all controls.
-	while( (pGrav) && (pGrav->iID) )
+	// For each moveable control...
+	for (Gravities::iterator it = m_vGravities.begin(); it != m_vGravities.end(); ++it)
 	{
 		// Get the controls window handle.
-		pGrav->hWnd = ::GetDlgItem(m_hWnd, pGrav->iID);
-		ASSERT(pGrav->hWnd != NULL);
+		it->hWnd = ::GetDlgItem(m_hWnd, it->iID);
+		ASSERT(it->hWnd != NULL);
 
 		// Get the controls starting position.
-		::GetWindowRect(pGrav->hWnd, &pGrav->rcStart);
-		::MapWindowPoints(NULL, m_hWnd, (LPPOINT) &pGrav->rcStart, 2);
-
-	    pGrav++;
+		::GetWindowRect(it->hWnd, &it->rcStart);
+		::MapWindowPoints(NULL, m_hWnd, (LPPOINT) &it->rcStart, 2);
 	}
 }
 
@@ -689,7 +615,7 @@ void CDialog::InitGravityTable()
 void CDialog::OnPaint(CDC& rDC)
 {
 	// Not resizable OR size grip disabled?
-	if ( (m_pGravTable == NULL) || (m_bNoSizeGrip) )
+	if (m_vGravities.empty() || m_bNoSizeGrip)
 		return;
 
 	// Get window dimensions.
@@ -742,7 +668,7 @@ void CDialog::OnPaint(CDC& rDC)
 void CDialog::OnHitTest(const CPoint& ptCursor)
 {
 	// Resizable AND size grip enabled?
-	if ( (m_pGravTable != NULL) && (!m_bNoSizeGrip) )
+	if (!m_vGravities.empty() && !m_bNoSizeGrip)
 	{
 		CPoint ptClient = ptCursor;
 

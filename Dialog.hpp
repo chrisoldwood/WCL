@@ -50,11 +50,11 @@ protected:
 	// Structure used to hold the control table.
 	///////////////////////////////////////////////////////
 
-	typedef struct tagCTRL
+	struct CTRL
 	{
 		uint		iID;
 		CCtrlWnd*	pWnd;
-	} CTRL;
+	};
 
 	// Gravity edges.
 	enum Gravity
@@ -69,7 +69,7 @@ protected:
 	// Structure used to hold the control gravity table.
 	///////////////////////////////////////////////////////
 
-	typedef struct tagCTLGRAVITY
+	struct CTLGRAVITY
 	{
 		// Members.
 		uint		iID;
@@ -78,21 +78,26 @@ protected:
 		CRect		rcStart;
 
 		// Constructors.
-		tagCTLGRAVITY()
+		CTLGRAVITY()
 			: iID(0), hWnd(NULL), eLeft(LEFT_EDGE), eTop(TOP_EDGE)
 			, eRight(LEFT_EDGE), eBottom(TOP_EDGE) { }
 
-		tagCTLGRAVITY(uint id, Gravity l, Gravity t, Gravity r, Gravity b)
+		CTLGRAVITY(uint id, Gravity l, Gravity t, Gravity r, Gravity b)
 			: iID(id), hWnd(NULL), eLeft(l), eTop(t), eRight(r), eBottom(b) { }
-	} CTLGRAVITY;
+	};
+
+	//! The collection of controls.
+	typedef std::vector<CTRL> Controls;
+	//! The collection of control gravity settings.
+	typedef std::vector<CTLGRAVITY> Gravities;
 
 	//
 	// Members.
 	//
 	uint		m_iRscID;		// Dialog resource ID.
 	bool		m_bModal;		// Running modal?
-	CTRL*		m_pCtrlTable;	// Table of controls.
-	CTLGRAVITY*	m_pGravTable;	// Table of controls gravity.
+	Controls	m_vControls;	// Collection of child controls.
+	Gravities	m_vGravities;	// Collection of control gravities.
 	CSize		m_StartSize;	// Dialog initial size.
 	CWnd*		m_pParentWnd;	// Parent window.
 	bool		m_bNoSizeGrip;	// No size grip?
@@ -159,9 +164,9 @@ protected:
 
 #define DEFINE_GRAVITY_TABLE		CTLGRAVITY Gravs[] = {
 
-#define CTRLGRAV(id, l, t, r, b)	tagCTLGRAVITY((id), (l), (t), (r), (b)),
+#define CTRLGRAV(id, l, t, r, b)	CTLGRAVITY((id), (l), (t), (r), (b)),
 
-#define END_GRAVITY_TABLE			tagCTLGRAVITY(0, LEFT_EDGE, TOP_EDGE, LEFT_EDGE, TOP_EDGE) }; \
+#define END_GRAVITY_TABLE			CTLGRAVITY(0, LEFT_EDGE, TOP_EDGE, LEFT_EDGE, TOP_EDGE) }; \
 									GravityTable(Gravs);
 
 /******************************************************************************
