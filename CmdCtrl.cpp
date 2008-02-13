@@ -65,7 +65,7 @@ void CCmdControl::Execute(uint iCmdID)
 	// Find command callback function.
 	while ( (pCmd != NULL) && (pCmd->m_eType != CmdNone)
 		 && ( (iCmdID < pCmd->m_iFirstID) || (iCmdID > pCmd->m_iLastID) ) )
-	    pCmd++;
+	    ++pCmd;
 
 	// If found, Execute it.
 	if ( (pCmd != NULL) && (iCmdID >= pCmd->m_iFirstID) && (iCmdID <= pCmd->m_iLastID) )
@@ -108,7 +108,7 @@ void CCmdControl::UpdateUI()
 		if (pCmd->m_lpfnUIHandler != NULL)
 			(this->*pCmd->m_lpfnUIHandler)();
 
-	    pCmd++;
+	    ++pCmd;
 	}
 
 	// Force a redraw of the menu bar.
@@ -156,7 +156,7 @@ int CCmdControl::CmdBmpIndex(uint iCmdID) const
 	// Find command.
 	while ( (pCmd != NULL) && (pCmd->m_eType != CmdNone)
 		 && ( (iCmdID < pCmd->m_iFirstID) || (iCmdID > pCmd->m_iLastID) ) )
-	    pCmd++;
+	    ++pCmd;
 
 	// If found, return it.
 	if ( (pCmd != NULL) && (iCmdID >= pCmd->m_iFirstID) && (iCmdID <= pCmd->m_iLastID) )
@@ -219,7 +219,7 @@ int CCmdControl::CmdToolTipID(uint iCmdID) const
 CString CCmdControl::CmdHintStr(uint iCmdID) const
 {
 	CString str(CmdHintID(iCmdID));
-	int		nEOL = str.Find('\n');
+	int		nEOL = str.Find(TXT('\n'));
 
 	// Hint only?
 	if (nEOL == -1)
@@ -246,11 +246,11 @@ CString CCmdControl::CmdHintStr(uint iCmdID) const
 CString CCmdControl::CmdToolTipStr(uint iCmdID) const
 {
 	CString str(CmdHintID(iCmdID));
-	int		nEOL = str.Find('\n');
+	int		nEOL = str.Find(TXT('\n'));
 
 	// Hint only?
 	if (nEOL == -1)
-		return "";
+		return TXT("");
 
 	// Strip tooltip.
 	return str.Right(str.Length() - nEOL - 1);
