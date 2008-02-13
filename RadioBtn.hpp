@@ -64,7 +64,7 @@ inline void CRadioBtn::Check(bool bCheck) const
 
 inline bool CRadioBtn::IsChecked() const
 {
-	return (bool)SendMessage(BM_GETCHECK, 0, 0);
+	return static_cast<bool>(SendMessage(BM_GETCHECK, 0, 0));
 }
 
 #endif //RADIOBTN_HPP
