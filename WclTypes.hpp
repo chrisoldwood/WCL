@@ -18,7 +18,7 @@
 typedef time_t seconds_t;
 
 ////////////////////////////////////////////////////////////////////////////////
-// Definitions.
+// General definitions.
 
 //! Specfifier used to export functions.
 #define EXPORT		__declspec(dllexport)
@@ -31,5 +31,23 @@ typedef time_t seconds_t;
 
 //! Helper for specifying Read and Write access.
 #define GENERIC_READWRITE	(GENERIC_READ | GENERIC_WRITE)
+
+////////////////////////////////////////////////////////////////////////////////
+// Text handling types and definitions.
+
+//! The storage format for a chunk of text.
+enum TextFormat
+{
+	ANSI_TEXT,		//! ANSI text. Assume 1 byte per character.
+	UNICODE_TEXT,	//! Unicode text. Assume 2 bytes per character + optional 0xFFFE header.
+};
+
+#ifdef ANSI_BUILD
+//! The build independent clipboard text format.
+# define CF_TCHAR_TEXT	CF_TEXT
+#else
+//! The build independent clipboard text format.
+# define CF_TCHAR_TEXT	CF_UNICODETEXT
+#endif
 
 #endif // WCL_WCLTYPES_HPP
