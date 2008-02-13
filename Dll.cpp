@@ -45,6 +45,9 @@ CDll::CDll()
 	g_bLinkDllMain = true;
 
 	g_pThis = this;
+
+	// Report memory leaks.
+//	Core::EnableLeakReporting(true);
 }
 
 /******************************************************************************
@@ -118,7 +121,7 @@ void CDll::Load()
 	}
 	catch (const std::exception& e)
 	{
-		Core::DebugWrite("Unhandled exception caught in CDll::Load() - %s\n", e.what());
+		Core::DebugWrite(TXT("Unhandled exception caught in CDll::Load() - %hs\n"), e.what());
 	}
 }
 
@@ -142,7 +145,7 @@ void CDll::Unload()
 	}
 	catch (const std::exception& e)
 	{
-		Core::DebugWrite("Unhandled exception caught in CDll::OnUnload() - %s\n", e.what());
+		Core::DebugWrite(TXT("Unhandled exception caught in CDll::OnUnload() - %hs\n"), e.what());
 	}
 }
 
@@ -166,7 +169,7 @@ void CDll::ThreadAttached()
 	}
 	catch (const std::exception& e)
 	{
-		Core::DebugWrite("Unhandled exception caught in CDll::OnThreadAttached() - %s\n", e.what());
+		Core::DebugWrite(TXT("Unhandled exception caught in CDll::OnThreadAttached() - %hs\n"), e.what());
 	}
 }
 
@@ -190,7 +193,7 @@ void CDll::ThreadDetached()
 	}
 	catch (const std::exception& e)
 	{
-		Core::DebugWrite("Unhandled exception caught in CDll::OnThreadDetached() - %s\n", e.what());
+		Core::DebugWrite(TXT("Unhandled exception caught in CDll::OnThreadDetached() - %hs\n"), e.what());
 	}
 }
 

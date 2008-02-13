@@ -16,7 +16,6 @@
 #pragma once
 #endif
 
-#include "LeakCheck.hpp"
 #include "Module.hpp"
 
 /******************************************************************************
@@ -44,7 +43,6 @@ public:
 	//
 	// Members.
 	//
-	CLeakCheck	m_oLeakChecker;		//! Dumps memory leaks.
 	CModule		m_Module;			//! The component.
 
 protected:
