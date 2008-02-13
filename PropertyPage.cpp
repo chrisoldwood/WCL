@@ -65,7 +65,7 @@ BOOL DIALOGPROC PropPageProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	CPropertyPage* pDialog;
 	
 	// Get the window object.
-	pDialog = (CPropertyPage*) CWnd::s_WndMap.Find(hWnd);
+	pDialog = static_cast<CPropertyPage*>(CWnd::s_WndMap.Find(hWnd));
 
 	// Do we have a mapping?
 	if (pDialog == NULL)
@@ -74,10 +74,10 @@ BOOL DIALOGPROC PropPageProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		if (iMsg == WM_INITDIALOG)
 		{
 			// lParam contains property page info.
-			PROPSHEETPAGE* pPage = (PROPSHEETPAGE*) lParam;
+			PROPSHEETPAGE* pPage = reinterpret_cast<PROPSHEETPAGE*>(lParam);
 
 			// Get object from property page info.
-			pDialog = (CPropertyPage*)pPage->lParam;
+			pDialog = reinterpret_cast<CPropertyPage*>(pPage->lParam);
 
 			//
 			// This function can be called recursively so we need to use
