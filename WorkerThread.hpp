@@ -18,10 +18,10 @@
 
 #include "MsgThread.hpp"
 #include "Event.hpp"
+#include "ThreadJob.hpp"
 
 // Forward declarations.
 class CThreadPool;
-class CThreadJob;
 
 /******************************************************************************
 ** 
@@ -56,7 +56,7 @@ public:
 	// Methods.
 	//
 	void Start();
-	void RunJob(CThreadJob* pJob);
+	void RunJob(ThreadJobPtr& pJob);
 	void Stop();
 
 protected:
@@ -67,7 +67,7 @@ protected:
 	uint			m_nPoolID;		// The ID within the pool.
 	ThreadStatus	m_eStatus;		// Current status.
 	CEvent			m_oSyncEvent;	// Start/Stop event object.
-	CThreadJob*		m_pJob;			// Current job, if one.
+	ThreadJobPtr	m_pJob;			// Current job, if one.
 
 	// Thread messages.
 	enum ThreadMsg

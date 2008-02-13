@@ -32,7 +32,6 @@ CWorkerThread::CWorkerThread(CThreadPool& oPool, uint nPoolID)
 	, m_nPoolID(nPoolID)
 	, m_eStatus(STOPPED)
 	, m_oSyncEvent(true, false)
-	, m_pJob(NULL)
 {
 }
 
@@ -88,11 +87,11 @@ DWORD WINAPI CWorkerThread::ThreadFunction(LPVOID lpParam)
 	}
 	catch (const std::exception& e)
 	{
-		WCL::ReportUnhandledException("Unexpected exception caught in CWorkerThread::Run()\n\n%s", e.what());
+		WCL::ReportUnhandledException(TXT("Unexpected exception caught in CWorkerThread::Run()\n\n%hs"), e.what());
 	}
 	catch (...)
 	{
-		WCL::ReportUnhandledException("Unexpected unknown exception caught in CWorkerThread::Run()");
+		WCL::ReportUnhandledException(TXT("Unexpected unknown exception caught in CWorkerThread::Run()"));
 	}
 
 	// Signal calling thread that we've stopped.
@@ -167,12 +166,12 @@ void CWorkerThread::Stop()
 *******************************************************************************
 */
 
-void CWorkerThread::RunJob(CThreadJob* pJob)
+void CWorkerThread::RunJob(ThreadJobPtr& pJob)
 {
-	ASSERT(pJob != NULL);
+	ASSERT(pJob.Get() != nullptr);
 	ASSERT(pJob->Status() == CThreadJob::PENDING);
 	ASSERT(m_eStatus == IDLE);
-	ASSERT(m_pJob == NULL);
+	ASSERT(m_pJob.Get() == nullptr);
 
 	// Update job state.
 	pJob->Status(CThreadJob::RUNNING);
@@ -240,11 +239,11 @@ void CWorkerThread::OnRunJob()
 {
 	try
 	{
-		ASSERT(m_pJob != NULL);
+		ASSERT(m_pJob.Get() != nullptr);
 		ASSERT(m_pJob->Status() == CThreadJob::RUNNING);
 
 		// Get the job to run.
-		CThreadJob* pJob = m_pJob;
+		ThreadJobPtr pJob = m_pJob;
 
 		// Run it.
 		pJob->Run();
@@ -254,18 +253,18 @@ void CWorkerThread::OnRunJob()
 
 		// Update thread state.
 		m_eStatus = IDLE;
-		m_pJob    = NULL;
+		m_pJob.Reset();
 
 		// Notify thread pool.
 		m_oPool.OnJobCompleted(pJob);
 	}
 	catch (const std::exception& e)
 	{
-		WCL::ReportUnhandledException("Unexpected exception caught in CWorkerThread::OnRunJob()\n\n%s", e.what());
+		WCL::ReportUnhandledException(TXT("Unexpected exception caught in CWorkerThread::OnRunJob()\n\n%hs"), e.what());
 	}
 	catch (...)
 	{
-		WCL::ReportUnhandledException("Unexpected unknown exception caught in CWorkerThread::OnRunJob()");
+		WCL::ReportUnhandledException(TXT("Unexpected unknown exception caught in CWorkerThread::OnRunJob()"));
 	}
 }
 
