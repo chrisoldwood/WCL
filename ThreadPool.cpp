@@ -27,7 +27,7 @@
 *******************************************************************************
 */
 
-CThreadPool::CThreadPool(int nThreads)
+CThreadPool::CThreadPool(size_t nThreads)
 	: m_nThreads(nThreads)
 	, m_eStatus(STOPPED)
 {
@@ -53,13 +53,7 @@ CThreadPool::~CThreadPool()
 	ASSERT(m_oRunningQ.empty());
 	ASSERT(m_oCompletedQ.empty());
 
-	// Template shorthands.
-	typedef CThreads::const_iterator CIter;
-
 	// Free thread pool.
-	for (CIter oIter = m_oPool.begin(); oIter != m_oPool.end(); ++oIter)
-		delete *oIter;
-
 	m_oPool.clear();
 }
 
@@ -81,11 +75,11 @@ void CThreadPool::Start()
 	ASSERT(m_eStatus == STOPPED);
 
 	// Create the thread pool.
-	for (int i = 0; i < m_nThreads; ++i)
-		m_oPool.push_back(new CWorkerThread(*this, i));
+	for (size_t i = 0; i < m_nThreads; ++i)
+		m_oPool.push_back(WorkerThreadPtr(new CWorkerThread(*this, i)));
 
 	// Start the pool threads.
-	for (int i = 0; i < m_nThreads; ++i)
+	for (size_t i = 0; i < m_nThreads; ++i)
 		m_oPool[i]->Start();
 
 	m_eStatus = RUNNING;
@@ -109,7 +103,7 @@ void CThreadPool::Stop()
 	ASSERT(m_eStatus == RUNNING);
 
 	// Stop the pool threads.
-	for (int i = 0; i < m_nThreads; ++i)
+	for (size_t i = 0; i < m_nThreads; ++i)
 		m_oPool[i]->Stop();
 
 	m_eStatus = STOPPED;
@@ -127,9 +121,9 @@ void CThreadPool::Stop()
 *******************************************************************************
 */
 
-void CThreadPool::AddJob(CThreadJob* pJob)
+void CThreadPool::AddJob(ThreadJobPtr& pJob)
 {
-	ASSERT(pJob != NULL);
+	ASSERT(pJob.Get() != NULL);
 	ASSERT(m_eStatus == RUNNING);
 
 	// Lock queues.
@@ -154,9 +148,9 @@ void CThreadPool::AddJob(CThreadJob* pJob)
 *******************************************************************************
 */
 
-void CThreadPool::CancelJob(CThreadJob* pJob)
+void CThreadPool::CancelJob(ThreadJobPtr& pJob)
 {
-	ASSERT(pJob != NULL);
+	ASSERT(pJob.Get() != NULL);
 	ASSERT(m_eStatus == RUNNING);
 
 	// Template shorthands.
@@ -206,7 +200,7 @@ void CThreadPool::CancelAllJobs()
 	// NB: Leave all running jobs to complete.
 	for (CIter oIter = m_oPendingQ.begin(); oIter != m_oPendingQ.end(); ++oIter)
 	{
-		CThreadJob* pJob = *oIter;
+		ThreadJobPtr pJob = *oIter;
 
 		pJob->Status(CThreadJob::CANCELLED);
 
@@ -247,12 +241,6 @@ void CThreadPool::ClearCompletedJobs()
 
 void CThreadPool::DeleteCompletedJobs()
 {
-	// Template shorthands.
-	typedef CJobQueue::const_iterator CIter;
-
-	for (CIter oIter = m_oCompletedQ.begin(); oIter != m_oCompletedQ.end(); ++oIter)
-		delete *oIter;
-
 	m_oCompletedQ.clear();
 }
 
@@ -283,16 +271,16 @@ void CThreadPool::ScheduleJob()
 		return;
 
 	// Find an idle thread.
-	for (int i = 0; i < m_nThreads; ++i)
+	for (size_t i = 0; i < m_nThreads; ++i)
 	{
-		CWorkerThread* pThread = m_oPool[i];
+		WorkerThreadPtr pThread = m_oPool[i];
 
 		// Found one?
 		if (pThread->Status() == CWorkerThread::IDLE)
 		{
 			// Get next job.
-			CIter       oIter = m_oPendingQ.begin();
-			CThreadJob* pJob  = *oIter;
+			CIter        oIter = m_oPendingQ.begin();
+			ThreadJobPtr pJob  = *oIter;
 
 			// Assign to thread.
 			pThread->RunJob(pJob);
@@ -317,9 +305,9 @@ void CThreadPool::ScheduleJob()
 *******************************************************************************
 */
 
-void CThreadPool::OnJobCompleted(CThreadJob* pJob)
+void CThreadPool::OnJobCompleted(ThreadJobPtr& pJob)
 {
-	ASSERT(pJob != NULL);
+	ASSERT(pJob.Get() != nullptr);
 	ASSERT(pJob->Status() == CThreadJob::COMPLETED);
 	ASSERT(m_eStatus == RUNNING);
 

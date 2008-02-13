@@ -17,10 +17,10 @@
 #endif
 
 #include "CriticalSection.hpp"
+#include "ThreadJob.hpp"
 
 // Forward declarations.
 class CWorkerThread;
-class CThreadJob;
 
 /******************************************************************************
 ** 
@@ -35,7 +35,7 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CThreadPool(int nThreads);
+	CThreadPool(size_t nThreads);
 	~CThreadPool();
 
 	//
@@ -47,8 +47,8 @@ public:
 	//
 	// Job Methods.
 	//
-	void AddJob(CThreadJob* pJob);
-	void CancelJob(CThreadJob* pJob);
+	void AddJob(ThreadJobPtr& pJob);
+	void CancelJob(ThreadJobPtr& pJob);
 	void CancelAllJobs();
 
 	void ClearCompletedJobs();
@@ -57,14 +57,15 @@ public:
 	//
 	// Queue accessors.
 	//
-	int PendingJobCount() const;
-	int RunningJobCount() const;
-	int CompletedJobCount() const;
+	size_t PendingJobCount() const;
+	size_t RunningJobCount() const;
+	size_t CompletedJobCount() const;
 
 protected:
 	// Template shorthands.
-	typedef std::vector<CWorkerThread*> CThreads;
-	typedef std::vector<CThreadJob*> CJobQueue;
+	typedef Core::SharedPtr<CWorkerThread> WorkerThreadPtr;
+	typedef std::vector<WorkerThreadPtr> CThreads;
+	typedef std::vector<ThreadJobPtr> CJobQueue;
 
 	// Thread pool status.
 	enum Status
@@ -76,7 +77,7 @@ protected:
 	//
 	// Members.
 	//
-	int					m_nThreads;
+	size_t				m_nThreads;
 	Status				m_eStatus;
 	CThreads			m_oPool;
 	CJobQueue			m_oPendingQ;
@@ -88,7 +89,7 @@ protected:
 	// Internal methods.
 	//
 	void ScheduleJob();
-	void OnJobCompleted(CThreadJob* pJob);
+	void OnJobCompleted(ThreadJobPtr& pJob);
 
 	// Friends.
 	friend class CWorkerThread;
@@ -101,17 +102,17 @@ protected:
 *******************************************************************************
 */
 
-inline int CThreadPool::PendingJobCount() const
+inline size_t CThreadPool::PendingJobCount() const
 {
 	return m_oPendingQ.size();
 }
 
-inline int CThreadPool::RunningJobCount() const
+inline size_t CThreadPool::RunningJobCount() const
 {
 	return m_oRunningQ.size();
 }
 
-inline int CThreadPool::CompletedJobCount() const
+inline size_t CThreadPool::CompletedJobCount() const
 {
 	return m_oCompletedQ.size();
 }
