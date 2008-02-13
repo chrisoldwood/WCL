@@ -66,7 +66,7 @@ public:
     //
     // Attributes.
     //
-	void Title(const char* lpszTitle);
+	void Title(const tchar* lpszTitle);
 	CString Title() const;
 
 	void Font(const CFont& rFont, bool bRedraw = true);
@@ -124,10 +124,10 @@ public:
     //
     // Message boxes.
     //
-	int AlertMsg(const char* pszMsg, ...) const;
-	int QueryMsg(const char* pszMsg, ...) const;
-	int NotifyMsg(const char* pszMsg, ...) const;
-	int FatalMsg(const char* pszMsg, ...) const;
+	int AlertMsg(const tchar* pszMsg, ...) const;
+	int QueryMsg(const tchar* pszMsg, ...) const;
+	int NotifyMsg(const tchar* pszMsg, ...) const;
+	int FatalMsg(const tchar* pszMsg, ...) const;
     
 	// Handle <-> Window map.
 	static CWndMap s_WndMap;
@@ -210,7 +210,7 @@ inline void CWnd::Focus()
 	::SetFocus(m_hWnd);
 }
 
-inline void CWnd::Title(const char* pszTitle)
+inline void CWnd::Title(const tchar* pszTitle)
 {
 	ASSERT(pszTitle);
 
@@ -219,7 +219,7 @@ inline void CWnd::Title(const char* pszTitle)
 
 inline void CWnd::Font(const CFont& rFont, bool bRedraw)
 {
-	SendMessage(WM_SETFONT, (WPARAM)rFont.Handle(), bRedraw);
+	SendMessage(WM_SETFONT, reinterpret_cast<WPARAM>(rFont.Handle()), bRedraw);
 }
 
 inline CFont CWnd::Font() const
@@ -292,7 +292,7 @@ inline bool CWnd::PostCommand(uint iCmd) const
 
 inline bool CWnd::PostCtrlMsg(uint iMsg, uint iCtrlID, HWND hCtrl) const
 {
-	return ::PostMessage(m_hWnd, WM_COMMAND, MAKEWPARAM(iCtrlID, iMsg), (LPARAM)hCtrl);
+	return ::PostMessage(m_hWnd, WM_COMMAND, MAKEWPARAM(iCtrlID, iMsg), reinterpret_cast<LPARAM>(hCtrl));
 }
 
 inline void CWnd::Redraw(bool bRedraw)

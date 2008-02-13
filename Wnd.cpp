@@ -176,7 +176,7 @@ void CWnd::Centre()
 *******************************************************************************
 */
 
-int CWnd::AlertMsg(const char* pszMsg, ...) const
+int CWnd::AlertMsg(const tchar* pszMsg, ...) const
 {
 	CString strMsg;
 
@@ -190,7 +190,7 @@ int CWnd::AlertMsg(const char* pszMsg, ...) const
 	return MessageBox(m_hWnd, strMsg, CApp::This().m_strTitle, MB_OK | MB_ICONEXCLAMATION);
 }
 
-int CWnd::NotifyMsg(const char* pszMsg, ...) const
+int CWnd::NotifyMsg(const tchar* pszMsg, ...) const
 {
 	CString strMsg;
 
@@ -204,7 +204,7 @@ int CWnd::NotifyMsg(const char* pszMsg, ...) const
 	return MessageBox(m_hWnd, strMsg, CApp::This().m_strTitle, MB_OK | MB_ICONINFORMATION);
 }
 
-int CWnd::QueryMsg(const char* pszMsg, ...) const
+int CWnd::QueryMsg(const tchar* pszMsg, ...) const
 {
 	CString strMsg;
 
@@ -218,7 +218,7 @@ int CWnd::QueryMsg(const char* pszMsg, ...) const
 	return MessageBox(m_hWnd, strMsg, CApp::This().m_strTitle, MB_YESNOCANCEL | MB_ICONQUESTION);
 }
 
-int CWnd::FatalMsg(const char* pszMsg, ...) const
+int CWnd::FatalMsg(const tchar* pszMsg, ...) const
 {
 	CString strMsg;
 
@@ -247,16 +247,15 @@ int CWnd::FatalMsg(const char* pszMsg, ...) const
 CString CWnd::Title() const
 {
 	CString	strText;
-	int		iLen;
 
 	// Get string length.
-	iLen = 	(int)SendMessage(WM_GETTEXTLENGTH, 0, 0L);
+	size_t nChars = SendMessage(WM_GETTEXTLENGTH, 0, 0L);
 
 	// Allocate space.
-	strText.BufferSize(iLen+1);
+	strText.BufferSize(nChars+1);
 
 	// Fetch string.
-	SendMessage(WM_GETTEXT, iLen+1, (LPARAM)(LPCSTR) strText);
+	SendMessage(WM_GETTEXT, nChars+1, reinterpret_cast<LPARAM>(strText.Buffer()));
 
 	return strText;
 }

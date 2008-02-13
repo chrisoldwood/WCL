@@ -64,7 +64,7 @@ void CView::GetClassParams(WNDCLASS& rParams)
 
 	// Override any settings.
 	rParams.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);
-	rParams.lpszClassName = "View";
+	rParams.lpszClassName = TXT("View");
 }
 
 /******************************************************************************
@@ -85,7 +85,7 @@ void CView::GetCreateParams(WNDCREATE& rParams)
 	CCtrlWnd::GetCreateParams(rParams);
 
 	// Override any settings.
-	rParams.pszClassName  = "View";
+	rParams.pszClassName  = TXT("View");
 }
 
 /******************************************************************************
