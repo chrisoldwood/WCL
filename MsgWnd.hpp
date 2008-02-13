@@ -63,13 +63,13 @@ protected:
 	// Pointer to WM_NOTIFY style control message handler.
 	typedef LRESULT (CMsgWnd::*PFNNFYMSGHANDLER)(NMHDR& rMsgHdr);
 	
-	typedef struct tagCTRLMSG
+	struct CTRLMSG
 	{
 		uint			m_iMsgType;			// WM_COMMAND or WM_NOTIFY.
 		uint			m_iCtrlID;			// ID of control.
 		uint			m_iMsgID;			// Event message ID.
 		PFNMSGHANDLER	m_pfnMsgHandler;	// Message handler method.
-	} CTRLMSG;
+	};
 	
 	//
 	// Members.
