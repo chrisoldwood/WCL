@@ -6,6 +6,7 @@
 #include "Common.hpp"
 #include "Exception.hpp"
 #include "App.hpp"
+#include <Core/AnsiWide.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Default constructor.
@@ -22,20 +23,28 @@ CException::~CException()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Retrieve the error message.
-//! \deprecated This should be removed and what() used instead.
+//! Retrieve the error message in the native string format.
 
-const char* CException::ErrorText() const
+const tchar* CException::ErrorText() const
 {
 	return m_strErrorText;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Retrieve the error message. This method is overriden from the base class.
+//! Retrieve the ANSI only error message. For Unicode builds we create the ANSI
+//! version of the error message on demand.
 
 const char* CException::what() const
 {
-	return m_strErrorText;
+#ifdef ANSI_BUILD
+	return m_strErrorText.c_str();
+#else
+	// Convert ANSI error message on demand.
+	if (m_strAnsiText.empty())
+		m_strAnsiText = Core::WideToAnsi(m_strErrorText.c_str(), m_strErrorText.c_str()+m_strErrorText.Length());
+
+	return m_strAnsiText.c_str();
+#endif
 }
 
 namespace WCL
@@ -62,7 +71,7 @@ void ReportUnhandledException(const tchar* pszMsg, ...)
 	if (CApp::IsValid())
 		CApp::This().FatalMsg(strMsg);
 	else
-		Core::DebugWrite("%s\n", strMsg);
+		Core::DebugWrite(TXT("%s\n"), strMsg);
 }
 
 //namespace WCL

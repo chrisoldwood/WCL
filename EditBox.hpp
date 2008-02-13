@@ -40,9 +40,9 @@ public:
 	void TextLimit(int iLimit) const;
 	void ReadOnly(bool bReadOnly = true) const;
 	void Select(int iFirstChar = 0, int iLastChar = -1) const;
-	void Text(const char* pszText);
-	void ReplaceSel(const char* pszText, bool bCanUndo = true);
-	void Append(const char* pszText);
+	void Text(const tchar* pszText);
+	void ReplaceSel(const tchar* pszText, bool bCanUndo = true);
+	void Append(const tchar* pszText);
 	void TabWidth(uint nWidth);
 
 	void    Selected(int& nStart, int& nEnd) const;
@@ -53,8 +53,8 @@ public:
 	// Custom methods.
 	//
 	void SetFilterDefault(bool bAllow);
-	void Filter(const char* pszFilter, bool bAllow = true);
-	void Filter(char cFilter, bool bAllow = true);
+	void Filter(const tchar* pszFilter, bool bAllow = true);
+	void Filter(tchar cFilter, bool bAllow = true);
 
 protected:
 	//
@@ -72,7 +72,7 @@ protected:
 	//
 	virtual	LRESULT WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
 	virtual void OnReflectedCtrlMsg(uint iMsg);
-	virtual bool FilterKey(char cChar);
+	virtual bool FilterKey(tchar cChar);
 
 	//
 	// Internal methods.
@@ -112,12 +112,12 @@ inline void CEditBox::Selected(int& nStart, int& nEnd) const
 	nEnd   = dwLast;
 }
 
-inline void CEditBox::Text(const char* pszText)
+inline void CEditBox::Text(const tchar* pszText)
 {
 	Title(pszText);
 }
 
-inline void CEditBox::ReplaceSel(const char* pszText, bool bCanUndo)
+inline void CEditBox::ReplaceSel(const tchar* pszText, bool bCanUndo)
 {
 	SendMessage(EM_REPLACESEL, bCanUndo, (LPARAM)pszText);
 }
@@ -129,7 +129,7 @@ inline void CEditBox::TabWidth(uint nWidth)
 
 inline int CEditBox::TextLength() const
 {
-	return (int)SendMessage(WM_GETTEXTLENGTH, 0, 0L);
+	return SendMessage(WM_GETTEXTLENGTH, 0, 0L);
 }
 
 inline CString CEditBox::Text() const

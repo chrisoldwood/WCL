@@ -44,7 +44,7 @@ public:
 	// Accessors & mutators.
 	//
 	const CPath& Path() const;
-	void Path(const char* pszPath);
+	void Path(const tchar* pszPath);
 
 	virtual bool Load();
 	virtual bool Save();
@@ -67,6 +67,9 @@ private:
 	void operator=(const CDoc&);
 };
 
+//! The document smart-pointer type.
+typedef Core::SharedPtr<CDoc> DocPtr;
+
 /******************************************************************************
 **
 ** Implementation of inline functions.
@@ -81,7 +84,7 @@ inline bool CDoc::Modified() const
 
 inline bool CDoc::Untitled() const
 {
-	return (m_Path == "Untitled");
+	return (m_Path == TXT("Untitled"));
 }
 
 inline const CPath& CDoc::Path() const
@@ -89,7 +92,7 @@ inline const CPath& CDoc::Path() const
 	return m_Path;
 }
 
-inline void CDoc::Path(const char* pszPath)
+inline void CDoc::Path(const tchar* pszPath)
 {
 	ASSERT(pszPath != NULL);
 

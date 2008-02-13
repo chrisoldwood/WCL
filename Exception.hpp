@@ -18,9 +18,9 @@ class CException : public std::exception
 {
 public:
 	//! Retrieve the error message.
-	virtual const char* ErrorText() const;
+	virtual const tchar* ErrorText() const;
 
-	//! Retrieve the error message.
+	//! Retrieve the ANSI only error message.
 	virtual const char* what() const;
 
 protected:
@@ -33,7 +33,10 @@ protected:
 	//
 	// Members.
 	//
-	CString	m_strErrorText;		//!< The error message.
+	CString				m_strErrorText;		//!< The error message.
+#ifdef UNICODE_BUILD
+	mutable std::string	m_strAnsiText;		//!< The ANSI error message.
+#endif
 };
 
 namespace WCL

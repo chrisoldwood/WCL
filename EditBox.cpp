@@ -65,7 +65,7 @@ void CEditBox::GetCreateParams(WNDCREATE& rParams)
 	CCtrlWnd::GetCreateParams(rParams);
 
 	// Override any settings.
-	rParams.pszClassName = "EDIT";
+	rParams.pszClassName = TXT("EDIT");
 	rParams.dwStyle     |= ES_MULTILINE | ES_AUTOVSCROLL | ES_LEFT | WS_VSCROLL;
 }
 
@@ -91,7 +91,7 @@ LRESULT CEditBox::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 //			TRACE1("%#08X\n", wParam);
 
 			// Check filter.
-			if (FilterKey((char)(wParam & 0xFF)))
+			if (FilterKey(static_cast<tchar>(wParam)))
 			{
 				// Consume message.
 				MsgHandled(true);
@@ -158,14 +158,14 @@ void CEditBox::SetFilterDefault(bool bAllow)
 *******************************************************************************
 */
 
-void CEditBox::Filter(const char* pszFilter, bool bAllow)
+void CEditBox::Filter(const tchar* pszFilter, bool bAllow)
 {
 	ASSERT(pszFilter != NULL);
 
 	AllocFilterMap();
 
 	// Make valid all chars in the filter.
-	while (*pszFilter != '\0')
+	while (*pszFilter != TXT('\0'))
 		m_pFilter[*pszFilter++] = bAllow;
 }
 
@@ -182,7 +182,7 @@ void CEditBox::Filter(const char* pszFilter, bool bAllow)
 *******************************************************************************
 */
 
-void CEditBox::Filter(char cFilter, bool bAllow)
+void CEditBox::Filter(tchar cFilter, bool bAllow)
 {
 	AllocFilterMap();
 
@@ -230,7 +230,7 @@ void CEditBox::AllocFilterMap()
 *******************************************************************************
 */
 
-bool CEditBox::FilterKey(char cChar)
+bool CEditBox::FilterKey(tchar cChar)
 {
 	// Filter set AND key disallowed?
 	return ( (m_pFilter != NULL) && (m_pFilter[cChar] == false) );
@@ -248,7 +248,7 @@ bool CEditBox::FilterKey(char cChar)
 *******************************************************************************
 */
 
-void CEditBox::Append(const char* pszText)
+void CEditBox::Append(const tchar* pszText)
 {
 	int n = TextLength();
 
