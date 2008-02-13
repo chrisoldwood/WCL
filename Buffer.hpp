@@ -30,8 +30,8 @@ public:
 	// Constructors/Destructor.
 	//
 	CBuffer();
-	CBuffer(uint nSize);
-	CBuffer(const void* pData, uint nSize);
+	CBuffer(size_t nSize);
+	CBuffer(const void* pData, size_t nSize);
 	explicit CBuffer(HGLOBAL hGlobal);
 	CBuffer(const CBuffer& oRHS);
 	~CBuffer();
@@ -39,16 +39,16 @@ public:
 	//
 	// Accessors.
 	//
-	uint        Size() const;
+	size_t      Size() const;
 	const void* Buffer() const;
-	void        Get(void* pData, uint nSize, uint nOffset = 0) const;
+	void        Get(void* pData, size_t nSize, size_t nOffset = 0) const;
 
 	//
 	// Mutators.
 	//
-	void  Size(uint nSize);
+	void  Size(size_t nSize);
 	void* Buffer();
-	void  Set(const void* pData, uint nSize, uint nOffset = 0);
+	void  Set(const void* pData, size_t nSize, size_t nOffset = 0);
 
 	//
 	// Operators.
@@ -61,16 +61,18 @@ public:
 	// Conversion methods.
 	//
 	HGLOBAL ToGlobal() const;
-	CString ToString() const;
-	CString ToString(uint nChars) const;
 
-	void FromString(const char* pszString, bool bIncNull = true);
+	//! Convert the entire buffer to a string.
+	CString ToString(TextFormat eFormat) const;
+
+	//! Fill the buffer with the contents of a string.
+	void FromString(const CString& str, TextFormat eFormat, bool bIncNull = true);
 
 protected:
 	//
 	// Members.
 	//
-	uint	m_nSize;
+	size_t	m_nSize;
 	void*	m_pBuffer;
 
 	//
@@ -87,7 +89,7 @@ protected:
 *******************************************************************************
 */
 
-inline uint CBuffer::Size() const
+inline size_t CBuffer::Size() const
 {
 	return m_nSize;
 }
@@ -105,21 +107,6 @@ inline void* CBuffer::Buffer()
 inline bool CBuffer::operator!=(const CBuffer& oRHS) const
 {
 	return !operator==(oRHS);
-}
-
-inline CString CBuffer::ToString() const
-{
-	return ToString(m_nSize);
-}
-
-inline CString CBuffer::ToString(uint nChars) const
-{
-	ASSERT(nChars <= m_nSize);
-
-	if (m_pBuffer == NULL)
-		return "";
-
-	return CString((char*)m_pBuffer, nChars);
 }
 
 #endif // WCL_BUFFER_HPP

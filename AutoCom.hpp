@@ -100,7 +100,7 @@ inline void AutoCom::Initialise(DWORD dwFlags)
 	HRESULT hr = ::CoInitializeEx(nullptr, dwFlags);
 
 	if (FAILED(hr))
-		throw WCL::ComException(hr, "Failed to initialise COM");
+		throw WCL::ComException(hr, TXT("Failed to initialise COM"));
 
 	// Update state.
 	m_bInitialised = true;

@@ -45,6 +45,6 @@ void CCheckBox::GetCreateParams(WNDCREATE& rParams)
 	CCtrlWnd::GetCreateParams(rParams);
 
 	// Override any settings.
-	rParams.pszClassName = "BUTTON";
+	rParams.pszClassName = TXT("BUTTON");
 	rParams.dwStyle     |= BS_AUTOCHECKBOX;
 }

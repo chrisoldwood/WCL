@@ -12,6 +12,7 @@
 #include "Buffer.hpp"
 #include "IInputStream.hpp"
 #include "IOutputStream.hpp"
+#include <Core/AnsiWide.hpp>
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -43,7 +44,7 @@ CBuffer::CBuffer()
 *******************************************************************************
 */
 
-CBuffer::CBuffer(uint nSize)
+CBuffer::CBuffer(size_t nSize)
 	: m_nSize(nSize)
 	, m_pBuffer(malloc(nSize))
 {
@@ -61,7 +62,7 @@ CBuffer::CBuffer(uint nSize)
 *******************************************************************************
 */
 
-CBuffer::CBuffer(const void* pData, uint nSize)
+CBuffer::CBuffer(const void* pData, size_t nSize)
 	: m_nSize(nSize)
 	, m_pBuffer(malloc(nSize))
 {
@@ -149,7 +150,7 @@ CBuffer::~CBuffer()
 *******************************************************************************
 */
 
-void CBuffer::Size(uint nSize)
+void CBuffer::Size(size_t nSize)
 {
 	if (m_nSize != nSize)
 	{
@@ -172,7 +173,7 @@ void CBuffer::Size(uint nSize)
 *******************************************************************************
 */
 
-void CBuffer::Get(void* pData, uint nSize, uint nOffset) const
+void CBuffer::Get(void* pData, size_t nSize, size_t nOffset) const
 {
 	if (nSize == 0)
 		return;
@@ -181,7 +182,7 @@ void CBuffer::Get(void* pData, uint nSize, uint nOffset) const
 	ASSERT(nOffset       <  m_nSize);
 	ASSERT(nOffset+nSize <= m_nSize);
 
-	const byte* pBuffer = (byte*) m_pBuffer;
+	const byte* pBuffer = static_cast<const byte*>(m_pBuffer);
 
 	memcpy(pData, pBuffer+nOffset, nSize);
 }
@@ -200,7 +201,7 @@ void CBuffer::Get(void* pData, uint nSize, uint nOffset) const
 *******************************************************************************
 */
 
-void CBuffer::Set(const void* pData, uint nSize, uint nOffset)
+void CBuffer::Set(const void* pData, size_t nSize, size_t nOffset)
 {
 	if (nSize == 0)
 		return;
@@ -209,7 +210,7 @@ void CBuffer::Set(const void* pData, uint nSize, uint nOffset)
 	ASSERT(nOffset       <  m_nSize);
 	ASSERT(nOffset+nSize <= m_nSize);
 
-	byte* pBuffer = (byte*) m_pBuffer;
+	byte* pBuffer = static_cast<byte*>(m_pBuffer);
 
 	memcpy(pBuffer+nOffset, pData, nSize);
 }
@@ -289,32 +290,79 @@ HGLOBAL CBuffer::ToGlobal() const
 	return hGlobal;
 }
 
-/******************************************************************************
-** Method:		FromString()
-**
-** Description:	Fills the buffer with a string.
-**				NB: DDE requires the null terminator.
-**
-** Parameters:	pszString	The string.
-**				bIncNull	Include the '\0' terminator or not?
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! Convert the entire buffer to a string.
 
-void CBuffer::FromString(const char* pszString, bool bIncNull)
+CString CBuffer::ToString(TextFormat eFormat) const
 {
-	ASSERT(pszString != NULL);
+	if (m_pBuffer != NULL)
+	{
+		// Treat buffer as containing ANSI chars?
+		if (eFormat == ANSI_TEXT)
+		{
+			size_t      nChars  = m_nSize;
+			const char* pBuffer = static_cast<const char*>(m_pBuffer);
 
-	int nLength = strlen(pszString);
+#ifdef ANSI_BUILD
+			return CString(pBuffer, nChars);
+#else
+			return CString(Core::AnsiToWide(pBuffer, pBuffer+nChars).c_str());
+#endif
+		}
+		else //(eFormat == UNICODE_TEXT)
+		{
+			ASSERT((m_nSize % 2) == 0);
+
+			size_t         nChars  = m_nSize / 2;
+			const wchar_t* pBuffer = static_cast<const wchar_t*>(m_pBuffer);
+
+#ifdef ANSI_BUILD
+			return CString(Core::WideToAnsi(pBuffer, pBuffer+nChars).c_str());
+#else
+			return CString(pBuffer, nChars);
+#endif
+		}
+	}
+
+	return TXT("");
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Fill the buffer with the contents of a string.
+
+void CBuffer::FromString(const CString& str, TextFormat eFormat, bool bIncNull)
+{
+	int nChars = str.Length();
 
 	// Allow for '\0'?
 	if (bIncNull)
-		++nLength;
+		++nChars;
 
-	Size(nLength);
-	Set(pszString, nLength);
+	if (eFormat == ANSI_TEXT)
+	{
+		size_t nBytes = Core::NumBytes<char>(nChars);
+
+		Size(nBytes);
+
+#ifdef ANSI_BUILD
+		Set(str.Buffer(), nBytes);
+#else
+		Set(T2A(str.c_str()), nBytes);
+#endif
+	}
+	else // (eFormat == UNICODE_TEXT)
+	{
+		size_t nBytes = Core::NumBytes<wchar_t>(nChars);
+
+		Size(nBytes);
+
+#ifdef ANSI_BUILD
+		Set(T2A(str.c_str()), nBytes);
+#else
+		Set(str.Buffer(), nBytes);
+#endif
+	}
+
 }
 
 /******************************************************************************
