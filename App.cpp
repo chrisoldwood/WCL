@@ -53,6 +53,9 @@ CApp::CApp(CFrameWnd& rFrameWnd, CCmdControl& rCmdControl)
 	ASSERT(g_pThis == NULL);
 
 	g_pThis = this;
+
+	// Report memory leaks.
+	Core::EnableLeakReporting(true);
 }
 
 /******************************************************************************
@@ -126,14 +129,14 @@ bool CApp::Open()
 	// Get COMCTL32.DLL version.
 	if (!m_oComCtl32.IsLoaded() || !m_oComCtl32.GetVersion(dwMajor, dwMinor))
 	{
-		FatalMsg("This application requires at least v%u.%u of COMCTL32.DLL.", dwMinMajor, dwMinMinor);
+		FatalMsg(TXT("This application requires at least v%u.%u of COMCTL32.DLL."), dwMinMajor, dwMinMinor);
 		return false;
 	}
 
 	// Check COMCTL32.DLL version.
 	if ( (dwMajor < dwMinMajor) || ((dwMajor == dwMinMajor) && (dwMinor < dwMinMinor)) )
 	{
-		FatalMsg("This application requires at least v%u.%u of COMCTL32.DLL.", dwMinMajor, dwMinMinor);
+		FatalMsg(TXT("This application requires at least v%u.%u of COMCTL32.DLL."), dwMinMajor, dwMinMinor);
 		return false;
 	}
 
@@ -142,7 +145,7 @@ bool CApp::Open()
 	// Initialise COMCTL32.DLL window classes.
 	if (!m_oComCtl32.Initialise(dwICC))
 	{
-		FatalMsg("Failed to initialise COMCTL32.DLL");
+		FatalMsg(TXT("Failed to initialise COMCTL32.DLL"));
 		return false;
 	}
 
@@ -187,8 +190,8 @@ void CApp::Close()
 	OnClose();
 
 	// Free strings.
-	m_strTitle   = "";
-	m_strCmdLine = "";
+	m_strTitle   = TXT("");
+	m_strCmdLine = TXT("");
 }
 
 /******************************************************************************
@@ -231,7 +234,7 @@ bool CApp::OnClose()
 *******************************************************************************
 */
 
-int CApp::AlertMsg(const char* pszMsg, ...) const
+int CApp::AlertMsg(const tchar* pszMsg, ...) const
 {
 	CString strMsg;
 
@@ -245,7 +248,7 @@ int CApp::AlertMsg(const char* pszMsg, ...) const
 	return MessageBox(m_rMainWnd.Handle(), strMsg, m_strTitle, MB_OK | MB_ICONEXCLAMATION | MB_TASKMODAL);
 }
 
-int CApp::NotifyMsg(const char* pszMsg, ...) const
+int CApp::NotifyMsg(const tchar* pszMsg, ...) const
 {
 	CString strMsg;
 
@@ -259,7 +262,7 @@ int CApp::NotifyMsg(const char* pszMsg, ...) const
 	return MessageBox(m_rMainWnd.Handle(), strMsg, m_strTitle, MB_OK | MB_ICONINFORMATION | MB_TASKMODAL);
 }
 
-int CApp::QueryMsg(const char* pszMsg, ...) const
+int CApp::QueryMsg(const tchar* pszMsg, ...) const
 {
 	CString strMsg;
 
@@ -273,7 +276,7 @@ int CApp::QueryMsg(const char* pszMsg, ...) const
 	return MessageBox(m_rMainWnd.Handle(), strMsg, m_strTitle, MB_YESNOCANCEL | MB_ICONQUESTION | MB_TASKMODAL);
 }
 
-int CApp::FatalMsg(const char* pszMsg, ...) const
+int CApp::FatalMsg(const tchar* pszMsg, ...) const
 {
 	CString strMsg;
 

@@ -19,7 +19,6 @@
 #include "Font.hpp"
 #include "Brush.hpp"
 #include "Pen.hpp"
-#include "LeakCheck.hpp"
 #include "Module.hpp"
 #include "MainThread.hpp"
 #include "ComCtl32.hpp"
@@ -64,10 +63,10 @@ public:
     // Message boxes.
     // For use when no window is available.
     //
-	int AlertMsg(const char* pszMsg, ...) const;
-	int QueryMsg(const char* pszMsg, ...) const;
-	int NotifyMsg(const char* pszMsg, ...) const;
-	int FatalMsg(const char* pszMsg, ...) const;
+	int AlertMsg(const tchar* pszMsg, ...) const;
+	int QueryMsg(const tchar* pszMsg, ...) const;
+	int NotifyMsg(const tchar* pszMsg, ...) const;
+	int FatalMsg(const tchar* pszMsg, ...) const;
 
 	//
 	// Other methods.
@@ -83,7 +82,6 @@ public:
 	//
 	// Members.
 	//
-	CLeakCheck		m_oLeakChecker;		// Dumps memory leaks.
 	CString			m_strTitle;			// Application title.
 	CFrameWnd&		m_rMainWnd;			// Main window.
 	CCmdControl&	m_rCmdControl;		// Command controller.
