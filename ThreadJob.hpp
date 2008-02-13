@@ -59,6 +59,9 @@ protected:
 	JobStatus	m_eStatus;
 };
 
+//! The CThreadJob smart-pointer type.
+typedef Core::SharedPtr<CThreadJob> ThreadJobPtr;
+
 /******************************************************************************
 **
 ** Implementation of inline functions.
