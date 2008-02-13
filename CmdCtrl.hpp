@@ -75,7 +75,7 @@ protected:
 	typedef void (CCmdControl::*PFNCMDRANGEHANDLER)(uint iCmdID);
 	typedef void (CCmdControl::*PFNUIHANDLER)();
 	
-	typedef struct tagCMD
+	struct CMD
 	{
 		CmdType			m_eType;			// Comamnd handler type.
 		uint			m_iFirstID;			// First command in range.
@@ -83,7 +83,7 @@ protected:
 		PFNCMDHANDLER	m_lpfnCmdHandler;	// The exec command handler.
 		PFNUIHANDLER	m_lpfnUIHandler;	// The UI command handler.
 		int				m_iBmpIndex;		// The index of the command bitmap.
-	} CMD;
+	};
 
 	//
 	// Members.
