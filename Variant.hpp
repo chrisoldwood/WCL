@@ -25,6 +25,9 @@ public:
 	//! Default constructor.
 	Variant();
 
+	//! Construction by creating a BSTR of the string.
+	explicit Variant(const wchar_t* pszValue);
+
 	//! Construction by taking ownership of a BSTR value.
 	explicit Variant(ComStr& bstrValue);
 
@@ -39,7 +42,7 @@ public:
 	//
 
 	//! Format the variant type as a string.
-	static const char* FormatType(VARTYPE eType);
+	static const tchar* FormatType(VARTYPE eType);
 
 	//! Format the final variant type and any flags as a string.
 	static CString FormatFullType(const VARIANT* pVariant);

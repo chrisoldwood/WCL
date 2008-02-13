@@ -42,10 +42,10 @@ public:
 	//
 	// Methods.
 	//
-	void Add(const CWnd& oWnd, uint nTrayID, uint nMsgID, uint nRscID, const char* pszToolTip = NULL);
-	void Modify(uint nRscID, const char* pszToolTip);
+	void Add(const CWnd& oWnd, uint nTrayID, uint nMsgID, uint nRscID, const tchar* pszToolTip = NULL);
+	void Modify(uint nRscID, const tchar* pszToolTip);
 	void ModifyIcon(uint nRscID);
-	void ModifyToolTip(const char* pszToolTip);
+	void ModifyToolTip(const tchar* pszToolTip);
 	void Remove();
 
 protected:
@@ -74,7 +74,7 @@ inline void CTrayIcon::ModifyIcon(uint nRscID)
 	Modify(nRscID, NULL);
 }
 
-inline void CTrayIcon::ModifyToolTip(const char* pszToolTip)
+inline void CTrayIcon::ModifyToolTip(const tchar* pszToolTip)
 {
 	Modify(NULL, pszToolTip);
 }

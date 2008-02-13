@@ -30,8 +30,8 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CStrTok(const char* pszString, char        cSep,    int nFlags = NONE);
-	CStrTok(const char* pszString, const char* pszSeps, int nFlags = NONE);
+	CStrTok(const tchar* pszString, tchar        cSep,    int nFlags = NONE);
+	CStrTok(const tchar* pszString, const tchar* pszSeps, int nFlags = NONE);
 	~CStrTok();
 
 	//
@@ -53,8 +53,8 @@ public:
 	//
 	// Helper methods.
 	//
-	static uint Split(const char* pszString, char cSep,           CStrArray& astrFields, int nFlags = NONE);
-	static uint Split(const char* pszString, const char* pszSeps, CStrArray& astrFields, int nFlags = NONE);
+	static size_t Split(const tchar* pszString, tchar cSep,           CStrArray& astrFields, uint nFlags = NONE);
+	static size_t Split(const tchar* pszString, const tchar* pszSeps, CStrArray& astrFields, uint nFlags = NONE);
 
 protected:
 	// Token types.
@@ -69,10 +69,10 @@ protected:
 	//
 	// Members.
 	//
-	const char*	m_pszString;	// The string to tokenise.
-	CString		m_strSeps;		// The list of separators.
-	int			m_nFlags;		// The tokenising flags.
-	TokenType	m_eNextToken;	// The next token type expected.
+	const tchar*	m_pszString;	// The string to tokenise.
+	CString			m_strSeps;		// The list of separators.
+	uint			m_nFlags;		// The tokenising flags.
+	TokenType		m_eNextToken;	// The next token type expected.
 };
 
 /******************************************************************************

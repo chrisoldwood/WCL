@@ -85,14 +85,14 @@ CTrayIcon::~CTrayIcon()
 *******************************************************************************
 */
 
-void CTrayIcon::Add(const CWnd& oWnd, uint nTrayID, uint nMsgID, uint nRscID, const char* pszToolTip)
+void CTrayIcon::Add(const CWnd& oWnd, uint nTrayID, uint nMsgID, uint nRscID, const tchar* pszToolTip)
 {
 	ASSERT(m_hWnd        == NULL);
 	ASSERT(m_nTrayID     == NULL);
 	ASSERT(m_nMsgID      == NULL);
 	ASSERT(oWnd.Handle() != NULL);
 	ASSERT(nTrayID       != NULL);
-	ASSERT((pszToolTip == NULL) || (strlen(pszToolTip) < MAX_TIP_LEN));
+	ASSERT((pszToolTip == NULL) || (tstrlen(pszToolTip) < MAX_TIP_LEN));
 
 	// Save parameters.
 	m_hWnd    = oWnd.Handle();
@@ -122,7 +122,7 @@ void CTrayIcon::Add(const CWnd& oWnd, uint nTrayID, uint nMsgID, uint nRscID, co
 	oData.hIcon            = oIcon.Handle();
 
 	if (pszToolTip != NULL)
-		strncpy(oData.szTip, pszToolTip, MAX_TIP_LEN-1);
+		tstrncpy(oData.szTip, pszToolTip, MAX_TIP_LEN-1);
 
 	// Send message.
 	::Shell_NotifyIcon(NIM_ADD, &oData);
@@ -141,12 +141,12 @@ void CTrayIcon::Add(const CWnd& oWnd, uint nTrayID, uint nMsgID, uint nRscID, co
 *******************************************************************************
 */
 
-void CTrayIcon::Modify(uint nRscID, const char* pszToolTip)
+void CTrayIcon::Modify(uint nRscID, const tchar* pszToolTip)
 {
 	ASSERT(m_hWnd    != NULL);
 	ASSERT(m_nTrayID != NULL);
 	ASSERT(nRscID != NULL || pszToolTip != NULL);
-	ASSERT((pszToolTip == NULL) || (strlen(pszToolTip) < MAX_TIP_LEN));
+	ASSERT((pszToolTip == NULL) || (tstrlen(pszToolTip) < MAX_TIP_LEN));
 
 	uint nFlags = 0;
 
@@ -174,7 +174,7 @@ void CTrayIcon::Modify(uint nRscID, const char* pszToolTip)
 	}
 
 	if (pszToolTip != NULL)
-		strncpy(oData.szTip, pszToolTip, MAX_TIP_LEN-1);
+		tstrncpy(oData.szTip, pszToolTip, MAX_TIP_LEN-1);
 
 	// Send message.
 	::Shell_NotifyIcon(NIM_MODIFY, &oData);

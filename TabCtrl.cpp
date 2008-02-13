@@ -79,21 +79,21 @@ void CTabCtrl::GetCreateParams(WNDCREATE& rParams)
 *******************************************************************************
 */
 
-int CTabCtrl::AddTab(const char* pszName, LPARAM lData)
+size_t CTabCtrl::AddTab(const tchar* pszName, LPARAM lData)
 {
-	int i = NumTabs();
+	size_t n = NumTabs();
 
 	TCITEM tcItem;
 
 	// Initialise item.
 	memset(&tcItem, 0, sizeof(tcItem));
 	tcItem.mask    = TCIF_TEXT | TCIF_PARAM;
-	tcItem.pszText = const_cast<char*>(pszName);
+	tcItem.pszText = const_cast<tchar*>(pszName);
 	tcItem.lParam  = lData;
 
-	TabCtrl_InsertItem(m_hWnd, i, &tcItem);
+	TabCtrl_InsertItem(m_hWnd, n, &tcItem);
 
-	return i;
+	return n;
 }
 
 /******************************************************************************

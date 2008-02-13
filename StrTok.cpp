@@ -24,13 +24,13 @@
 *******************************************************************************
 */
 
-CStrTok::CStrTok(const char* pszString, char cSep, int nFlags)
+CStrTok::CStrTok(const tchar* pszString, tchar cSep, int nFlags)
 	: m_pszString(pszString)
 	, m_strSeps(&cSep, 1)
 	, m_nFlags(nFlags)
 	, m_eNextToken(END_TOKEN)
 {
-	if (*pszString != '\0')
+	if (*pszString != TXT('\0'))
 		m_eNextToken = VALUE_TOKEN;
 }
 
@@ -46,13 +46,13 @@ CStrTok::CStrTok(const char* pszString, char cSep, int nFlags)
 *******************************************************************************
 */
 
-CStrTok::CStrTok(const char* pszString, const char* pszSeps, int nFlags)
+CStrTok::CStrTok(const tchar* pszString, const tchar* pszSeps, int nFlags)
 	: m_pszString(pszString)
 	, m_strSeps(pszSeps)
 	, m_nFlags(nFlags)
 	, m_eNextToken(END_TOKEN)
 {
-	if (*pszString != '\0')
+	if (*pszString != TXT('\0'))
 		m_eNextToken = VALUE_TOKEN;
 }
 
@@ -88,20 +88,20 @@ CString CStrTok::NextToken()
 {
 	ASSERT(MoreTokens());
 
-	const char* pszStart = m_pszString;
-	const char* pszEnd   = pszStart;
+	const tchar* pszStart = m_pszString;
+	const tchar* pszEnd   = pszStart;
 
 	// Next token is a value?
 	if (m_eNextToken == VALUE_TOKEN)
 	{
 		// Find next separator or EOS.
-		while ( (*m_pszString != '\0') && (strchr(m_strSeps, *m_pszString) == NULL) )
+		while ( (*m_pszString != TXT('\0')) && (tstrchr(m_strSeps, *m_pszString) == NULL) )
 			++m_pszString;
 
 		pszEnd = m_pszString;
 
 		// Stopped on a separator?
-		if (*m_pszString != '\0')
+		if (*m_pszString != TXT('\0'))
 		{
 			// Switch state, if returning separators.
 			if (m_nFlags & RETURN_SEPS)
@@ -116,13 +116,13 @@ CString CStrTok::NextToken()
 				// Merge consecutive separators?
 				if (m_nFlags & MERGE_SEPS)
 				{
-					while ( (*m_pszString != '\0') && (strchr(m_strSeps, *m_pszString) != NULL) )
+					while ( (*m_pszString != TXT('\0')) && (tstrchr(m_strSeps, *m_pszString) != NULL) )
 						++m_pszString;
 				}
 			}
 		}
 		// Reached EOS.
-		else //(*m_pszString == '\0')
+		else //(*m_pszString == TXT('\0'))
 		{
 			m_eNextToken = END_TOKEN;
 		}
@@ -130,14 +130,14 @@ CString CStrTok::NextToken()
 	// Next token is a separator.
 	else //(m_eNextToken == SEPARATOR_TOKEN)
 	{
-		ASSERT(strchr(m_strSeps, *m_pszString) != NULL);
+		ASSERT(tstrchr(m_strSeps, *m_pszString) != NULL);
 
 		++m_pszString;
 
 		// Merge consecutive separators?
 		if (m_nFlags & MERGE_SEPS)
 		{
-			while ( (*m_pszString != '\0') && (strchr(m_strSeps, *m_pszString) != NULL) )
+			while ( (*m_pszString != TXT('\0')) && (tstrchr(m_strSeps, *m_pszString) != NULL) )
 				++m_pszString;
 		}
 
@@ -165,9 +165,9 @@ CString CStrTok::NextToken()
 *******************************************************************************
 */
 
-uint CStrTok::Split(const char* pszString, char cSep, CStrArray& astrFields, int nFlags)
+size_t CStrTok::Split(const tchar* pszString, tchar cSep, CStrArray& astrFields, uint nFlags)
 {
-	char szSeps[2] = {cSep, '\0'};
+	tchar szSeps[2] = {cSep, TXT('\0')};
 
 	return Split(pszString, szSeps, astrFields, nFlags);
 }
@@ -187,7 +187,7 @@ uint CStrTok::Split(const char* pszString, char cSep, CStrArray& astrFields, int
 *******************************************************************************
 */
 
-uint CStrTok::Split(const char* pszString, const char* pszSeps, CStrArray& astrFields, int nFlags)
+size_t CStrTok::Split(const tchar* pszString, const tchar* pszSeps, CStrArray& astrFields, uint nFlags)
 {
 	ASSERT(pszString != NULL);
 	ASSERT(pszSeps   != NULL);

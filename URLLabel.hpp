@@ -38,7 +38,7 @@ public:
 	//
 	// Methods.
 	//
-	void Protocol(const char* pszProtocol);
+	void Protocol(const tchar* pszProtocol);
 	
 protected:
 	//
@@ -64,7 +64,7 @@ protected:
 *******************************************************************************
 */
 
-inline void CURLLabel::Protocol(const char* pszProtocol)
+inline void CURLLabel::Protocol(const tchar* pszProtocol)
 {
 	ASSERT(pszProtocol != NULL);
 

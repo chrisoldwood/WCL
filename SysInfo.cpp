@@ -11,6 +11,7 @@
 #include "Common.hpp"
 #include "SysInfo.hpp"
 #include <lmcons.h>
+#include "Win32Exception.hpp"
 
 /******************************************************************************
 ** Method:		ComputerName()
@@ -26,10 +27,11 @@
 
 CString CSysInfo::ComputerName()
 {
-	char  szName[MAX_COMPUTERNAME_LENGTH+1] = { 0 };
-	DWORD dwSize = sizeof(szName);
+	tchar szName[MAX_COMPUTERNAME_LENGTH+1] = { 0 };
+	DWORD dwSize = MAX_COMPUTERNAME_LENGTH;
 
-	::GetComputerName(szName, &dwSize);
+	if (::GetComputerName(szName, &dwSize) == 0)
+		throw WCL::Win32Exception(::GetLastError(), TXT("Failed to retrieve the name of the computer"));
 	
 	return szName;
 }
@@ -48,10 +50,11 @@ CString CSysInfo::ComputerName()
 
 CString CSysInfo::UserName()
 {
-	char  szName[UNLEN+1] = { 0 };
-	DWORD dwSize = sizeof(szName);
+	tchar szName[UNLEN+1] = { 0 };
+	DWORD dwSize = UNLEN;
 
-	::GetUserName(szName, &dwSize);
+	if (::GetUserName(szName, &dwSize) == 0)
+		throw WCL::Win32Exception(::GetLastError(), TXT("Failed to retrieve the name of the user"));
 	
 	return szName;
 }

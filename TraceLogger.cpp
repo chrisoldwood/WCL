@@ -6,6 +6,8 @@
 #include "Common.hpp"
 #include "TraceLogger.hpp"
 #include "Path.hpp"
+#include <stdio.h>
+#include <tchar.h>
 
 namespace WCL
 {
@@ -14,7 +16,7 @@ namespace WCL
 // Class members.
 
 //! Trace log file path.
-char TraceLogger::g_szTraceLog[];
+tchar TraceLogger::g_szTraceLog[];
 
 //! Did last message include CRLF?
 bool TraceLogger::g_bNewLine = true;
@@ -35,12 +37,12 @@ void TraceLogger::Install()
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the logfile.
 
-void TraceLogger::SetLogFile(const char* pszLogFile)
+void TraceLogger::SetLogFile(const tchar* pszLogFile)
 {
 	ASSERT(pszLogFile != NULL);
-	ASSERT(strlen(pszLogFile) <= MAX_PATH);
+	ASSERT(tstrlen(pszLogFile) <= MAX_PATH);
 
-	strncpy(g_szTraceLog, pszLogFile, MAX_PATH);
+	tstrncpy(g_szTraceLog, pszLogFile, MAX_PATH);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -57,10 +59,10 @@ void TraceLogger::EnableDialogs(bool bEnable)
 int TraceLogger::ReportHook(int /*nType*/, char* pszMessage, int* piRetVal)
 {
 	// Create default logfile path.
-	if (g_szTraceLog[0] == '\0')
-		strcpy(g_szTraceLog, CPath(CPath::ApplicationDir(), "TraceLog.txt"));
+	if (g_szTraceLog[0] == TXT('\0'))
+		tstrcpy(g_szTraceLog, CPath(CPath::ApplicationDir(), TXT("TraceLog.txt")));
 
-	FILE* fLogFile = fopen(g_szTraceLog, "a");
+	FILE* fLogFile = _tfopen(g_szTraceLog, TXT("a"));
 
 	// Opened log file okay?
 	if (fLogFile != NULL)
@@ -83,7 +85,7 @@ int TraceLogger::ReportHook(int /*nType*/, char* pszMessage, int* piRetVal)
 		fclose(fLogFile);
 
 		// Message ended with CRLF?
-		for (const char* psz = pszMessage; *psz != '\0'; psz++)
+		for (const char* psz = pszMessage; *psz != '\0'; ++psz)
 			g_bNewLine = ((*psz == '\r') || (*psz == '\n'));
 	}
 

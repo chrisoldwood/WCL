@@ -99,7 +99,7 @@ public:
 	// Conversion methods.
 	//
 	CString ToString(int nFormat = FMT_WIN_LONG) const;
-	bool    FromString(const char* pszTime);
+	bool    FromString(const tchar* pszTime);
 
 	//
 	// Comparison operators.

@@ -13,6 +13,11 @@
 #include "StrCvt.hpp"
 #include "IInputStream.hpp"
 #include "IOutputStream.hpp"
+#include <stdio.h>
+#include <tchar.h>
+#include <Core/AnsiWide.hpp>
+#include <Core/StringUtils.hpp>
+#include <stdexcept>
 
 /******************************************************************************
 **
@@ -21,8 +26,10 @@
 *******************************************************************************
 */
 
-// ISO Format string buffer size.
-const uint FMT_BUF_SIZE = 100;
+// ISO Format min string size in characters "dd:dd".
+const size_t ISO_FMT_MIN_LEN = 5;
+// ISO Format string size in characters "dd:dd:dd".
+const size_t ISO_FMT_MAX_LEN = 8;
 
 /******************************************************************************
 ** Method:		Set()
@@ -123,9 +130,9 @@ CString CTime::FieldSeparator()
 	// Get the size of the buffer and allocate one.
 	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIME, NULL, 0);
 
-	char* pszBuffer = static_cast<char*>(alloca(nChars+1));
+	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
 
-	pszBuffer[0] = '\0';
+	pszBuffer[0] = TXT('\0');
 
 	// Get the locale string.
 	::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIME, pszBuffer, nChars+1);
@@ -154,14 +161,19 @@ CString CTime::ToString(int nFormat) const
 	// Get the time components.
 	Get(iHours, iMins, iSecs);
 
-	char* pszValue = "";
+	tchar* pszValue = TXT("");
 
 	// ISO standard format?
 	if (nFormat == FMT_ISO)
 	{
-		pszValue = (char*) alloca(FMT_BUF_SIZE);
+		pszValue = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(ISO_FMT_MAX_LEN+1)));
 
-		_snprintf(pszValue, FMT_BUF_SIZE, "%02d:%02d:%02d", iHours, iMins, iSecs);
+		int nResult = _sntprintf(pszValue, ISO_FMT_MAX_LEN+1, TXT("%02d:%02d:%02d"), iHours, iMins, iSecs);
+
+		ASSERT(nResult >= 0);
+
+		if (nResult < 0)
+			throw std::logic_error(T2A(Core::Fmt(TXT("Insufficient buffer size used in CTime::ToString(). Result: %d"), nResult)));
 	}
 	// Windows locale derived format?
 	else if ((nFormat == FMT_WIN_SHORT) || (nFormat == FMT_WIN_LONG))
@@ -183,12 +195,12 @@ CString CTime::ToString(int nFormat) const
 		st.wSecond = static_cast<WORD>(iSecs);
 
 		// Calculate buffer size.
-		int nTimeBufSize = ::GetTimeFormat(LOCALE_USER_DEFAULT, nTimeFmt, &st, NULL, pszValue, 0);
+		size_t nChars = ::GetTimeFormat(LOCALE_USER_DEFAULT, nTimeFmt, &st, NULL, pszValue, 0);
 
-		pszValue = (char*) alloca(nTimeBufSize);
+		pszValue = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars)));
 
 		// Format the string.
-		::GetTimeFormat(LOCALE_USER_DEFAULT, nTimeFmt, &st, NULL, pszValue, nTimeBufSize);
+		::GetTimeFormat(LOCALE_USER_DEFAULT, nTimeFmt, &st, NULL, pszValue, nChars);
 	}
 	// Unsupported format.
 	else
@@ -212,25 +224,25 @@ CString CTime::ToString(int nFormat) const
 *******************************************************************************
 */
 
-bool CTime::FromString(const char* pszTime)
+bool CTime::FromString(const tchar* pszTime)
 {
 	ASSERT(pszTime != NULL);
 
-	int nLength = strlen(pszTime);
+	int nLength = tstrlen(pszTime);
 
 	// Check length is at least "00:00" and at most "00:00:00".
-	if ( (nLength < 5) || (nLength > 8) )
+	if ( (nLength < ISO_FMT_MIN_LEN) || (nLength > ISO_FMT_MAX_LEN) )
 		return false;
 
-	char szTime[FMT_BUF_SIZE];
+	tchar szTime[ISO_FMT_MAX_LEN+1] = { 0 };
 	
 	// Copy to non-const buffer.
-	strcpy(szTime, pszTime);
+	tstrncpy(szTime, pszTime, ISO_FMT_MAX_LEN);
 	
 	// Break up string into time components.
-	const char* pszHours = strtok(szTime, ":");
-	const char* pszMins  = strtok(NULL,   ":");
-	const char* pszSecs  = strtok(NULL,   ":");
+	const tchar* pszHours = tstrtok(szTime, TXT(":"));
+	const tchar* pszMins  = tstrtok(NULL,   TXT(":"));
+	const tchar* pszSecs  = tstrtok(NULL,   TXT(":"));
 
 	// Got at least 2 string parts?
 	if ( (pszHours == NULL) || (pszMins == NULL) )
@@ -238,7 +250,7 @@ bool CTime::FromString(const char* pszTime)
 
 	// Secs not specified?
 	if (pszSecs == NULL)
-		pszSecs = "0";
+		pszSecs = TXT("0");
 
 	// Convert to numbers.
 	int	iHours = CStrCvt::ParseInt(pszHours, CStrCvt::PARSE_DECIMAL_ONLY);

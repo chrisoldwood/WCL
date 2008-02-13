@@ -94,7 +94,7 @@ void CToolBar::GetClassParams(WNDCLASS& rParams)
 
 	// Override any settings.
 	rParams.hbrBackground = (HBRUSH) (COLOR_BTNFACE + 1);
-	rParams.lpszClassName = "ToolBar";
+	rParams.lpszClassName = TXT("ToolBar");
 }
 
 /******************************************************************************
@@ -115,7 +115,7 @@ void CToolBar::GetCreateParams(WNDCREATE& rParams)
 	CCtrlWnd::GetCreateParams(rParams);
 
 	// Override any settings.
-	rParams.pszClassName = "ToolBar";
+	rParams.pszClassName = TXT("ToolBar");
 	rParams.rcPos.Set(0, 0, 0, CONTROL_SIZE + (BORDER_SIZE*2) + TOP_BORDER);
 }
 
@@ -165,7 +165,7 @@ void CToolBar::OnCreate(const CRect& /*rcClient*/)
 		}
 		
 		// Move to next.
-		pCtrl++;
+		++pCtrl;
 	}
 }
 
@@ -256,7 +256,7 @@ LRESULT CToolBar::OnCtrlMsg(NMHDR& rMsgHdr)
 		int nCtlID = ::GetDlgCtrlID((HWND)rMsgHdr.idFrom);
 
 		// Return it.
-		strcpy(oInfo.szText, CApp::This().m_rCmdControl.CmdToolTipStr(nCtlID));
+		tstrcpy(oInfo.szText, CApp::This().m_rCmdControl.CmdToolTipStr(nCtlID));
 		return 0;
 	}
 
@@ -333,5 +333,5 @@ void CToolBar::OnShowHint(const CWnd* pWnd) const
 	if (pWnd != NULL)
 		pStatusBar->Hint(oApp.m_rCmdControl.CmdHintStr(::GetDlgCtrlID(pWnd->Handle())));
 	else
-		pStatusBar->Hint("");
+		pStatusBar->Hint(TXT(""));
 }

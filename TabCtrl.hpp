@@ -38,10 +38,10 @@ public:
 	//
 	// Methods.
 	//
-	int  NumTabs() const;
+	size_t NumTabs() const;
 
-	int  AddTab(const char* pszName, LPARAM lData);
-	int  AddTab(const char* pszName, const void* pData);
+	size_t AddTab(const tchar* pszName, LPARAM lData);
+	size_t AddTab(const tchar* pszName, const void* pData);
 
 	int  CurSel() const;
 	void CurSel(int nTab);
@@ -76,12 +76,12 @@ protected:
 *******************************************************************************
 */
 
-inline int CTabCtrl::NumTabs() const
+inline size_t CTabCtrl::NumTabs() const
 {
 	return TabCtrl_GetItemCount(m_hWnd);
 }
 
-inline int CTabCtrl::AddTab(const char* pszName, const void* pData)
+inline size_t CTabCtrl::AddTab(const tchar* pszName, const void* pData)
 {
 	return AddTab(pszName, (LPARAM)pData);
 }
@@ -98,7 +98,7 @@ inline void CTabCtrl::CurSel(int nTab)
 
 inline void* CTabCtrl::ItemPtr(int nTab) const
 {
-	return (void*) ItemData(nTab);
+	return reinterpret_cast<void*>(ItemData(nTab));
 }
 
 #endif //TABCTRL_HPP

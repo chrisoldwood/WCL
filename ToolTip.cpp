@@ -99,7 +99,7 @@ void CToolTip::OnCreate(const CRect&)
 *******************************************************************************
 */
 
-void CToolTip::AddTool(uint nFlags, CWnd& oParent, uint nID, const CRect* prcRect, const char* pszText)
+void CToolTip::AddTool(uint nFlags, CWnd& oParent, uint nID, const CRect* prcRect, const tchar* pszText)
 {
 	ASSERT( ((nFlags & TTF_IDISHWND) && (prcRect == NULL)) || (!(nFlags & TTF_IDISHWND) && (prcRect != NULL)) );
 
@@ -117,7 +117,7 @@ void CToolTip::AddTool(uint nFlags, CWnd& oParent, uint nID, const CRect* prcRec
 	if (prcRect != NULL)
 		oInfo.rect = *prcRect;
 
-    oInfo.lpszText = const_cast<char *>(pszText);
+    oInfo.lpszText = const_cast<tchar*>(pszText);
 
 	// Add it.
 	SendMessage(TTM_ADDTOOL, 0, (LPARAM)&oInfo);

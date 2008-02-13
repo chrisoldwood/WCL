@@ -26,7 +26,7 @@ public:
 	static void Install();
 
 	//! Set the logfile.
-	static void SetLogFile(const char* pszLogFile);
+	static void SetLogFile(const tchar* pszLogFile);
 
 	//! Set whether to display ASSERTs.
 	static void EnableDialogs(bool bEnable);
@@ -35,9 +35,9 @@ private:
 	//
 	// Class members.
 	//
-	static char g_szTraceLog[MAX_PATH+1];	//!< Trace log file path.
-	static bool g_bNewLine;					//!< Did last message include CRLF?
-	static bool g_bConsume;					//!< Disable ASSERT dialogs?
+	static tchar g_szTraceLog[MAX_PATH+1];	//!< Trace log file path.
+	static bool  g_bNewLine;				//!< Did last message include CRLF?
+	static bool  g_bConsume;				//!< Disable ASSERT dialogs?
 
 	//! The CRT callback.function.
 	static int ReportHook(int /*nType*/, char* pszMessage, int* piRetVal);

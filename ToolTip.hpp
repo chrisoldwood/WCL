@@ -38,7 +38,7 @@ public:
 	//
 	// Methods.
 	//
-	void AddTool(CWnd& oParent, CWnd& oTool, const char* pszText);
+	void AddTool(CWnd& oParent, CWnd& oTool, const tchar* pszText);
 
 protected:
 	//
@@ -58,7 +58,7 @@ protected:
 	//
 	// Internal methods.
 	//
-	void AddTool(uint nFlags, CWnd& oParent, uint nID, const CRect* prcRect, const char* pszText);
+	void AddTool(uint nFlags, CWnd& oParent, uint nID, const CRect* prcRect, const tchar* pszText);
 };
 
 /******************************************************************************
@@ -68,9 +68,9 @@ protected:
 *******************************************************************************
 */
 
-inline void CToolTip::AddTool(CWnd& oParent, CWnd& oTool, const char* pszText)
+inline void CToolTip::AddTool(CWnd& oParent, CWnd& oTool, const tchar* pszText)
 {
-	AddTool(TTF_IDISHWND | TTF_SUBCLASS, oParent, (uint)oTool.Handle(), NULL, pszText);
+	AddTool(TTF_IDISHWND | TTF_SUBCLASS, oParent, reinterpret_cast<uint>(oTool.Handle()), NULL, pszText);
 }
 
 #endif //TOOLTIP_HPP
