@@ -78,7 +78,7 @@ void CSplitWnd::GetClassParams(WNDCLASS& rParams)
 
 	// Override any settings.
 	rParams.hbrBackground = (HBRUSH) (COLOR_BTNFACE + 1);
-	rParams.lpszClassName = "SplitWnd";
+	rParams.lpszClassName = TXT("SplitWnd");
 }
 
 /******************************************************************************
@@ -99,7 +99,7 @@ void CSplitWnd::GetCreateParams(WNDCREATE& rParams)
 	CCtrlWnd::GetCreateParams(rParams);
 
 	// Override any settings.
-	rParams.pszClassName  = "SplitWnd";
+	rParams.pszClassName = TXT("SplitWnd");
 }
 
 /******************************************************************************
@@ -139,7 +139,7 @@ void CSplitWnd::OnResize(int /*iFlag*/, const CSize& /*rNewSize*/)
 *******************************************************************************
 */
 
-void CSplitWnd::Pane(int nPane, CWnd* pWnd)
+void CSplitWnd::Pane(size_t nPane, CWnd* pWnd)
 {
 	ASSERT( (nPane == 0) || (nPane == 1) );
 
@@ -166,7 +166,7 @@ void CSplitWnd::Pane(int nPane, CWnd* pWnd)
 *******************************************************************************
 */
 
-CWnd* CSplitWnd::Pane(int nPane) const
+CWnd* CSplitWnd::Pane(size_t nPane) const
 {
 	ASSERT( (nPane == 0) || (nPane == 1) );
 

@@ -51,8 +51,8 @@ public:
 	//
 	// Accesors & Mutators.
 	//
-	void Pane(int nPane, CWnd* pWnd);
-	CWnd* Pane(int nPane) const;
+	void Pane(size_t nPane, CWnd* pWnd);
+	CWnd* Pane(size_t nPane) const;
 
 	void BarPos(int nPos);
 	int BarPos() const;

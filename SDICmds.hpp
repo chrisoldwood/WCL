@@ -43,7 +43,7 @@ public:
 	//
 	bool NewFile();
 	bool OpenFile();
-	bool OpenMRUFile(int nIndex);
+	bool OpenMRUFile(size_t nIndex);
 	bool OpenFile(const CPath& strPath);
 	bool SaveFile();
 	bool SaveFileAs();

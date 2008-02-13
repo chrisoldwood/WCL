@@ -32,10 +32,10 @@ public:
 	//
 
 	//! Read a line of text.
-	CString ReadLine();
+	CString ReadLine(TextFormat eFormat);
 
 	//! Write a line of text.
-	void WriteLine(const char* pszLine);
+	void WriteLine(const CString& str, TextFormat eFormat);
 
 	//
 	// Default implementation of IStreamBase.
@@ -60,6 +60,12 @@ protected:
 	uint	m_nMode;		//!< The read/write mode.
 	uint32	m_nFormat;		//!< The stream contents format.
 	uint32	m_nVersion;		//!< The stream contents version.
+
+	//
+	// Internal methods.
+	//
+	template<typename CharT>
+	size_t ReadLine(std::vector<CharT>& vBuffer);
 };
 
 #endif // WCL_STREAM_HPP

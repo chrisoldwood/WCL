@@ -104,8 +104,8 @@ bool CSDICmds::OpenFile()
 	CPath Path;
 
 	// Get file extensions.
-	const char* pszFileExts = oApp.FileExts();
-	const char* pszDefExt   = oApp.DefFileExt();
+	const tchar* pszFileExts = oApp.FileExts();
+	const tchar* pszDefExt   = oApp.DefFileExt();
 
 	// Select a filename.
 	if (!Path.Select(oApp.m_rMainWnd, CPath::OpenFile, pszFileExts, pszDefExt))
@@ -127,7 +127,7 @@ bool CSDICmds::OpenFile()
 *******************************************************************************
 */
 
-bool CSDICmds::OpenMRUFile(int nIndex)
+bool CSDICmds::OpenMRUFile(size_t nIndex)
 {
 	// Get application object.
 	CSDIApp& oApp = CSDIApp::This();
@@ -249,8 +249,8 @@ bool CSDICmds::SaveFileAs()
 	CPath Path;
 
 	// Get file extensions.
-	const char* pszFileExts = oApp.FileExts();
-	const char* pszDefExt   = oApp.DefFileExt();
+	const tchar* pszFileExts = oApp.FileExts();
+	const tchar* pszDefExt   = oApp.DefFileExt();
 
 	// Select a filename.
 	if (!Path.Select(oApp.m_rMainWnd, CPath::SaveFile, pszFileExts, pszDefExt))
@@ -258,7 +258,7 @@ bool CSDICmds::SaveFileAs()
 
 	// Warn user if file exists.
 	if ( (Path.Exists())
-	  && (oApp.m_rMainWnd.QueryMsg("The file already exists:\n\n%s\n\nOverwrite?", Path) != IDYES) )
+	  && (oApp.m_rMainWnd.QueryMsg(TXT("The file already exists:\n\n%s\n\nOverwrite?"), Path) != IDYES) )
 		return false;
 
 	// Save the document.
@@ -303,7 +303,7 @@ bool CSDICmds::CloseFile()
 	if (oApp.m_pDoc->Modified())
 	{
 		// Query user to save changes.
-		int nRes = oApp.m_rMainWnd.QueryMsg("Save changes to: %s?", oApp.m_pDoc->Path());
+		int nRes = oApp.m_rMainWnd.QueryMsg(TXT("Save changes to: %s?"), oApp.m_pDoc->Path());
 
 		// Abort?
 		if (nRes == IDCANCEL)

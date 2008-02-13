@@ -25,7 +25,7 @@
 *******************************************************************************
 */
 
-CStatusBarLabel::CStatusBarLabel(int nChars)
+CStatusBarLabel::CStatusBarLabel(size_t nChars)
 	: m_nChars(nChars)
 {
 }
@@ -65,7 +65,7 @@ void CStatusBarLabel::GetClassParams(WNDCLASS& rParams)
 
 	// Override any settings.
 	rParams.hbrBackground = (HBRUSH) (COLOR_BTNFACE + 1);
-	rParams.lpszClassName = "StatusBarLabel";
+	rParams.lpszClassName = TXT("StatusBarLabel");
 }
 
 /******************************************************************************
@@ -89,10 +89,10 @@ void CStatusBarLabel::GetCreateParams(WNDCREATE& rParams)
     CScreenDC DC;
     
     DC.Select(CApp::This().DefaultFont());
-    CSize FontSize = DC.TextExtents("Ly");
+    CSize FontSize = DC.TextExtents(TXT("Ly"));
 
 	// Override any settings.
-	rParams.pszClassName = "StatusBarLabel";
+	rParams.pszClassName = TXT("StatusBarLabel");
 	rParams.rcPos.Set(0, 0, ((FontSize.cx*m_nChars)/2) + (2*BORDER_SIZE), FontSize.cy + (2*BORDER_SIZE));
 }
 
@@ -133,7 +133,7 @@ void CStatusBarLabel::OnPaint(CDC& rDC)
 *******************************************************************************
 */
 
-void CStatusBarLabel::SetLabel(const char* pszLabel)
+void CStatusBarLabel::SetLabel(const tchar* pszLabel)
 {
 	ASSERT(pszLabel != NULL);
 

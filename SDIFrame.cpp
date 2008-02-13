@@ -167,9 +167,9 @@ void CSDIFrame::UpdateTitle()
 	// Append doc title, if available.
 	if (oApp.m_pDoc != NULL)
 	{
-		strTitle += " - [";
+		strTitle += TXT(" - [");
 		strTitle += oApp.m_pDoc->Path();
-		strTitle += "]";
+		strTitle += TXT("]");
 	}
 
 	Title(strTitle);
@@ -188,7 +188,7 @@ void CSDIFrame::UpdateTitle()
 *******************************************************************************
 */
 
-void CSDIFrame::OnDropFile(int nFile, const char* pszPath)
+void CSDIFrame::OnDropFile(int nFile, const tchar* pszPath)
 {
 	ASSERT(nFile   >= 0);
 	ASSERT(pszPath != NULL);

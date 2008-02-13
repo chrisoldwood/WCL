@@ -24,7 +24,7 @@
 *******************************************************************************
 */
 
-CSDIApp::CSDIApp(CSDIFrame& rFrameWnd, CSDICmds& rCmdControl, int nMRUSize)
+CSDIApp::CSDIApp(CSDIFrame& rFrameWnd, CSDICmds& rCmdControl, size_t nMRUSize)
 	: CApp(rFrameWnd, rCmdControl)
 	, m_pDoc(NULL)
 	, m_pView(NULL)
@@ -70,13 +70,13 @@ bool CSDIApp::OnOpen()
 		CPath strPath = m_strCmdLine;
 
 		// Delete leading ", if one.
-		if (strPath[0] == '"')
+		if (strPath[0U] == TXT('"'))
 			strPath.Delete(0);
 
-		int nLength = strPath.Length();
+		size_t nLength = strPath.Length();
 
 		// Delete trailing ", if one.
-		if ( (nLength > 0) && (strPath[nLength-1] == '"') )
+		if ( (nLength > 0) && (strPath[nLength-1] == TXT('"')) )
 			strPath.Delete(nLength-1);
 
 		static_cast<CSDICmds&>(m_rCmdControl).OpenFile(strPath);

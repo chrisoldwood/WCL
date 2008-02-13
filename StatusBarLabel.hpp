@@ -31,19 +31,19 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CStatusBarLabel(int nChars);
+	CStatusBarLabel(size_t nChars);
 	virtual	~CStatusBarLabel();
 	
 	//
 	// Methods.
 	//
-	void SetLabel(const char* pszLabel);
+	void SetLabel(const tchar* pszLabel);
 
 protected:
 	//
 	// Members.
 	//
-	uint	m_nChars;			// Width in characters.
+	size_t	m_nChars;			// Width in characters.
 	CString	m_strLabel;			// Text value.
 
 	//

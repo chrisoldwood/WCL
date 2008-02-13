@@ -49,10 +49,10 @@ public:
 	//
 	// Parsing methods.
 	//
-	static int    ParseInt   (const char* pszString, int nFlags = PARSE_ANY_FORMAT);
-	static uint   ParseUInt  (const char* pszString, int nFlags = PARSE_ANY_FORMAT);
-	static long   ParseLong  (const char* pszString, int nFlags = PARSE_ANY_FORMAT);
-	static double ParseDouble(const char* pszString, int nFlags = PARSE_ANY_FORMAT);
+	static int    ParseInt   (const tchar* pszString, int nFlags = PARSE_ANY_FORMAT);
+	static uint   ParseUInt  (const tchar* pszString, int nFlags = PARSE_ANY_FORMAT);
+	static long   ParseLong  (const tchar* pszString, int nFlags = PARSE_ANY_FORMAT);
+	static double ParseDouble(const tchar* pszString, int nFlags = PARSE_ANY_FORMAT);
 };
 
 /******************************************************************************

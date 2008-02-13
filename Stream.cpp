@@ -5,6 +5,7 @@
 
 #include "Common.hpp"
 #include "Stream.hpp"
+#include <Core/AnsiWide.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Constructor.
@@ -24,32 +25,85 @@ CStream::~CStream()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Read a line of text. This returns the line of text without the ending line
-//! terminators.
+//! Template helper function to read a line of text from the stream. It returns
+//! the number of characters read.
 
-CString CStream::ReadLine()
+template<typename CharT>
+size_t CStream::ReadLine(std::vector<CharT>& vBuffer)
 {
-	CString strLine;
-
 	if (!IsEOF())
 	{
-		char cChar;
+		CharT cChar;
 		
 		do
 		{
 			// Read a char.
-			Read(&cChar, sizeof(cChar));
+			Read(&cChar, sizeof(CharT));
 
 			// Append char if not CR or LF.
 			if ( (cChar != '\r') && (cChar != '\n') )
-				strLine += cChar;
+				vBuffer.push_back(cChar);
 		}
 		// Until we reach EOF or EOL.
 		while ( (!IsEOF()) && (cChar != '\r') && (cChar != '\n') );
 
 		// Skip LF char, if CR found.
 		if ( (!IsEOF()) && (cChar == '\r') )
-			Read(&cChar, sizeof(cChar));
+			Read(&cChar, sizeof(CharT));
+	}
+
+	return vBuffer.size();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Read a line of text. This returns the line of text without the line
+//! terminator.
+
+CString CStream::ReadLine(TextFormat eFormat)
+{
+	CString strLine;
+
+	if (eFormat == ANSI_TEXT)
+	{
+		std::vector<char> vBuffer;
+
+		// Read a line of ANSI chars.
+		if (ReadLine(vBuffer) == 0)
+			return TXT("");
+
+		size_t      nChars   = vBuffer.size();
+		const char* pszBegin = &vBuffer.front();
+		const char* pszEnd   = pszBegin + nChars;
+
+		// Allocate the return buffer.
+		strLine.BufferSize(nChars+1);
+
+#ifdef ANSI_BUILD
+		std::copy(pszBegin, pszEnd, strLine.Buffer());
+#else
+		Core::AnsiToWide(pszBegin, pszEnd, strLine.Buffer());
+#endif
+	}
+	else // (eFormat == UNICODE_TEXT)
+	{
+		std::vector<wchar_t> vBuffer;
+
+		// Read a line of ANSI chars.
+		if (ReadLine(vBuffer) == 0)
+			return TXT("");
+
+		size_t         nChars   = vBuffer.size();
+		const wchar_t* pszBegin = &vBuffer.front();
+		const wchar_t* pszEnd   = pszBegin + nChars;
+
+		// Allocate the return buffer.
+		strLine.BufferSize(nChars+1);
+
+#ifdef ANSI_BUILD	
+		Core::WideToAnsi(pszBegin, pszEnd, strLine.Buffer());
+#else
+		std::copy(pszBegin, pszEnd, strLine.Buffer());
+#endif
 	}
 
 	return strLine;
@@ -59,10 +113,30 @@ CString CStream::ReadLine()
 //! Write a line of text. This writes a line of text and appends the line
 //! terminator.
 
-void CStream::WriteLine(const char* pszLine)
+void CStream::WriteLine(const CString& str, TextFormat eFormat)
 {
-	Write(pszLine, strlen(pszLine));
-	Write("\r\n", 2);
+	size_t nChars = str.Length();
+
+	if (eFormat == ANSI_TEXT)
+	{
+#ifdef ANSI_BUILD
+		Write(str.Buffer(), Core::NumBytes<char>(nChars));
+#else
+		Write(T2A(str), Core::NumBytes<char>(nChars));
+#endif
+
+		Write("\r\n",  Core::NumBytes<char>(2));
+	}
+	else // (eFormat == UNICODE_TEXT)
+	{
+#ifdef ANSI_BUILD
+		Write(T2W(str), Core::NumBytes<wchar_t>(nChars));
+#else
+		Write(str.Buffer(), Core::NumBytes<wchar_t>(nChars));
+#endif
+
+		Write(L"\r\n", Core::NumBytes<wchar_t>(2));
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////

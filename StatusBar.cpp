@@ -87,7 +87,7 @@ void CStatusBar::GetClassParams(WNDCLASS& rParams)
 
 	// Override any settings.
 	rParams.hbrBackground = (HBRUSH) (COLOR_BTNFACE + 1);
-	rParams.lpszClassName = "StatusBar";
+	rParams.lpszClassName = TXT("StatusBar");
 }
 
 /******************************************************************************
@@ -108,10 +108,10 @@ void CStatusBar::GetCreateParams(WNDCREATE& rParams)
 	CCtrlWnd::GetCreateParams(rParams);
 
     // Get the height of the default font.
-    CSize FontSize = CScreenDC().TextExtents(CApp::This().DefaultFont(), "Ly");
+    CSize FontSize = CScreenDC().TextExtents(CApp::This().DefaultFont(), TXT("Ly"));
 
 	// Override any settings.
-	rParams.pszClassName  = "StatusBar";
+	rParams.pszClassName = TXT("StatusBar");
 	rParams.rcPos.Set(0, 0, 0, FontSize.cy + (2*INNER_BORDER_SIZE) + OUTER_BORDER_SIZE);
 }
 
@@ -312,7 +312,7 @@ void CStatusBar::Hint(uint iRscID)
 *******************************************************************************
 */
 
-void CStatusBar::Hint(const char* pszHint)
+void CStatusBar::Hint(const tchar* pszHint)
 {
 	ASSERT(m_oHintBar.Handle());
 

@@ -48,11 +48,7 @@ protected:
 	//
 };
 
-/******************************************************************************
-**
-** Implementation of inline functions.
-**
-*******************************************************************************
-*/
+//! The SDI document smart-pointer type.
+typedef Core::SharedPtr<CSDIDoc> SDIDocPtr;
 
 #endif //SDIDOC_HPP

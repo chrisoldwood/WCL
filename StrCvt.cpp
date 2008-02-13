@@ -13,6 +13,10 @@
 #include <errno.h>
 #include <time.h>
 #include "StrCvtException.hpp"
+#include <tchar.h>
+#include <Core/AnsiWide.hpp>
+#include <stdexcept>
+#include <limits>
 
 /******************************************************************************
 ** Method:		FormatInt()
@@ -28,16 +32,20 @@
 
 CString CStrCvt::FormatInt(int nValue)
 {
-	char szValue[50];
+	const size_t MAX_CHARS = std::numeric_limits<int>::digits10+1;
 
-	return _ltoa(nValue, szValue, 10);
+	tchar szValue[MAX_CHARS+1] = { 0 };
+
+	return _ltot(nValue, szValue, 10);
 }
 
 CString CStrCvt::FormatUInt(uint nValue)
 {
-	char szValue[50];
+	const size_t MAX_CHARS = std::numeric_limits<uint>::digits10+1;
 
-	return _ltoa(nValue, szValue, 10);
+	tchar szValue[MAX_CHARS+1] = { 0 };
+
+	return _ltot(nValue, szValue, 10);
 }
 
 /******************************************************************************
@@ -54,9 +62,11 @@ CString CStrCvt::FormatUInt(uint nValue)
 
 CString CStrCvt::FormatLong(long lValue)
 {
-	char szValue[50];
+	const size_t MAX_CHARS = std::numeric_limits<long>::digits10+1;
 
-	return _ltoa(lValue, szValue, 10);
+	tchar szValue[MAX_CHARS+1] = { 0 };
+
+	return _ltot(lValue, szValue, 10);
 }
 
 /******************************************************************************
@@ -73,9 +83,9 @@ CString CStrCvt::FormatLong(long lValue)
 
 CString CStrCvt::FormatDouble(double dValue)
 {
-	char szValue[50];
+	char szValue[_CVTBUFSIZE];
 
-	return _gcvt(dValue, 15, szValue);
+	return A2T(_gcvt(dValue, 16, szValue));
 }
 
 /******************************************************************************
@@ -92,18 +102,22 @@ CString CStrCvt::FormatDouble(double dValue)
 
 CString CStrCvt::FormatDate(time_t tValue)
 {
-	char szValue[100];
+	const size_t MAX_CHARS = 10;
+	tchar szValue[MAX_CHARS+1];
 
-	strftime(szValue, 100, "%Y-%m-%d", localtime(&tValue));
+	if (_tcsftime(szValue, MAX_CHARS+1, TXT("%Y-%m-%d"), localtime(&tValue)) == 0)
+		throw std::logic_error(T2A(TXT("Insufficient buffer size used in CStrCvt::FormatDate()")));
 
 	return szValue;
 }
 
 CString CStrCvt::FormatDateTime(time_t tValue)
 {
-	char szValue[100];
+	const size_t MAX_CHARS = 19;
+	tchar szValue[MAX_CHARS+1];
 
-	strftime(szValue, 100, "%Y-%m-%d %H:%M:%S", localtime(&tValue));
+	if (_tcsftime(szValue, MAX_CHARS+1, TXT("%Y-%m-%d %H:%M:%S"), localtime(&tValue)) == 0)
+		throw std::logic_error(T2A(TXT("Insufficient buffer size used in CStrCvt::FormatDateTime()")));
 
 	return szValue;
 }
@@ -123,11 +137,11 @@ CString CStrCvt::FormatDateTime(time_t tValue)
 CString CStrCvt::FormatError(DWORD dwError)
 {
 	CString strError;
-	char*   pszError;
+	tchar*  pszError;
 
 	// Format string using default language.
 	::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-					NULL, dwError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (char*)&pszError, 0, NULL);
+					NULL, dwError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), reinterpret_cast<tchar*>(&pszError), 0, NULL);
 
 	// Copy message and free buffer.
 	strError = pszError;
@@ -154,18 +168,18 @@ CString CStrCvt::FormatError(DWORD dwError)
 *******************************************************************************
 */
 
-int CStrCvt::ParseInt(const char* pszString, int nFlags)
+int CStrCvt::ParseInt(const tchar* pszString, int nFlags)
 {
 	ASSERT(pszString != NULL);
 	ASSERT((nFlags == PARSE_ANY_FORMAT) || (nFlags == PARSE_OCTAL_ONLY) || (nFlags == PARSE_DECIMAL_ONLY) || (nFlags == PARSE_HEX_ONLY));
 
 	errno = 0;
 
-	char* pcEndChar = NULL;
+	tchar* pcEndChar = NULL;
 
-	int nValue = strtol(pszString, &pcEndChar, nFlags);
+	int nValue = tstrtol(pszString, &pcEndChar, nFlags);
 	
-	if (*pcEndChar != '\0')
+	if (*pcEndChar != TXT('\0'))
 		throw CStrCvtException(CStrCvtException::E_INVALID_FORMAT);
 
 	ASSERT((errno == 0) || (errno == ERANGE));
@@ -176,18 +190,18 @@ int CStrCvt::ParseInt(const char* pszString, int nFlags)
 	return nValue;
 }
 
-uint CStrCvt::ParseUInt(const char* pszString, int nFlags)
+uint CStrCvt::ParseUInt(const tchar* pszString, int nFlags)
 {
 	ASSERT(pszString != NULL);
 	ASSERT((nFlags == PARSE_ANY_FORMAT) || (nFlags == PARSE_OCTAL_ONLY) || (nFlags == PARSE_DECIMAL_ONLY) || (nFlags == PARSE_HEX_ONLY));
 
 	errno = 0;
 
-	char* pcEndChar = NULL;
+	tchar* pcEndChar = NULL;
 
-	uint nValue = strtoul(pszString, &pcEndChar, nFlags);
+	uint nValue = tstrtoul(pszString, &pcEndChar, nFlags);
 	
-	if (*pcEndChar != '\0')
+	if (*pcEndChar != TXT('\0'))
 		throw CStrCvtException(CStrCvtException::E_INVALID_FORMAT);
 
 	ASSERT((errno == 0) || (errno == ERANGE));
@@ -213,7 +227,7 @@ uint CStrCvt::ParseUInt(const char* pszString, int nFlags)
 *******************************************************************************
 */
 
-long CStrCvt::ParseLong(const char* pszString, int nFlags)
+long CStrCvt::ParseLong(const tchar* pszString, int nFlags)
 {
 	return ParseInt(pszString, nFlags);
 }
@@ -233,17 +247,17 @@ long CStrCvt::ParseLong(const char* pszString, int nFlags)
 *******************************************************************************
 */
 
-double CStrCvt::ParseDouble(const char* pszString, int /*nFlags*/)
+double CStrCvt::ParseDouble(const tchar* pszString, int /*nFlags*/)
 {
 	ASSERT(pszString != NULL);
 
 	errno = 0;
 
-	char* pcEndChar = NULL;
+	tchar* pcEndChar = NULL;
 
-	double dValue = strtod(pszString, &pcEndChar);
+	double dValue = tstrtod(pszString, &pcEndChar);
 	
-	if (*pcEndChar != '\0')
+	if (*pcEndChar != TXT('\0'))
 		throw CStrCvtException(CStrCvtException::E_INVALID_FORMAT);
 
 	ASSERT((errno == 0) || (errno == ERANGE));

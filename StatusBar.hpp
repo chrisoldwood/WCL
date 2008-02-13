@@ -47,7 +47,7 @@ public:
 	// Hint methods.
 	//
 	void Hint(uint iRscID);
-	void Hint(const char* pszHint);
+	void Hint(const tchar* pszHint);
 
 protected:
 	// Template shorthands.

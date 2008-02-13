@@ -41,14 +41,14 @@ public:
 	// Methods.
 	//
 	void ClearIcon(bool bForcePaint = false);
-	void SetIcon(const CTransparentBmp& oBitmap, int nIndex, bool bForcePaint = false);
+	void SetIcon(const CTransparentBmp& oBitmap, uint nIndex, bool bForcePaint = false);
 
 protected:
 	//
 	// Members.
 	//
 	const CTransparentBmp*	m_pBitmap;
-	int						m_nIndex;
+	uint					m_nIndex;
 
 	//
 	// Window creation template methods.

@@ -39,7 +39,7 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CSDIApp(CSDIFrame& rFrameWnd, CSDICmds& rCmdControl, int nMRUSize);
+	CSDIApp(CSDIFrame& rFrameWnd, CSDICmds& rCmdControl, size_t nMRUSize);
 	virtual	~CSDIApp();
 
 	//
@@ -47,8 +47,8 @@ public:
 	//
 	virtual CSDIDoc*    CreateDoc() const = 0;
 	virtual CView*      CreateView(CDoc& rDoc) const = 0;
-	virtual const char* FileExts() const = 0;
-	virtual const char* DefFileExt() const = 0;
+	virtual const tchar* FileExts() const = 0;
+	virtual const tchar* DefFileExt() const = 0;
 
 	// Typed access to the app objects.
 	static CSDIApp& This();

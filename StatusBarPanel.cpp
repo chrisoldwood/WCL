@@ -63,7 +63,7 @@ void CStatusBarPanel::GetClassParams(WNDCLASS& rParams)
 
 	// Override any settings.
 	rParams.hbrBackground = (HBRUSH) (COLOR_BTNFACE + 1);
-	rParams.lpszClassName = "StatusBarPanel";
+	rParams.lpszClassName = TXT("StatusBarPanel");
 }
 
 /******************************************************************************
@@ -84,7 +84,7 @@ void CStatusBarPanel::GetCreateParams(WNDCREATE& rParams)
 	CCtrlWnd::GetCreateParams(rParams);
 
 	// Override any settings.
-	rParams.pszClassName = "StatusBarPanel";
+	rParams.pszClassName = TXT("StatusBarPanel");
 }
 
 /******************************************************************************

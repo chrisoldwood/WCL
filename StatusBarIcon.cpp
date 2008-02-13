@@ -37,7 +37,7 @@ const int ICON_SIZE = 16;
 
 CStatusBarIcon::CStatusBarIcon()
 	: m_pBitmap(NULL)
-	, m_nIndex(-1)
+	, m_nIndex(0)
 {
 }
 
@@ -76,7 +76,7 @@ void CStatusBarIcon::GetClassParams(WNDCLASS& rParams)
 
 	// Override any settings.
 	rParams.hbrBackground = (HBRUSH) (COLOR_BTNFACE + 1);
-	rParams.lpszClassName = "StatusBarIcon";
+	rParams.lpszClassName = TXT("StatusBarIcon");
 }
 
 /******************************************************************************
@@ -97,7 +97,7 @@ void CStatusBarIcon::GetCreateParams(WNDCREATE& rParams)
 	CStatusBarPanel::GetCreateParams(rParams);
 
 	// Override any settings.
-	rParams.pszClassName = "StatusBarIcon";
+	rParams.pszClassName = TXT("StatusBarIcon");
 	rParams.rcPos.Set(0, 0, (2*BORDER_SIZE)+ICON_SIZE, (2*BORDER_SIZE)+ICON_SIZE);
 }
 
@@ -151,7 +151,7 @@ void CStatusBarIcon::ClearIcon(bool bForcePaint)
 		return;
 
 	m_pBitmap = NULL;
-	m_nIndex  = -1;
+	m_nIndex  = 0;
 
 	Invalidate();
 
@@ -173,7 +173,7 @@ void CStatusBarIcon::ClearIcon(bool bForcePaint)
 *******************************************************************************
 */
 
-void CStatusBarIcon::SetIcon(const CTransparentBmp& oBitmap, int nIndex, bool bForcePaint)
+void CStatusBarIcon::SetIcon(const CTransparentBmp& oBitmap, uint nIndex, bool bForcePaint)
 {
 	ASSERT(nIndex >= 0);
 
