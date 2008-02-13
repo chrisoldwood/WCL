@@ -12,7 +12,9 @@
 
 - More generic msg box function.
 
-- Add exception throwing to .ini file class.
+- Add exception throwing to CIniFile, CPath classes.
+
+- Fix CIniFile ctor to handle ext properly.
 
 - Add copy ctors and assingment operators to GDI classes to check ownership.
 
@@ -22,10 +24,33 @@
 
 - Move AutoBool to Core.
 
-- Add Forward declarations header.
-
 - Add days_t type for use with DateSpan.
 
 - Move TimeSpan and DateSpan to separate files.
 
 - Check declaration of seconds_t under VC++ 7/8.
+
+- Move LeakCheck to separate cpp, with init_seg + call to enable from App/Dll classes.
+
+- Rebase exception types off of a new Core::Exception type which is Ansi/Wide aware.
+
+- Remove stream behaviour from Clipboard and use Memstream for streaming.
+
+- ThreadPool OnRunJob() not exception safe.
+
+- Rename WorkerThread to ThreadPoolThread and rebase off a WorkerThread.
+
+- Remove WCL::CException and replace with Core::Exception.
+
+- Add single MMF read/write static methods to CFile, e.g. ReadContents(CString);
+
+- Error handling, particularly the GUI controls - e.g. CB_ERRSPACE.
+
+UNICODE
+=======
+
+- Clipboard support (both ANSI and Unicode) via Template function (instantiated for char/wchar_t).
+
+- Unit Tests for CStrCvt and CPath.
+
+- Fix EditBox filter (256 char limit).
