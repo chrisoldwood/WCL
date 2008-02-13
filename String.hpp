@@ -40,29 +40,30 @@ public:
 	//
 	CString();
 	CString(uint iRscID);
-	CString(const char* pszBuffer);
-	CString(const char* pszBuffer, uint iChars);
+	CString(const tchar* pszBuffer);
+	CString(const tchar* pszBuffer, uint iChars);
 	CString(const CString& strSrc);
 	~CString();
 
-	void BufferSize(uint iSize);
+	void BufferSize(size_t nChars);
 	void LoadRsc(uint iRscID);
 
 	//
 	// Attributes.
 	//
 	bool Empty() const;
-	int  Length() const;
-	const char* Ptr() const;
+	size_t Length() const;
+	const tchar* c_str() const;
+	tchar* Buffer() const;
 
 	//
 	// Mutation.
 	//
-	void     Insert(int nPos, const char* pszString);
-	void     Delete(int nFirst, int nCount = 1);
-	void     Replace(char cOldChar, char cNewChar);
-	void     Replace(char cChar, const char* pszString);
-	void     Replace(const char* pszOldString, const char* pszNewString, bool bIgnoreCase = true);
+	void     Insert(size_t nPos, const tchar* pszString);
+	void     Delete(size_t nFirst, size_t nCount = 1);
+	void     Replace(tchar cOldChar, tchar cNewChar);
+	void     Replace(tchar cChar, const tchar* pszString);
+	void     Replace(const tchar* pszOldString, const tchar* pszNewString, bool bIgnoreCase = true);
 	CString& RepCtrlChars();
 	CString& Trim(bool bLeft = true, bool bRight = true);
 	CString& ToLower();
@@ -71,53 +72,53 @@ public:
  	//
 	// Searching.
 	//
-	int Find(char cChar, int nStart = 0) const;
-	int Find(const char* pszStr, int nStart = 0) const;
-	int Count(char cChar) const;
-	int Count(char cChar, int nStart, int nEnd) const;
+	int Find(tchar cChar, size_t nStart = 0) const;
+	int Find(const tchar* pszStr, size_t nStart = 0) const;
+	size_t Count(tchar cChar) const;
+	size_t Count(tchar cChar, size_t nStart, size_t nEnd) const;
 
 	//
 	// Extraction.
 	//
-	CString Left(int nCount);
-	CString Mid(int nFirst, int nCount);
-	CString Right(int nCount);
+	CString Left(size_t nCount);
+	CString Mid(size_t nFirst, size_t nCount);
+	CString Right(size_t nCount);
 
 	//
 	// Formating.
 	//
-	void Format(const char* pszFormat, ...);
-	void FormatEx(const char* pszFormat, va_list args);
+	void Format(const tchar* pszFormat, ...);
+	void FormatEx(const tchar* pszFormat, va_list args);
 
-	static CString Fmt(const char* pszFormat, ...);
-	static CString FmtEx(const char* pszFormat, va_list args);
+	static CString Fmt(const tchar* pszFormat, ...);
+	static CString FmtEx(const tchar* pszFormat, va_list args);
 
 	//
 	// Core operators.
 	//
-	char& operator[](int nChar);
+	tchar& operator[](size_t nChar);
 
 	const CString& operator=(const CString& strSrc);
-	const CString& operator=(const char* pszBuffer);
+	const CString& operator=(const tchar* pszBuffer);
 
-	operator const char*() const;
+	operator const tchar*() const;
 	
 	//
 	// Comparison.
 	//
-	bool operator ==(const char* pszString) const;
+	bool operator ==(const tchar* pszString) const;
 	bool operator ==(const CString& strString) const;
-	bool operator !=(const char* pszString) const;
+	bool operator !=(const tchar* pszString) const;
 	bool operator !=(const CString& strString) const;
 
-	int Compare(const char* pszString, bool bIgnoreCase = true) const;
-	int Compare(const char* pszString, int nChars, bool bIgnoreCase = true) const;
+	int Compare(const tchar* pszString, bool bIgnoreCase = true) const;
+	int Compare(const tchar* pszString, size_t nChars, bool bIgnoreCase = true) const;
 
 	//
 	// Mutation operators.
 	//
-	void operator +=(const char* pszString);
-	void operator +=(char cChar);
+	void operator +=(const tchar* pszString);
+	void operator +=(tchar cChar);
 
 protected:
 	/******************************************************************************
@@ -127,34 +128,40 @@ protected:
 	*******************************************************************************
 	*/
 
+#pragma pack(push, 1)
+
 	struct StringData
 	{
-		uint32	m_nAllocSize;	// Size of allocated buffer.
-		char	m_acData[1];	// Start of string data.
+		size_t	m_nAllocSize;	// Size of buffer in characters.
+		tchar	m_acData[1];	// Start of string data.
 	};
+
+#pragma pack(pop)
 
 	//
 	// Members.
 	//
-	char*	m_pszData;			// Pointer to StringData buffer.
+	tchar*	m_pszData;			// Pointer to StringData buffer.
 
 	//
 	// Internal methods.
 	//
 	StringData* GetData() const;
-	void Copy(const char* lpszBuffer);
-	void Copy(const char* lpszBuffer, uint iChars);
+	void Copy(const tchar* lpszBuffer);
+	void Copy(const tchar* lpszBuffer, size_t nChars);
 	void Free();
 
 	// NULL string.
 	static StringData strNULL;
-	static char*      pszNULL;
+	static tchar*     pszNULL;
 
 	//
 	// Persistance.
+	// NB: We only define an ostream inserter for backwards compatability.
 	//
 	friend void operator >>(WCL::IInputStream&  rStream, CString& rString);
 	friend void operator <<(WCL::IOutputStream& rStream, const CString& rString);
+	friend std::tostream& operator<<(std::tostream& os, const CString& str);
 };
 
 /******************************************************************************
@@ -175,13 +182,13 @@ inline CString::CString(uint iRscID)
 	LoadRsc(iRscID);
 }
 
-inline CString::CString(const char* pszBuffer)
+inline CString::CString(const tchar* pszBuffer)
 	: m_pszData(pszNULL)
 {
-	Copy(pszBuffer, strlen(pszBuffer));
+	Copy(pszBuffer, tstrlen(pszBuffer));
 }
 
-inline CString::CString(const char* pszBuffer, uint iChars)
+inline CString::CString(const tchar* pszBuffer, uint iChars)
 	: m_pszData(pszNULL)
 {
 	Copy(pszBuffer, iChars);
@@ -202,26 +209,26 @@ inline bool CString::Empty() const
 {
 	ASSERT(m_pszData);
 
-	return (m_pszData[0] == '\0');
+	return (m_pszData[0] == TXT('\0'));
 }
 
-inline int CString::Length() const
+inline size_t CString::Length() const
 {
 	ASSERT(m_pszData);
 
-	return strlen(m_pszData);
+	return tstrlen(m_pszData);
 }
 
 inline CString& CString::ToLower()
 {
-	_strlwr(m_pszData);
+	tstrlwr(m_pszData);
 
 	return *this;
 }
 
 inline CString& CString::ToUpper()
 {
-	_strupr(m_pszData);
+	tstrupr(m_pszData);
 
 	return *this;
 }
@@ -232,73 +239,82 @@ inline const CString& CString::operator=(const CString& strSrc)
 	return *this;
 }
 
-inline const CString& CString::operator=(const char* pszBuffer)
+inline const CString& CString::operator=(const tchar* pszBuffer)
 {
 	ASSERT(pszBuffer);
 
-	Copy(pszBuffer, strlen(pszBuffer));
+	Copy(pszBuffer, tstrlen(pszBuffer));
 	return *this;
 }
 
-inline const char* CString::Ptr() const
+inline const tchar* CString::c_str() const
 {
 	ASSERT(m_pszData);
 	
 	return m_pszData;
 }
 
-inline CString::operator const char*() const
+inline tchar* CString::Buffer() const
 {
 	ASSERT(m_pszData);
 	
 	return m_pszData;
 }
 
-inline char& CString::operator[](int nChar)
+inline CString::operator const tchar*() const
 {
-	ASSERT( (nChar >=0) && (nChar < Length()) );
+	ASSERT(m_pszData);
+	
+	return m_pszData;
+}
+
+inline tchar& CString::operator[](size_t nChar)
+{
+	ASSERT(nChar < Length());
 
 	return m_pszData[nChar];
 }
 
-inline bool CString::operator ==(const char* pszString) const
+inline bool CString::operator ==(const tchar* pszString) const
 {
-	return (strcmp(m_pszData, pszString) == 0);
+	return (tstrcmp(m_pszData, pszString) == 0);
 }
 
 inline bool CString::operator ==(const CString& strString) const
 {
-	return (strcmp(m_pszData, strString) == 0);
+	return (tstrcmp(m_pszData, strString) == 0);
 }
 
-inline bool CString::operator !=(const char* pszString) const
+inline bool CString::operator !=(const tchar* pszString) const
 {
-	return (strcmp(m_pszData, pszString) != 0);
+	return (tstrcmp(m_pszData, pszString) != 0);
 }
 
 inline bool CString::operator !=(const CString& strString) const
 {
-	return (strcmp(m_pszData, strString) != 0);
+	return (tstrcmp(m_pszData, strString) != 0);
 }
 
-inline int CString::Compare(const char* pszString, bool bIgnoreCase) const
+inline int CString::Compare(const tchar* pszString, bool bIgnoreCase) const
 {
-	return (bIgnoreCase) ? _stricmp(m_pszData, pszString) : strcmp(m_pszData, pszString);
+	return (bIgnoreCase) ? tstricmp(m_pszData, pszString) : tstrcmp(m_pszData, pszString);
 }
 
-inline int CString::Compare(const char* pszString, int nChars, bool bIgnoreCase) const
+inline int CString::Compare(const tchar* pszString, size_t nChars, bool bIgnoreCase) const
 {
-	return (bIgnoreCase) ? _strnicmp(m_pszData, pszString, nChars) : strncmp(m_pszData, pszString, nChars);
+	return (bIgnoreCase) ? tstrnicmp(m_pszData, pszString, nChars) : tstrncmp(m_pszData, pszString, nChars);
 }
 
-inline void CString::Copy(const char* lpszBuffer)
+inline void CString::Copy(const tchar* lpszBuffer)
 {
-	Copy(lpszBuffer, strlen(lpszBuffer));
+	Copy(lpszBuffer, tstrlen(lpszBuffer));
 }
 
 inline CString::StringData* CString::GetData() const
 {
-	return (StringData*) (m_pszData - sizeof(uint32));
+	byte* pData = reinterpret_cast<byte*>(m_pszData);
+
+	return reinterpret_cast<StringData*>(pData - (sizeof(size_t)));
 }
 
 /******************************************************************************
@@ -308,7 +324,7 @@ inline CString::StringData* CString::GetData() const
 *******************************************************************************
 */
 
-inline CString operator+(const CString& strLHS, const char* pszRHS)
+inline CString operator+(const CString& strLHS, const tchar* pszRHS)
 {
 	CString str;
 
@@ -318,7 +334,7 @@ inline CString operator+(const CString& strLHS, const char* pszRHS)
 	return str;
 }
 
-inline CString operator+(const char* pszLHS, const CString& strRHS)
+inline CString operator+(const tchar* pszLHS, const CString& strRHS)
 {
 	CString str;
 
@@ -336,6 +352,15 @@ inline CString operator+(const CString& strLHS, const CString& strRHS)
 	str += strRHS;
 
 	return str;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! STL output stream inserter.
+
+inline std::tostream& operator<<(std::tostream& os, const CString& str)
+{
+	os << str.c_str();
+	return os;
 }
 
 #endif // WCL_STRING_HPP

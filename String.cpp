@@ -17,6 +17,8 @@
 #include "IOutputStream.hpp"
 #include <Core/StringUtils.hpp>
 #include <tchar.h>
+#include <stdexcept>
+#include <Core/AnsiWide.hpp>
 
 /******************************************************************************
 **
@@ -27,7 +29,7 @@
 
 CString::StringData CString::strNULL;
 
-char* CString::pszNULL = strNULL.m_acData;
+tchar* CString::pszNULL = strNULL.m_acData;
 
 /******************************************************************************
 ** Method:		LoadRsc()
@@ -45,46 +47,50 @@ char* CString::pszNULL = strNULL.m_acData;
 void CString::LoadRsc(uint iRscID)
 {
 	// Initial buffer size.
-	int iBufSize = 4;
-	BufferSize(iBufSize);
+	size_t nChars = 32;
+
+	BufferSize(nChars+1);
 
 	// Load until buffer is big enough.
-	while(::LoadString(CModule::This().Handle(), iRscID, m_pszData, iBufSize) == (iBufSize-1))
+	while(static_cast<size_t>(::LoadString(CModule::This().Handle(), iRscID, m_pszData, nChars+1)) == nChars)
 	{
-		iBufSize *= 2;
-		BufferSize(iBufSize);
+		nChars *= 2;
+		BufferSize(nChars+1);
 	}
 }
 
 /******************************************************************************
 ** Method:		BufferSize()
 **
-** Description:	Ensure enough space is allocated for the string.
+** Description:	Ensure enough space is allocated for the string and the null
+**				terminator.
 **
-** Parameters:	iSize
+** Parameters:	iSize	The buffer length in characters, inc a null terminator.
 **
 ** Returns:		Nothing.
 **
 *******************************************************************************
 */
 
-void CString::BufferSize(uint nSize)
+void CString::BufferSize(size_t nChars)
 {
-	ASSERT(nSize > 0);
+	ASSERT(nChars > 0);
 
 	StringData* pData = GetData();
 
 	// Increase buffer size?
-	if (pData->m_nAllocSize < nSize)
+	if (pData->m_nAllocSize < nChars)
 	{
 		Free();
 		
+		size_t nBytes = Core::NumBytes<tchar>(nChars);
+
 		// Allocate new buffer.
-		pData = (StringData*) malloc(nSize + sizeof(StringData));
+		pData = static_cast<StringData*>(malloc(nBytes + sizeof(StringData)));
 		ASSERT(pData != NULL);
 
-		pData->m_nAllocSize = nSize;
-		pData->m_acData[0]  = '\0';
+		pData->m_nAllocSize = nChars;
+		pData->m_acData[0]  = TXT('\0');
 
 		m_pszData = pData->m_acData;
 	}
@@ -103,12 +109,12 @@ void CString::BufferSize(uint nSize)
 *******************************************************************************
 */
 
-void CString::Copy(const char* lpszBuffer, uint iChars)
+void CString::Copy(const tchar* lpszBuffer, uint iChars)
 {
 	ASSERT(lpszBuffer);
 
 	// NULL string?
-	if (*lpszBuffer == '\0')
+	if (*lpszBuffer == TXT('\0'))
 	{
 		Free();
 		return;
@@ -116,10 +122,10 @@ void CString::Copy(const char* lpszBuffer, uint iChars)
 
 	// Copy.
 	BufferSize(iChars+1);
-	strncpy(m_pszData, lpszBuffer, iChars);
+	tstrncpy(m_pszData, lpszBuffer, iChars);
 
 	// Ensure string is terminated.
-	m_pszData[iChars] = '\0';
+	m_pszData[iChars] = TXT('\0');
 }
 
 /******************************************************************************
@@ -160,17 +166,17 @@ void CString::Free()
 *******************************************************************************
 */
 
-void CString::operator +=(const char* pszString)
+void CString::operator +=(const tchar* pszString)
 {
 	ASSERT(m_pszData);
 	ASSERT(pszString);
 
 	// Ignore NULL strings.
-	if (*pszString == '\0')
+	if (*pszString == TXT('\0'))
 		return;
 
 	uint iStrLen   = Length();
-	uint iParamLen = strlen(pszString);
+	uint iParamLen = tstrlen(pszString);
 	
 	StringData* pOldData = GetData();
 
@@ -184,8 +190,8 @@ void CString::operator +=(const char* pszString)
 		BufferSize(iStrLen+iParamLen+1);
 		
 		// Copy old string and cat new one.
-		strcpy(m_pszData, pOldData->m_acData);
-		strcat(m_pszData, pszString);
+		tstrcpy(m_pszData, pOldData->m_acData);
+		tstrcat(m_pszData, pszString);
 		
 		// Free old string, if not empty string.
 		if (pOldData != &strNULL)
@@ -194,7 +200,7 @@ void CString::operator +=(const char* pszString)
 	else
 	{
 		// Just append.
-		strcat(m_pszData, pszString);
+		tstrcat(m_pszData, pszString);
 	}
 }
 
@@ -211,10 +217,10 @@ void CString::operator +=(const char* pszString)
 *******************************************************************************
 */
 
-void CString::operator +=(char cChar)
+void CString::operator +=(tchar cChar)
 {
 	// Ignore EOS characters.
-	if (cChar == '\0')
+	if (cChar == TXT('\0'))
 		return;
 
 	uint iStrLen = Length();
@@ -231,9 +237,9 @@ void CString::operator +=(char cChar)
 		BufferSize(iStrLen+2);
 		
 		// Copy old string and cat new one.
-		strcpy(m_pszData, pOldData->m_acData);
+		tstrcpy(m_pszData, pOldData->m_acData);
 		m_pszData[iStrLen]   = cChar;
-		m_pszData[iStrLen+1] = '\0';
+		m_pszData[iStrLen+1] = TXT('\0');
 		
 		// Free old string, if not empty string.
 		if (pOldData != &strNULL)
@@ -243,7 +249,7 @@ void CString::operator +=(char cChar)
 	{
 		// Just append.
 		m_pszData[iStrLen]   = cChar;
-		m_pszData[iStrLen+1] = '\0';
+		m_pszData[iStrLen+1] = TXT('\0');
 	}
 }
 
@@ -290,7 +296,7 @@ void operator <<(WCL::IOutputStream& rStream, const CString& rString)
 {
 	CString::StringData* pData = rString.GetData();
 
-	rStream << pData->m_nAllocSize;
+	rStream << static_cast<uint32>(pData->m_nAllocSize);
 
 	if (pData->m_nAllocSize)
 		rStream.Write(rString.m_pszData, pData->m_nAllocSize);
@@ -308,7 +314,7 @@ void operator <<(WCL::IOutputStream& rStream, const CString& rString)
 *******************************************************************************
 */
 
-void CString::Format(const char* pszFormat, ...)
+void CString::Format(const tchar* pszFormat, ...)
 {
 	va_list	args;
 	va_start(args, pszFormat);
@@ -330,7 +336,7 @@ void CString::Format(const char* pszFormat, ...)
 *******************************************************************************
 */
 
-void CString::FormatEx(const char* pszFormat, va_list args)
+void CString::FormatEx(const tchar* pszFormat, va_list args)
 {
 	// Allocate the buffer.
 	int nLength = _vsctprintf(pszFormat, args);
@@ -344,9 +350,9 @@ void CString::FormatEx(const char* pszFormat, va_list args)
 
 	// Check for buffer overrun.
 	if (nResult < 0)
-		throw std::logic_error(Core::Fmt("Insufficient buffer size calculated in CString::FormatEx(). Result: %d", nResult));
+		throw std::logic_error(T2A(Core::Fmt(TXT("Insufficient buffer size calculated in CString::FormatEx(). Result: %d"), nResult)));
 
-	m_pszData[nResult] = '\0';
+	m_pszData[nResult] = TXT('\0');
 }
 
 /******************************************************************************
@@ -362,7 +368,7 @@ void CString::FormatEx(const char* pszFormat, va_list args)
 *******************************************************************************
 */
 
-CString CString::Fmt(const char* pszFormat, ...)
+CString CString::Fmt(const tchar* pszFormat, ...)
 {
 	CString str;
 
@@ -376,7 +382,7 @@ CString CString::Fmt(const char* pszFormat, ...)
 	return str;
 }
 
-CString CString::FmtEx(const char* pszFormat, va_list args)
+CString CString::FmtEx(const tchar* pszFormat, va_list args)
 {
 	CString str;
 
@@ -399,11 +405,11 @@ CString CString::FmtEx(const char* pszFormat, va_list args)
 *******************************************************************************
 */
 
-int CString::Find(char cChar, int nStart) const
+int CString::Find(tchar cChar, size_t nStart) const
 {
-	ASSERT( (nStart >= 0) && (nStart <= Length()) );
+	ASSERT(nStart <= Length());
 
-	const char* psz = strchr(m_pszData + nStart, cChar);
+	const tchar* psz = tstrchr(m_pszData + nStart, cChar);
 
 	return (psz == NULL) ? -1 : (psz - m_pszData);
 }
@@ -422,11 +428,11 @@ int CString::Find(char cChar, int nStart) const
 *******************************************************************************
 */
 
-int CString::Find(const char* pszStr, int nStart) const
+int CString::Find(const tchar* pszStr, size_t nStart) const
 {
-	ASSERT( (nStart >= 0) && (nStart <= Length()) );
+	ASSERT(nStart <= Length());
 
-	const char* psz = strstr(m_pszData + nStart, pszStr);
+	const tchar* psz = tstrstr(m_pszData + nStart, pszStr);
 
 	return (psz == NULL) ? -1 : (psz - m_pszData);
 }
@@ -444,13 +450,13 @@ int CString::Find(const char* pszStr, int nStart) const
 *******************************************************************************
 */
 
-int CString::Count(char cChar) const
+size_t CString::Count(tchar cChar) const
 {
-	int nMatches = 0;
-	int nPos     = -1;
+	size_t nMatches = 0;
+	int    nPos     = -1;
 
 	while ((nPos = Find(cChar, nPos+1)) != -1)
-		nMatches++;
+		++nMatches;
 
 	return nMatches;
 }
@@ -470,22 +476,21 @@ int CString::Count(char cChar) const
 *******************************************************************************
 */
 
-int CString::Count(char cChar, int nStart, int nEnd) const
+size_t CString::Count(tchar cChar, size_t nStart, size_t nEnd) const
 {
-	ASSERT(nStart >= 0);
 	ASSERT(nEnd   <= Length());
 	ASSERT(nStart <= nEnd);
 
-	int         nMatches = 0;
-	const char* pszStart = m_pszData+nStart;
-	const char* pszEnd   = m_pszData+nEnd;
+	size_t       nMatches = 0;
+	const tchar* pszStart = m_pszData+nStart;
+	const tchar* pszEnd   = m_pszData+nEnd;
 
 	while (pszStart < pszEnd)
 	{
 		if (*pszStart == cChar)
-			nMatches++;
+			++nMatches;
 
-		pszStart++;
+		++pszStart;
 	}
 
 	return nMatches;
@@ -503,19 +508,19 @@ int CString::Count(char cChar, int nStart, int nEnd) const
 *******************************************************************************
 */
 
-CString CString::Left(int nCount)
+CString CString::Left(size_t nCount)
 {
-	ASSERT( (nCount >= 0) && (nCount <= Length()) );
+	ASSERT(nCount <= Length());
 
 	// Empty string?
 	if ( (nCount == 0) || (Length() == 0) )
-		return "";
+		return TXT("");
 
 	CString str;
 
 	str.BufferSize(nCount+1);
-	strncpy(str.m_pszData, m_pszData, nCount);
-	str.m_pszData[nCount] = '\0';
+	tstrncpy(str.m_pszData, m_pszData, nCount);
+	str.m_pszData[nCount] = TXT('\0');
 
 	return str;
 }
@@ -534,21 +539,21 @@ CString CString::Left(int nCount)
 *******************************************************************************
 */
 
-CString CString::Mid(int nFirst, int nCount)
+CString CString::Mid(size_t nFirst, size_t nCount)
 {
-	ASSERT( (nFirst >= 0) && (nFirst <= Length()) );
-	ASSERT( (nCount >= 0) && (nCount <= Length()) );
-	ASSERT( (nFirst + nCount) <= Length() ); 
+	ASSERT(nFirst <= Length());
+	ASSERT(nCount <= Length());
+	ASSERT((nFirst + nCount) <= Length()); 
 
 	// Empty string?
 	if ( (nCount == 0) || (Length() == 0) )
-		return "";
+		return TXT("");
 
 	CString str;
 
 	str.BufferSize(nCount+1);
-	strncpy(str.m_pszData, m_pszData+nFirst, nCount);
-	str.m_pszData[nCount] = '\0';
+	tstrncpy(str.m_pszData, m_pszData+nFirst, nCount);
+	str.m_pszData[nCount] = TXT('\0');
 
 	return str;
 }
@@ -565,19 +570,19 @@ CString CString::Mid(int nFirst, int nCount)
 *******************************************************************************
 */
 
-CString CString::Right(int nCount)
+CString CString::Right(size_t nCount)
 {
-	ASSERT( (nCount >= 0) && (nCount <= Length()) );
+	ASSERT(nCount <= Length());
 
 	// Empty string?
 	if ( (nCount == 0) || (Length() == 0) )
-		return "";
+		return TXT("");
 
 	CString str;
 
 	str.BufferSize(nCount+1);
-	strncpy(str.m_pszData, m_pszData+Length()-nCount, nCount);
-	str.m_pszData[nCount] = '\0';
+	tstrncpy(str.m_pszData, m_pszData+Length()-nCount, nCount);
+	str.m_pszData[nCount] = TXT('\0');
 
 	return str;
 }
@@ -595,20 +600,19 @@ CString CString::Right(int nCount)
 *******************************************************************************
 */
 
-void CString::Insert(int nPos, const char* pszString)
+void CString::Insert(size_t nPos, const tchar* pszString)
 {
 	ASSERT(pszString != NULL);
-	ASSERT(nPos >= 0);
-	ASSERT(nPos <= (int)strlen(m_pszData));
+	ASSERT(nPos <= tstrlen(m_pszData));
 
 	// Get extra text length.
-	int nTextLen = strlen(pszString);
+	size_t nTextLen = tstrlen(pszString);
 
 	if (nTextLen == 0)
 		return;
 
 	// Get current length.
-	int nThisLen = Length();
+	size_t nThisLen = Length();
 
 	// Appending?
 	if (nPos == nThisLen)
@@ -628,16 +632,16 @@ void CString::Insert(int nPos, const char* pszString)
 		BufferSize(nThisLen+nTextLen+1);
 		
 		// Copy leading chars from old text.
-		strncpy(m_pszData, pOldData->m_acData, nPos);
+		tstrncpy(m_pszData, pOldData->m_acData, nPos);
 
 		// Copy new text.
-		strncpy(m_pszData+nPos, pszString, nTextLen);
+		tstrncpy(m_pszData+nPos, pszString, nTextLen);
 
 		// Copy trailing chars from old text.
-		strncpy(m_pszData+nPos+nTextLen, pOldData->m_acData+nPos, nThisLen-nPos);
+		tstrncpy(m_pszData+nPos+nTextLen, pOldData->m_acData+nPos, nThisLen-nPos);
 
 		// Terminate string.
-		m_pszData[nThisLen+nTextLen] = '\0';
+		m_pszData[nThisLen+nTextLen] = TXT('\0');
 
 		// Free old string, if not empty string.
 		if (pOldData != &strNULL)
@@ -658,17 +662,14 @@ void CString::Insert(int nPos, const char* pszString)
 *******************************************************************************
 */
 
-void CString::Delete(int nFirst, int nCount)
+void CString::Delete(size_t nFirst, size_t nCount)
 {
-	ASSERT(nFirst >= 0);
-	ASSERT(nCount >= 0);
-
 	// Ignore, if doing nothing.
 	if (nCount <= 0)
 		return;
 
 	// Get current length.
-	int nLength = Length();
+	size_t nLength = Length();
 
 	ASSERT(nFirst < nLength);
 	ASSERT((nFirst+nCount) <= nLength);
@@ -680,11 +681,11 @@ void CString::Delete(int nFirst, int nCount)
 		return;
 	}
 
-	char* pszDst = m_pszData + nFirst;
-	char* pszSrc = pszDst + nCount;
+	tchar* pszDst = m_pszData + nFirst;
+	tchar* pszSrc = pszDst + nCount;
 
 	// Move string contents down.
-	strcpy(pszDst, pszSrc);
+	tstrcpy(pszDst, pszSrc);
 }
 
 /******************************************************************************
@@ -700,16 +701,16 @@ void CString::Delete(int nFirst, int nCount)
 *******************************************************************************
 */
 
-void CString::Replace(char cOldChar, char cNewChar)
+void CString::Replace(tchar cOldChar, tchar cNewChar)
 {
-	char* psz = m_pszData;
+	tchar* psz = m_pszData;
 
-	while (*psz != '\0')
+	while (*psz != TXT('\0'))
 	{
 		if (*psz == cOldChar)
 			*psz = cNewChar;
 
-		psz++;
+		++psz;
 	}
 }
 
@@ -726,21 +727,21 @@ void CString::Replace(char cOldChar, char cNewChar)
 *******************************************************************************
 */
 
-void CString::Replace(char cChar, const char* pszString)
+void CString::Replace(tchar cChar, const tchar* pszString)
 {
 	ASSERT(pszString != NULL);
 
-	CString     str;
-	const char* psz = m_pszData;
+	CString      str;
+	const tchar* psz = m_pszData;
 
-	while (*psz != '\0')
+	while (*psz != TXT('\0'))
 	{
 		if (*psz == cChar)
 			str += pszString;
 		else
 			str += *psz;
 
-		psz++;
+		++psz;
 	}
 
 	Copy(str);
@@ -760,29 +761,29 @@ void CString::Replace(char cChar, const char* pszString)
 *******************************************************************************
 */
 
-void CString::Replace(const char* pszOldString, const char* pszNewString, bool bIgnoreCase)
+void CString::Replace(const tchar* pszOldString, const tchar* pszNewString, bool bIgnoreCase)
 {
 	ASSERT(pszOldString != NULL);
 	ASSERT(pszNewString != NULL);
 
-	typedef int (*CompareFn)(const char*, const char*, size_t);
+	typedef int (*CompareFn)(const tchar*, const tchar*, size_t);
 
-	CString     str;
-	const char* psz = m_pszData;
+	CString      str;
+	const tchar* psz = m_pszData;
 
 	// Presize to current string length.
-	str.BufferSize(Length());
+	str.BufferSize(Length()+1);
 
 	// Choose the compare function.
-	CompareFn lpfnCompare = (bIgnoreCase) ? _strnicmp : strncmp;
-	size_t    nCmpLen     = strlen(pszOldString);
+	CompareFn lpfnCompare = (bIgnoreCase) ? tstrnicmp : tstrncmp;
+	size_t    nCmpLen     = tstrlen(pszOldString);
 
-	while (*psz != '\0')
+	while (*psz != TXT('\0'))
 	{
 		// Found a match?
 		if (lpfnCompare(psz, pszOldString, nCmpLen) == 0)
 		{
-			psz += strlen(pszOldString);
+			psz += tstrlen(pszOldString);
 			str += pszNewString;
 		}
 		else
@@ -810,9 +811,9 @@ void CString::Replace(const char* pszOldString, const char* pszNewString, bool b
 
 CString& CString::RepCtrlChars()
 {
-	Replace('\t', "\\t");
-	Replace('\r', "\\r");
-	Replace('\n', "\\n");
+	Replace(TXT('\t'), TXT("\\t"));
+	Replace(TXT('\r'), TXT("\\r"));
+	Replace(TXT('\n'), TXT("\\n"));
 
 	return *this;
 }
@@ -835,23 +836,23 @@ CString& CString::Trim(bool bLeft, bool bRight)
 	// Trim leading?
 	if (bLeft)
 	{
-		int nChars = 0;
+		size_t nChars = 0;
 
-		for (char* psz = m_pszData; (*psz != '\0') && (isspace((uchar)*psz)); ++psz)
-			nChars++;
+		for (tchar* psz = m_pszData; (*psz != TXT('\0')) && (isspace(static_cast<uchar>(*psz))); ++psz)
+			++nChars;
 
 		Delete(0, nChars);
 	}
 
-	int nLength = Length();
+	size_t nLength = Length();
 
 	// Trim trailing?
 	if (bRight)
 	{
-		int nChars = 0;
+		size_t nChars = 0;
 
-		for (char* psz = m_pszData+nLength-1; (psz >= m_pszData) && (isspace((uchar)*psz)); --psz)
-			nChars++;
+		for (tchar* psz = m_pszData+nLength-1; (psz >= m_pszData) && (isspace(static_cast<uchar>(*psz))); --psz)
+			++nChars;
 
 		Delete(nLength-nChars, nChars);
 	}
