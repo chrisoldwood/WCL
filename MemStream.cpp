@@ -73,7 +73,7 @@ void CMemStream::Create()
 	m_oBuffer.Size(m_lAllocSize);
 
 	// Get pointer to buffer.
-	m_pBuffer = (byte*) m_oBuffer.Buffer();
+	m_pBuffer = static_cast<byte*>(m_oBuffer.Buffer());
 
 	ASSERT(m_pBuffer != NULL);
 
@@ -100,7 +100,7 @@ void CMemStream::Create()
 void CMemStream::Open()
 {
 	// Get pointer to buffer.
-	m_pBuffer = (byte*) m_oBuffer.Buffer();
+	m_pBuffer = static_cast<byte*>(m_oBuffer.Buffer());
 
 	ASSERT(m_pBuffer != NULL);
 
@@ -202,7 +202,7 @@ void CMemStream::Write(const void* pBuffer, uint iNumBytes)
 
 		m_oBuffer.Size(m_lAllocSize);
 		
-		m_pBuffer = (byte*) m_oBuffer.Buffer();
+		m_pBuffer = static_cast<byte*>(m_oBuffer.Buffer());
 
 		ASSERT(m_pBuffer != NULL);
 	}
