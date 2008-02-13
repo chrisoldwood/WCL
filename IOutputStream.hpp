@@ -38,45 +38,53 @@ protected:
 
 inline void operator<<(WCL::IOutputStream& rStream, bool rBuffer)
 {
-	rStream.Write((void*) &rBuffer, sizeof(bool));
+	rStream.Write(&rBuffer, sizeof(bool));
 }
 
 inline void operator<<(WCL::IOutputStream& rStream, int8 rBuffer)
 {
-	rStream.Write((void*) &rBuffer, sizeof(int8));
+	rStream.Write(&rBuffer, sizeof(int8));
 }
 
 inline void operator<<(WCL::IOutputStream& rStream, int16 rBuffer)
 {
-	rStream.Write((void*) &rBuffer, sizeof(int16));
+	rStream.Write(&rBuffer, sizeof(int16));
 }
 
 inline void operator<<(WCL::IOutputStream& rStream, int32 rBuffer)
 {
-	rStream.Write((void*) &rBuffer, sizeof(int32));
+	rStream.Write(&rBuffer, sizeof(int32));
 }
 
 inline void operator<<(WCL::IOutputStream& rStream, uint8 rBuffer)
 {
-	rStream.Write((void*) &rBuffer, sizeof(uint8));
+	rStream.Write(&rBuffer, sizeof(uint8));
 }
 
 inline void operator<<(WCL::IOutputStream& rStream, uint16 rBuffer)
 {
-	rStream.Write((void*) &rBuffer, sizeof(uint16));
+	rStream.Write(&rBuffer, sizeof(uint16));
 }
 
 inline void operator<<(WCL::IOutputStream& rStream, uint32 rBuffer)
 {
-	rStream.Write((void*) &rBuffer, sizeof(uint32));
+	rStream.Write(&rBuffer, sizeof(uint32));
 }
 
 inline void operator<<(WCL::IOutputStream& rStream, const char* pBuffer)
 {
-	uint32 nLen = strlen(pBuffer)+1;
+	uint32 nChars = strlen(pBuffer)+1;
 
-	rStream.Write(&nLen, sizeof(uint32));
-	rStream.Write(pBuffer, nLen);
+	rStream.Write(&nChars, sizeof(uint32));
+	rStream.Write(pBuffer, Core::NumBytes<char>(nChars));
+}
+
+inline void operator<<(WCL::IOutputStream& rStream, const wchar_t* pBuffer)
+{
+	uint32 nChars = wcslen(pBuffer)+1;
+
+	rStream.Write(&nChars, sizeof(uint32));
+	rStream.Write(pBuffer, Core::NumBytes<wchar_t>(nChars));
 }
 
 #endif // WCL_IOUTPUTSTREAM_HPP
