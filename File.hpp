@@ -45,8 +45,8 @@ public:
 	//
 	// Open/Close operations.
 	//
-	void Create(const char* pszPath);
-	void Open(const char* pszPath, uint nMode);
+	void Create(const tchar* pszPath);
+	void Open(const tchar* pszPath, uint nMode);
 	void Close();
 
 	//
@@ -67,17 +67,29 @@ public:
 	//
 	// Class methods.
 	//
-	static bool  QueryInfo(const char* pszPath, struct _stat& oInfo);
-	static ulong Size(const char* pszPath);
+	static bool  QueryInfo(const tchar* pszPath, struct _stat& oInfo);
+	static ulong Size(const tchar* pszPath);
 
-	static bool  Copy(const char* pszSrc, const char* pszDst, bool bOverwrite = false);
-	static bool  Move(const char* pszSrc, const char* pszDst);
-	static bool  Delete(const char* pszPath);
+	static bool  Copy(const tchar* pszSrc, const tchar* pszDst, bool bOverwrite = false);
+	static bool  Move(const tchar* pszSrc, const tchar* pszDst);
+	static bool  Delete(const tchar* pszPath);
 
-	static bool  CreateFolder(const char* pszPath, bool bCreatePath = false);
-	static bool  DeleteFolder(const char* pszPath);
+	static bool  CreateFolder(const tchar* pszPath, bool bCreatePath = false);
+	static bool  DeleteFolder(const tchar* pszPath);
 
-	static bool  CreateShortcut(const char* pszLink, const char* pszTarget, const char* pszDesc = NULL);
+	static bool  CreateShortcut(const tchar* pszLink, const tchar* pszTarget, const tchar* pszDesc = NULL);
+
+	//! Read the entire contents of a binary file.
+	static size_t ReadFile(const tchar* pszPath, std::vector<byte>& vBuffer);
+
+	//! Read the entire contents of a text file.
+	static size_t ReadTextFile(const tchar* pszPath, CString& strContents, TextFormat& eFormat);
+
+	//! Write the entire contents of a binary file.
+	static void WriteFile(const tchar* pszPath, const std::vector<byte>& vBuffer);
+
+	//! Write the entire contents of a text file.
+	static void WriteTextFile(const tchar* pszPath, const CString& strContents, TextFormat eFormat);
 
 protected:
 	//

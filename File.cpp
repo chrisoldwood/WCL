@@ -14,6 +14,7 @@
 #include <io.h>
 #include <shlobj.h>
 #include <Core/AnsiWide.hpp>
+#include <tchar.h>
 
 /******************************************************************************
 ** Method:		Default constructor
@@ -65,7 +66,7 @@ CFile::~CFile()
 *******************************************************************************
 */
 
-void CFile::Create(const char* pszPath)
+void CFile::Create(const tchar* pszPath)
 {
 	m_nMode = GENERIC_WRITE;
 	m_Path  = pszPath;
@@ -98,7 +99,7 @@ void CFile::Create(const char* pszPath)
 *******************************************************************************
 */
 
-void CFile::Open(const char* pszPath, uint nMode)
+void CFile::Open(const tchar* pszPath, uint nMode)
 {
 	m_nMode = nMode;
 	m_Path  = pszPath;
@@ -195,7 +196,7 @@ void CFile::Write(const void* pBuffer, uint iNumBytes)
 
 	DWORD dwWritten = 0;
 
-	if (::WriteFile(m_hFile, (const char*)pBuffer, iNumBytes, &dwWritten, NULL) == 0)
+	if (::WriteFile(m_hFile, pBuffer, iNumBytes, &dwWritten, NULL) == 0)
 		throw CFileException(CFileException::E_WRITE_FAILED, m_Path);
 }
 
@@ -322,13 +323,13 @@ ulong CFile::Size()
 *******************************************************************************
 */
 
-bool CFile::QueryInfo(const char* pszPath, struct _stat& oInfo)
+bool CFile::QueryInfo(const tchar* pszPath, struct _stat& oInfo)
 {
 	ASSERT(pszPath != NULL);
 
 	memset(&oInfo, 0, sizeof(oInfo));
 
-	int nResult = _stat(pszPath, &oInfo);
+	int nResult = _tstat(pszPath, &oInfo);
 
 	return (nResult == 0);
 }
@@ -345,7 +346,7 @@ bool CFile::QueryInfo(const char* pszPath, struct _stat& oInfo)
 *******************************************************************************
 */
 
-ulong CFile::Size(const char* pszPath)
+ulong CFile::Size(const tchar* pszPath)
 {
 	ulong lSize = 0;
 
@@ -371,7 +372,7 @@ ulong CFile::Size(const char* pszPath)
 *******************************************************************************
 */
 
-bool CFile::Copy(const char* pszSrc, const char* pszDst, bool bOverwrite)
+bool CFile::Copy(const tchar* pszSrc, const tchar* pszDst, bool bOverwrite)
 {
 	ASSERT(pszSrc != NULL);
 	ASSERT(pszDst != NULL);
@@ -392,7 +393,7 @@ bool CFile::Copy(const char* pszSrc, const char* pszDst, bool bOverwrite)
 *******************************************************************************
 */
 
-bool CFile::Move(const char* pszSrc, const char* pszDst)
+bool CFile::Move(const tchar* pszSrc, const tchar* pszDst)
 {
 	ASSERT(pszSrc != NULL);
 	ASSERT(pszDst != NULL);
@@ -412,7 +413,7 @@ bool CFile::Move(const char* pszSrc, const char* pszDst)
 *******************************************************************************
 */
 
-bool CFile::Delete(const char* pszPath)
+bool CFile::Delete(const tchar* pszPath)
 {
 	ASSERT(pszPath != NULL);
 
@@ -432,7 +433,7 @@ bool CFile::Delete(const char* pszPath)
 *******************************************************************************
 */
 
-bool CFile::CreateFolder(const char* pszPath, bool bCreatePath)
+bool CFile::CreateFolder(const tchar* pszPath, bool bCreatePath)
 {
 	ASSERT(pszPath != NULL);
 
@@ -476,7 +477,7 @@ bool CFile::CreateFolder(const char* pszPath, bool bCreatePath)
 *******************************************************************************
 */
 
-bool CFile::DeleteFolder(const char* pszPath)
+bool CFile::DeleteFolder(const tchar* pszPath)
 {
 	ASSERT(pszPath != NULL);
 
@@ -497,7 +498,7 @@ bool CFile::DeleteFolder(const char* pszPath)
 *******************************************************************************
 */
 
-bool CFile::CreateShortcut(const char* pszLink, const char* pszTarget, const char* pszDesc)
+bool CFile::CreateShortcut(const tchar* pszLink, const tchar* pszTarget, const tchar* pszDesc)
 {
 	ASSERT(pszLink   != NULL);
 	ASSERT(pszTarget != NULL);
@@ -510,7 +511,7 @@ bool CFile::CreateShortcut(const char* pszLink, const char* pszTarget, const cha
 		IShellLink* pIShellLink = NULL;
 
 		// Get a pointer to the IShellLink interface. 
-		hResult = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, IID_IShellLink, (LPVOID*) &pIShellLink);
+		hResult = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, IID_IShellLink, reinterpret_cast<LPVOID*>(&pIShellLink));
 
 		if (SUCCEEDED(hResult))
 		{ 
@@ -518,13 +519,13 @@ bool CFile::CreateShortcut(const char* pszLink, const char* pszTarget, const cha
 			pIShellLink->SetPath(pszTarget);
 			pIShellLink->SetWorkingDirectory(CPath(pszTarget).Directory());
 
-			if ((pszDesc != NULL) && (*pszDesc != '\0'))
+			if ((pszDesc != NULL) && (*pszDesc != TXT('\0')))
 				pIShellLink->SetDescription(pszDesc);
  
 			IPersistFile* pIPersistFile = NULL;
 
 			// Query IShellLink for the IPersistFile interface for saving the shortcut. 
-			hResult = pIShellLink->QueryInterface(IID_IPersistFile, (LPVOID*) &pIPersistFile); 
+			hResult = pIShellLink->QueryInterface(IID_IPersistFile, reinterpret_cast<LPVOID*>(&pIPersistFile)); 
 
 			if (SUCCEEDED(hResult))
 			{ 
@@ -545,4 +546,162 @@ bool CFile::CreateShortcut(const char* pszLink, const char* pszTarget, const cha
 		::SetLastError(hResult);
 
 	return SUCCEEDED(hResult);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Read the entire contents of a binary file. It returns the number of bytes
+//! read.
+
+size_t CFile::ReadFile(const tchar* pszPath, std::vector<byte>& vBuffer)
+{
+	CFile oFile;
+
+	oFile.Open(pszPath, GENERIC_READ);
+
+	// Allocate a buffer for the entire file.
+	size_t nLength = oFile.Size();
+
+	vBuffer.resize(nLength);
+
+	// Read the entire contents.
+	if (nLength > 0)
+		oFile.Read(&vBuffer.front(), nLength);
+
+	oFile.Close();
+
+	return vBuffer.size();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Read the entire contents of a text file. It returns the number of characters
+//! read.
+
+size_t CFile::ReadTextFile(const tchar* pszPath, CString& strContents, TextFormat& eFormat)
+{
+	std::vector<byte> vBuffer;
+
+	// Read the file into our temporary buffer.
+	ReadFile(pszPath, vBuffer);
+
+	size_t nChars = 0;
+
+	// Determine the file format.
+	if ( (vBuffer.size() >= 2) && (vBuffer[0] == 0xFF) && (vBuffer[1] == 0xFE) )
+	{
+		eFormat = UNICODE_TEXT;
+		nChars  = (vBuffer.size() - 2) / sizeof(wchar_t);
+	}
+	else
+	{
+		eFormat = ANSI_TEXT;
+		nChars  = vBuffer.size();
+	}
+
+	// Allocate the final string buffer.
+	strContents.BufferSize(nChars+1);
+
+	if (nChars > 0)
+	{
+		// Copy the contents to the return buffer.
+		if (eFormat == ANSI_TEXT)
+		{
+			const char* pszBegin = reinterpret_cast<const char*>(&vBuffer.front());
+			const char* pszEnd   = pszBegin + nChars;
+
+#ifdef ANSI_BUILD
+			std::copy(pszBegin, pszEnd, strContents.Buffer());
+#else
+			Core::AnsiToWide(pszBegin, pszEnd, strContents.Buffer());
+#endif
+		}
+		else // (eFormat == UNICODE_TEXT)
+		{
+			const wchar_t* pszBegin = reinterpret_cast<const wchar_t*>(&vBuffer.front());
+			const wchar_t* pszEnd   = pszBegin + nChars;
+
+#ifdef ANSI_BUILD
+			Core::WideToAnsi(pszBegin, pszEnd, strContents.Buffer());
+#else
+			std::copy(pszBegin, pszEnd, strContents.Buffer());
+#endif
+		}
+	}
+
+	// Ensure string is terminated.
+	*(strContents.Buffer()+nChars) = TXT('\0');
+
+	return nChars;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Write the entire contents of a binary file.
+
+void CFile::WriteFile(const tchar* pszPath, const std::vector<byte>& vBuffer)
+{
+	CFile oFile;
+
+	oFile.Create(pszPath);
+
+	if (vBuffer.size() > 0)
+		oFile.Write(&vBuffer.front(), vBuffer.size());
+
+	oFile.Close();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Write the entire contents of a text file.
+
+void CFile::WriteTextFile(const tchar* pszPath, const CString& strContents, TextFormat eFormat)
+{
+	size_t nChars = strContents.Length();
+
+	// Allocate the binary data buffer.
+	std::vector<byte> vBuffer;
+
+	if (eFormat == ANSI_TEXT)
+		vBuffer.resize(Core::NumBytes<char>(nChars));
+	else
+		vBuffer.resize(Core::NumBytes<wchar_t>(nChars) + 2);
+
+	// Write Unicode header, if required.
+	if (eFormat == UNICODE_TEXT)
+	{
+		vBuffer[0] = 0xFF;
+		vBuffer[1] = 0xFE;
+	}
+
+	if (nChars > 0)
+	{
+#ifdef ANSI_BUILD
+		const char* pszBegin = strContents.Buffer();
+		const char* pszEnd   = pszBegin + nChars;
+#else
+		const wchar_t* pszBegin = strContents.Buffer();
+		const wchar_t* pszEnd   = pszBegin + nChars;
+#endif
+
+		// Copy the contents to the write buffer.
+		if (eFormat == ANSI_TEXT)
+		{
+			char* pszDest = reinterpret_cast<char*>(&vBuffer.front());
+
+#ifdef ANSI_BUILD
+			std::copy(pszBegin, pszEnd, pszDest);
+#else
+			Core::WideToAnsi(pszBegin, pszEnd, pszDest);
+#endif
+		}
+		else // (eFormat == UNICODE_TEXT)
+		{
+			wchar_t* pszDest = reinterpret_cast<wchar_t*>(&vBuffer.front()+2);
+
+#ifdef ANSI_BUILD
+			Core::AnsiToWide(pszBegin, pszEnd, pszDest);
+#else
+			std::copy(pszBegin, pszEnd, pszDest);
+#endif
+		}
+	}
+
+	WriteFile(pszPath, vBuffer);
 }
