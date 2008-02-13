@@ -55,11 +55,7 @@ protected:
 	virtual void OnPaint(CDC& rDC);
 };
 
-/******************************************************************************
-**
-** Implementation of inline functions.
-**
-*******************************************************************************
-*/
+//! The document view smart-pointer type.
+typedef Core::SharedPtr<CView> ViewPtr;
 
 #endif //VIEW_HPP
