@@ -35,42 +35,42 @@ public:
 	// Constructors/Destructor.
 	//
 	CIniFile();
-	CIniFile(const char* pszPath);
-	CIniFile(const char* pszDir, const char* pszFile);
+	CIniFile(const tchar* pszPath);
+	CIniFile(const tchar* pszDir, const tchar* pszFile);
 	~CIniFile();
 	
 	//
 	// Entry read/write methods.
 	//
-	CString ReadString (const char* pszSection, const char* pszEntry, const char* pszDefault) const;
-	int     ReadInt    (const char* pszSection, const char* pszEntry, int nDefault) const;
-	uint    ReadUInt   (const char* pszSection, const char* pszEntry, uint nDefault) const;
-	long    ReadLong   (const char* pszSection, const char* pszEntry, long lDefault) const;
-	bool    ReadBool   (const char* pszSection, const char* pszEntry, bool bDefault) const;
-	CRect   ReadRect   (const char* pszSection, const char* pszEntry, const CRect& rcDefault) const;
+	CString ReadString (const tchar* pszSection, const tchar* pszEntry, const tchar* pszDefault) const;
+	int     ReadInt    (const tchar* pszSection, const tchar* pszEntry, int nDefault) const;
+	uint    ReadUInt   (const tchar* pszSection, const tchar* pszEntry, uint nDefault) const;
+	long    ReadLong   (const tchar* pszSection, const tchar* pszEntry, long lDefault) const;
+	bool    ReadBool   (const tchar* pszSection, const tchar* pszEntry, bool bDefault) const;
+	CRect   ReadRect   (const tchar* pszSection, const tchar* pszEntry, const CRect& rcDefault) const;
 
-	void    WriteString(const char* pszSection, const char* pszEntry, const char* pszValue);
-	void    WriteInt   (const char* pszSection, const char* pszEntry, int nValue);
-	void    WriteUInt  (const char* pszSection, const char* pszEntry, uint nValue);
-	void    WriteLong  (const char* pszSection, const char* pszEntry, long lValue);
-	void    WriteBool  (const char* pszSection, const char* pszEntry, bool bValue);
-	void    WriteRect  (const char* pszSection, const char* pszEntry, const CRect& rcValue);
+	void    WriteString(const tchar* pszSection, const tchar* pszEntry, const tchar* pszValue);
+	void    WriteInt   (const tchar* pszSection, const tchar* pszEntry, int nValue);
+	void    WriteUInt  (const tchar* pszSection, const tchar* pszEntry, uint nValue);
+	void    WriteLong  (const tchar* pszSection, const tchar* pszEntry, long lValue);
+	void    WriteBool  (const tchar* pszSection, const tchar* pszEntry, bool bValue);
+	void    WriteRect  (const tchar* pszSection, const tchar* pszEntry, const CRect& rcValue);
 	
-	void    DeleteEntry(const char* pszSection, const char* pszEntry);
+	void    DeleteEntry(const tchar* pszSection, const tchar* pszEntry);
 
 	//
 	// Array entry read/write methods.
 	//
-	CStrArray ReadStrings (const char* pszSection, const char* pszEntry, char cSep, const char*      pszDefault) const;
-	void      WriteStrings(const char* pszSection, const char* pszEntry, char cSep, const CStrArray& astrValues);
+	CStrArray ReadStrings (const tchar* pszSection, const tchar* pszEntry, tchar cSep, const tchar*     pszDefault) const;
+	void      WriteStrings(const tchar* pszSection, const tchar* pszEntry, tchar cSep, const CStrArray& astrValues);
 
 	//
 	// Section methods.
 	//
-	int  ReadSectionNames(CStrArray& astrNames);
-	int  ReadSection(const char* pszSection, CStrArray& astrEntries);
-	int  ReadSection(const char* pszSection, CStrArray& astrKeys, CStrArray& astrValues);
-	void DeleteSection(const char* pszSection);
+	size_t ReadSectionNames(CStrArray& astrNames);
+	size_t ReadSection(const tchar* pszSection, CStrArray& astrEntries);
+	size_t ReadSection(const tchar* pszSection, CStrArray& astrKeys, CStrArray& astrValues);
+	void DeleteSection(const tchar* pszSection);
 
 	//
 	// Members.

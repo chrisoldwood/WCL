@@ -32,21 +32,21 @@ CListBox::CListBox()
 **
 ** Description:	Get the string for the specified item.
 **
-** Parameters:	iPos	The item.
+** Parameters:	nItem	The item.
 **
 ** Returns:		The string.
 **
 *******************************************************************************
 */
 
-CString CListBox::Text(int iPos) const
+CString CListBox::Text(size_t nItem) const
 {
 	CString	strText;
 
 	// Allocate space.
-	strText.BufferSize(TextLength(iPos)+1);
+	strText.BufferSize(TextLength(nItem)+1);
 
-	SendMessage(LB_GETTEXT, iPos, (LPARAM)(LPCSTR) strText);
+	ListBox_GetText(m_hWnd, nItem, strText.Buffer());
 
 	return strText;
 }
@@ -69,7 +69,7 @@ void CListBox::GetCreateParams(WNDCREATE& rParams)
 	CCtrlWnd::GetCreateParams(rParams);
 
 	// Override any settings.
-	rParams.pszClassName = "LISTBOX";
+	rParams.pszClassName = TXT("LISTBOX");
 	rParams.dwStyle     |= LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | LBS_NOTIFY;
 	rParams.dwStyle     |= LBS_SORT | WS_VSCROLL;
 }
@@ -125,20 +125,20 @@ void CListBox::OnSelChange()
 **				then it selects the first item. If the item no longer exists,
 **				it sets it to the last item.
 **
-** Parameters:	iItem	The item to select, or LB_ERR, if there was none.
+** Parameters:	nItem	The item to select, or LB_ERR, if there was none.
 **
 ** Returns:		Nothing.
 **
 *******************************************************************************
 */
 
-void CListBox::RestoreSel(int iItem) const
+void CListBox::RestoreSel(size_t nItem) const
 {
-	int nCount = Count();
+	size_t nCount = Count();
 
 	// Handle no selection, or invalid selection.
-	iItem = (iItem == LB_ERR) ? 0 : iItem;
-	iItem = (iItem >= nCount) ? (nCount-1) : iItem;
+	nItem = (nItem == Core::npos) ? 0 : nItem;
+	nItem = (nItem >= nCount) ? (nCount-1) : nItem;
 
-	CurSel(iItem);
+	CurSel(nItem);
 }

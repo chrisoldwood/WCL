@@ -20,19 +20,19 @@
 
 struct FontMapEntry
 {
-	const char* m_pszName;
-	uint		m_nID;
+	const tchar*	m_pszName;
+	uint			m_nID;
 };
 
 static FontMapEntry g_aoFontMap[] = {
-{ "OEM_FIXED_FONT",      10   },
-{ "ANSI_FIXED_FONT",     11   },
-{ "ANSI_VAR_FONT",       12   },
-{ "SYSTEM_FONT",         13   },
-{ "DEVICE_DEFAULT_FONT", 14   },
-{ "SYSTEM_FIXED_FONT",   16   },
-{ "DEFAULT_GUI_FONT",    17   },
-{ NULL,                  NULL } };
+{ TXT("OEM_FIXED_FONT"),		10   },
+{ TXT("ANSI_FIXED_FONT"),		11   },
+{ TXT("ANSI_VAR_FONT"),			12   },
+{ TXT("SYSTEM_FONT"),			13   },
+{ TXT("DEVICE_DEFAULT_FONT"),	14   },
+{ TXT("SYSTEM_FIXED_FONT"),		16   },
+{ TXT("DEFAULT_GUI_FONT"),		17   },
+{ NULL,							NULL } };
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -250,12 +250,12 @@ CString CFont::Format(CLogFont::FontFormat eFormat) const
 *******************************************************************************
 */
 
-bool CFont::Parse(const char* pszFont, CFont& oFont)
+bool CFont::Parse(const tchar* pszFont, CFont& oFont)
 {
 	ASSERT(pszFont != NULL);
 
 	// Quick check for a LogFont definition.
-	if (strchr(pszFont, ',') != NULL)
+	if (tstrchr(pszFont, TXT(',')) != NULL)
 	{
 		CLogFont oLogFont;
 
@@ -275,7 +275,7 @@ bool CFont::Parse(const char* pszFont, CFont& oFont)
 		// Search the font mapping table...
 		for (; pEntry->m_pszName != NULL; ++pEntry)
 		{
-			if (_stricmp(pEntry->m_pszName, pszFont) == 0)
+			if (tstricmp(pEntry->m_pszName, pszFont) == 0)
 				break;
 		}
 

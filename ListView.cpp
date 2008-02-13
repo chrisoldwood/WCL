@@ -64,14 +64,14 @@ void CListView::GetCreateParams(WNDCREATE& rParams)
 *******************************************************************************
 */
 
-int CListView::InsertItem(int nPos, const char* pszText, int nImage)
+size_t CListView::InsertItem(size_t nItem, const tchar* pszText, size_t nImage)
 {
 	LVITEM lvItem = { 0 };
 
 	// Initialise item structure.
 	lvItem.mask    = LVIF_TEXT | LVIF_PARAM;
-	lvItem.iItem   = nPos;
-	lvItem.pszText = (char*) pszText;
+	lvItem.iItem   = nItem;
+	lvItem.pszText = const_cast<tchar*>(pszText);
 	lvItem.iImage  = nImage;
 	lvItem.lParam  = NULL;
 
@@ -95,7 +95,7 @@ int CListView::InsertItem(int nPos, const char* pszText, int nImage)
 *******************************************************************************
 */
 
-void CListView::ItemImage(int nItem, int nImage)
+void CListView::ItemImage(size_t nItem, size_t nImage)
 {
 	LVITEM lvItem = { 0 };
 
@@ -120,7 +120,7 @@ void CListView::ItemImage(int nItem, int nImage)
 *******************************************************************************
 */
 
-void CListView::ItemData(int nItem, LPARAM lParam)
+void CListView::ItemData(size_t nItem, LPARAM lParam)
 {
 	LVITEM lvItem = { 0 };
 
@@ -146,17 +146,19 @@ void CListView::ItemData(int nItem, LPARAM lParam)
 *******************************************************************************
 */
 
-CString CListView::ItemText(int nItem, int nSubItem) const
+CString CListView::ItemText(size_t nItem, size_t nSubItem) const
 {
-	LVITEM  lvItem      = { 0 };
-	char	szText[256] = { 0 };
+	const size_t MAX_LEN = 256;
+
+	LVITEM  lvItem = { 0 };
+	tchar	szText[MAX_LEN+1] = { 0 };
 
 	// Initialise item structure.
 	lvItem.mask       = LVIF_TEXT;
 	lvItem.iItem      = nItem;
 	lvItem.iSubItem   = nSubItem;
 	lvItem.pszText    = szText;
-	lvItem.cchTextMax = sizeof(szText);
+	lvItem.cchTextMax = MAX_LEN;
 
 	// Get the item text.
 	SendMessage(LVM_GETITEMTEXT, nItem, (LPARAM)&lvItem);
@@ -176,7 +178,7 @@ CString CListView::ItemText(int nItem, int nSubItem) const
 *******************************************************************************
 */
 
-int CListView::ItemImage(int nItem) const
+size_t CListView::ItemImage(size_t nItem) const
 {
 	LVITEM lvItem = { 0 };
 
@@ -201,7 +203,7 @@ int CListView::ItemImage(int nItem) const
 *******************************************************************************
 */
 
-LPARAM CListView::ItemData(int nItem) const
+LPARAM CListView::ItemData(size_t nItem) const
 {
 	LVITEM lvItem = { 0 };
 
@@ -226,12 +228,12 @@ LPARAM CListView::ItemData(int nItem) const
 *******************************************************************************
 */
 
-uint CListView::Selections(CUIntArray& vItems) const
+uint CListView::Selections(Items& vItems) const
 {
 	ASSERT(vItems.size() == 0);
 
 	// For all items...
-	for (int i = 0; i < ItemCount(); ++i)
+	for (size_t i = 0; i < ItemCount(); ++i)
 	{
 		if (IsSelected(i))
 			vItems.push_back(i);
@@ -255,17 +257,17 @@ uint CListView::Selections(CUIntArray& vItems) const
 *******************************************************************************
 */
 
-void CListView::InsertColumn(int iPos, const char* pszName, int iWidth, int iFormat)
+void CListView::InsertColumn(size_t nColumn, const tchar* pszName, uint iWidth, uint iFormat)
 {
 	LVCOLUMN lvColumn = { 0 };
 
     lvColumn.mask     = LVCF_TEXT | LVCF_WIDTH | LVCF_FMT;
     lvColumn.fmt      = iFormat;
     lvColumn.cx       = iWidth;
-    lvColumn.pszText  = (char*) pszName;
-    lvColumn.iSubItem = iPos;
+    lvColumn.pszText  = const_cast<tchar*>(pszName);
+    lvColumn.iSubItem = nColumn;
 
-	ListView_InsertColumn(m_hWnd, iPos, &lvColumn);
+	ListView_InsertColumn(m_hWnd, nColumn, &lvColumn);
 }
 
 /******************************************************************************
@@ -281,9 +283,9 @@ void CListView::InsertColumn(int iPos, const char* pszName, int iWidth, int iFor
 *******************************************************************************
 */
 
-void CListView::InsertColumns(const LVColumn* pColumns, int nColumns)
+void CListView::InsertColumns(const LVColumn* pColumns, size_t nColumns)
 {
-	for (int i = 0; i < nColumns; i++)
+	for (size_t i = 0; i < nColumns; ++i)
 		InsertColumn(i, pColumns[i].pszName, pColumns[i].nWidth, pColumns[i].nFormat);
 }
 
@@ -324,7 +326,7 @@ void CListView::ImageList(uint nType, const CImageList& oImageList)
 *******************************************************************************
 */
 
-void CListView::ImageList(uint nType, uint nRscID, int nImgWidth, COLORREF crMask)
+void CListView::ImageList(uint nType, uint nRscID, uint nImgWidth, COLORREF crMask)
 {
 	CImageList oImageList;
 
@@ -346,19 +348,12 @@ void CListView::ImageList(uint nType, uint nRscID, int nImgWidth, COLORREF crMas
 *******************************************************************************
 */
 
-int CListView::StringWidth(int nChars) const
+uint CListView::StringWidth(size_t nChars) const
 {
 	// Create a string of 'X's.
-	char* pszString = new char[nChars+1];
+	std::tstring str(nChars, TXT('X'));
 
-	memset(pszString, 'X', nChars);
-	pszString[nChars] = '\0';
-
-	int iWidth = StringWidth(pszString);
-
-	delete[] pszString;
-
-	return iWidth;
+	return StringWidth(str.c_str());
 }
 
 /******************************************************************************
@@ -377,7 +372,7 @@ int CListView::StringWidth(int nChars) const
 *******************************************************************************
 */
 
-int CListView::FindItem(const char* pszText, bool bPartial, int nStart) const
+size_t CListView::FindItem(const tchar* pszText, bool bPartial, size_t nStart) const
 {
 	ASSERT(pszText != NULL);
 
@@ -390,7 +385,7 @@ int CListView::FindItem(const char* pszText, bool bPartial, int nStart) const
 	return ListView_FindItem(m_hWnd, nStart, &oInfo);
 }
 
-int CListView::FindItem(LPARAM lData, int nStart) const
+size_t CListView::FindItem(LPARAM lData, size_t nStart) const
 {
 	LVFINDINFO oInfo = { 0 };
 
@@ -400,7 +395,7 @@ int CListView::FindItem(LPARAM lData, int nStart) const
 	return ListView_FindItem(m_hWnd, nStart, &oInfo);
 }
 
-int CListView::FindItem(const void* pData, int nStart) const
+size_t CListView::FindItem(const void* pData, size_t nStart) const
 {
 	LVFINDINFO oInfo = { 0 };
 
@@ -426,7 +421,7 @@ int CListView::FindItem(const void* pData, int nStart) const
 *******************************************************************************
 */
 
-uint CListView::FindAllItems(const void* pData, CUIntArray& vItems) const
+size_t CListView::FindAllItems(const void* pData, Items& vItems) const
 {
 	int n = -1;
 
@@ -450,9 +445,9 @@ uint CListView::FindAllItems(const void* pData, CUIntArray& vItems) const
 *******************************************************************************
 */
 
-void CListView::RestoreSel(int nItem)
+void CListView::RestoreSel(size_t nItem)
 {
-	int nCount = ItemCount();
+	size_t nCount = ItemCount();
 
 	// Handle no selection, or invalid selection.
 	nItem = (nItem == LB_ERR) ? 0 : nItem;

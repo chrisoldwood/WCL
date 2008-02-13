@@ -27,7 +27,7 @@
 */
 
 // Window class name.
-const char* CFrameWnd::CLASS_NAME = "FrameWnd";
+const tchar* CFrameWnd::CLASS_NAME = TXT("FrameWnd");
 
 /******************************************************************************
 ** Method:		Default constructor.
@@ -239,9 +239,9 @@ LRESULT CFrameWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				int   nFiles = ::DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
 
 				// For all files
-				for (int i = 0; i < nFiles; i++)
+				for (int i = 0; i < nFiles; ++i)
 				{
-					char szPath[MAX_PATH+1];
+					tchar szPath[MAX_PATH+1];
 
 					// Get filename and process.
 					if (::DragQueryFile(hDrop, i, szPath, MAX_PATH) > 0)
@@ -496,6 +496,6 @@ bool CFrameWnd::ProcessMsg(MSG& rMsg)
 *******************************************************************************
 */
 
-void CFrameWnd::OnDropFile(int /*nFile*/, const char* /*pszPath*/)
+void CFrameWnd::OnDropFile(int /*nFile*/, const tchar* /*pszPath*/)
 {
 }

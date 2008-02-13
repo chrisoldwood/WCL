@@ -92,7 +92,7 @@ protected:
 	//
 
 	// Window class name.
-	static const char* CLASS_NAME;
+	static const tchar* CLASS_NAME;
 
 	//
 	// Window creation template methods.
@@ -113,7 +113,7 @@ protected:
 	virtual void OnActivateApp(bool bActivating);
 	virtual bool OnQueryClose();
 	virtual void OnClose();
-	virtual void OnDropFile(int nFile, const char* pszPath);
+	virtual void OnDropFile(int nFile, const tchar* pszPath);
 };
 
 /******************************************************************************

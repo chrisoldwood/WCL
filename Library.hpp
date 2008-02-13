@@ -32,7 +32,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CLibrary();
-	CLibrary(const char* pszPath);
+	CLibrary(const tchar* pszPath);
 	~CLibrary();
 
 	//

@@ -59,7 +59,7 @@ void CHintBar::GetClassParams(WNDCLASS& rParams)
 
 	// Override any settings.
 	rParams.hbrBackground = (HBRUSH) (COLOR_BTNFACE + 1);
-	rParams.lpszClassName = "HintBar";
+	rParams.lpszClassName = TXT("HintBar");
 }
 
 /******************************************************************************
@@ -80,7 +80,7 @@ void CHintBar::GetCreateParams(WNDCREATE& rParams)
 	CCtrlWnd::GetCreateParams(rParams);
 
 	// Override any settings.
-	rParams.pszClassName  = "HintBar";
+	rParams.pszClassName  = TXT("HintBar");
 }
 
 /******************************************************************************
@@ -113,7 +113,7 @@ void CHintBar::Hint(uint iRscID)
 *******************************************************************************
 */
 
-void CHintBar::Hint(const char* pszHint)
+void CHintBar::Hint(const tchar* pszHint)
 {
 	ASSERT(pszHint != NULL);
 

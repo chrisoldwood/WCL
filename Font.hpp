@@ -55,7 +55,7 @@ public:
 	bool Select(const CWnd& rParent);
 
 	CString Format(CLogFont::FontFormat eFormat) const;
-	static bool Parse(const char* pszFont, CFont& oFont);
+	static bool Parse(const tchar* pszFont, CFont& oFont);
 
 protected:
 	//

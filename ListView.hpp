@@ -28,9 +28,9 @@
 
 struct LVColumn
 {
-	const char*	pszName;	// The name.
-	int			nWidth;		// The width in pixels.
-	int			nFormat;	// The alignment of the text.
+	const tchar*	pszName;	// The name.
+	uint			nWidth;		// The width in pixels.
+	uint			nFormat;	// The alignment of the text (LVCFMT_*).
 };
 
 /******************************************************************************
@@ -56,68 +56,68 @@ public:
 	void GridLines(bool bOn = true);
 
 	// Template shorthands.
-	typedef std::vector<uint> CUIntArray;
+	typedef std::vector<size_t> Items;
 
 	//
 	// Item methods.
 	//
-	void Reserve(int nItems);
-	int  AppendItem(const char* pszText, int nImage = -1);
-	int  InsertItem(int nPos, const char* pszText, int nImage = -1);
-	void DeleteItem(int nItem);
+	void Reserve(size_t nItems);
+	size_t AppendItem(const tchar* pszText, size_t nImage = Core::npos);
+	size_t InsertItem(size_t nItem, const tchar* pszText, size_t nImage = -1);
+	void DeleteItem(size_t nItem);
 	void DeleteAllItems();
 
-	void ItemText(int nItem, int nSubItem, const char* pszText);
-	void ItemImage(int nItem, int nImage);
-	void ItemState(int nItem, int nState, int nMask);
-	void ItemData(int nItem, LPARAM lParam);
-	void ItemPtr(int nItem, const void* pData);
+	void ItemText(size_t nItem, size_t nSubItem, const tchar* pszText);
+	void ItemImage(size_t nItem, size_t nImage);
+	void ItemState(size_t nItem, uint nState, uint nMask);
+	void ItemData(size_t nItem, LPARAM lParam);
+	void ItemPtr(size_t nItem, const void* pData);
 
-	CString ItemText(int nItem, int nSubItem) const;
-	int     ItemImage(int nItem) const;
-	int     ItemState(int nItem, int nMask = LVIS_SELECTED) const;
-	LPARAM  ItemData(int nItem) const;
-	void*   ItemPtr(int nItem) const;
+	CString ItemText(size_t nItem, size_t nSubItem) const;
+	size_t  ItemImage(size_t nItem) const;
+	uint    ItemState(size_t nItem, uint nMask = LVIS_SELECTED) const;
+	LPARAM  ItemData(size_t nItem) const;
+	void*   ItemPtr(size_t nItem) const;
 
-	void Select(int nItem, bool bSelect = true);
+	void Select(size_t nItem, bool bSelect = true);
 	bool IsSelection() const;
-	int  Selection() const;
-	uint Selections(CUIntArray& vItems) const;
-	bool IsSelected(int nItem) const;
-	void RestoreSel(int nItem);
+	size_t Selection() const;
+	size_t Selections(Items& vItems) const;
+	bool IsSelected(size_t nItem) const;
+	void RestoreSel(size_t nItem);
 
-	int  ItemCount() const;
+	size_t ItemCount() const;
 
-	void MakeItemVisible(int nItem);
+	void MakeItemVisible(size_t nItem);
 
 	//
 	// Column methods.
 	//
-	int  NumColumns() const;
-	void InsertColumn(int iPos, const char* pszName, int iWidth, int iFormat = LVCFMT_LEFT);
-	void InsertColumns(const LVColumn* pColumns, int nColumns);
-	void DeleteColumn(int iPos);
+	size_t NumColumns() const;
+	void InsertColumn(size_t nColumn, const tchar* pszName, uint nWidth, uint nFormat = LVCFMT_LEFT);
+	void InsertColumns(const LVColumn* pColumns, size_t nColumns);
+	void DeleteColumn(size_t nColumn);
 	void DeleteAllColumns();
-	int  ColumnWidth(int iPos) const;
-	void ColumnWidth(int iPos, int nWidth);
-	void ColumnWidthAuto(int iPos, bool bFitHeader = false);
+	size_t ColumnWidth(size_t nColumn) const;
+	void ColumnWidth(size_t nColumn, uint nWidth);
+	void ColumnWidthAuto(size_t nColumn, bool bFitHeader = false);
 
 	//
 	// Search methods.
 	//
-	int  FindItem(const char* pszText, bool bPartial = false, int nStart = -1) const;
-	int  FindItem(LPARAM lData, int nStart = -1) const;
-	int  FindItem(const void* pData, int nStart = -1) const;
-	uint FindAllItems(const void* pData, CUIntArray& vItems) const;
+	size_t FindItem(const tchar* pszText, bool bPartial = false, size_t nStart = -1) const;
+	size_t FindItem(LPARAM lData, size_t nStart = -1) const;
+	size_t FindItem(const void* pData, size_t nStart = -1) const;
+	size_t FindAllItems(const void* pData, Items& vItems) const;
 
 	//
 	// Misc methods.
 	//
 	void ImageList(uint nType, const CImageList& oImageList);
-	void ImageList(uint nType, uint nRscID, int nImgWidth, COLORREF crMask);
-	void IconSpacing(int iHorzSpacing, int iVertSpacing);
-	int  StringWidth(const char* pszString) const;
-	int  StringWidth(int nChars) const;
+	void ImageList(uint nType, uint nRscID, uint nImgWidth, COLORREF crMask);
+	void IconSpacing(uint iHorzSpacing, uint iVertSpacing);
+	uint StringWidth(const tchar* pszString) const;
+	uint StringWidth(size_t nChars) const;
 	int  Sort(PFNLVCOMPARE pfnCompare, LPARAM lParamSort);
 
 protected:
@@ -162,17 +162,17 @@ inline void CListView::GridLines(bool bOn)
 	ListView_SetExtendedListViewStyleEx(m_hWnd, dwMask, dwStyle);
 }
 
-inline void CListView::Reserve(int nItems)
+inline void CListView::Reserve(size_t nItems)
 {
 	ListView_SetItemCount(m_hWnd, nItems);
 }
 
-inline int CListView::AppendItem(const char* pszText, int nImage)
+inline size_t CListView::AppendItem(const tchar* pszText, size_t nImage)
 {
 	return InsertItem(ItemCount(), pszText, nImage);
 }
 
-inline void CListView::DeleteItem(int nItem)
+inline void CListView::DeleteItem(size_t nItem)
 {
 	ListView_DeleteItem(m_hWnd, nItem);
 }
@@ -182,34 +182,34 @@ inline void CListView::DeleteAllItems()
 	ListView_DeleteAllItems(m_hWnd);
 }
 
-inline void CListView::ItemText(int nItem, int nSubItem, const char* pszText)
+inline void CListView::ItemText(size_t nItem, size_t nSubItem, const tchar* pszText)
 {
-	ListView_SetItemText(m_hWnd, nItem, nSubItem, (char*)pszText);
+	ListView_SetItemText(m_hWnd, nItem, nSubItem, const_cast<tchar*>(pszText));
 }
 
-inline void CListView::ItemState(int nItem, int nState, int nMask)
+inline void CListView::ItemState(size_t nItem, uint nState, uint nMask)
 {
 	ListView_SetItemState(m_hWnd, nItem, nState, nMask);
 }
 
-inline void CListView::ItemPtr(int nItem, const void* pData)
+inline void CListView::ItemPtr(size_t nItem, const void* pData)
 {
 	ItemData(nItem, (LPARAM)pData);
 }
 
-inline int CListView::ItemState(int nItem, int nMask) const
+inline uint CListView::ItemState(size_t nItem, uint nMask) const
 {
 	return ListView_GetItemState(m_hWnd, nItem, nMask);
 }
 
-inline void* CListView::ItemPtr(int nItem) const
+inline void* CListView::ItemPtr(size_t nItem) const
 {
-	return (void*) ItemData(nItem);
+	return reinterpret_cast<void*>(ItemData(nItem));
 }
 
-inline void CListView::Select(int nItem, bool bSelect)
+inline void CListView::Select(size_t nItem, bool bSelect)
 {
-	int nState = (bSelect) ? (LVIS_SELECTED | LVIS_FOCUSED) : 0;
+	uint nState = (bSelect) ? (LVIS_SELECTED | LVIS_FOCUSED) : 0;
 
 	ItemState(nItem, nState, 0x000F);
 }
@@ -219,65 +219,65 @@ inline bool CListView::IsSelection() const
 	return (Selection() != LB_ERR);
 }
 
-inline bool CListView::IsSelected(int nItem) const
+inline bool CListView::IsSelected(size_t nItem) const
 {
 	return (ItemState(nItem) & LVIS_SELECTED);
 }
 
-inline int CListView::Selection() const
+inline size_t CListView::Selection() const
 {
 	return ListView_GetNextItem(m_hWnd, -1, LVNI_SELECTED);
 }
 
-inline int CListView::ItemCount() const
+inline size_t CListView::ItemCount() const
 {
 	return ListView_GetItemCount(m_hWnd);
 }
 
-inline void CListView::MakeItemVisible(int nItem)
+inline void CListView::MakeItemVisible(size_t nItem)
 {
 	ListView_EnsureVisible(m_hWnd, nItem, FALSE);
 }
 
-inline int CListView::NumColumns() const
+inline size_t CListView::NumColumns() const
 {
 	return Header_GetItemCount(ListView_GetHeader(m_hWnd));
 }
 
-inline void CListView::DeleteColumn(int iPos)
+inline void CListView::DeleteColumn(size_t nColumn)
 {
-	ListView_DeleteColumn(m_hWnd, iPos);
+	ListView_DeleteColumn(m_hWnd, nColumn);
 }
 
 inline void CListView::DeleteAllColumns()
 {
-	int nColumns = NumColumns();
+	size_t nColumns = NumColumns();
 
-	while (nColumns-- >= 0)
+	while (nColumns-- > 0)
 		ListView_DeleteColumn(m_hWnd, 0);
 }
 
-inline int CListView::ColumnWidth(int iPos) const
+inline size_t CListView::ColumnWidth(size_t nColumn) const
 {
-	return ListView_GetColumnWidth(m_hWnd, iPos);
+	return ListView_GetColumnWidth(m_hWnd, nColumn);
 }
 
-inline void CListView::ColumnWidth(int iPos, int nWidth)
+inline void CListView::ColumnWidth(size_t nColumn, uint nWidth)
 {
-	ListView_SetColumnWidth(m_hWnd, iPos, nWidth);
+	ListView_SetColumnWidth(m_hWnd, nColumn, nWidth);
 }
 
-inline void CListView::ColumnWidthAuto(int iPos, bool bFitHeader)
+inline void CListView::ColumnWidthAuto(size_t nColumn, bool bFitHeader)
 {
-	ListView_SetColumnWidth(m_hWnd, iPos, (bFitHeader) ? LVSCW_AUTOSIZE_USEHEADER : LVSCW_AUTOSIZE);
+	ListView_SetColumnWidth(m_hWnd, nColumn, (bFitHeader) ? LVSCW_AUTOSIZE_USEHEADER : LVSCW_AUTOSIZE);
 }
 
-inline void CListView::IconSpacing(int iHorzSpacing, int iVertSpacing)
+inline void CListView::IconSpacing(uint iHorzSpacing, uint iVertSpacing)
 {
 	ListView_SetIconSpacing(m_hWnd, iHorzSpacing, iVertSpacing);
 }
 
-inline int CListView::StringWidth(const char* pszString) const
+inline size_t CListView::StringWidth(const tchar* pszString) const
 {
 	return ListView_GetStringWidth(m_hWnd, pszString);
 }

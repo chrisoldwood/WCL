@@ -34,7 +34,7 @@ public:
 	CImageList();
 	~CImageList();
 	
-	void LoadRsc(uint nRscID, int nImgWidth, COLORREF crMask, bool bOwner = false);
+	void LoadRsc(uint nRscID, uint nImgWidth, COLORREF crMask, bool bOwner = false);
 
 	//
 	// Properties.

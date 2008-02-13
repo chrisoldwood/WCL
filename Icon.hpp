@@ -31,12 +31,12 @@ public:
 	//
 	CIcon();
 	CIcon(uint nRscID);
-	CIcon(uint nRscID, int nWidth, int nHeight);
+	CIcon(uint nRscID, uint nWidth, uint nHeight);
 	~CIcon();
 	
 	void LoadRsc(uint nRscID);
-	void LoadRsc(uint nRscID, int nWidth, int nHeight);
-	void LoadRsc(const char* pszRsc);
+	void LoadRsc(uint nRscID, uint nWidth, uint nHeight);
+	void LoadRsc(const tchar* pszRsc);
 
 	//
 	// Member access.

@@ -36,7 +36,7 @@ public:
 	//
 	// Standard methods.
 	//
-	void Text(const char* pszText);
+	void Text(const tchar* pszText);
 
 protected:
 	//
@@ -56,7 +56,7 @@ protected:
 *******************************************************************************
 */
 
-inline void CLabel::Text(const char* pszText)
+inline void CLabel::Text(const tchar* pszText)
 {
 	Title(pszText);
 }

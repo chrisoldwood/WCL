@@ -64,7 +64,7 @@ CImageList::~CImageList()
 *******************************************************************************
 */
 
-void CImageList::LoadRsc(uint nRscID, int nImgWidth, COLORREF crMask, bool bOwner)
+void CImageList::LoadRsc(uint nRscID, uint nImgWidth, COLORREF crMask, bool bOwner)
 {
 	ASSERT(m_hImageList == NULL);
 

@@ -45,6 +45,6 @@ void CLabel::GetCreateParams(WNDCREATE& rParams)
 	CCtrlWnd::GetCreateParams(rParams);
 
 	// Override any settings.
-	rParams.pszClassName = "STATIC";
+	rParams.pszClassName = TXT("STATIC");
 	rParams.dwStyle     |= SS_SIMPLE;
 }

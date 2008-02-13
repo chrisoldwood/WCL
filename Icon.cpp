@@ -62,7 +62,7 @@ CIcon::CIcon(uint nRscID)
 *******************************************************************************
 */
 
-CIcon::CIcon(uint nRscID, int nWidth, int nHeight)
+CIcon::CIcon(uint nRscID, uint nWidth, uint nHeight)
 	: m_hIcon(NULL)
 	, m_bOwner(false)
 {
@@ -124,7 +124,7 @@ void CIcon::LoadRsc(uint nRscID)
 *******************************************************************************
 */
 
-void CIcon::LoadRsc(uint nRscID, int nWidth, int nHeight)
+void CIcon::LoadRsc(uint nRscID, uint nWidth, uint nHeight)
 {
 	ASSERT(m_hIcon == NULL);
 
@@ -146,7 +146,7 @@ void CIcon::LoadRsc(uint nRscID, int nWidth, int nHeight)
 *******************************************************************************
 */
 
-void CIcon::LoadRsc(const char* pszRsc)
+void CIcon::LoadRsc(const tchar* pszRsc)
 {
 	ASSERT(m_hIcon == NULL);
 

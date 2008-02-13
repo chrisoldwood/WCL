@@ -37,28 +37,28 @@ public:
 	// Standard methods.
 	//
 	void Reset() const;
-	int Count() const;
-	int Add(const char* pszText) const;
-	int Add(const char* pszText, LPARAM lData) const;
-	int Add(const char* pszText, void*  pData) const;
-	int Insert(const char* pszText, int iPos) const;
-	int Delete(int iItem) const;
-	int Find(const char* pszText, int iFirst = -1) const;
-	int FindExact(const char* pszText, int iFirst = -1) const;
-	void ItemData(int iItem, LPARAM lData) const;
-	void ItemPtr(int iItem, void* pData) const;
-	LPARAM ItemData(int iItem) const;
-	void*  ItemPtr(int iItem) const;
-	int CurSel() const;
-	void CurSel(int iItem) const;
-	int  CurSel(const char* pszText, int iFirst = -1) const;
-	bool IsSel(int iItem) const;
-	void RestoreSel(int iItem) const;
-	int TextLength(int iPos) const;
-	int Text(char* pszText, int iPos) const;
-	CString Text(int iPos) const;
-	void SetTabStops(int iNumTabStops, const int* pTabStops);
-	void ItemHeight(int nItem, int nHeight);
+	size_t Count() const;
+	size_t Add(const tchar* pszText) const;
+	size_t Add(const tchar* pszText, LPARAM lData) const;
+	size_t Add(const tchar* pszText, void*  pData) const;
+	size_t Insert(const tchar* pszText, size_t nItem) const;
+	size_t Delete(size_t nItem) const;
+	size_t Find(const tchar* pszText, size_t nFirst = Core::npos) const;
+	size_t FindExact(const tchar* pszText, size_t nFirst = Core::npos) const;
+	void ItemData(size_t nItem, LPARAM lData) const;
+	void ItemPtr(size_t nItem, void* pData) const;
+	LPARAM ItemData(size_t nItem) const;
+	void*  ItemPtr(size_t nItem) const;
+	size_t CurSel() const;
+	void CurSel(size_t nItem) const;
+	size_t  CurSel(const tchar* pszText, size_t nFirst = Core::npos) const;
+	bool IsSel(size_t nItem) const;
+	void RestoreSel(size_t nItem) const;
+	size_t TextLength(size_t nItem) const;
+	size_t Text(tchar* pszText, size_t nItem) const;
+	CString Text(size_t nItem) const;
+	void SetTabStops(size_t iNumTabStops, const uint* pTabStops);
+	void ItemHeight(size_t nItem, uint nHeight);
 
 protected:
 	//
@@ -89,110 +89,110 @@ inline void CListBox::Reset() const
 	SendMessage(LB_RESETCONTENT, 0, 0L);
 }
 
-inline int CListBox::Count() const
+inline size_t CListBox::Count() const
 {
-	return (int)SendMessage(LB_GETCOUNT, 0, 0L);
+	return SendMessage(LB_GETCOUNT, 0, 0L);
 }
 
-inline int CListBox::Add(const char* pszText) const
+inline size_t CListBox::Add(const tchar* pszText) const
 {
-	return (int)SendMessage(LB_ADDSTRING, 0, (LPARAM)(LPCSTR) pszText);
+	return SendMessage(LB_ADDSTRING, 0, (LPARAM)pszText);
 }
 
-inline int CListBox::Add(const char* pszText, LPARAM lData) const
+inline size_t CListBox::Add(const tchar* pszText, LPARAM lData) const
 {
-	int n = Add(pszText);
+	size_t n = Add(pszText);
 
 	ItemData(n, lData);
 
 	return n;
 }
 
-inline int CListBox::Add(const char* pszText, void*  pData) const
+inline size_t CListBox::Add(const tchar* pszText, void*  pData) const
 {
-	int n = Add(pszText);
+	size_t n = Add(pszText);
 
 	ItemPtr(n, pData);
 
 	return n;
 }
 
-inline int CListBox::Insert(const char* pszText, int iPos) const
+inline size_t CListBox::Insert(const tchar* pszText, size_t nItem) const
 {
-	return (int)SendMessage(LB_INSERTSTRING, iPos, (LPARAM)(LPCSTR) pszText);
+	return SendMessage(LB_INSERTSTRING, nItem, (LPARAM)pszText);
 }
 
-inline int CListBox::Delete(int iItem) const
+inline size_t CListBox::Delete(size_t nItem) const
 {
-	return (int)SendMessage(LB_DELETESTRING, iItem, 0L);
+	return SendMessage(LB_DELETESTRING, nItem, 0L);
 }
 
-inline int CListBox::Find(const char* pszText, int iFirst) const
+inline size_t CListBox::Find(const tchar* pszText, size_t nFirst) const
 {
-	return (int)SendMessage(LB_FINDSTRING, iFirst, (LPARAM)(LPCSTR) pszText);
+	return SendMessage(LB_FINDSTRING, nFirst, (LPARAM)pszText);
 }
 
-inline int CListBox::FindExact(const char* pszText, int iFirst) const
+inline size_t CListBox::FindExact(const tchar* pszText, size_t nFirst) const
 {
-	return (int)SendMessage(LB_FINDSTRINGEXACT, iFirst, (LPARAM)(LPCSTR) pszText);
+	return SendMessage(LB_FINDSTRINGEXACT, nFirst, (LPARAM)pszText);
 }
 
-inline void CListBox::ItemData(int iItem, LPARAM lData) const
+inline void CListBox::ItemData(size_t nItem, LPARAM lData) const
 {
-	SendMessage(LB_SETITEMDATA, iItem, lData);
+	SendMessage(LB_SETITEMDATA, nItem, lData);
 }
 
-inline LPARAM CListBox::ItemData(int iItem) const
+inline LPARAM CListBox::ItemData(size_t nItem) const
 {
-	return SendMessage(LB_GETITEMDATA, iItem, 0L);
+	return SendMessage(LB_GETITEMDATA, nItem, 0L);
 }
 
-inline void CListBox::ItemPtr(int iItem, void* pData) const
+inline void CListBox::ItemPtr(size_t nItem, void* pData) const
 {
-	SendMessage(LB_SETITEMDATA, iItem, (LPARAM)pData);
+	SendMessage(LB_SETITEMDATA, nItem, (LPARAM)pData);
 }
 
-inline void* CListBox::ItemPtr(int iItem) const
+inline void* CListBox::ItemPtr(size_t nItem) const
 {
-	return (void*) SendMessage(LB_GETITEMDATA, iItem, 0L);
+	return reinterpret_cast<void*>(SendMessage(LB_GETITEMDATA, nItem, 0L));
 }
 
-inline int CListBox::CurSel() const
+inline size_t CListBox::CurSel() const
 {
-	return (int) SendMessage(LB_GETCURSEL, 0, 0L);
+	return SendMessage(LB_GETCURSEL, 0, 0L);
 }
 
-inline void CListBox::CurSel(int iItem) const
+inline void CListBox::CurSel(size_t nItem) const
 {
-	SendMessage(LB_SETCURSEL, iItem, 0L);
+	SendMessage(LB_SETCURSEL, nItem, 0L);
 }
 
-inline int CListBox::CurSel(const char* pszText, int iFirst) const
+inline size_t CListBox::CurSel(const tchar* pszText, size_t nFirst) const
 {
-	return (int)SendMessage(LB_SELECTSTRING, iFirst, (LPARAM)(LPCSTR) pszText);
+	return SendMessage(LB_SELECTSTRING, nFirst, reinterpret_cast<LPARAM>(pszText));
 }
 
-inline bool CListBox::IsSel(int iItem) const
+inline bool CListBox::IsSel(size_t nItem) const
 {
-	return (bool) SendMessage(LB_GETSEL, iItem, 0L);
+	return static_cast<bool>(SendMessage(LB_GETSEL, nItem, 0L));
 }
 
-inline int CListBox::TextLength(int iPos) const
+inline size_t CListBox::TextLength(size_t nItem) const
 {
-	return (int)SendMessage(LB_GETTEXTLEN, iPos, 0L);
+	return SendMessage(LB_GETTEXTLEN, nItem, 0L);
 }
 
-inline int CListBox::Text(char* pszText, int iPos) const
+inline size_t CListBox::Text(tchar* pszText, size_t nItem) const
 {
-	return (int)SendMessage(LB_GETTEXT, iPos, (LPARAM)(LPCSTR) pszText);
+	return SendMessage(LB_GETTEXT, nItem, reinterpret_cast<LPARAM>(pszText));
 }
 
-inline void CListBox::SetTabStops(int iNumTabStops, const int* pTabStops)
+inline void CListBox::SetTabStops(size_t iNumTabStops, const uint* pTabStops)
 {
-	SendMessage(LB_SETTABSTOPS, iNumTabStops, (LPARAM)(void*)pTabStops);
+	SendMessage(LB_SETTABSTOPS, iNumTabStops, reinterpret_cast<LPARAM>(pTabStops));
 }
 
-inline void CListBox::ItemHeight(int nItem, int nHeight)
+inline void CListBox::ItemHeight(size_t nItem, uint nHeight)
 {
 	SendMessage(LB_SETITEMHEIGHT, nItem, nHeight);
 }

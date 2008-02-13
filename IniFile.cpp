@@ -15,6 +15,10 @@
 #include "StrTok.hpp"
 #include "StrArray.hpp"
 #include "Rect.hpp"
+#include <tchar.h>
+
+//! The size of the string buffer in characters.
+const size_t MAX_CHARS = 256;
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -31,16 +35,16 @@
 
 CIniFile::CIniFile()
 {
-	char szPath[MAX_PATH+1];
+	tchar szPath[MAX_PATH+1];
 
 	// Get the Applications full path and name.
 	::GetModuleFileName(NULL, szPath, MAX_PATH);
 
-	char* pszExt = strrchr(szPath, '.');
+	tchar* pszExt = tstrrchr(szPath, TXT('.'));
 	ASSERT(pszExt != NULL);
 
 	// Replace .EXE with .INI.
-	strcpy(pszExt, ".ini");
+	tstrcpy(pszExt, TXT(".ini"));
 
 	m_strPath = szPath;
 }
@@ -57,7 +61,7 @@ CIniFile::CIniFile()
 *******************************************************************************
 */
 
-CIniFile::CIniFile(const char* pszPath)
+CIniFile::CIniFile(const tchar* pszPath)
 	: m_strPath(pszPath)
 {
 }
@@ -75,7 +79,7 @@ CIniFile::CIniFile(const char* pszPath)
 *******************************************************************************
 */
 
-CIniFile::CIniFile(const char* pszDir, const char* pszFile)
+CIniFile::CIniFile(const tchar* pszDir, const tchar* pszFile)
 	: m_strPath(pszDir, pszFile)
 {
 }
@@ -111,22 +115,21 @@ CIniFile::~CIniFile()
 *******************************************************************************
 */
 
-CString CIniFile::ReadString(const char* pszSection, const char* pszEntry, 
-						const char* pszDefault) const
+CString CIniFile::ReadString(const tchar* pszSection, const tchar* pszEntry, 
+						const tchar* pszDefault) const
 {
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
 	ASSERT(pszDefault);
 	
-	char szBuffer[128];
+	tchar szBuffer[MAX_CHARS+1] = { 0 };
 
-	::GetPrivateProfileString(pszSection, pszEntry, pszDefault, szBuffer,
-							sizeof(szBuffer), m_strPath);
+	::GetPrivateProfileString(pszSection, pszEntry, pszDefault, szBuffer, MAX_CHARS, m_strPath);
 
 	return szBuffer;
 }
 						
-void CIniFile::WriteString(const char* pszSection, const char* pszEntry, const char* pszValue)
+void CIniFile::WriteString(const tchar* pszSection, const tchar* pszEntry, const tchar* pszValue)
 {
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
@@ -135,7 +138,7 @@ void CIniFile::WriteString(const char* pszSection, const char* pszEntry, const c
 	::WritePrivateProfileString(pszSection, pszEntry, pszValue, m_strPath);
 }
 						
-int CIniFile::ReadInt(const char* pszSection, const char* pszEntry, int nDefault) const
+int CIniFile::ReadInt(const tchar* pszSection, const tchar* pszEntry, int nDefault) const
 {
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
@@ -143,7 +146,7 @@ int CIniFile::ReadInt(const char* pszSection, const char* pszEntry, int nDefault
 	return ::GetPrivateProfileInt(pszSection, pszEntry, nDefault, m_strPath);
 }
 						
-void CIniFile::WriteInt(const char* pszSection, const char* pszEntry, int iValue)
+void CIniFile::WriteInt(const tchar* pszSection, const tchar* pszEntry, int iValue)
 {
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
@@ -151,26 +154,25 @@ void CIniFile::WriteInt(const char* pszSection, const char* pszEntry, int iValue
 	::WritePrivateProfileString(pszSection, pszEntry, CStrCvt::FormatInt(iValue), m_strPath);
 }
 						
-uint CIniFile::ReadUInt(const char* pszSection, const char* pszEntry, uint nDefault) const
+uint CIniFile::ReadUInt(const tchar* pszSection, const tchar* pszEntry, uint nDefault) const
 {
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
 
-	char szValue[50];
+	tchar szValue[MAX_CHARS+1] = { 0 };
 
 	// Read as a string.
-	::GetPrivateProfileString(pszSection, pszEntry, "", szValue, 
-								sizeof(szValue), m_strPath);
+	::GetPrivateProfileString(pszSection, pszEntry, TXT(""), szValue, MAX_CHARS, m_strPath);
 	
 	// Read anything?
-	if (szValue[0] == '\0')
+	if (szValue[0] == TXT('\0'))
 		return nDefault;
 		
 	// Convert to value and return
 	return CStrCvt::ParseUInt(szValue);
 }
 						
-void CIniFile::WriteUInt(const char* pszSection, const char* pszEntry, uint nValue)
+void CIniFile::WriteUInt(const tchar* pszSection, const tchar* pszEntry, uint nValue)
 {
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
@@ -178,26 +180,25 @@ void CIniFile::WriteUInt(const char* pszSection, const char* pszEntry, uint nVal
 	::WritePrivateProfileString(pszSection, pszEntry, CStrCvt::FormatUInt(nValue), m_strPath);
 }
 						
-long CIniFile::ReadLong(const char* pszSection, const char* pszEntry, long lDefault) const
+long CIniFile::ReadLong(const tchar* pszSection, const tchar* pszEntry, long lDefault) const
 {
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
 
-	char szValue[50];
+	tchar szValue[MAX_CHARS+1] = { 0 };
 
 	// Read as a string.
-	::GetPrivateProfileString(pszSection, pszEntry, "", szValue, 
-								sizeof(szValue), m_strPath);
+	::GetPrivateProfileString(pszSection, pszEntry, TXT(""), szValue, MAX_CHARS, m_strPath);
 	
 	// Read anything?
-	if (szValue[0] == '\0')
+	if (szValue[0] == TXT('\0'))
 		return lDefault;
 		
 	// Convert to value and return
 	return CStrCvt::ParseLong(szValue);
 }
 						
-void CIniFile::WriteLong(const char* pszSection, const char* pszEntry, long lValue)
+void CIniFile::WriteLong(const tchar* pszSection, const tchar* pszEntry, long lValue)
 {
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
@@ -205,62 +206,61 @@ void CIniFile::WriteLong(const char* pszSection, const char* pszEntry, long lVal
 	::WritePrivateProfileString(pszSection, pszEntry, CStrCvt::FormatLong(lValue), m_strPath);
 }
 						
-bool CIniFile::ReadBool(const char* pszSection, const char* pszEntry, bool bDefault) const
+bool CIniFile::ReadBool(const tchar* pszSection, const tchar* pszEntry, bool bDefault) const
 {
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
 
-	char szValue[10];
+	tchar szValue[MAX_CHARS+1] = { 0 };
 
 	// Read as a string.
-	::GetPrivateProfileString(pszSection, pszEntry, "", szValue, 
-								sizeof(szValue), m_strPath);
+	::GetPrivateProfileString(pszSection, pszEntry, TXT(""), szValue, MAX_CHARS, m_strPath);
 
 	// Read anything?
-	if (szValue[0] == '\0')
+	if (szValue[0] == TXT('\0'))
 		return bDefault;
 		
 	// Check first character.
-	return ( (szValue[0] == 'T') || (szValue[0] == 't') );
+	return ( (szValue[0] == TXT('T')) || (szValue[0] == TXT('t')) );
 }
 						
-void CIniFile::WriteBool(const char* pszSection, const char* pszEntry, bool bValue)
+void CIniFile::WriteBool(const tchar* pszSection, const tchar* pszEntry, bool bValue)
 {
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
 
 	if (bValue)
-		::WritePrivateProfileString(pszSection, pszEntry, "True", m_strPath);
+		::WritePrivateProfileString(pszSection, pszEntry, TXT("True"), m_strPath);
 	else
-		::WritePrivateProfileString(pszSection, pszEntry, "False", m_strPath);
+		::WritePrivateProfileString(pszSection, pszEntry, TXT("False"), m_strPath);
 }
 
-CRect CIniFile::ReadRect(const char* pszSection, const char* pszEntry, const CRect& rcDefault) const
+CRect CIniFile::ReadRect(const tchar* pszSection, const tchar* pszEntry, const CRect& rcDefault) const
 {
 	// Read as a string.
-	CString str = ReadString(pszSection, pszEntry, "");
+	CString str = ReadString(pszSection, pszEntry, TXT(""));
 
 	// Read anything?
-	if (str == "")
+	if (str == TXT(""))
 		return rcDefault;
 
 	CStrArray astrFields;
 
 	// Parse.
-	if (CStrTok::Split(str, ",", astrFields) != 4)
+	if (CStrTok::Split(str, TXT(","), astrFields) != 4)
 		return rcDefault;
 
-	return CRect(atoi(astrFields[0]), atoi(astrFields[1]), atoi(astrFields[2]), atoi(astrFields[3]));
+	return CRect(_ttoi(astrFields[0]), _ttoi(astrFields[1]), _ttoi(astrFields[2]), _ttoi(astrFields[3]));
 }
 
-void CIniFile::WriteRect(const char* pszSection, const char* pszEntry, const CRect& rcValue)
+void CIniFile::WriteRect(const tchar* pszSection, const tchar* pszEntry, const CRect& rcValue)
 {
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
 	
 	CString str;
 
-	str.Format("%d,%d,%d,%d", rcValue.left, rcValue.top, rcValue.right, rcValue.bottom);
+	str.Format(TXT("%d,%d,%d,%d"), rcValue.left, rcValue.top, rcValue.right, rcValue.bottom);
 
 	::WritePrivateProfileString(pszSection, pszEntry, str, m_strPath);
 }
@@ -278,7 +278,7 @@ void CIniFile::WriteRect(const char* pszSection, const char* pszEntry, const CRe
 *******************************************************************************
 */
 
-void CIniFile::DeleteEntry(const char* pszSection, const char* pszEntry)
+void CIniFile::DeleteEntry(const tchar* pszSection, const tchar* pszEntry)
 {
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
@@ -301,7 +301,7 @@ void CIniFile::DeleteEntry(const char* pszSection, const char* pszEntry)
 *******************************************************************************
 */
 
-CStrArray CIniFile::ReadStrings(const char* pszSection, const char* pszEntry, char cSep, const char* pszDefault) const
+CStrArray CIniFile::ReadStrings(const tchar* pszSection, const tchar* pszEntry, tchar cSep, const tchar* pszDefault) const
 {
 	ASSERT(pszSection != NULL);
 	ASSERT(pszEntry   != NULL);
@@ -333,7 +333,7 @@ CStrArray CIniFile::ReadStrings(const char* pszSection, const char* pszEntry, ch
 *******************************************************************************
 */
 
-void CIniFile::WriteStrings(const char* pszSection, const char* pszEntry, char cSep, const CStrArray& astrValues)
+void CIniFile::WriteStrings(const tchar* pszSection, const tchar* pszEntry, tchar cSep, const CStrArray& astrValues)
 {
 	ASSERT(pszSection != NULL);
 	ASSERT(pszEntry   != NULL);
@@ -341,7 +341,7 @@ void CIniFile::WriteStrings(const char* pszSection, const char* pszEntry, char c
 	CString str;
 
 	// Build string list.
-	for (int i = 0; i < astrValues.Size(); ++i)
+	for (size_t i = 0; i < astrValues.Size(); ++i)
 	{
 		if (i != 0)
 			str += cSep;
@@ -364,25 +364,25 @@ void CIniFile::WriteStrings(const char* pszSection, const char* pszEntry, char c
 *******************************************************************************
 */
 
-int CIniFile::ReadSectionNames(CStrArray& astrNames)
+size_t CIniFile::ReadSectionNames(CStrArray& astrNames)
 {
 	// Allocate initial buffer.
-	DWORD dwSize   = 1024;
-	char* pszNames = (char*) _alloca(dwSize);
+	size_t nChars   = 1024;
+	tchar* pszNames = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
 
 	// Read all names, reallocating if necessary...
-	while (::GetPrivateProfileSectionNames(pszNames, dwSize, m_strPath) >= (dwSize-2))
+	while (::GetPrivateProfileSectionNames(pszNames, nChars, m_strPath) >= (nChars-2))
 	{
 		// Double the buffer size.
-		dwSize  *= 2;
-		pszNames = (char*) _alloca(dwSize);
+		nChars  *= 2;
+		pszNames = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
 	}
 
 	// For all strings.
-	while (*pszNames != '\0')
+	while (*pszNames != TXT('\0'))
 	{
 		astrNames.Add(pszNames);
-		pszNames += strlen(pszNames) + 1;
+		pszNames += tstrlen(pszNames) + 1;
 	}
 
 	return astrNames.Size();
@@ -401,27 +401,27 @@ int CIniFile::ReadSectionNames(CStrArray& astrNames)
 *******************************************************************************
 */
 
-int CIniFile::ReadSection(const char* pszSection, CStrArray& astrEntries)
+size_t CIniFile::ReadSection(const tchar* pszSection, CStrArray& astrEntries)
 {
 	ASSERT(pszSection);
 
 	// Allocate initial buffer.
-	DWORD dwSize     = 1024;
-	char* pszEntries = (char*) _alloca(dwSize);
+	size_t nChars     = 1024;
+	tchar* pszEntries = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
 
 	// Read all entries, reallocating if necessary...
-	while (::GetPrivateProfileSection(pszSection, pszEntries, dwSize, m_strPath) >= (dwSize-2))
+	while (::GetPrivateProfileSection(pszSection, pszEntries, nChars, m_strPath) >= (nChars-2))
 	{
 		// Double the buffer size.
-		dwSize  *= 2;
-		pszEntries = (char*) _alloca(dwSize);
+		nChars    *= 2;
+		pszEntries = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
 	}
 
 	// For all strings.
-	while (*pszEntries != '\0')
+	while (*pszEntries != TXT('\0'))
 	{
 		astrEntries.Add(pszEntries);
-		pszEntries += strlen(pszEntries) + 1;
+		pszEntries += tstrlen(pszEntries) + 1;
 	}
 
 	return astrEntries.Size();
@@ -441,7 +441,7 @@ int CIniFile::ReadSection(const char* pszSection, CStrArray& astrEntries)
 *******************************************************************************
 */
 
-int CIniFile::ReadSection(const char* pszSection, CStrArray& astrKeys, CStrArray& astrValues)
+size_t CIniFile::ReadSection(const tchar* pszSection, CStrArray& astrKeys, CStrArray& astrValues)
 {
 	ASSERT(pszSection);
 
@@ -451,12 +451,12 @@ int CIniFile::ReadSection(const char* pszSection, CStrArray& astrKeys, CStrArray
 	if (ReadSection(pszSection, astrEntries))
 	{
 		// Split all entries.
-		for (int i = 0; i < astrEntries.Size(); ++i)
+		for (size_t i = 0; i < astrEntries.Size(); ++i)
 		{
 			// Split into key and value.
 			CString strEntry = astrEntries[i];
 			int     nLength  = strEntry.Length();
-			int     nSepPos  = strEntry.Find('=');
+			int     nSepPos  = strEntry.Find(TXT('='));
 
 			// Key set AND value set?
 			if ( (nSepPos > 0) && ((nLength-nSepPos-1) > 0) )
@@ -484,7 +484,7 @@ int CIniFile::ReadSection(const char* pszSection, CStrArray& astrKeys, CStrArray
 *******************************************************************************
 */
 
-void CIniFile::DeleteSection(const char* pszSection)
+void CIniFile::DeleteSection(const tchar* pszSection)
 {
 	ASSERT(pszSection);
 

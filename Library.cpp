@@ -40,7 +40,7 @@ CLibrary::CLibrary()
 *******************************************************************************
 */
 
-CLibrary::CLibrary(const char* pszPath)
+CLibrary::CLibrary(const tchar* pszPath)
 	: m_hInstance(NULL)
 	, m_strPath(pszPath)
 {
