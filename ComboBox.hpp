@@ -37,26 +37,27 @@ public:
 	// Standard methods.
 	//
 	void Reset() const;
-	int Count() const;
-	void TextLimit(int iLimit) const;
-	int Add(const char* pszText) const;
-	int Add(const char* pszText, LPARAM lData) const;
-	int Add(const char* pszText, void*  pData) const;
-	int Insert(const char* pszText, int iPos) const;
-	int Delete(int iItem) const;
-	int Find(const char* pszText, int iFirst = -1) const;
-	int FindExact(const char* pszText, int iFirst = -1) const;
-	void ItemData(int iItem, LPARAM lData) const;
-	void ItemPtr(int iItem, void* pData) const;
-	LPARAM ItemData(int iItem) const;
-	void*  ItemPtr(int iItem) const;
-	int CurSel() const;
-	void CurSel(int iItem) const;
-	int CurSel(const char* pszText, int iFirst = -1) const;
-	int Select(const char* pszText, int iFirst = -1) const;
-	int TextLength(int iPos) const;
-	int TextLength() const;
-	CString Text(int iPos) const;
+	size_t Count() const;
+	void TextLimit(size_t nLimit) const;
+	size_t Add(const tchar* pszText) const;
+	size_t Add(const tchar* pszText, LPARAM lData) const;
+	size_t Add(const tchar* pszText, void*  pData) const;
+	size_t Insert(const tchar* pszText, size_t nItem) const;
+	size_t Delete(size_t nItem) const;
+	size_t Find(const tchar* pszText, size_t nFirst = Core::npos) const;
+	size_t FindExact(const tchar* pszText, size_t nFirst = Core::npos) const;
+	void ItemData(size_t nItem, LPARAM lData) const;
+	void ItemPtr(size_t nItem, void* pData) const;
+	LPARAM ItemData(size_t nItem) const;
+	void*  ItemPtr(size_t nItem) const;
+	size_t CurSel() const;
+	void CurSel(size_t nItem) const;
+	void RemoveSelection();
+	size_t CurSel(const tchar* pszText, size_t iFirst = Core::npos) const;
+	size_t Select(const tchar* pszText, size_t iFirst = Core::npos) const;
+	size_t TextLength(size_t nItem) const;
+	size_t TextLength() const;
+	CString Text(size_t nItem) const;
 	CString Text() const;
 
 protected:
@@ -87,111 +88,136 @@ inline void CComboBox::Reset() const
 	SendMessage(CB_RESETCONTENT, 0, 0L);
 }
 
-inline int CComboBox::Count() const
+inline size_t CComboBox::Count() const
 {
-	return (int)SendMessage(CB_GETCOUNT, 0, 0L);
+	return SendMessage(CB_GETCOUNT, 0, 0L);
 }
 
-inline void CComboBox::TextLimit(int iLimit) const
+inline void CComboBox::TextLimit(size_t nLimit) const
 {
-	SendMessage(CB_LIMITTEXT, iLimit, 0L);
+	SendMessage(CB_LIMITTEXT, nLimit, 0L);
 }
 
-inline int CComboBox::Add(const char* pszText) const
+inline size_t CComboBox::Add(const tchar* pszText) const
 {
-	return (int)SendMessage(CB_ADDSTRING, 0, (LPARAM)(LPCSTR) pszText);
+	LRESULT lResult = SendMessage(CB_ADDSTRING, 0, (LPARAM)pszText);
+
+	ASSERT((lResult != CB_ERR) && (lResult != CB_ERRSPACE));
+
+	return lResult;
 }
 
-inline int CComboBox::Add(const char* pszText, LPARAM lData) const
+inline size_t CComboBox::Add(const tchar* pszText, LPARAM lData) const
 {
-	int nPos = Add(pszText);
+	size_t nItem = Add(pszText);
 
-	ItemData(nPos, lData);
+	ItemData(nItem, lData);
 
-	return nPos;
+	return nItem;
 }
 
-inline int CComboBox::Add(const char* pszText, void*  pData) const
+inline size_t CComboBox::Add(const tchar* pszText, void*  pData) const
 {
-	int nPos = Add(pszText);
+	size_t nItem = Add(pszText);
 
-	ItemPtr(nPos, pData);
+	ItemPtr(nItem, pData);
 
-	return nPos;
+	return nItem;
 }
 
-inline int CComboBox::Insert(const char* pszText, int iPos) const
+inline size_t CComboBox::Insert(const tchar* pszText, size_t nItem) const
 {
-	return (int)SendMessage(CB_INSERTSTRING, iPos, (LPARAM)(LPCSTR) pszText);
+	LRESULT lResult = SendMessage(CB_INSERTSTRING, nItem, (LPARAM)pszText);
+
+	ASSERT((lResult != CB_ERR) && (lResult != CB_ERRSPACE));
+
+	return lResult;
 }
 
-inline int CComboBox::Delete(int iItem) const
+inline size_t CComboBox::Delete(size_t nItem) const
 {
-	return (int)SendMessage(CB_DELETESTRING, iItem, 0L);
+	LRESULT lResult = SendMessage(CB_DELETESTRING, nItem, 0L);
+
+	ASSERT(lResult != CB_ERR);
+
+	return lResult;
 }
 
-inline int CComboBox::Find( const char* pszText, int iFirst) const
+inline size_t CComboBox::Find(const tchar* pszText, size_t nFirst) const
 {
-	return (int)SendMessage(CB_FINDSTRING, iFirst, (LPARAM)(LPCSTR) pszText);
+	return SendMessage(CB_FINDSTRING, nFirst, (LPARAM)pszText);
 }
 
-inline int CComboBox::FindExact(const char* pszText, int iFirst) const
+inline size_t CComboBox::FindExact(const tchar* pszText, size_t nFirst) const
 {
-	return (int)SendMessage(CB_FINDSTRINGEXACT, iFirst, (LPARAM)(LPCSTR) pszText);
+	return SendMessage(CB_FINDSTRINGEXACT, nFirst, (LPARAM)pszText);
 }
 
-inline void CComboBox::ItemData(int iItem, LPARAM lData) const
+inline void CComboBox::ItemData(size_t nItem, LPARAM lData) const
 {
-	SendMessage(CB_SETITEMDATA, iItem, lData);
+	SendMessage(CB_SETITEMDATA, nItem, lData);
 }
 
-inline LPARAM CComboBox::ItemData(int iItem) const
+inline LPARAM CComboBox::ItemData(size_t nItem) const
 {
-	return SendMessage(CB_GETITEMDATA, iItem, 0L);
+	return SendMessage(CB_GETITEMDATA, nItem, 0L);
 }
 
-inline void CComboBox::ItemPtr(int iItem, void* pData) const
+inline void CComboBox::ItemPtr(size_t nItem, void* pData) const
 {
-	SendMessage(CB_SETITEMDATA, iItem, (LPARAM)pData);
+	SendMessage(CB_SETITEMDATA, nItem, (LPARAM)pData);
 }
 
-inline void* CComboBox::ItemPtr(int iItem) const
+inline void* CComboBox::ItemPtr(size_t nItem) const
 {
-	return (void*) SendMessage(CB_GETITEMDATA, iItem, 0L);
+	return reinterpret_cast<void*>(SendMessage(CB_GETITEMDATA, nItem, 0L));
 }
 
-inline int CComboBox::CurSel() const
+inline size_t CComboBox::CurSel() const
 {
-	return (int) SendMessage(CB_GETCURSEL, 0, 0L);
+	return SendMessage(CB_GETCURSEL, 0, 0L);
 }
 
-inline void CComboBox::CurSel(int iItem) const
+inline void CComboBox::CurSel(size_t nItem) const
 {
-	SendMessage(CB_SETCURSEL, iItem, 0L);
+	SendMessage(CB_SETCURSEL, nItem, 0L);
 }
 
-inline int CComboBox::CurSel(const char* pszText, int iFirst) const
+inline void CComboBox::RemoveSelection()
 {
-	return (int)SendMessage(CB_SELECTSTRING, iFirst, (LPARAM)(LPCSTR) pszText);
+	SendMessage(CB_SETCURSEL, static_cast<WPARAM>(-1), 0L);
 }
 
-inline int CComboBox::Select(const char* pszText, int iFirst) const
+inline size_t CComboBox::CurSel(const tchar* pszText, size_t nFirst) const
 {
-	int nItem = FindExact(pszText, iFirst);
+	return SendMessage(CB_SELECTSTRING, nFirst, (LPARAM)pszText);
+}
+
+inline size_t CComboBox::Select(const tchar* pszText, size_t nFirst) const
+{
+	size_t nItem = FindExact(pszText, nFirst);
 
 	CurSel(nItem);
 
 	return nItem;
 }
 
-inline int CComboBox::TextLength(int iPos) const
+inline size_t CComboBox::TextLength(size_t nItem) const
 {
-	return (int)SendMessage(CB_GETLBTEXTLEN, iPos, 0L);
+	LRESULT lResult = SendMessage(CB_GETLBTEXTLEN, nItem, 0L);
+
+	ASSERT(lResult != CB_ERR);
+
+	return lResult;
 }
 
-inline int CComboBox::TextLength() const
+inline size_t CComboBox::TextLength() const
 {
-	return (int)SendMessage(WM_GETTEXTLENGTH, 0, 0L);
+	LRESULT lResult = SendMessage(WM_GETTEXTLENGTH, 0, 0L);
+
+	ASSERT(lResult != CB_ERR);
+
+	return lResult;
 }
 
 #endif //COMBOBOX_HPP

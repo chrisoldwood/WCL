@@ -32,22 +32,22 @@ CComboBox::CComboBox()
 **
 ** Description:	Get the string for the specified item.
 **
-** Parameters:	iPos	The item.
+** Parameters:	nItem	The item.
 **
 ** Returns:		The string.
 **
 *******************************************************************************
 */
 
-CString CComboBox::Text(int iPos) const
+CString CComboBox::Text(size_t nItem) const
 {
 	CString	strText;
 
 	// Allocate space for string.
-	strText.BufferSize(TextLength(iPos)+1);
+	strText.BufferSize(TextLength(nItem)+1);
 
 	// Get string.
-	SendMessage(CB_GETLBTEXT, iPos, (LPARAM)(LPCSTR) strText);
+	ComboBox_GetLBText(m_hWnd, nItem, strText.Buffer());
 
 	return strText;
 }
@@ -67,16 +67,15 @@ CString CComboBox::Text(int iPos) const
 CString CComboBox::Text() const
 {
 	CString	strText;
-	int		iLen;
 
 	// Get string length.
-	iLen = TextLength();
+	size_t nChars = TextLength();
 
 	// Allocate space.
-	strText.BufferSize(iLen+1);
+	strText.BufferSize(nChars+1);
 
 	// Fetch string.
-	SendMessage(WM_GETTEXT, iLen+1, (LPARAM)(LPCSTR) strText);
+	ComboBox_GetText(m_hWnd, strText.Buffer(), nChars+1);
 
 	return strText;
 }
@@ -99,7 +98,7 @@ void CComboBox::GetCreateParams(WNDCREATE& rParams)
 	CCtrlWnd::GetCreateParams(rParams);
 
 	// Override any settings.
-	rParams.pszClassName = "COMBOX";
+	rParams.pszClassName = TXT("COMBOX");
 }
 
 /******************************************************************************
