@@ -53,8 +53,8 @@ public:
 	//
 	// Overriden generic operations.
 	//
-	virtual void  Read(void* pBuffer, uint iNumBytes);
-	virtual void  Write(const void* pBuffer, uint iNumBytes);
+	virtual void  Read(void* pBuffer, size_t nNumBytes);
+	virtual void  Write(const void* pBuffer, size_t nNumBytes);
 	virtual ulong Seek(ulong lPos, uint nFrom = FILE_BEGIN);
 	virtual bool  IsEOF();
 	virtual void  Throw(int eErrCode);
@@ -62,7 +62,7 @@ public:
 	//
 	// Helper methods.
 	//
-	static bool CopyText(HWND hOwner, const char* pszText);
+	static bool CopyText(HWND hOwner, const tchar* pszText);
 
 	static bool IsEmpty();
 	static bool IsFormatAvail(uint nFormat);
@@ -72,17 +72,22 @@ public:
 	// Format methods.
 	//
 	static bool    IsStdFormat(uint nFormat);
-	static uint    RegisterFormat(const char* pszFormat);
+	static uint    RegisterFormat(const tchar* pszFormat);
 	static CString FormatName(uint nFormat);
-	static uint    FormatHandle(const char* pszFormat);
+	static uint    FormatHandle(const tchar* pszFormat);
 
 protected:
+	//! The memory buffer smart-pointer type.
+	typedef Core::SharedPtr<CBuffer> BufferPtr;
+	//! The stream adaptor smart-pointer type.
+	typedef Core::SharedPtr<CMemStream> MemStreamPtr;
+
 	//
 	// Members.
 	//
-	CBuffer*	m_pBuffer;		// Buffer for stream.
-	CMemStream*	m_pStream;		// Used to implement stream methods.
-	uint		m_iFormat;		// The format of the clipboard data.
+	BufferPtr		m_pBuffer;		// Buffer for stream.
+	MemStreamPtr	m_pStream;		// Used to implement stream methods.
+	uint			m_iFormat;		// The format of the clipboard data.
 
 private:
 	/**************************************************************************
@@ -91,8 +96,8 @@ private:
 
 	struct FmtEntry
 	{
-		uint		m_nFormat;		// Handle.
-		const char*	m_pszFormat;	// Name.
+		uint			m_nFormat;		// Handle.
+		const tchar*	m_pszFormat;	// Name.
 	};
 
 	static FmtEntry s_oStdFormats[];
@@ -107,43 +112,31 @@ private:
 
 inline ulong CClipboard::Size() const
 {
-	ASSERT(m_pStream != NULL);
-
 	return m_pStream->Size();
 }
 
-inline void CClipboard::Read(void* pBuffer, uint iNumBytes)
+inline void CClipboard::Read(void* pBuffer, size_t nNumBytes)
 {
-	ASSERT(m_pStream != NULL);
-
-	m_pStream->Read(pBuffer, iNumBytes);
+	m_pStream->Read(pBuffer, nNumBytes);
 }
 
-inline void CClipboard::Write(const void* pBuffer, uint iNumBytes)
+inline void CClipboard::Write(const void* pBuffer, size_t nNumBytes)
 {
-	ASSERT(m_pStream != NULL);
-
-	m_pStream->Write(pBuffer, iNumBytes);
+	m_pStream->Write(pBuffer, nNumBytes);
 }
 
 inline ulong CClipboard::Seek(ulong lPos, uint nFrom)
 {
-	ASSERT(m_pStream != NULL);
-
 	return m_pStream->Seek(lPos, nFrom);
 }
 
 inline bool CClipboard::IsEOF()
 {
-	ASSERT(m_pStream != NULL);
-
 	return m_pStream->IsEOF();
 }
 
 inline void CClipboard::Throw(int eErrCode)
 {
-	ASSERT(m_pStream != NULL);
-
 	m_pStream->Throw(eErrCode);
 }
 

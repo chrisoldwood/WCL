@@ -22,24 +22,24 @@
 
 CClipboard::FmtEntry CClipboard::s_oStdFormats[] = 
 {
-	{ CF_TEXT,			"CF_TEXT"         },
-	{ CF_BITMAP,		"CF_BITMAP"       },
-	{ CF_METAFILEPICT,	"CF_METAFILEPICT" },
-	{ CF_SYLK,			"CF_SYLK"         },
-	{ CF_DIF,			"CF_DIF"          },
-	{ CF_TIFF,			"CF_TIFF"         },
-	{ CF_OEMTEXT,		"CF_OEMTEXT"      },
-	{ CF_DIB,			"CF_DIB"          },
-	{ CF_PALETTE,		"CF_PALETTE"      },
-	{ CF_PENDATA,		"CF_PENDATA"      },
-	{ CF_RIFF,			"CF_RIFF"         },
-	{ CF_WAVE,			"CF_WAVE"         },
-	{ CF_UNICODETEXT,	"CF_UNICODETEXT"  },
-	{ CF_ENHMETAFILE,	"CF_ENHMETAFILE"  },
-	{ CF_HDROP,			"CF_HDROP"        },
-	{ CF_LOCALE,		"CF_LOCALE"       },
-	{ CF_DIBV5,			"CF_DIBV5"        },
-	{ NULL,				NULL              }
+	{ CF_TEXT,			TXT("CF_TEXT")         },
+	{ CF_BITMAP,		TXT("CF_BITMAP")       },
+	{ CF_METAFILEPICT,	TXT("CF_METAFILEPICT") },
+	{ CF_SYLK,			TXT("CF_SYLK")         },
+	{ CF_DIF,			TXT("CF_DIF")          },
+	{ CF_TIFF,			TXT("CF_TIFF")         },
+	{ CF_OEMTEXT,		TXT("CF_OEMTEXT")      },
+	{ CF_DIB,			TXT("CF_DIB")          },
+	{ CF_PALETTE,		TXT("CF_PALETTE")      },
+	{ CF_PENDATA,		TXT("CF_PENDATA")      },
+	{ CF_RIFF,			TXT("CF_RIFF")         },
+	{ CF_WAVE,			TXT("CF_WAVE")         },
+	{ CF_UNICODETEXT,	TXT("CF_UNICODETEXT")  },
+	{ CF_ENHMETAFILE,	TXT("CF_ENHMETAFILE")  },
+	{ CF_HDROP,			TXT("CF_HDROP")        },
+	{ CF_LOCALE,		TXT("CF_LOCALE")       },
+	{ CF_DIBV5,			TXT("CF_DIBV5")        },
+	{ NULL,				NULL                   }
 };
 
 /******************************************************************************
@@ -55,9 +55,7 @@ CClipboard::FmtEntry CClipboard::s_oStdFormats[] =
 */
 
 CClipboard::CClipboard()
-	: m_pBuffer(NULL)
-	, m_pStream(NULL)
-	, m_iFormat(0)
+	: m_iFormat(0)
 {
 }
 
@@ -109,8 +107,8 @@ void CClipboard::Open(uint nMode, uint iFormat)
 			throw CMemStreamException(CStreamException::E_OPEN_FAILED);
 
 		// Attach the data to the internal memory stream.
-		m_pBuffer = new CBuffer(hMem);
-		m_pStream = new CMemStream(*m_pBuffer);
+		m_pBuffer = BufferPtr(new CBuffer(hMem));
+		m_pStream = MemStreamPtr(new CMemStream(*m_pBuffer));
 
 		m_pStream->Open();
 	}
@@ -122,8 +120,8 @@ void CClipboard::Open(uint nMode, uint iFormat)
 			throw CMemStreamException(CStreamException::E_CREATE_FAILED);
 
 		// Create the internal memory stream.
-		m_pBuffer = new CBuffer();
-		m_pStream = new CMemStream(*m_pBuffer);
+		m_pBuffer = BufferPtr(new CBuffer());
+		m_pStream = MemStreamPtr(new CMemStream(*m_pBuffer));
 
 		m_pStream->Create();
 	}
@@ -150,7 +148,7 @@ void CClipboard::Open(uint nMode, uint iFormat)
 void CClipboard::Close()
 {
 	// Stream created?
-	if ( (m_pBuffer != NULL) && (m_pStream != NULL) )
+	if ( (m_pBuffer.Get() != nullptr) && (m_pStream.Get() != nullptr) )
 	{
 		// Close the memory stream.
 		m_pStream->Close();
@@ -172,12 +170,10 @@ void CClipboard::Close()
 	::CloseClipboard();
 
 	// Delete memory stream and buffer.
-	delete m_pBuffer;
-	delete m_pStream;
+	m_pBuffer.Reset();
+	m_pStream.Reset();
 
 	// Reset members.
-	m_pBuffer = NULL;
-	m_pStream = NULL;
 	m_nMode   = NULL;
 	m_iFormat = 0;
 }
@@ -195,7 +191,7 @@ void CClipboard::Close()
 *******************************************************************************
 */
 
-bool CClipboard::CopyText(HWND hOwner, const char* pszText)
+bool CClipboard::CopyText(HWND hOwner, const tchar* pszText)
 {
 	ASSERT(::IsWindow(hOwner));
 	ASSERT(pszText != NULL);
@@ -208,24 +204,24 @@ bool CClipboard::CopyText(HWND hOwner, const char* pszText)
 		// Clear existing contents.
 		if (::EmptyClipboard())
 		{
-			int     nLen  = strlen(pszText);
-			HGLOBAL hData = ::GlobalAlloc(GMEM_MOVEABLE, nLen+1);
+			int     nLen  = tstrlen(pszText);
+			HGLOBAL hData = ::GlobalAlloc(GMEM_MOVEABLE, Core::NumBytes<tchar>(nLen+1));
 
 			// Allocated block?
 			if (hData != NULL)
 			{
-				char* pszData = (char*) ::GlobalLock(hData);
+				tchar* pszData = static_cast<tchar*>(::GlobalLock(hData));
 
 				// Locked block?
 				if (pszData != NULL)
 				{
 					// Copy string to clipboard buffer.
-					strcpy(pszData, pszText);
+					tstrcpy(pszData, pszText);
 
 					::GlobalUnlock(hData);
 
 					// Copy to clipbaord.
-					if (::SetClipboardData(CF_TEXT, hData) != NULL)
+					if (::SetClipboardData(CF_TCHAR_TEXT, hData) != NULL)
 						bCopied = true;
 				}
 			}
@@ -291,12 +287,12 @@ bool CClipboard::PasteText(CString& strString)
 	// Open the clipboard.
 	if (::OpenClipboard(NULL))
 	{
-		HGLOBAL hData = ::GetClipboardData(CF_TEXT);
+		HGLOBAL hData = ::GetClipboardData(CF_TCHAR_TEXT);
 
 		// Got data?
 		if (hData != NULL)
 		{
-			const char* psz = (const char*) ::GlobalLock(hData);
+			const tchar* psz = static_cast<const tchar*>(::GlobalLock(hData));
 
 			// Locked block?
 			if (psz != NULL)
@@ -346,7 +342,7 @@ bool CClipboard::IsStdFormat(uint nFormat)
 *******************************************************************************
 */
 
-uint CClipboard::RegisterFormat(const char* pszFormat)
+uint CClipboard::RegisterFormat(const tchar* pszFormat)
 {
 	return ::RegisterClipboardFormat(pszFormat);
 }
@@ -378,12 +374,12 @@ CString CClipboard::FormatName(uint nFormat)
 
 		ASSERT_FALSE();
 
-		return "CF_UNKNOWN";
+		return TXT("CF_UNKNOWN");
 	}
 	// Is custom format.
 	else
 	{
-		char szName[MAX_PATH+1] = "\0";
+		tchar szName[MAX_PATH+1] = TXT("\0");
 
 		// Is custom format
 		::GetClipboardFormatName(nFormat, szName, sizeof(szName));
@@ -404,14 +400,14 @@ CString CClipboard::FormatName(uint nFormat)
 *******************************************************************************
 */
 
-uint CClipboard::FormatHandle(const char* pszFormat)
+uint CClipboard::FormatHandle(const tchar* pszFormat)
 {
 	ASSERT(pszFormat != NULL);
 
 	// Search standard formats lookup table first.
 	for (FmtEntry* pEntry = s_oStdFormats; (pEntry->m_nFormat != NULL); ++pEntry)
 	{
-		if (_stricmp(pszFormat, pEntry->m_pszFormat) == 0)
+		if (tstricmp(pszFormat, pEntry->m_pszFormat) == 0)
 			return pEntry->m_nFormat;
 	}
 
