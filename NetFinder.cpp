@@ -24,7 +24,7 @@
 *******************************************************************************
 */
 
-int CNetFinder::FindDomains(CStrArray& astrDomains)
+size_t CNetFinder::FindDomains(CStrArray& astrDomains)
 {
 	FindDomains(NULL, astrDomains);
 
@@ -53,7 +53,7 @@ DWORD CNetFinder::FindDomains(NETRESOURCE* pNetRsc, CStrArray& astrDomains)
 	if ((dwResult = ::WNetOpenEnum(RESOURCE_GLOBALNET, RESOURCETYPE_ANY, 0, pNetRsc, &hEnum)) == NO_ERROR)
 	{
 		DWORD        dwBufSize  = 16384;
-		NETRESOURCE* pTmpNetRsc = (NETRESOURCE*) alloca(dwBufSize);
+		NETRESOURCE* pTmpNetRsc = static_cast<NETRESOURCE*>(alloca(dwBufSize));
 
 		// For all resources...
 		while ((dwResult == NO_ERROR) || (dwResult == ERROR_MORE_DATA))
@@ -97,9 +97,9 @@ DWORD CNetFinder::FindDomains(NETRESOURCE* pNetRsc, CStrArray& astrDomains)
 *******************************************************************************
 */
 
-int CNetFinder::FindComputers(CStrArray& astrComputers)
+size_t CNetFinder::FindComputers(CStrArray& astrComputers)
 {
-	FindComputers((NETRESOURCE*)NULL, astrComputers);
+	FindComputers(static_cast<NETRESOURCE*>(nullptr), astrComputers);
 
 	return astrComputers.Size();
 }
@@ -117,7 +117,7 @@ int CNetFinder::FindComputers(CStrArray& astrComputers)
 *******************************************************************************
 */
 
-int CNetFinder::FindComputers(const char* pszDomain, CStrArray& astrComputers)
+size_t CNetFinder::FindComputers(const tchar* pszDomain, CStrArray& astrComputers)
 {
 	NETRESOURCE oNetRsc = { 0 };
 
@@ -125,10 +125,10 @@ int CNetFinder::FindComputers(const char* pszDomain, CStrArray& astrComputers)
 	oNetRsc.dwType        = RESOURCETYPE_ANY;
 	oNetRsc.dwDisplayType = RESOURCEDISPLAYTYPE_DOMAIN;
 	oNetRsc.dwUsage       = RESOURCEUSAGE_CONTAINER;
-	oNetRsc.lpLocalName   = "";
-	oNetRsc.lpRemoteName  = (char*)pszDomain;
-	oNetRsc.lpComment     = "";
-	oNetRsc.lpProvider    = "";
+	oNetRsc.lpLocalName   = TXT("");
+	oNetRsc.lpRemoteName  = const_cast<tchar*>(pszDomain);
+	oNetRsc.lpComment     = TXT("");
+	oNetRsc.lpProvider    = TXT("");
 
 	FindComputers(&oNetRsc, astrComputers);
 
@@ -157,7 +157,7 @@ DWORD CNetFinder::FindComputers(NETRESOURCE* pNetRsc, CStrArray& astrComputers)
 	if ((dwResult = ::WNetOpenEnum(RESOURCE_GLOBALNET, RESOURCETYPE_ANY, 0, pNetRsc, &hEnum)) == NO_ERROR)
 	{
 		DWORD        dwBufSize  = 16384;
-		NETRESOURCE* pTmpNetRsc = (NETRESOURCE*) alloca(dwBufSize);
+		NETRESOURCE* pTmpNetRsc = static_cast<NETRESOURCE*>(alloca(dwBufSize));
 
 		// For all resources...
 		while ((dwResult == NO_ERROR) || (dwResult == ERROR_MORE_DATA))

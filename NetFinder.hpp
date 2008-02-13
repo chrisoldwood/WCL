@@ -29,9 +29,9 @@ public:
 	//
 	// Methods.
 	//
-	static int FindDomains  (CStrArray& astrDomains);
-	static int FindComputers(CStrArray& astrComputers);
-	static int FindComputers(const char* pszDomain, CStrArray& astrComputers);
+	static size_t FindDomains  (CStrArray& astrDomains);
+	static size_t FindComputers(CStrArray& astrComputers);
+	static size_t FindComputers(const tchar* pszDomain, CStrArray& astrComputers);
 	
 protected:
 	//
