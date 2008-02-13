@@ -23,18 +23,24 @@ namespace WCL
 
 class Win32Exception : public CException
 {
-protected:
+public:
 	//! Partial constructor.
 	Win32Exception(DWORD dwError);
 
-	//! Full constructor.
-	Win32Exception(DWORD dwError, const char* pszOperation);
+	//! Partial constructor that assumes ::GetLastError().
+	Win32Exception(const tchar* pszOperation);
 
-public:
+	//! Full constructor.
+	Win32Exception(DWORD dwError, const tchar* pszOperation);
+
 	//
 	// Members.
 	//
 	DWORD	m_dwError;		//!< The Win32 error code.
+
+protected:
+	//! Default constructor.
+	Win32Exception();
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -46,12 +52,30 @@ inline Win32Exception::Win32Exception(DWORD dwError)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Partial constructor that assumes ::GetLastError().
+
+inline Win32Exception::Win32Exception(const tchar* pszOperation)
+	: m_dwError(::GetLastError())
+{
+	m_strErrorText.Format(TXT("%s [0x%08X - %s]"), pszOperation, m_dwError, CStrCvt::FormatError(m_dwError));
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Full constructor.
 
-inline Win32Exception::Win32Exception(DWORD dwError, const char* pszOperation)
+inline Win32Exception::Win32Exception(DWORD dwError, const tchar* pszOperation)
 	: m_dwError(dwError)
 {
-	m_strErrorText.Format("%s [0x%08X - %s]", pszOperation, dwError, CStrCvt::FormatError(dwError));
+	m_strErrorText.Format(TXT("%s [0x%08X - %s]"), pszOperation, m_dwError, CStrCvt::FormatError(m_dwError));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Default constructor. This should only be used by derived classes that set
+//! the error and string directly.
+
+inline Win32Exception::Win32Exception()
+	: m_dwError(0)
+{
 }
 
 //namespace WCL
