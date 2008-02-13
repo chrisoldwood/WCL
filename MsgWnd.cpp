@@ -80,7 +80,7 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		// Child control message.
 		case WM_NOTIFY:
 			{
-				NMHDR* pMsgHdr = (NMHDR*) lParam;
+				NMHDR* pMsgHdr = reinterpret_cast<NMHDR*>(lParam);
 				ASSERT(pMsgHdr);
 
 				*m_plMsgResult  = OnCtrlMsg(*pMsgHdr);
@@ -139,7 +139,6 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 		// Window is being enabled or disabled.
 		case WM_ENABLE:
-			//OnEnable((bool)wParam);
 			break;
         
 		// Timer gone off.
@@ -165,7 +164,7 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		// Measure a control/menu.
 		case WM_MEASUREITEM:
 			{
-				MEASUREITEMSTRUCT* lpInfo = (MEASUREITEMSTRUCT*) lParam;
+				MEASUREITEMSTRUCT* lpInfo = reinterpret_cast<MEASUREITEMSTRUCT*>(lParam);
 
 				// Is a control?
 				if (lpInfo->CtlType != ODT_MENU)
@@ -183,13 +182,13 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		// Draw part of a control/menu.
 		case WM_DRAWITEM:
 			{
-				DRAWITEMSTRUCT* lpInfo = (DRAWITEMSTRUCT*) lParam;
+				DRAWITEMSTRUCT* lpInfo = reinterpret_cast<DRAWITEMSTRUCT*>(lParam);
 
 				// Is a control?
 				if (lpInfo->CtlType != ODT_MENU)
 				{
 					// Get control.
-					CMsgWnd* pWnd = (CMsgWnd*) CWnd::s_WndMap.Find(lpInfo->hwndItem);
+					CMsgWnd* pWnd = static_cast<CMsgWnd*>(CWnd::s_WndMap.Find(lpInfo->hwndItem));
 					ASSERT(pWnd);
 					
 					// Construct a paint DC.
@@ -267,7 +266,7 @@ void CMsgWnd::OnCreate(const CRect& /*rcClient*/)
 
 void CMsgWnd::OnEraseBackground(CDC& rDC)
 {
-	DefaultWndProc(m_hWnd, WM_ERASEBKGND, (WPARAM)rDC.Handle(), 0L);
+	DefaultWndProc(m_hWnd, WM_ERASEBKGND, reinterpret_cast<WPARAM>(rDC.Handle()), 0L);
 }
 
 /******************************************************************************
@@ -432,7 +431,7 @@ void CMsgWnd::OnCmdMsg(uint iID)
 void CMsgWnd::OnCtrlMsg(uint iID, uint iMsg, HWND hControl)
 {
 	// Find if control is mapped.
-	CMsgWnd* pWnd = (CMsgWnd*) CWnd::s_WndMap.Find(hControl);
+	CMsgWnd* pWnd = static_cast<CMsgWnd*>(CWnd::s_WndMap.Find(hControl));
 
 	// Reflect message back to control.
 	if (pWnd != NULL)
@@ -443,7 +442,7 @@ void CMsgWnd::OnCtrlMsg(uint iID, uint iMsg, HWND hControl)
 	// Find control callback function.
 	while ( (pCtrlMsg) && (pCtrlMsg->m_iCtrlID)
 		 && ((pCtrlMsg->m_iMsgType != WM_COMMAND) || (pCtrlMsg->m_iCtrlID != iID) || (pCtrlMsg->m_iMsgID != iMsg)) )
-	    pCtrlMsg++;
+	    ++pCtrlMsg;
 
 	// If found, call handler.
 	if ( (pCtrlMsg) && (pCtrlMsg->m_iMsgType == WM_COMMAND)
@@ -473,7 +472,7 @@ void CMsgWnd::OnCtrlMsg(uint iID, uint iMsg, HWND hControl)
 LRESULT CMsgWnd::OnCtrlMsg(NMHDR& rMsgHdr)
 {
 	// Find if control is mapped.
-	CMsgWnd* pWnd = (CMsgWnd*) CWnd::s_WndMap.Find(rMsgHdr.hwndFrom);
+	CMsgWnd* pWnd = static_cast<CMsgWnd*>(CWnd::s_WndMap.Find(rMsgHdr.hwndFrom));
 
 	// Reflect message back to control.
 	if (pWnd != NULL)
@@ -487,7 +486,7 @@ LRESULT CMsgWnd::OnCtrlMsg(NMHDR& rMsgHdr)
 	// Find control callback function.
 	while ( (pCtrlMsg) && (pCtrlMsg->m_iCtrlID)
 		 && ((pCtrlMsg->m_iMsgType != WM_NOTIFY) || (pCtrlMsg->m_iCtrlID != iID) || (pCtrlMsg->m_iMsgID != iMsg)) )
-	    pCtrlMsg++;
+	    ++pCtrlMsg;
 
 	// If found, call handler.
 	if ( (pCtrlMsg) && (pCtrlMsg->m_iMsgType == WM_NOTIFY)
@@ -603,7 +602,7 @@ void CMsgWnd::OnDrawItem(uint /*iID*/, uint /*iAction*/, uint /*iState*/, CDC& /
 
 void CMsgWnd::OnSetCursor(HWND hWnd, uint nHitCode, uint nMouseMsg)
 {
-	DefaultWndProc(m_hWnd, WM_SETCURSOR, (WPARAM)hWnd, MAKELPARAM(nHitCode, nMouseMsg));
+	DefaultWndProc(m_hWnd, WM_SETCURSOR, reinterpret_cast<WPARAM>(hWnd), MAKELPARAM(nHitCode, nMouseMsg));
 }
 
 /******************************************************************************
@@ -626,7 +625,7 @@ void CMsgWnd::OnCtlColour(uint nCtlClrMsg, HDC hDC, HWND hCtlWnd)
 	HBRUSH hBrush = NULL;
 
 	// Find if control is mapped.
-	CMsgWnd* pWnd = (CMsgWnd*) CWnd::s_WndMap.Find(hCtlWnd);
+	CMsgWnd* pWnd = static_cast<CMsgWnd*>(CWnd::s_WndMap.Find(hCtlWnd));
 
 	// Reflect message back to control first.
 	if (pWnd != NULL)
@@ -634,13 +633,13 @@ void CMsgWnd::OnCtlColour(uint nCtlClrMsg, HDC hDC, HWND hCtlWnd)
 
 	if (hBrush != NULL)
 	{
-		MsgHandled((BOOL)hBrush);
+		MsgHandled(reinterpret_cast<BOOL>(hBrush));
 		MsgResult (0);
 	}
 	// If still not handled, call DefWindowProc.
 	else
 	{
-		DefaultWndProc(m_hWnd, nCtlClrMsg, (WPARAM)hDC, (LPARAM)hCtlWnd);
+		DefaultWndProc(m_hWnd, nCtlClrMsg, reinterpret_cast<WPARAM>(hDC), reinterpret_cast<LPARAM>(hCtlWnd));
 	}
 }
 
