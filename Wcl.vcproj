@@ -20,7 +20,7 @@
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/EHa"
@@ -80,7 +80,7 @@
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/EHa"
@@ -657,9 +657,6 @@
 				RelativePath="Label.hpp">
 			</File>
 			<File
-				RelativePath=".\LeakCheck.hpp">
-			</File>
-			<File
 				RelativePath="Library.hpp">
 			</File>
 			<File
@@ -874,9 +871,6 @@
 			</File>
 			<File
 				RelativePath="View.hpp">
-			</File>
-			<File
-				RelativePath="Wcl.hpp">
 			</File>
 			<File
 				RelativePath="WclTypes.hpp">
