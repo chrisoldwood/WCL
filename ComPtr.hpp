@@ -16,6 +16,7 @@
 #include <guiddef.h>
 #include <objbase.h>
 #include <Core/AnsiWide.hpp>
+#include <stdexcept>
 
 namespace WCL
 {
@@ -184,7 +185,7 @@ inline void ComPtr<T>::CreateInstance(const CLSID& rCLSID)
 
 		CString strIID = W2T(szBuffer);
 
-		throw ComException(hr, CString::Fmt("Failed to create a COM object of class %s or obtain the interface %s", strCLSID, strIID));
+		throw ComException(hr, CString::Fmt(TXT("Failed to create a COM object of class %s or obtain the interface %s"), strCLSID, strIID));
 	}
 }
 
@@ -211,7 +212,7 @@ inline void ComPtr<T>::QueryInterface(const ComPtr<U>& rhs)
 
 		CString strIID = W2T(szBuffer);
 
-		throw ComException(hr, CString::Fmt("Failed to obtain the interface %s", strIID));
+		throw ComException(hr, CString::Fmt(TXT("Failed to obtain the interface %s"), strIID));
 	}
 }
 
