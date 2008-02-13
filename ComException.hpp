@@ -24,11 +24,11 @@ class ComException : public CException
 {
 public:
 	//! Construction from a non-IErrorInfo supported error.
-	ComException(HRESULT hResult, const char* pszOperation);
+	ComException(HRESULT hResult, const tchar* pszOperation);
 
 	//! Construction from an IErrorInfo supported error.
 	template<typename T>
-	ComException(HRESULT hResult, Core::IFacePtr<T>& pObject, const char* pszOperation);
+	ComException(HRESULT hResult, Core::IFacePtr<T>& pObject, const tchar* pszOperation);
 
 	//! Destructor.
 	virtual ~ComException();
@@ -44,14 +44,14 @@ private:
 	//
 
 	//! Format the error using the IErrorInfo details.
-	void FormatError(HRESULT hResult, IUnknown* pObject, const IID& rIID, const char* pszOperation);
+	void FormatError(HRESULT hResult, IUnknown* pObject, const IID& rIID, const tchar* pszOperation);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from an IErrorInfo supported error.
 
 template<typename T>
-inline ComException::ComException(HRESULT hResult, Core::IFacePtr<T>& pObject, const char* pszOperation)
+inline ComException::ComException(HRESULT hResult, Core::IFacePtr<T>& pObject, const tchar* pszOperation)
 {
 	FormatError(hResult, pObject.Get(), __uuidof(T), pszOperation);
 }

@@ -17,10 +17,10 @@ namespace WCL
 //! Constructor for use with non-IErrorInfo errors. The pszOperation parameter
 //! is used as the prefix for the message and the error code is appended.
 
-ComException::ComException(HRESULT hResult, const char* pszOperation)
+ComException::ComException(HRESULT hResult, const tchar* pszOperation)
 	: m_hResult(hResult)
 {
-	m_strErrorText.Format("%s [0x%08X - %s]", pszOperation, hResult, CStrCvt::FormatError(hResult));
+	m_strErrorText.Format(TXT("%s [0x%08X - %s]"), pszOperation, hResult, CStrCvt::FormatError(hResult));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -33,7 +33,7 @@ ComException::~ComException()
 ////////////////////////////////////////////////////////////////////////////////
 //! Format the error using the IErrorInfo details.
 
-void ComException::FormatError(HRESULT hResult, IUnknown* pObject, const IID& rIID, const char* pszOperation)
+void ComException::FormatError(HRESULT hResult, IUnknown* pObject, const IID& rIID, const tchar* pszOperation)
 {
 	// Type shorthands.
 	typedef WCL::ComPtr<ISupportErrorInfo> ISupportErrorInfoPtr;
@@ -70,9 +70,9 @@ void ComException::FormatError(HRESULT hResult, IUnknown* pObject, const IID& rI
 
 	// Format the error string.
 	if (!strSource.empty() || !strDescription.empty())
-		m_strErrorText.Format("%s [0x%08X - %s] {%s : %s}", pszOperation, hResult, strResCode.c_str(), strSource.c_str(), strDescription.c_str());
+		m_strErrorText.Format(TXT("%s [0x%08X - %s] {%s : %s}"), pszOperation, hResult, strResCode.c_str(), strSource.c_str(), strDescription.c_str());
 	else
-		m_strErrorText.Format("%s [0x%08X - %s]", pszOperation, hResult, strResCode.c_str());
+		m_strErrorText.Format(TXT("%s [0x%08X - %s]"), pszOperation, hResult, strResCode.c_str());
 }
 
 //namespace WCL

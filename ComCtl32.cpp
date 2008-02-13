@@ -36,7 +36,7 @@ typedef BOOL    (CALLBACK* INITCOMCTLSEXPROC)(INITCOMMONCONTROLSEX*);
 */
 
 CComCtl32::CComCtl32()
-	: m_oDLL("COMCTL32.DLL")
+	: m_oDLL(TXT("COMCTL32.DLL"))
 {
 	m_oDLL.Load();
 }

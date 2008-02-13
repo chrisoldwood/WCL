@@ -35,7 +35,7 @@ public:
 	~CCursor();
 
 	void LoadRsc(uint nRscID);
-	void LoadRsc(const char* pszRsc);
+	void LoadRsc(const tchar* pszRsc);
 	
 	//
 	// Member access.
@@ -62,7 +62,7 @@ protected:
 *******************************************************************************
 */
 
-inline void CCursor::LoadRsc(const char* pszRsc)
+inline void CCursor::LoadRsc(const tchar* pszRsc)
 {
 	ASSERT(m_hCursor == NULL);
 
