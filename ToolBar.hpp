@@ -21,7 +21,7 @@
 #include "ToolTip.hpp"
 
 // A space between controls.
-#define IDC_SEPARATOR	(uint)-1
+#define IDC_SEPARATOR	(static_cast<uint>(-1))
 
 /******************************************************************************
 ** 
@@ -49,11 +49,11 @@ protected:
 	// Structure used to hold the control table.
 	///////////////////////////////////////////////////////
 
-	typedef struct tagCTRL
+	struct CTRL
 	{
 		CCtrlWnd*	pWnd;
 		uint		nID;
-	} CTRL;
+	};
 
 	//
 	// Members.
