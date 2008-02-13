@@ -14,6 +14,11 @@
 #include "StrCvt.hpp"
 #include "IInputStream.hpp"
 #include "IOutputStream.hpp"
+#include <stdio.h>
+#include <tchar.h>
+#include <Core/AnsiWide.hpp>
+#include <Core/StringUtils.hpp>
+#include <stdexcept>
 
 /******************************************************************************
 **
@@ -28,8 +33,8 @@ const int DAYS_PER_YEAR      = 365;
 const int DAYS_PER_LEAP_YEAR = 366;
 const int DAYS_PER_4_YEARS   = (DAYS_PER_YEAR * 3) + DAYS_PER_LEAP_YEAR;
 
-// ISO Format string buffer size.
-const uint FMT_BUF_SIZE = 100;
+// ISO Format string size in characters "dddd-dd-dd".
+const size_t ISO_FMT_MAX_LEN = 10;
 
 /******************************************************************************
 **
@@ -163,16 +168,17 @@ CDate::DateOrder CDate::DateFormatOrder()
 	// Get the size of the buffer and allocate one.
 	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IDATE, NULL, 0);
 
-	char* pszBuffer = static_cast<char*>(alloca(nChars+1));
+	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
 
-	pszBuffer[0] = '\0';
+	pszBuffer[0] = TXT('\0');
 
 	// Get the locale string.
 	if (::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IDATE, pszBuffer, nChars+1) != 0)
 	{
-		eOrder = static_cast<DateOrder>(atoi(pszBuffer));
+		eOrder = static_cast<DateOrder>(_ttoi(pszBuffer));
 
-		ASSERT((eOrder == MONTH_DAY_YEAR) || (eOrder == DAY_MONTH_YEAR) || (eOrder == YEAR_MONTH_DAY));
+		if ((eOrder != MONTH_DAY_YEAR) && (eOrder != DAY_MONTH_YEAR) && (eOrder != YEAR_MONTH_DAY))
+			throw std::runtime_error(T2A(Core::Fmt(TXT("Unsupported locale date order '%s'"), pszBuffer)));
 	}
 
 	return eOrder;
@@ -195,9 +201,9 @@ CString CDate::FieldSeparator()
 	// Get the size of the buffer and allocate one.
 	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDATE, NULL, 0);
 
-	char* pszBuffer = static_cast<char*>(alloca(nChars+1));
+	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
 
-	pszBuffer[0] = '\0';
+	pszBuffer[0] = TXT('\0');
 
 	// Get the locale string.
 	::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDATE, pszBuffer, nChars+1);
@@ -228,9 +234,9 @@ CString CDate::DayOfWeekName(int nDay, bool bFullName)
 	// Get the size of the buffer and allocate one.
 	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, nLCType, NULL, 0);
 
-	char* pszBuffer = static_cast<char*>(alloca(nChars+1));
+	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
 
-	pszBuffer[0] = '\0';
+	pszBuffer[0] = TXT('\0');
 
 	// Get the locale string.
 	::GetLocaleInfo(LOCALE_USER_DEFAULT, nLCType, pszBuffer, nChars+1);
@@ -261,9 +267,9 @@ CString CDate::MonthName(int nMonth, bool bFullName)
 	// Get the size of the buffer and allocate one.
 	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, nLCType, NULL, 0);
 
-	char* pszBuffer = static_cast<char*>(alloca(nChars+1));
+	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
 
-	pszBuffer[0] = '\0';
+	pszBuffer[0] = TXT('\0');
 
 	// Get the locale string.
 	::GetLocaleInfo(LOCALE_USER_DEFAULT, nLCType, pszBuffer, nChars+1);
@@ -326,14 +332,19 @@ CString CDate::ToString(int nFormat) const
 	// Get the date components.
 	Get(iDay, iMonth, iYear);
 
-	char* pszValue = "";
+	tchar* pszValue = TXT("");
 
 	// ISO standard format?
 	if (nFormat == FMT_ISO)
 	{
-		pszValue = (char*) alloca(FMT_BUF_SIZE);
+		pszValue = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(ISO_FMT_MAX_LEN+1)));
 
-		_snprintf(pszValue, FMT_BUF_SIZE, "%04d-%02d-%02d", iYear, iMonth, iDay);
+		int nResult = _sntprintf(pszValue, ISO_FMT_MAX_LEN+1, TXT("%04d-%02d-%02d"), iYear, iMonth, iDay);
+
+		ASSERT(nResult >= 0);
+
+		if (nResult < 0)
+			throw std::logic_error(T2A(Core::Fmt(TXT("Insufficient buffer size used in CDate::ToString(). Result: %d"), nResult)));
 	}
 	// Windows locale derived format?
 	else if ((nFormat == FMT_WIN_SHORT) || (nFormat == FMT_WIN_LONG))
@@ -351,12 +362,12 @@ CString CDate::ToString(int nFormat) const
 		st.wDay   = static_cast<WORD>(iDay);
 
 		// Calculate buffer size.
-		int nBufSize = ::GetDateFormat(LOCALE_USER_DEFAULT, nDateFmt, &st, NULL, pszValue, 0);
+		size_t nChars = ::GetDateFormat(LOCALE_USER_DEFAULT, nDateFmt, &st, NULL, pszValue, 0);
 
-		pszValue = (char*) alloca(nBufSize);
+		pszValue = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars)));
 
 		// Format the string.
-		::GetDateFormat(LOCALE_USER_DEFAULT, nDateFmt, &st, NULL, pszValue, nBufSize);
+		::GetDateFormat(LOCALE_USER_DEFAULT, nDateFmt, &st, NULL, pszValue, nChars);
 	}
 
 	return pszValue;
@@ -375,25 +386,25 @@ CString CDate::ToString(int nFormat) const
 *******************************************************************************
 */
 
-bool CDate::FromString(const char* pszDate)
+bool CDate::FromString(const tchar* pszDate)
 {
 	ASSERT(pszDate != NULL);
 
-	int nLength = strlen(pszDate);
+	int nLength = tstrlen(pszDate);
 
 	// Check length is exactly "YYYY-MM-DD".
-	if (nLength != 10)
+	if (nLength != ISO_FMT_MAX_LEN)
 		return false;
 
-	char szDate[FMT_BUF_SIZE];
+	tchar szDate[ISO_FMT_MAX_LEN+1] = { 0 };
 	
 	// Copy to non-const buffer.
-	strcpy(szDate, pszDate);
+	tstrncpy(szDate, pszDate, ISO_FMT_MAX_LEN);
 	
 	// Break up string.
-	const char* pszYear  = strtok(szDate, "-");
-	const char* pszMonth = strtok(NULL,   "-");
-	const char* pszDay   = strtok(NULL,   "-");
+	const tchar* pszYear  = tstrtok(szDate, TXT("-"));
+	const tchar* pszMonth = tstrtok(NULL,   TXT("-"));
+	const tchar* pszDay   = tstrtok(NULL,   TXT("-"));
 
 	// Got all 3 string parts?
 	if ( (pszDay == NULL) || (pszMonth == NULL) || (pszYear == NULL) )

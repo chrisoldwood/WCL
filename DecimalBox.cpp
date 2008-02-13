@@ -12,6 +12,10 @@
 #include "DecimalBox.hpp"
 #include <stdio.h>
 #include "StrCvt.hpp"
+#include <tchar.h>
+#include <Core/AnsiWide.hpp>
+#include <Core/StringUtils.hpp>
+#include <stdexcept>
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -25,7 +29,7 @@
 *******************************************************************************
 */
 
-CDecimalBox::CDecimalBox(bool bSigned, int nIntDigits, int nDecDigits, int nFlags)
+CDecimalBox::CDecimalBox(bool bSigned, uint nIntDigits, uint nDecDigits, uint nFlags)
 	: m_bSigned(bSigned)
 	, m_nIntDigits(nIntDigits)
 	, m_nDecDigits(nDecDigits)
@@ -33,27 +37,27 @@ CDecimalBox::CDecimalBox(bool bSigned, int nIntDigits, int nDecDigits, int nFlag
 	, m_nFlags(nFlags)
 {
 	// Setup character filter.
-	CString strFilter("0123456789");
+	CString strFilter(TXT("0123456789"));
 
 	// Allow signed values?
 	if (m_bSigned)
 	{
-		strFilter += "+-";
-		m_nMaxChars++;
+		strFilter += TXT("+-");
+		++m_nMaxChars;
 	}
 
 	// Allow decimal point?
 	if (nDecDigits)
 	{
-		strFilter += '.';
-		m_nMaxChars++;
+		strFilter += TXT('.');
+		++m_nMaxChars;
 	}
 /*
 	// Allow fractions?
 	if (m_nFlags & ALLOW_FRACTIONS)
 	{
 		strFilter += "/ ";
-		m_nMaxChars++;
+		++m_nMaxChars;
 	}
 */
 	Filter(strFilter);
@@ -106,28 +110,33 @@ double CDecimalBox::RealValue() const
 
 void CDecimalBox::RealValue(double dValue)
 {
-	char szText[50];
+	tchar szText[_CVTBUFSIZE];
 
-	sprintf(szText, "%.*f", m_nDecDigits, dValue);
+	int nResult = _sntprintf(szText, _CVTBUFSIZE, TXT("%.*f"), m_nDecDigits, dValue);
+
+	ASSERT(nResult >= 0);
+
+	if (nResult < 0)
+		throw std::logic_error(T2A(Core::Fmt(TXT("Insufficient buffer size used in CDecimalBox::RealValue(). Result: %d"), nResult)));
 
 	// Remove trailing zeroes?
 	if (m_nFlags & NO_TRAIL_ZEROES)
 	{
-		char* pszDecPt = strchr(szText, '.');
+		tchar* pszDecPt = tstrchr(szText, TXT('.'));
 
 		// Value has a decimal point?
 		if (pszDecPt != NULL)
 		{
 			// Calculate the end of the string.
-			char* pszEOS = pszDecPt + strlen(pszDecPt) - 1;
+			tchar* pszEOS = pszDecPt + tstrlen(pszDecPt) - 1;
 
 			// Remove trailing zeroes.
-			while ( (pszEOS > pszDecPt) && (*pszEOS == '0') )
-				*pszEOS-- = '\0';
+			while ( (pszEOS > pszDecPt) && (*pszEOS == TXT('0')) )
+				*pszEOS-- = TXT('\0');
 
 			// Remove decimal point?
 			if (pszEOS == pszDecPt)
-				*pszDecPt = '\0';
+				*pszDecPt = TXT('\0');
 		}
 	}
 
@@ -200,17 +209,17 @@ void CDecimalBox::OnCreate(const CRect&)
 *******************************************************************************
 */
 
-bool CDecimalBox::FilterKey(char cChar)
+bool CDecimalBox::FilterKey(tchar cChar)
 {
 	// Check base class first.
 	if (CEditBox::FilterKey(cChar))
 		return true;
 
-	char szText[100];
+	tchar szText[_CVTBUFSIZE] = { 0 };
 	int	 nSelStart, nSelEnd;
 
 	// Get the current text.
-	SendMessage(WM_GETTEXT, 100, (LPARAM)(LPCSTR)szText);
+	Edit_GetText(m_hWnd, szText, _CVTBUFSIZE);
 
 	// Get the current selection.
 	Selected(nSelStart, nSelEnd);
@@ -218,35 +227,35 @@ bool CDecimalBox::FilterKey(char cChar)
 	int nSelChars = nSelEnd - nSelStart;
 
 	// Is the sign char?
-	if ( (cChar == '+') || (cChar == '-') )
+	if ( (cChar == TXT('+')) || (cChar == TXT('-')) )
 	{
 		// Caret not at start OR already have sign?
-		if ( (nSelStart > 0) || (strchr(szText, '+') != NULL) || (strchr(szText, '-') != NULL) )
+		if ( (nSelStart > 0) || (tstrchr(szText, TXT('+')) != NULL) || (tstrchr(szText, TXT('-')) != NULL) )
 			return true;
 	}
 
 	// Is a decimal point AND already have one?
-	if ( (cChar == '.') && (strchr(szText, '.') != NULL) )
+	if ( (cChar == TXT('.')) && (tstrchr(szText, TXT('.')) != NULL) )
 		return true;
 
 	// Is a fraction separator AND already have one?
-	if ( (cChar == '/') && (strchr(szText, '/') != NULL) )
+	if ( (cChar == TXT('/')) && (tstrchr(szText, TXT('/')) != NULL) )
 		return true;
 
 	// Is a fraction separator AND already have one?
-	if ( (cChar == ' ') && (strchr(szText, ' ') != NULL) )
+	if ( (cChar == TXT(' ')) && (tstrchr(szText, TXT(' ')) != NULL) )
 		return true;
 
 	// Allowing decimal places AND is a digit?
 	if ( (m_nDecDigits > 0) && (isdigit(cChar)) )
 	{
 		// Get decimal point position.
-		char* pszDecPt = strchr(szText, '.');
+		tchar* pszDecPt = tstrchr(szText, TXT('.'));
 
 		// Is decimal point AND caret after it AND no selection
 		// AND max decimal places entered?
 		if ( (pszDecPt != NULL) && (nSelStart > (pszDecPt - szText)) && (nSelChars < 1)
-		  && (strlen(pszDecPt + 1) >= (size_t)m_nDecDigits) )
+		  && (tstrlen(pszDecPt + 1) >= (size_t)m_nDecDigits) )
 			return true;
 	}
 

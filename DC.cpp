@@ -203,7 +203,7 @@ void CDC::VertLine3D(int iX, int iSY, int iDY, bool bRaised)
 *******************************************************************************
 */
 
-CSize CDC::TextExtents(const char* pszText) const
+CSize CDC::TextExtents(const tchar* pszText) const
 {
 	CSize Size;
 
@@ -212,7 +212,7 @@ CSize CDC::TextExtents(const char* pszText) const
 	return Size;
 }
 
-CSize CDC::TextExtents(const CFont& oFont, const char* pszText) const
+CSize CDC::TextExtents(const CFont& oFont, const tchar* pszText) const
 {
 	// NB: Only changes HDC, not 'this'.
 	const_cast<CDC*>(this)->Select(oFont);

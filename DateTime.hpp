@@ -78,7 +78,7 @@ public:
 	// Conversion methods.
 	//
 	CString ToString(int nDateFormat = CDate::FMT_WIN_SHORT, int nTimeFormat = CTime::FMT_WIN_LONG) const;
-	bool    FromString(const char* pszDateTime);
+	bool    FromString(const tchar* pszDateTime);
 
 	//
 	// Comparison operators.
@@ -245,7 +245,7 @@ inline void  CDateTime::Time(const CTime& rTime)
 
 inline CString CDateTime::ToString(int nDateFormat, int nTimeFormat) const
 {
-	const char* pszSep = (nDateFormat == CDate::FMT_ISO) ? "T": " ";
+	const tchar* pszSep = (nDateFormat == CDate::FMT_ISO) ? TXT("T") : TXT(" ");
 
 	return Date().ToString(nDateFormat) + pszSep + Time().ToString(nTimeFormat);
 }

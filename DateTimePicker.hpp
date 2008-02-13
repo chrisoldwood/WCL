@@ -56,7 +56,7 @@ public:
 	void SetDateTimeRange(const CDateTime& rMin, const CDateTime& rMax);
 	void GetDateTimeRange(CDateTime& rMin, CDateTime& rMax);
 
-	void Format(const char* pszFormat);
+	void Format(const tchar* pszFormat);
 
 protected:
 	//
@@ -81,7 +81,7 @@ protected:
 *******************************************************************************
 */
 
-inline void CDateTimePicker::Format(const char* pszFormat)
+inline void CDateTimePicker::Format(const tchar* pszFormat)
 {
 	DateTime_SetFormat(m_hWnd, pszFormat);
 }

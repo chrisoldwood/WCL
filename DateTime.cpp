@@ -21,8 +21,8 @@
 *******************************************************************************
 */
 
-// ISO Format string buffer size.
-const uint FMT_BUF_SIZE = 100;
+// ISO Format string size in characters "dddd-dd-ddTdd:dd:dd".
+const size_t ISO_FMT_MAX_LEN = 19;
 
 /******************************************************************************
 ** Method:		Current()
@@ -78,24 +78,24 @@ CDateTime CDateTime::FromLocalTime(time_t tDateTime)
 *******************************************************************************
 */
 
-bool CDateTime::FromString(const char* pszDateTime)
+bool CDateTime::FromString(const tchar* pszDateTime)
 {
 	ASSERT(pszDateTime != NULL);
 
-	int nLength = strlen(pszDateTime);
+	int nLength = tstrlen(pszDateTime);
 
 	// Check length is exactly "YYYY-MM-DDT00:00:00".
-	if (nLength != 19)
+	if (nLength != ISO_FMT_MAX_LEN)
 		return false;
 
-	char szDateTime[FMT_BUF_SIZE];
+	tchar szDateTime[ISO_FMT_MAX_LEN+1] = { 0 };
 
 	// Copy to non-const buffer.
-	strcpy(szDateTime, pszDateTime);
+	tstrncpy(szDateTime, pszDateTime, ISO_FMT_MAX_LEN);
 
 	// Break up string.
-	const char* pszDate = strtok(szDateTime, "T");
-	const char* pszTime = strtok(NULL,       "T");
+	const tchar* pszDate = tstrtok(szDateTime, TXT("T"));
+	const tchar* pszTime = tstrtok(NULL,       TXT("T"));
 
 	CDate oDate;
 	CTime oTime;

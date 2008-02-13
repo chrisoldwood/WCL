@@ -66,8 +66,8 @@ public:
 	//
 	int HorzRes() const;
 	int VertRes() const;
-	CSize TextExtents(const char* pszText) const;
-	CSize TextExtents(const CFont& oFont, const char* pszText) const;
+	CSize TextExtents(const tchar* pszText) const;
+	CSize TextExtents(const CFont& oFont, const tchar* pszText) const;
 
 	//
 	// State.
@@ -124,9 +124,9 @@ public:
     COLORREF TextColour(COLORREF crColour);
     COLORREF BkColour(COLORREF crColour);
 	int BkMode(int iMode);
-	void TextOut(int iX, int iY, const char* pszText);
-	void TextOut(const CPoint& rptOrigin, const char* pszText);
-	void DrawText(const CRect& rcRect, const char* pszText, int nFormat);
+	void TextOut(int iX, int iY, const tchar* pszText);
+	void TextOut(const CPoint& rptOrigin, const tchar* pszText);
+	void DrawText(const CRect& rcRect, const tchar* pszText, int nFormat);
 	
 	//
 	// Bit blitting.
@@ -315,17 +315,17 @@ inline COLORREF CDC::BkColour(COLORREF crColour)
 	return ::SetBkColor(m_hDC, crColour);
 }
 
-inline void CDC::TextOut(int iX, int iY, const char* pszText)
+inline void CDC::TextOut(int iX, int iY, const tchar* pszText)
 {
-	::TextOut(m_hDC, iX, iY, (LPCSTR)pszText, lstrlen((LPCSTR)pszText));
+	::TextOut(m_hDC, iX, iY, pszText, tstrlen(pszText));
 }
 
-inline void CDC::TextOut(const CPoint& rptOrigin, const char* pszText)
+inline void CDC::TextOut(const CPoint& rptOrigin, const tchar* pszText)
 {
-	::TextOut(m_hDC, rptOrigin.x, rptOrigin.y, (LPCSTR)pszText, lstrlen((LPCSTR)pszText));
+	::TextOut(m_hDC, rptOrigin.x, rptOrigin.y, pszText, tstrlen(pszText));
 }
 
-inline void CDC::DrawText(const CRect& rcRect, const char* pszText, int nFormat)
+inline void CDC::DrawText(const CRect& rcRect, const tchar* pszText, int nFormat)
 {
 	::DrawText(m_hDC, pszText, -1, const_cast<CRect*>(&rcRect), nFormat);
 }

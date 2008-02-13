@@ -108,7 +108,7 @@ public:
 	CString DayOfWeekStr(bool bFullName) const;
 	CString MonthStr(bool bFullName) const;
 	CString ToString(int nFormat = FMT_WIN_SHORT) const;
-	bool    FromString(const char* pszDate);
+	bool    FromString(const tchar* pszDate);
 
 	//
 	// Comparison operators.

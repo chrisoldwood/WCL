@@ -31,7 +31,7 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CDecimalBox(bool bSigned, int nIntDigits, int nDecDigits = 0, int nFlags = 0x00);
+	CDecimalBox(bool bSigned, uint nIntDigits, uint nDecDigits = 0, uint nFlags = 0x00);
 	~CDecimalBox();
 	
 	//
@@ -56,16 +56,16 @@ protected:
 	// Members.
 	//
 	bool	m_bSigned;		// Allow signed numbers?
-	int		m_nIntDigits;	// Number of integer digits.
-	int		m_nDecDigits;	// Number of decimal digits.
-	int		m_nMaxChars;	// Maximum number of chars.
-	int		m_nFlags;		// Options.
+	uint	m_nIntDigits;	// Number of integer digits.
+	uint	m_nDecDigits;	// Number of decimal digits.
+	uint	m_nMaxChars;	// Maximum number of chars.
+	uint	m_nFlags;		// Options.
 
 	//
 	// Message handlers.
 	//
 	virtual void OnCreate(const CRect& rcClient);
-	virtual bool FilterKey(char cChar);
+	virtual bool FilterKey(tchar cChar);
 };
 
 /******************************************************************************
