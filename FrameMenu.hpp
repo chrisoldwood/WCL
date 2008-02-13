@@ -40,7 +40,7 @@ public:
 	//
 	// Methods.
 	//
-	CPopupMenu Popup(int nPos);
+	CPopupMenu Popup(uint nPos);
 
 protected:
 	//
@@ -55,7 +55,7 @@ protected:
 *******************************************************************************
 */
 
-inline CPopupMenu CFrameMenu::Popup(int nPos)
+inline CPopupMenu CFrameMenu::Popup(uint nPos)
 {
 	return CPopupMenu(::GetSubMenu(m_hMenu, nPos));
 }
