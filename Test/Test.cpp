@@ -1,46 +1,40 @@
 ////////////////////////////////////////////////////////////////////////////////
-//
+//! \file   Test.cpp
+//! \brief  The test harness entry point.
+//! \author Chris Oldwood
 
 #include "stdafx.h"
 #include <tchar.h>
-#include <WCL/SeTranslator.hpp>
-#include <WCL/StructuredException.hpp>
+#include <Core/UnitTest.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////
-//
+// The test group functions.
 
-void TestStructuredException()
-{
-	WCL::SeTranslator oSeTranslator;
-
-	try
-	{
-		char* p = nullptr;
-
-		*p = '\0';
-	}
-	catch (const WCL::StructuredException& e)
-	{
-		std::tcout << e.what() << std::endl;
-	}
-}
+extern void TestMisc();
+extern void TestString();
+extern void TestDateAndTime();
 
 ////////////////////////////////////////////////////////////////////////////////
-//
-
-void TestString()
-{
-	std::tcout << CString::Fmt("%s", "Hello World") << std::endl;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//
+//! The entry point for the test harness.
 
 int _tmain(int /*argc*/, _TCHAR* /*argv*/[])
 {
-//	TestStructuredException();
+#ifdef _DEBUG
+	Core::EnableLeakReporting(true);
+#endif
 
-	TestString();
-	
-	return EXIT_SUCCESS;
+	try
+	{
+		TestMisc();
+		TestString();
+		TestDateAndTime();
+	}
+	catch (std::exception& e)
+	{
+		std::cout << e.what() << std::endl;
+	}
+
+	Core::WriteTestsSummary();
+
+	return Core::GetTestProcessResult();
 }
