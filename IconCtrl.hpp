@@ -59,7 +59,7 @@ protected:
 
 inline void CIconCtrl::Icon(HICON hIcon)
 {
-	::SendMessage(m_hWnd, STM_SETICON, (WPARAM)hIcon, 0L);
+	::SendMessage(m_hWnd, STM_SETICON, reinterpret_cast<WPARAM>(hIcon), 0L);
 }
 
 #endif // ICONCTRL_HPP
