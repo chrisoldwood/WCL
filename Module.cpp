@@ -36,6 +36,29 @@ static CModule* pThis = NULL;
 CModule::CModule()
 	: m_hInstance(NULL)
 {
+	//ASSERT(pThis == NULL);
+
+	pThis = this;
+}
+
+/******************************************************************************
+** Method:		Constructor.
+**
+** Description:	This overload is only intended to be used during tesing.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+CModule::CModule(HINSTANCE hInstance)
+	: m_hInstance(hInstance)
+{
+	ASSERT(m_hInstance != NULL);
+	//ASSERT(pThis == NULL);
+
 	pThis = this;
 }
 
@@ -53,6 +76,8 @@ CModule::CModule()
 
 CModule::~CModule()
 {
+	//ASSERT(pThis == this);
+
 	pThis = NULL;
 }
 
