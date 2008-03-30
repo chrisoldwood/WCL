@@ -11,12 +11,12 @@
 #pragma once
 #endif
 
-#include <Core/IFacePtr.hpp>
+#include "IFacePtr.hpp"
 #include "ComException.hpp"
 #include <guiddef.h>
 #include <objbase.h>
 #include <Core/AnsiWide.hpp>
-#include <stdexcept>
+#include <Core/BadLogicException.hpp>
 
 namespace WCL
 {
@@ -27,7 +27,7 @@ namespace WCL
 //! as managing the lifetimes of COM interfaces.
 
 template <typename T>
-class ComPtr : public Core::IFacePtr<T>
+class ComPtr : public IFacePtr<T>
 {
 public:
 	//! Default constructor.
@@ -40,11 +40,11 @@ public:
 	explicit ComPtr(const CLSID& rCLSID); // throw(ComException)
 
 	//! Copy constructor.
-	ComPtr(const ComPtr<T>& rhs);
+	ComPtr(const ComPtr& rhs);
 
 	//! Aquire a different interface for another COM object.
 	template <typename U>
-	explicit ComPtr(const ComPtr<U>& rhs); // throw(ComException)
+	explicit ComPtr(const IFacePtr<U>& rhs); // throw(ComException)
 
 	//! Destructor.
 	~ComPtr();
@@ -54,11 +54,11 @@ public:
 	//
 
 	//! Assignment operator.
-	ComPtr<T>& operator=(const ComPtr<T>& rhs);
+	ComPtr& operator=(const ComPtr& rhs);
 
 	//! Aquire a different interface for another COM object.
 	template <typename U>
-	ComPtr<T>& operator=(const ComPtr<U>& rhs);
+	ComPtr& operator=(const IFacePtr<U>& rhs);
 
 	//
 	// Methods.
@@ -69,7 +69,7 @@ public:
 
 	//! Aquire a different interface for another COM object.
 	template <typename U>
-	void QueryInterface(const ComPtr<U>& rhs); // throw(ComException)
+	void QueryInterface(const IFacePtr<U>& rhs); // throw(ComException)
 
 private:
 	//
@@ -93,7 +93,7 @@ inline ComPtr<T>::ComPtr()
 
 template <typename T>
 inline ComPtr<T>::ComPtr(T* pInterface, bool bAddRef)
-	: Core::IFacePtr<T>(pInterface, bAddRef)
+	: IFacePtr<T>(pInterface, bAddRef)
 {
 }
 
@@ -102,7 +102,7 @@ inline ComPtr<T>::ComPtr(T* pInterface, bool bAddRef)
 
 template <typename T>
 inline ComPtr<T>::ComPtr(const CLSID& rCLSID)
-	: Core::IFacePtr<T>(nullptr)
+	: IFacePtr<T>(nullptr)
 {
 	CreateInstance(rCLSID);
 }
@@ -111,8 +111,8 @@ inline ComPtr<T>::ComPtr(const CLSID& rCLSID)
 //! Copy constructor.
 
 template <typename T>
-inline ComPtr<T>::ComPtr(const ComPtr<T>& rhs)
-	: Core::IFacePtr<T>(rhs)
+inline ComPtr<T>::ComPtr(const ComPtr& rhs)
+	: IFacePtr<T>(rhs)
 {
 }
 
@@ -120,7 +120,7 @@ inline ComPtr<T>::ComPtr(const ComPtr<T>& rhs)
 //! Aquire a different interface for another COM object.
 
 template <typename T> template <typename U>
-inline ComPtr<T>::ComPtr(const ComPtr<U>& rhs)
+inline ComPtr<T>::ComPtr(const IFacePtr<U>& rhs)
 {
 	QueryInterface(rhs);
 }
@@ -137,9 +137,9 @@ inline ComPtr<T>::~ComPtr()
 //! Assignment operator.
 
 template <typename T>
-inline ComPtr<T>& ComPtr<T>::operator=(const ComPtr<T>& rhs)
+inline ComPtr<T>& ComPtr<T>::operator=(const ComPtr& rhs)
 {
-	Core::IFacePtr<T>::operator=(rhs);
+	IFacePtr<T>::operator=(rhs);
 
 	return *this;
 }
@@ -148,7 +148,7 @@ inline ComPtr<T>& ComPtr<T>::operator=(const ComPtr<T>& rhs)
 //! Aquire a different interface for another COM object.
 
 template <typename T> template <typename U>
-inline ComPtr<T>& ComPtr<T>::operator=(const ComPtr<U>& rhs)
+inline ComPtr<T>& ComPtr<T>::operator=(const IFacePtr<U>& rhs)
 {
 	QueryInterface(rhs);
 
@@ -175,13 +175,13 @@ inline void ComPtr<T>::CreateInstance(const CLSID& rCLSID)
 
 		// Convert the CLSID to a string.		
 		if (::StringFromGUID2(rCLSID, szBuffer, MAX_GUID_CHARS+1) == 0)
-			throw std::logic_error("Invalid buffer size passed to StringFromGUID2()");
+			throw Core::BadLogicException(TXT("Invalid buffer size passed to StringFromGUID2()"));
 
 		CString strCLSID = W2T(szBuffer);
 
 		// Convert the IID to a string.		
 		if (::StringFromGUID2(oIID, szBuffer, MAX_GUID_CHARS+1) == 0)
-			throw std::logic_error("Invalid buffer size passed to StringFromGUID2()");
+			throw Core::BadLogicException(TXT("Invalid buffer size passed to StringFromGUID2()"));
 
 		CString strIID = W2T(szBuffer);
 
@@ -193,7 +193,7 @@ inline void ComPtr<T>::CreateInstance(const CLSID& rCLSID)
 //! Aquire a different interface for another COM object.
 
 template <typename T> template <typename U>
-inline void ComPtr<T>::QueryInterface(const ComPtr<U>& rhs)
+inline void ComPtr<T>::QueryInterface(const IFacePtr<U>& rhs)
 {
 	// Release the current interface.
 	Release();
@@ -208,7 +208,7 @@ inline void ComPtr<T>::QueryInterface(const ComPtr<U>& rhs)
 
 		// Convert the IID to a string.		
 		if (::StringFromGUID2(oIID, szBuffer, MAX_GUID_CHARS+1) == 0)
-			throw std::logic_error("Invalid buffer size passed to StringFromGUID2()");
+			throw Core::BadLogicException(TXT("Invalid buffer size passed to StringFromGUID2()"));
 
 		CString strIID = W2T(szBuffer);
 
