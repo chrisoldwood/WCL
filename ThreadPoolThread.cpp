@@ -1,15 +1,15 @@
 /******************************************************************************
 ** (C) Chris Oldwood
 **
-** MODULE:		WORKERTHREAD.CPP
+** MODULE:		THREADPOOLTHREAD.CPP
 ** COMPONENT:	Windows C++ Library
-** DESCRIPTION:	CWorkerThread class definition.
+** DESCRIPTION:	ThreadPoolThread class definition.
 **
 *******************************************************************************
 */
 
 #include "Common.hpp"
-#include "WorkerThread.hpp"
+#include "ThreadPoolThread.hpp"
 #include "ThreadPool.hpp"
 #include "ThreadJob.hpp"
 #include "SeTranslator.hpp"
@@ -27,7 +27,7 @@
 *******************************************************************************
 */
 
-CWorkerThread::CWorkerThread(CThreadPool& oPool, uint nPoolID)
+ThreadPoolThread::ThreadPoolThread(CThreadPool& oPool, uint nPoolID)
 	: m_oPool(oPool)
 	, m_nPoolID(nPoolID)
 	, m_eStatus(STOPPED)
@@ -47,7 +47,7 @@ CWorkerThread::CWorkerThread(CThreadPool& oPool, uint nPoolID)
 *******************************************************************************
 */
 
-CWorkerThread::~CWorkerThread()
+ThreadPoolThread::~ThreadPoolThread()
 {
 	ASSERT(m_eStatus == STOPPED);
 
@@ -59,19 +59,19 @@ CWorkerThread::~CWorkerThread()
 **
 ** Description:	The inital function for the thread.
 **
-** Parameters:	lpParam		The CWorkerThread object.
+** Parameters:	lpParam		The ThreadPoolThread object.
 **
 ** Returns:		0.
 **
 *******************************************************************************
 */
 
-DWORD WINAPI CWorkerThread::ThreadFunction(LPVOID lpParam)
+DWORD WINAPI ThreadPoolThread::ThreadFunction(LPVOID lpParam)
 {
 	// Translate structured exceptions.
 	WCL::SeTranslator::Install();
 
-	CWorkerThread* pThread = reinterpret_cast<CWorkerThread*>(lpParam);
+	ThreadPoolThread* pThread = reinterpret_cast<ThreadPoolThread*>(lpParam);
 
 	// Force creation of a message queue.
 	::PeekMessage(&pThread->m_oMsg, NULL, WM_USER, WM_USER, PM_NOREMOVE);
@@ -87,11 +87,11 @@ DWORD WINAPI CWorkerThread::ThreadFunction(LPVOID lpParam)
 	}
 	catch (const std::exception& e)
 	{
-		WCL::ReportUnhandledException(TXT("Unexpected exception caught in CWorkerThread::Run()\n\n%hs"), e.what());
+		WCL::ReportUnhandledException(TXT("Unexpected exception caught in ThreadPoolThread::Run()\n\n%hs"), e.what());
 	}
 	catch (...)
 	{
-		WCL::ReportUnhandledException(TXT("Unexpected unknown exception caught in CWorkerThread::Run()"));
+		WCL::ReportUnhandledException(TXT("Unexpected unknown exception caught in ThreadPoolThread::Run()"));
 	}
 
 	// Signal calling thread that we've stopped.
@@ -113,7 +113,7 @@ DWORD WINAPI CWorkerThread::ThreadFunction(LPVOID lpParam)
 *******************************************************************************
 */
 
-void CWorkerThread::Start()
+void ThreadPoolThread::Start()
 {
 	ASSERT(m_eStatus == STOPPED);
 
@@ -142,7 +142,7 @@ void CWorkerThread::Start()
 *******************************************************************************
 */
 
-void CWorkerThread::Stop()
+void ThreadPoolThread::Stop()
 {
 	ASSERT(m_eStatus == IDLE);
 
@@ -166,7 +166,7 @@ void CWorkerThread::Stop()
 *******************************************************************************
 */
 
-void CWorkerThread::RunJob(ThreadJobPtr& pJob)
+void ThreadPoolThread::RunJob(ThreadJobPtr& pJob)
 {
 	ASSERT(pJob.Get() != nullptr);
 	ASSERT(pJob->Status() == CThreadJob::PENDING);
@@ -196,7 +196,7 @@ void CWorkerThread::RunJob(ThreadJobPtr& pJob)
 *******************************************************************************
 */
 
-void CWorkerThread::OnThreadMsg(UINT nMsg, WPARAM /*wParam*/, LPARAM /*lParam*/)
+void ThreadPoolThread::OnThreadMsg(UINT nMsg, WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 	switch(nMsg)
 	{
@@ -219,7 +219,7 @@ void CWorkerThread::OnThreadMsg(UINT nMsg, WPARAM /*wParam*/, LPARAM /*lParam*/)
 *******************************************************************************
 */
 
-void CWorkerThread::OnStartThread()
+void ThreadPoolThread::OnStartThread()
 {
 }
 
@@ -235,37 +235,37 @@ void CWorkerThread::OnStartThread()
 *******************************************************************************
 */
 
-void CWorkerThread::OnRunJob()
+void ThreadPoolThread::OnRunJob()
 {
+	ASSERT(m_pJob.Get() != nullptr);
+	ASSERT(m_pJob->Status() == CThreadJob::RUNNING);
+
+	// Get the job to run.
+	ThreadJobPtr pJob = m_pJob;
+
 	try
 	{
-		ASSERT(m_pJob.Get() != nullptr);
-		ASSERT(m_pJob->Status() == CThreadJob::RUNNING);
-
-		// Get the job to run.
-		ThreadJobPtr pJob = m_pJob;
-
 		// Run it.
 		pJob->Run();
-
-		// Update job state.
-		pJob->Status(CThreadJob::COMPLETED);
-
-		// Update thread state.
-		m_eStatus = IDLE;
-		m_pJob.Reset();
-
-		// Notify thread pool.
-		m_oPool.OnJobCompleted(pJob);
 	}
 	catch (const std::exception& e)
 	{
-		WCL::ReportUnhandledException(TXT("Unexpected exception caught in CWorkerThread::OnRunJob()\n\n%hs"), e.what());
+		WCL::ReportUnhandledException(TXT("Unexpected exception caught in ThreadPoolThread::OnRunJob()\n\n%hs"), e.what());
 	}
 	catch (...)
 	{
-		WCL::ReportUnhandledException(TXT("Unexpected unknown exception caught in CWorkerThread::OnRunJob()"));
+		WCL::ReportUnhandledException(TXT("Unexpected unknown exception caught in ThreadPoolThread::OnRunJob()"));
 	}
+
+	// Update job state.
+	pJob->Status(CThreadJob::COMPLETED);
+
+	// Update thread state.
+	m_eStatus = IDLE;
+	m_pJob.Reset();
+
+	// Notify thread pool.
+	m_oPool.OnJobCompleted(pJob);
 }
 
 /******************************************************************************
@@ -280,7 +280,7 @@ void CWorkerThread::OnRunJob()
 *******************************************************************************
 */
 
-void CWorkerThread::OnStopThread()
+void ThreadPoolThread::OnStopThread()
 {
 	::PostQuitMessage(CMsgThread::THREAD_EXIT_SUCCESS);
 }

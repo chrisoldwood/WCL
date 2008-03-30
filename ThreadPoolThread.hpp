@@ -1,16 +1,16 @@
 /******************************************************************************
 ** (C) Chris Oldwood
 **
-** MODULE:		WORKERTHREAD.HPP
+** MODULE:		THREADPOOLTHREAD.HPP
 ** COMPONENT:	Windows C++ Library
-** DESCRIPTION:	The CWorkerThread class declaration.
+** DESCRIPTION:	The ThreadPoolThread class declaration.
 **
 *******************************************************************************
 */
 
 // Check for previous inclusion
-#ifndef WORKERTHREAD_HPP
-#define WORKERTHREAD_HPP
+#ifndef THREADPOOLTHREAD_HPP
+#define THREADPOOLTHREAD_HPP
 
 #if _MSC_VER > 1000
 #pragma once
@@ -30,14 +30,14 @@ class CThreadPool;
 *******************************************************************************
 */
 
-class CWorkerThread : public CMsgThread
+class ThreadPoolThread : public CMsgThread
 {
 public:
 	//
 	// Constructors/Destructor.
 	//
-	CWorkerThread(CThreadPool& oPool, uint nPoolID);
-	virtual	~CWorkerThread();
+	ThreadPoolThread(CThreadPool& oPool, uint nPoolID);
+	virtual	~ThreadPoolThread();
 
 	// Thread status.
 	enum ThreadStatus
@@ -97,9 +97,9 @@ protected:
 *******************************************************************************
 */
 
-inline CWorkerThread::ThreadStatus CWorkerThread::Status() const
+inline ThreadPoolThread::ThreadStatus ThreadPoolThread::Status() const
 {
 	return m_eStatus;
 }
 
-#endif // WORKERTHREAD_HPP
+#endif // THREADPOOLTHREAD_HPP
