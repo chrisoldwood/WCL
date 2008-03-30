@@ -13,28 +13,23 @@
 extern void TestMisc();
 extern void TestString();
 extern void TestDateAndTime();
+extern void TestIFacePtr();
+extern void TestComPtr();
 
 ////////////////////////////////////////////////////////////////////////////////
 //! The entry point for the test harness.
 
 int _tmain(int /*argc*/, _TCHAR* /*argv*/[])
 {
-#ifdef _DEBUG
-	Core::EnableLeakReporting(true);
-#endif
-
-	try
+	TEST_SUITE_BEGIN
 	{
 		TestMisc();
 		TestString();
 		TestDateAndTime();
-	}
-	catch (std::exception& e)
-	{
-		std::cout << e.what() << std::endl;
-	}
+		TestIFacePtr();
+		TestComPtr();
 
-	Core::WriteTestsSummary();
-
-	return Core::GetTestProcessResult();
+		Core::SetTestRunFinalStatus(true);
+	}
+	TEST_SUITE_END
 }
