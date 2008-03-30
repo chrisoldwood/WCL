@@ -15,7 +15,7 @@
 #include "StrCvtException.hpp"
 #include <tchar.h>
 #include <Core/AnsiWide.hpp>
-#include <stdexcept>
+#include <Core/BadLogicException.hpp>
 #include <limits>
 
 /******************************************************************************
@@ -106,7 +106,7 @@ CString CStrCvt::FormatDate(time_t tValue)
 	tchar szValue[MAX_CHARS+1];
 
 	if (_tcsftime(szValue, MAX_CHARS+1, TXT("%Y-%m-%d"), localtime(&tValue)) == 0)
-		throw std::logic_error(T2A(TXT("Insufficient buffer size used in CStrCvt::FormatDate()")));
+		throw Core::BadLogicException(TXT("Insufficient buffer size used in CStrCvt::FormatDate()"));
 
 	return szValue;
 }
@@ -117,7 +117,7 @@ CString CStrCvt::FormatDateTime(time_t tValue)
 	tchar szValue[MAX_CHARS+1];
 
 	if (_tcsftime(szValue, MAX_CHARS+1, TXT("%Y-%m-%d %H:%M:%S"), localtime(&tValue)) == 0)
-		throw std::logic_error(T2A(TXT("Insufficient buffer size used in CStrCvt::FormatDateTime()")));
+		throw Core::BadLogicException(TXT("Insufficient buffer size used in CStrCvt::FormatDateTime()"));
 
 	return szValue;
 }
