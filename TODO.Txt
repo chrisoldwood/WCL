@@ -22,23 +22,13 @@
 
 - Add conversion from time_t (i.e. local time) to a DateTime.
 
-- Move AutoBool to Core.
-
-- Add days_t type for use with DateSpan.
-
-- Move TimeSpan and DateSpan to separate files.
-
 - Check declaration of seconds_t under VC++ 7/8.
-
-- Move LeakCheck to separate cpp, with init_seg + call to enable from App/Dll classes.
 
 - Rebase exception types off of a new Core::Exception type which is Ansi/Wide aware.
 
 - Remove stream behaviour from Clipboard and use Memstream for streaming.
 
-- ThreadPool OnRunJob() not exception safe.
-
-- Rename WorkerThread to ThreadPoolThread and rebase off a WorkerThread.
+- Rebase ThreadPoolThread off a new WorkerThread class.
 
 - Remove WCL::CException and replace with Core::Exception.
 
