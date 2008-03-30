@@ -3,7 +3,7 @@
 **
 ** MODULE:		DATE.CPP
 ** COMPONENT:	Windows C++ Library.
-** DESCRIPTION:	CDate & CDateSpan class definitions.
+** DESCRIPTION:	CDate class definitions.
 **
 *******************************************************************************
 */
@@ -18,7 +18,7 @@
 #include <tchar.h>
 #include <Core/AnsiWide.hpp>
 #include <Core/StringUtils.hpp>
-#include <stdexcept>
+#include <Core/BadLogicException.hpp>
 
 /******************************************************************************
 **
@@ -344,7 +344,7 @@ CString CDate::ToString(int nFormat) const
 		ASSERT(nResult >= 0);
 
 		if (nResult < 0)
-			throw std::logic_error(T2A(Core::Fmt(TXT("Insufficient buffer size used in CDate::ToString(). Result: %d"), nResult)));
+			throw Core::BadLogicException(Core::Fmt(TXT("Insufficient buffer size used in CDate::ToString(). Result: %d"), nResult));
 	}
 	// Windows locale derived format?
 	else if ((nFormat == FMT_WIN_SHORT) || (nFormat == FMT_WIN_LONG))
