@@ -17,7 +17,7 @@ namespace WCL
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-//! The interface implemented by streams that support reading.
+//! The interface implemented by streams that support writing.
 
 class IOutputStream : public WCL::IStreamBase
 {
