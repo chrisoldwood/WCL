@@ -16,6 +16,12 @@
 //
 //! \namespace WCL
 //! \brief     The Windows C++ Library namespace.
+//!
+//! \mainpage  Windows C++ Library
+//! \section   introduction Introduction
+//! This is a framework for writing Windows based applications. It is a class
+//! library along the same lines as MFC, that provides a wrapper facade for the
+//! Win32 API.
 
 ////////////////////////////////////////////////////////////////////////////////
 // Standard headers.
