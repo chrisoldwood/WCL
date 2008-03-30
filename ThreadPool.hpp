@@ -20,7 +20,7 @@
 #include "ThreadJob.hpp"
 
 // Forward declarations.
-class CWorkerThread;
+class ThreadPoolThread;
 
 /******************************************************************************
 ** 
@@ -63,8 +63,8 @@ public:
 
 protected:
 	// Template shorthands.
-	typedef Core::SharedPtr<CWorkerThread> WorkerThreadPtr;
-	typedef std::vector<WorkerThreadPtr> CThreads;
+	typedef Core::SharedPtr<ThreadPoolThread> ThreadPoolThreadPtr;
+	typedef std::vector<ThreadPoolThreadPtr> CThreads;
 	typedef std::vector<ThreadJobPtr> CJobQueue;
 
 	// Thread pool status.
@@ -92,7 +92,7 @@ protected:
 	void OnJobCompleted(ThreadJobPtr& pJob);
 
 	// Friends.
-	friend class CWorkerThread;
+	friend class ThreadPoolThread;
 };
 
 /******************************************************************************

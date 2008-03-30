@@ -10,7 +10,7 @@
 
 #include "Common.hpp"
 #include "ThreadPool.hpp"
-#include "WorkerThread.hpp"
+#include "ThreadPoolThread.hpp"
 #include "ThreadJob.hpp"
 #include <algorithm>
 #include "AutoThreadLock.hpp"
@@ -76,7 +76,7 @@ void CThreadPool::Start()
 
 	// Create the thread pool.
 	for (size_t i = 0; i < m_nThreads; ++i)
-		m_oPool.push_back(WorkerThreadPtr(new CWorkerThread(*this, i)));
+		m_oPool.push_back(ThreadPoolThreadPtr(new ThreadPoolThread(*this, i)));
 
 	// Start the pool threads.
 	for (size_t i = 0; i < m_nThreads; ++i)
@@ -273,10 +273,10 @@ void CThreadPool::ScheduleJob()
 	// Find an idle thread.
 	for (size_t i = 0; i < m_nThreads; ++i)
 	{
-		WorkerThreadPtr pThread = m_oPool[i];
+		ThreadPoolThreadPtr pThread = m_oPool[i];
 
 		// Found one?
-		if (pThread->Status() == CWorkerThread::IDLE)
+		if (pThread->Status() == ThreadPoolThread::IDLE)
 		{
 			// Get next job.
 			CIter        oIter = m_oPendingQ.begin();
