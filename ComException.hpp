@@ -12,7 +12,7 @@
 #endif
 
 #include "Exception.hpp"
-#include <Core/IFacePtr.hpp>
+#include "IFacePtr.hpp"
 
 namespace WCL
 {
@@ -28,7 +28,7 @@ public:
 
 	//! Construction from an IErrorInfo supported error.
 	template<typename T>
-	ComException(HRESULT hResult, Core::IFacePtr<T>& pObject, const tchar* pszOperation);
+	ComException(HRESULT hResult, IFacePtr<T>& pObject, const tchar* pszOperation);
 
 	//! Destructor.
 	virtual ~ComException();
@@ -51,7 +51,7 @@ private:
 //! Construction from an IErrorInfo supported error.
 
 template<typename T>
-inline ComException::ComException(HRESULT hResult, Core::IFacePtr<T>& pObject, const tchar* pszOperation)
+inline ComException::ComException(HRESULT hResult, IFacePtr<T>& pObject, const tchar* pszOperation)
 {
 	FormatError(hResult, pObject.Get(), __uuidof(T), pszOperation);
 }
