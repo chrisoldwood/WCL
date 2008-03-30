@@ -17,6 +17,16 @@
 //! GMT based time_t used internally.
 typedef time_t seconds_t;
 
+//! Count of days.
+typedef time_t days_t;
+
+////////////////////////////////////////////////////////////////////////////////
+// Constants.
+
+const seconds_t SECS_PER_MIN  = 60;
+const seconds_t SECS_PER_HOUR = 60 * 60;
+const seconds_t SECS_PER_DAY  = 60 * 60 * 24;
+
 ////////////////////////////////////////////////////////////////////////////////
 // General definitions.
 
