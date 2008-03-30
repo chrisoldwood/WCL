@@ -3,7 +3,7 @@
 **
 ** MODULE:		TIME.HPP
 ** COMPONENT:	Windows C++ Library.
-** DESCRIPTION:	The CTime & CTimeSpan class declarations.
+** DESCRIPTION:	The CTime class declarations.
 **
 *******************************************************************************
 */
@@ -16,8 +16,9 @@
 #pragma once
 #endif
 
+#include "TimeSpan.hpp"
+
 // Forward declarations.
-class CTimeSpan;
 class CDateTime;
 
 namespace WCL
@@ -25,17 +26,6 @@ namespace WCL
 class IInputStream;
 class IOutputStream;
 }
-
-/******************************************************************************
-** 
-** Constants.
-**
-*******************************************************************************
-*/
-
-const seconds_t SECS_PER_MIN  = 60;
-const seconds_t SECS_PER_HOUR = 60*60;
-const seconds_t SECS_PER_DAY  = 60*60*24;
 
 /******************************************************************************
 ** 
@@ -136,41 +126,6 @@ protected:
 	//
 	friend void operator >>(WCL::IInputStream&  rStream, CTime& rTime);
 	friend void operator <<(WCL::IOutputStream& rStream, const CTime& rTime);
-};
-
-/******************************************************************************
-** 
-** This class is used to represent a period between two times in seconds.
-**
-*******************************************************************************
-*/
-
-class CTimeSpan
-{
-public:
-	//
-	// Constructors/Destructor.
-	//
-	CTimeSpan();
-	CTimeSpan(seconds_t tSecs);
-	CTimeSpan(const CTime& rTime);
-	
-	// Accessors.
-	int Secs() const;
-	int Mins() const;
-	int Hours() const;
-	int Days() const;
-
-protected:
-	//
-	// Members.
-	//
-	seconds_t	m_tSpan;
-
-	//
-	// Friends.
-	//
-	friend class CTime;
 };
 
 /******************************************************************************
@@ -309,48 +264,6 @@ inline void CTime::operator +=(const CTimeSpan& rRHS)
 inline void CTime::operator -=(const CTimeSpan& rRHS)
 {
 	m_tTime -= rRHS.m_tSpan;
-}
-
-/******************************************************************************
-**
-** Implementation of CTimeSpan inline functions.
-**
-*******************************************************************************
-*/
-
-inline CTimeSpan::CTimeSpan()
-	: m_tSpan(0)
-{
-}
-
-inline CTimeSpan::CTimeSpan(seconds_t tSecs)
-	: m_tSpan(tSecs)
-{
-}
-
-inline CTimeSpan::CTimeSpan(const CTime& rTime)
-	: m_tSpan(rTime.m_tTime)
-{
-}
-
-inline int CTimeSpan::Secs() const
-{
-	return static_cast<int>(m_tSpan);
-}
-
-inline int CTimeSpan::Mins() const
-{
-	return static_cast<int>(m_tSpan / SECS_PER_MIN);
-}
-
-inline int CTimeSpan::Hours() const
-{
-	return static_cast<int>(m_tSpan / SECS_PER_HOUR);
-}
-
-inline int CTimeSpan::Days() const
-{
-	return static_cast<int>(m_tSpan / SECS_PER_DAY);
 }
 
 #endif // WCL_TIME_HPP
