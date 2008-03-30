@@ -4,14 +4,14 @@
 //! \author Chris Oldwood
 
 // Check for previous inclusion
-#ifndef CORE_IFACEPTR_HPP
-#define CORE_IFACEPTR_HPP
+#ifndef WCL_IFACEPTR_HPP
+#define WCL_IFACEPTR_HPP
 
 #if _MSC_VER > 1000
 #pragma once
 #endif
 
-namespace Core
+namespace WCL
 {
 
 // Forward declarations.
@@ -23,11 +23,11 @@ T** AttachTo(IFacePtr<T>& ptr);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! A smart-pointer type for use with COM interfaces. This class can only be
-//! used to manage the lifetime of COM interfaces, to create COM objects use
-//! the ComPtr<T> class in the Windows C++ Library.
+//! used to manage the lifetime of COM interfaces, to create COM objects and
+//! aquire other interfaces use the ComPtr<T> class.
 
 template <typename T>
-class IFacePtr : public SmartPtr<T>
+class IFacePtr : public Core::SmartPtr<T>
 {
 public:
 	//! Default constructor.
@@ -37,7 +37,7 @@ public:
 	explicit IFacePtr(T* pInterface, bool bAddRef = false);
 
 	//! Copy constructor.
-	IFacePtr(const IFacePtr<T>& oPtr);
+	IFacePtr(const IFacePtr& oPtr);
 
 	//! Destructor.
 	~IFacePtr();
@@ -47,7 +47,7 @@ public:
 	//
 
 	//! Assignment operator.
-	IFacePtr& operator=(const IFacePtr<T>& oPtr);
+	IFacePtr& operator=(const IFacePtr& oPtr);
 
 	//
 	// Methods.
@@ -80,22 +80,18 @@ inline IFacePtr<T>::IFacePtr()
 
 template <typename T>
 inline IFacePtr<T>::IFacePtr(T* pInterface, bool bAddRef)
-	: SmartPtr<T>(pInterface)
+	: Core::SmartPtr<T>(pInterface)
 {
-	if (bAddRef)
-	{
-		ASSERT(m_pPointer != nullptr);
-
+	if ((m_pPointer != nullptr) && bAddRef)
 		m_pPointer->AddRef();
-	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Copy constructor.
 
 template <typename T>
-inline IFacePtr<T>::IFacePtr(const IFacePtr<T>& oPtr)
-	: SmartPtr<T>(oPtr.m_pPointer)
+inline IFacePtr<T>::IFacePtr(const IFacePtr& oPtr)
+	: Core::SmartPtr<T>(oPtr.m_pPointer)
 {
 	if (m_pPointer != nullptr)
 		m_pPointer->AddRef();
@@ -114,7 +110,7 @@ inline IFacePtr<T>::~IFacePtr()
 //! Assignment operator.
 
 template <typename T>
-inline IFacePtr<T>& IFacePtr<T>::operator=(const IFacePtr<T>& oPtr)
+inline IFacePtr<T>& IFacePtr<T>::operator=(const IFacePtr& oPtr)
 {
 	// Check for self-assignment.
 	if ( (this != &oPtr) && (this->m_pPointer != oPtr.m_pPointer) )
@@ -176,7 +172,7 @@ inline T** AttachTo(IFacePtr<T>& ptr)
 	return ptr.GetPtrMember();
 }
 
-//namespace Core
+//namespace WCL
 }
 
-#endif // CORE_IFACEPTR_HPP
+#endif // WCL_IFACEPTR_HPP
