@@ -3,7 +3,7 @@
 **
 ** MODULE:		DATE.HPP
 ** COMPONENT:	Windows C++ Library.
-** DESCRIPTION:	The CDate & CDateSpan class declarations.
+** DESCRIPTION:	The CDate class declarations.
 **
 *******************************************************************************
 */
@@ -16,10 +16,10 @@
 #pragma once
 #endif
 
+#include "DateSpan.hpp"
 #include "Time.hpp"
 
 // Forward declarations.
-class CDateSpan;
 class CDateTime;
 
 namespace WCL
@@ -150,38 +150,6 @@ protected:
 	//
 	friend void operator >>(WCL::IInputStream&  rStream, CDate& rDate);
 	friend void operator <<(WCL::IOutputStream& rStream, const CDate& rDate);
-};
-
-/******************************************************************************
-** 
-** This class is used to represent the distance between two dates in days.
-**
-*******************************************************************************
-*/
-
-class CDateSpan
-{
-public:
-	//
-	// Constructors/Destructor.
-	//
-	CDateSpan();
-	CDateSpan(int nDays);
-	CDateSpan(const CDate& rDate);
-	
-	// Accessors.
-	int Days() const;
-
-protected:
-	//
-	// Members.
-	//
-	int	m_nSpan;
-
-	//
-	// Friends.
-	//
-	friend class CDate;
 };
 
 /******************************************************************************
@@ -334,33 +302,6 @@ inline void CDate::operator +=(const CDateSpan& rRHS)
 inline void CDate::operator -=(const CDateSpan& rRHS)
 {
 	m_tDate -= (rRHS.m_nSpan * SECS_PER_DAY);
-}
-
-/******************************************************************************
-**
-** Implementation of CDateSpan inline functions.
-**
-*******************************************************************************
-*/
-
-inline CDateSpan::CDateSpan()
-	: m_nSpan(0)
-{
-}
-
-inline CDateSpan::CDateSpan(int nDays)
-	: m_nSpan(nDays)
-{
-}
-
-inline CDateSpan::CDateSpan(const CDate& rDate)
-	: m_nSpan(static_cast<int>(rDate.m_tDate / SECS_PER_DAY))
-{
-}
-
-inline int CDateSpan::Days() const
-{
-	return m_nSpan;
 }
 
 #endif // WCL_DATE_HPP
