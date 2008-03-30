@@ -17,7 +17,7 @@
 #include "IOutputStream.hpp"
 #include <Core/StringUtils.hpp>
 #include <tchar.h>
-#include <stdexcept>
+#include <Core/BadLogicException.hpp>
 #include <Core/AnsiWide.hpp>
 
 /******************************************************************************
@@ -109,7 +109,7 @@ void CString::BufferSize(size_t nChars)
 *******************************************************************************
 */
 
-void CString::Copy(const tchar* lpszBuffer, uint iChars)
+void CString::Copy(const tchar* lpszBuffer, size_t nChars)
 {
 	ASSERT(lpszBuffer);
 
@@ -121,11 +121,11 @@ void CString::Copy(const tchar* lpszBuffer, uint iChars)
 	}
 
 	// Copy.
-	BufferSize(iChars+1);
-	tstrncpy(m_pszData, lpszBuffer, iChars);
+	BufferSize(nChars+1);
+	tstrncpy(m_pszData, lpszBuffer, nChars);
 
 	// Ensure string is terminated.
-	m_pszData[iChars] = TXT('\0');
+	m_pszData[nChars] = TXT('\0');
 }
 
 /******************************************************************************
@@ -350,7 +350,7 @@ void CString::FormatEx(const tchar* pszFormat, va_list args)
 
 	// Check for buffer overrun.
 	if (nResult < 0)
-		throw std::logic_error(T2A(Core::Fmt(TXT("Insufficient buffer size calculated in CString::FormatEx(). Result: %d"), nResult)));
+		throw Core::BadLogicException(Core::Fmt(TXT("Insufficient buffer size calculated in CString::FormatEx(). Result: %d"), nResult));
 
 	m_pszData[nResult] = TXT('\0');
 }
