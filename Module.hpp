@@ -17,7 +17,6 @@
 #endif
 
 #include "Path.hpp"
-#include <tchar.h>
 
 /******************************************************************************
 ** 
@@ -33,6 +32,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CModule();
+	CModule(HINSTANCE hInstance);
 	~CModule();
 	
 	//
