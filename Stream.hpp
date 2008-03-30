@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   CStream.hpp
+//! \file   Stream.hpp
 //! \brief  The CStream class declaration.
 //! \author Chris Oldwood
 
