@@ -43,7 +43,7 @@ namespace WCL
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Report an unhandled exception.
+// Report an unhandled exception.
 
 void ReportUnhandledException(const tchar* pszMsg, ...);
 
