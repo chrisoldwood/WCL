@@ -443,6 +443,9 @@
 				RelativePath="ThreadPool.cpp">
 			</File>
 			<File
+				RelativePath=".\ThreadPoolThread.cpp">
+			</File>
+			<File
 				RelativePath="Time.cpp">
 			</File>
 			<File
@@ -480,9 +483,6 @@
 			</File>
 			<File
 				RelativePath="WndMap.cpp">
-			</File>
-			<File
-				RelativePath="WorkerThread.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -573,6 +573,9 @@
 				RelativePath="Date.hpp">
 			</File>
 			<File
+				RelativePath=".\DateSpan.hpp">
+			</File>
+			<File
 				RelativePath="DateTime.hpp">
 			</File>
 			<File
@@ -631,6 +634,9 @@
 			</File>
 			<File
 				RelativePath="IconCtrl.hpp">
+			</File>
+			<File
+				RelativePath=".\IFacePtr.hpp">
 			</File>
 			<File
 				RelativePath=".\IInputStream.hpp">
@@ -840,7 +846,13 @@
 				RelativePath="ThreadPool.hpp">
 			</File>
 			<File
+				RelativePath=".\ThreadPoolThread.hpp">
+			</File>
+			<File
 				RelativePath="Time.hpp">
+			</File>
+			<File
+				RelativePath=".\TimeSpan.hpp">
 			</File>
 			<File
 				RelativePath="ToolBar.hpp">
@@ -883,9 +895,6 @@
 			</File>
 			<File
 				RelativePath="WndMap.hpp">
-			</File>
-			<File
-				RelativePath="WorkerThread.hpp">
 			</File>
 		</Filter>
 		<File
