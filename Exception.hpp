@@ -11,14 +11,19 @@
 #pragma once
 #endif
 
+#include <Core/Exception.hpp>
+
 ////////////////////////////////////////////////////////////////////////////////
 //! The base class for all WCL exceptions.
 
-class CException : public std::exception
+class CException : public Core::Exception
 {
 public:
 	//! Retrieve the error message.
 	virtual const tchar* ErrorText() const;
+
+	//! Get the exception details.
+	virtual const tchar* What() const;
 
 	//! Retrieve the ANSI only error message.
 	virtual const char* what() const;

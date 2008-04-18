@@ -31,6 +31,14 @@ const tchar* CException::ErrorText() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Get the exception details.
+
+const tchar* CException::What() const
+{
+	return m_strErrorText;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Retrieve the ANSI only error message. For Unicode builds we create the ANSI
 //! version of the error message on demand.
 
@@ -56,8 +64,6 @@ namespace WCL
 
 void ReportUnhandledException(const tchar* pszMsg, ...)
 {
-	ASSERT_FALSE();
-
 	CString strMsg;
 
 	// Setup arguments.
@@ -69,9 +75,16 @@ void ReportUnhandledException(const tchar* pszMsg, ...)
 
 	// Display message if an application.
 	if (CApp::IsValid())
+	{
 		CApp::This().FatalMsg(strMsg);
+	}
+	// Otherwise send to debugger.
 	else
+	{
+		ASSERT_FALSE();
+
 		Core::DebugWrite(TXT("%s\n"), strMsg);
+	}
 }
 
 //namespace WCL
