@@ -1,12 +1,7 @@
-/******************************************************************************
-** (C) Chris Oldwood
-**
-** MODULE:		SPLITWND.HPP
-** COMPONENT:	Windows C++ Library.
-** DESCRIPTION:	The CSplitWnd class declaration.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! \file   SplitWnd.hpp
+//! \brief  The CSplitWnd class declaration.
+//! \author Chris Oldwood
 
 // Check for previous inclusion
 #ifndef SPLITWND_HPP
@@ -17,89 +12,131 @@
 #endif
 
 #include "CtrlWnd.hpp"
+#include "Cursor.hpp"
 
-/******************************************************************************
-** 
-** This is a window which hosts 2 other windows either side by side or one
-** above the other. A bar separates the two windows and can be used to resize
-** them.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! This is a window which hosts 2 other windows either side by side or one
+//! above the other. A bar separates the two windows and can be used to resize
+//! them.
 
 class CSplitWnd : public CCtrlWnd
 {
 public:
-	//
-	// Constructors/Destructor.
-	//
-	CSplitWnd(bool bVertSplit, bool bFixedPanes);
+	//! The style of split.
+	enum Split
+	{
+		VERTICAL,		//!< Split into a left & right pane.
+		HORIZONTAL,		//!< Split into a top & bottom pane.
+	};
+
+	//! The style of pane resizing.
+	enum Sizing
+	{
+		FIXED,			//!< The pane split is programmatic.
+		RESIZEABLE,		//!< The pane split is user controlled.
+	};
+
+	//! Constructor.
+	CSplitWnd(Split eSplit, Sizing eSizing);
+
+	//! Destructor.
 	virtual	~CSplitWnd();
 
-	//
-	// Indexes of panes.
-	//
+	//! The Index of the panes.
 	enum
 	{
-		LEFT_PANE   = 0,
-		RIGHT_PANE  = 1,
+		LEFT_PANE   = 0,	//!< The left pane in a VERTICAL split.
+		RIGHT_PANE  = 1,	//!< The right pane in a VERTICAL split.
 
-		TOP_PANE    = 0,
-		BOTTOM_PANE = 1
+		TOP_PANE    = 0,	//!< The top pane in a HORIZONTAL split.
+		BOTTOM_PANE = 1,	//!< The bottom pane in a HORIZONTAL split.
 	};
 
 	//
-	// Accesors & Mutators.
+	// Properties.
 	//
-	void Pane(size_t nPane, CWnd* pWnd);
+
+	//! Get the window inside a pane.
 	CWnd* Pane(size_t nPane) const;
 
-	void BarPos(int nPos);
-	int BarPos() const;
+	//! Set the window inside a pane.
+	void SetPane(size_t nPane, CWnd* pWnd);
+
+	//! Get the position of the sizing bar.
+	uint SizingBarPos() const;
+
+	//! Set the position of the sizing bar.
+	void SetSizingBarPos(uint nPos);
 
 	//
-	// Attributes
+	// Methods.
 	//
-	CRect PaneRect(int nPane) const;
+
+	//! Get the rectangle for a pane.
+	CRect PaneRect(size_t nPane) const;
+
+	//! Get the rectangle for the sizing bar.
+	CRect SizingBarRect() const;
 
 protected:
 	//
 	// Members.
 	//
-	CWnd*	m_pPanes[2];	// The window panes.
-	bool	m_bVertSplit;	// Split is vertical or horizontal?
-	bool	m_bFixedPanes;	// Panes cannot be resized.
-	int		m_iBarPos;		// The position of the bar.
+	CWnd*	m_pPanes[2];	//!< The window panes.
+	Split	m_eSplit;		//!< The position of the split.
+	Sizing	m_eSizing;		//!< The ability to resize the panes.
+	uint	m_nBarPos;		//!< The x or y position of the bar.
+	CCursor	m_curArrow;		//!< The arrow cursor.
+	CCursor	m_curSizer;		//!< The sizing cursor.
 
 	//
 	// Window creation template methods.
 	//
+
+	//! Get the window class settings.
 	virtual void GetClassParams(WNDCLASS& rParams);
+
+	//! Get the window instance settings.
 	virtual void GetCreateParams(WNDCREATE& rParams);
 
 	//
-	// Message processors (Overriden from the base class).
+	// Message handlers.
 	//
+
+	//! Resize the child panes.
 	virtual void OnResize(int iFlag, const CSize& rNewSize);
+
+	//! Paint the window.
 	virtual	void OnPaint(CDC& rDC);
+
+	//! Set the cursor for this window or one of it's children.
+	virtual void OnSetCursor(HWND hWnd, uint nHitCode, uint nMouseMsg);
+
+	//! Handle a mouse click over the sizing bar.
+	virtual void OnLeftButtonDown(const CPoint& ptCursor, uint nKeyFlags);
+
+	//! Handle a mouse click over the sizing bar.
+	virtual void OnLeftButtonUp(const CPoint& ptCursor, uint nKeyFlags);
+
+	//! Handle resizng of the panes.
+	virtual void OnMouseMove(const CPoint& ptCursor, uint nKeyFlags);
 };
 
-/******************************************************************************
-**
-** Implementation of inline functions.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! Get the position of the sizing bar.
 
-inline void CSplitWnd::BarPos(int nPos)
+inline uint CSplitWnd::SizingBarPos() const
 {
-	m_iBarPos = nPos;
-	OnResize(0, ClientRect().Size());
+	return m_nBarPos;
 }
 
-inline int CSplitWnd::BarPos() const
+////////////////////////////////////////////////////////////////////////////////
+//! Set the position of the sizing bar.
+
+inline void CSplitWnd::SetSizingBarPos(uint nPos)
 {
-	return m_iBarPos;
+	m_nBarPos = nPos;
+	OnResize(0, ClientRect().Size());
 }
 
 #endif //SPLITWND_HPP

@@ -1,75 +1,46 @@
-/******************************************************************************
-** (C) Chris Oldwood
-**
-** MODULE:		SPLITWND.CPP
-** COMPONENT:	Windows C++ Library.
-** DESCRIPTION:	CSplitWnd class definition.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! \file   SplitWnd.cpp
+//! \brief  The CSplitWnd class definition.
+//! \author Chris Oldwood
 
 #include "Common.hpp"
 #include "SplitWnd.hpp"
 #include "DC.hpp"
 
-/******************************************************************************
-**
-** Local variables.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+// Constants.
 
-// Thickness of the bar.
-#define	BAR_SIZE	4
+//! The thickness of the sizing bar.
+static const uint BAR_SIZE = 2;
+//! The thickness of a recessed client window border.
+static const uint CLIENT_BORDER = 2;
 
-/******************************************************************************
-** Method:		Constructor.
-**
-** Description:	.
-**
-** Parameters:	None.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! Constructor.
 
-CSplitWnd::CSplitWnd(bool bVertSplit, bool bFixedPanes)
-	: m_bVertSplit(bVertSplit)
-	, m_bFixedPanes(bFixedPanes)
-	, m_iBarPos(100)
+CSplitWnd::CSplitWnd(Split eSplit, Sizing eSizing)
+	: m_eSplit(eSplit)
+	, m_eSizing(eSizing)
+	, m_nBarPos(100)
 {
-	m_pPanes[0] = NULL;
-	m_pPanes[1] = NULL;
+	m_pPanes[0] = nullptr;
+	m_pPanes[1] = nullptr;
+
+	m_curArrow.LoadRsc(IDC_ARROW);
+
+	if (m_eSizing == RESIZEABLE)
+		m_curSizer.LoadRsc((m_eSplit == VERTICAL) ? IDC_SIZEWE : IDC_SIZENS);
 }
 
-/******************************************************************************
-** Method:		Destructor.
-**
-** Description:	.
-**
-** Parameters:	None.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! Destructor.
 
 CSplitWnd::~CSplitWnd()
 {
 }
 
-/******************************************************************************
-** Method:		GetClassParams()
-**
-** Description:	Template method to get the window class data.
-**
-** Parameters:	rParams		The class structure to fill.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! Get the window class settings.
 
 void CSplitWnd::GetClassParams(WNDCLASS& rParams)
 {
@@ -77,21 +48,13 @@ void CSplitWnd::GetClassParams(WNDCLASS& rParams)
 	CCtrlWnd::GetClassParams(rParams);
 
 	// Override any settings.
-	rParams.hbrBackground = (HBRUSH) (COLOR_BTNFACE + 1);
+	rParams.hbrBackground = (HBRUSH) (COLOR_BTNSHADOW + 1);
 	rParams.lpszClassName = TXT("SplitWnd");
+	rParams.hCursor       = NULL;
 }
 
-/******************************************************************************
-** Method:		GetCreateParams()
-**
-** Description:	Template method to get the window creation data.
-**
-** Parameters:	rParams		The create structure to fill.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! Get the window instance settings.
 
 void CSplitWnd::GetCreateParams(WNDCREATE& rParams)
 {
@@ -102,69 +65,41 @@ void CSplitWnd::GetCreateParams(WNDCREATE& rParams)
 	rParams.pszClassName = TXT("SplitWnd");
 }
 
-/******************************************************************************
-** Method:		OnResize()
-**
-** Description:	Resize the panes to fit the new size.
-**
-** Parameters:	iFlag		The resize method.
-**				rNewSize	The new window dimensions.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! Resize the child panes.
 
 void CSplitWnd::OnResize(int /*iFlag*/, const CSize& /*rNewSize*/)
 {
 	// Left/Top pane set and changed size?
-	if ( (m_pPanes[0] != NULL) && (PaneRect(0).Size() != m_pPanes[0]->WindowRect().Size()) )
+	if ( (m_pPanes[0] != nullptr) && (PaneRect(0).Size() != m_pPanes[0]->WindowRect().Size()) )
 		m_pPanes[0]->Move(PaneRect(0));
 
 	// Right/Bottom pane set and changed size?
-	if ( (m_pPanes[1] != NULL)&& (PaneRect(1).Size() != m_pPanes[1]->WindowRect().Size()) )
+	if ( (m_pPanes[1] != nullptr)&& (PaneRect(1).Size() != m_pPanes[1]->WindowRect().Size()) )
 		m_pPanes[1]->Move(PaneRect(1));
 }
 
-/******************************************************************************
-** Method:		Pane()
-**
-** Description:	Sets either the left/top or right/bottom window pane.
-**
-** Parameters:	nPane		The window pane to set.
-**				pWnd		The window pane or NULL to remove it.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! Paint the window.
 
-void CSplitWnd::Pane(size_t nPane, CWnd* pWnd)
+void CSplitWnd::OnPaint(CDC& rDC)
 {
-	ASSERT( (nPane == 0) || (nPane == 1) );
+	// Paint the sizing bar.
+	CBrush brBtnFace(::GetSysColorBrush(COLOR_BTNFACE));
 
-	// Ensure the window is
-	// visible and sized correctly.
-	if (pWnd != NULL)
-	{
-		pWnd->Move(PaneRect(nPane));
-		pWnd->Show();
-	}
+	rDC.Fill(SizingBarRect(), brBtnFace);
 
-	m_pPanes[nPane] = pWnd;
+	// If empty, draw the left/top pane border.
+	if (m_pPanes[0] == nullptr)
+		rDC.Border3D(PaneRect(0), false, true);
+
+	// If empty, draw the right/bottom pane border.
+	if (m_pPanes[1] == nullptr)
+		rDC.Border3D(PaneRect(1), false, true);
 }
 
-/******************************************************************************
-** Method:		Pane()
-**
-** Description:	Gets either the left/top or right/bottom window pane.
-**
-** Parameters:	nPane		The window pane to get.
-**
-** Returns:		The window pane or NULL if not set.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! Get the window inside a pane.
 
 CWnd* CSplitWnd::Pane(size_t nPane) const
 {
@@ -173,74 +108,179 @@ CWnd* CSplitWnd::Pane(size_t nPane) const
 	return m_pPanes[nPane];
 }
 
-/******************************************************************************
-** Method:		OnPaint()
-**
-** Description:	Paints the background for unset panes.
-**
-** Parameters:	rDC		The device to paint on.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! Set the window inside a pane.
 
-CRect CSplitWnd::PaneRect(int nPane) const
+void CSplitWnd::SetPane(size_t nPane, CWnd* pWnd)
+{
+	ASSERT( (nPane == 0) || (nPane == 1) );
+
+	// If present, hide previous pane window.
+	if (m_pPanes[nPane] != nullptr)
+	{
+		m_pPanes[nPane]->Show(SW_HIDE);
+	}
+
+	// Ensure new window is sized & visible.
+	if (pWnd != nullptr)
+	{
+		pWnd->Move(PaneRect(nPane));
+		pWnd->Show(SW_SHOW);
+	}
+
+	// Update state.
+	m_pPanes[nPane] = pWnd;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the rectangle for a pane.
+
+CRect CSplitWnd::PaneRect(size_t nPane) const
 {
 	ASSERT( (nPane == 0) || (nPane == 1) );
 
 	CRect rcPane(ClientRect());
 
 	// Calculate rect.
-	if ( (m_bVertSplit) && (nPane == LEFT_PANE) )
+	if ( (m_eSplit == VERTICAL) && (nPane == LEFT_PANE) )
 	{
-		rcPane.right = m_iBarPos - (BAR_SIZE / 2);
+		rcPane.right = m_nBarPos - (BAR_SIZE / 2);
 	}
-	else if ( (m_bVertSplit) && (nPane == RIGHT_PANE) )
+	else if ( (m_eSplit == VERTICAL) && (nPane == RIGHT_PANE) )
 	{
-		rcPane.left  = m_iBarPos + (BAR_SIZE / 2);
+		rcPane.left = m_nBarPos + (BAR_SIZE / 2);
 	}
-	else if ( (!m_bVertSplit) && (nPane == TOP_PANE) )
+	else if ( (m_eSplit == HORIZONTAL) && (nPane == TOP_PANE) )
 	{
-		rcPane.bottom = m_iBarPos - (BAR_SIZE / 2);
+		rcPane.bottom = m_nBarPos - (BAR_SIZE / 2);
 	}
-	else if ( (!m_bVertSplit) && (nPane == BOTTOM_PANE) )
+	else if ( (m_eSplit == HORIZONTAL) && (nPane == BOTTOM_PANE) )
 	{
-		rcPane.top    = m_iBarPos + (BAR_SIZE / 2);
+		rcPane.top = m_nBarPos + (BAR_SIZE / 2);
 	}
 
 	return rcPane;
 }
 
-/******************************************************************************
-** Method:		OnPaint()
-**
-** Description:	Paints the background for unset panes.
-**
-** Parameters:	rDC		The device to paint on.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! Get the rectangle for the sizing bar.
 
-void CSplitWnd::OnPaint(CDC& rDC)
+CRect CSplitWnd::SizingBarRect() const
 {
-	CBrush BgBrush(GRAY_BRUSH);
+	CRect rcBar(ClientRect());
 
-	// Left/Top pane empty?
-	if (m_pPanes[0] == NULL)
+	if (m_eSplit == VERTICAL)
 	{
-		CRect rcPane = PaneRect(0);
-		rDC.Fill(rcPane, BgBrush);
-		rDC.Border3D(rcPane, false, true);
+		rcBar.left  = m_nBarPos - (BAR_SIZE / 2);
+		rcBar.right = m_nBarPos + (BAR_SIZE / 2);
+	}
+	else //(m_eSplit == HORIZONTAL)
+	{
+		rcBar.top    = m_nBarPos - (BAR_SIZE / 2);
+		rcBar.bottom = m_nBarPos + (BAR_SIZE / 2);
 	}
 
-	// Right/Bottom pane empty?
-	if (m_pPanes[1] == NULL)
+	return rcBar;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Set the cursor for this window or one of it's children.
+
+void CSplitWnd::OnSetCursor(HWND hWnd, uint nHitCode, uint nMouseMsg)
+{
+	// Ignore, if request is for child window.
+	if (hWnd != m_hWnd)
 	{
-		CRect rcPane = PaneRect(1);
-		rDC.Fill(rcPane, BgBrush);
-		rDC.Border3D(rcPane, false, true);
+		CCtrlWnd::OnSetCursor(hWnd, nHitCode, nMouseMsg);
+		return;
+	}
+
+	// Default to the arrow for the empty panes.
+	HCURSOR hCursor = m_curArrow.Handle();
+
+	ASSERT(hCursor != NULL);
+
+	// Show sizing cursor, if inside the bar.
+	if (m_eSizing == RESIZEABLE)
+	{
+		ASSERT(m_curSizer.Handle() != NULL);
+
+		CPoint ptCursor = CCursor::CurrentPos(m_hWnd);
+		CRect  rcBar    = SizingBarRect();
+
+		if (ptCursor.IsIn(rcBar))
+			hCursor = m_curSizer.Handle();
+	}
+
+	::SetCursor(hCursor);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Handle a mouse click over the sizing bar.
+
+void CSplitWnd::OnLeftButtonDown(const CPoint& /*ptCursor*/, uint /*nKeyFlags*/)
+{
+	// Ignore if fixed size panes.
+	if (m_eSizing != RESIZEABLE)
+		return;
+
+	::SetCapture(m_hWnd);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Handle a mouse click over the sizing bar.
+
+void CSplitWnd::OnLeftButtonUp(const CPoint& /*ptCursor*/, uint /*nKeyFlags*/)
+{
+	// Release mouse capture.
+	if (::GetCapture() == m_hWnd)
+		::ReleaseCapture();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Handle resizng of the panes.
+
+void CSplitWnd::OnMouseMove(const CPoint& ptCursor, uint /*nKeyFlags*/)
+{
+	// Ignore unless we have capture the mouse.
+	if (::GetCapture() != m_hWnd)
+		return;
+
+	CRect rcClient     = ClientRect();
+	int   iBarWidth    = BAR_SIZE / 2;
+	int   iMinCltWidth = (CLIENT_BORDER * 2) + 1;
+
+	// Move the sizing bar.
+	if (m_eSplit == VERTICAL)
+	{
+		int iBarPos = ptCursor.x;
+
+		// Clip to window edge.
+		iBarPos = max(iBarPos, rcClient.left  + (iBarWidth + iMinCltWidth));
+		iBarPos = min(iBarPos, rcClient.right - (iBarWidth + iMinCltWidth));
+
+		// Resize panes, only if changed..
+		if (m_nBarPos != static_cast<uint>(iBarPos))
+		{
+			m_nBarPos = iBarPos;
+			OnResize(SIZE_RESTORED, rcClient.Size());
+			Invalidate();
+		}
+	}
+	else //(m_eSplit == HORIZONTAL)
+	{
+		int iBarPos = ptCursor.y;
+
+		// Clip to window edge.
+		iBarPos = max(iBarPos, rcClient.top    + (iBarWidth + iMinCltWidth));
+		iBarPos = min(iBarPos, rcClient.bottom - (iBarWidth + iMinCltWidth));
+
+		// Resize panes, only if changed..
+		if (m_nBarPos != static_cast<uint>(iBarPos))
+		{
+			m_nBarPos = iBarPos;
+			OnResize(SIZE_RESTORED, rcClient.Size());
+			Invalidate();
+		}
 	}
 }
