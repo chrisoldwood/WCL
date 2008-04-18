@@ -11,6 +11,7 @@
 #include "Common.hpp"
 #include "FileException.hpp"
 #include "Path.hpp"
+#include "StrCvt.hpp"
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -24,17 +25,19 @@
 *******************************************************************************
 */
 
-CFileException::CFileException(int eErrCode, const CPath& rPath)
+CFileException::CFileException(int eErrCode, const CPath& rPath, DWORD dwLastError)
 {
+	CString strLastError = CStrCvt::FormatError(dwLastError);
+
 	// Convert error to string.
 	switch(eErrCode)
 	{
 		case E_OPEN_FAILED:
-			m_strErrorText.Format(TXT("Failed to open file:\n\n%s"), rPath);
+			m_strErrorText.Format(TXT("Failed to open file:\n\n%s\n\n%s"), rPath, strLastError);
 			break;
 
 		case E_CREATE_FAILED:
-			m_strErrorText.Format(TXT("Failed to create file:\n\n%s"), rPath);
+			m_strErrorText.Format(TXT("Failed to create file:\n\n%s\n\n%s"), rPath, strLastError);
 			break;
 
 		case E_READ_ONLY:
@@ -54,15 +57,15 @@ CFileException::CFileException(int eErrCode, const CPath& rPath)
 			break;
 
 		case E_READ_FAILED:
-			m_strErrorText.Format(TXT("An error occured reading from:\n\n%s"), rPath);
+			m_strErrorText.Format(TXT("An error occured reading from:\n\n%s\n\n%s"), rPath, strLastError);
 			break;
 
 		case E_WRITE_FAILED:
-			m_strErrorText.Format(TXT("An error occured writing to:\n\n%s"), rPath);
+			m_strErrorText.Format(TXT("An error occured writing to:\n\n%s\n\n%s"), rPath, strLastError);
 			break;
 
 		case E_SEEK_FAILED:
-			m_strErrorText.Format(TXT("An error occured seeking in:\n\n%s"), rPath);
+			m_strErrorText.Format(TXT("An error occured seeking in:\n\n%s\n\n%s"), rPath, strLastError);
 			break;
 
 		// Shouldn't happen!
