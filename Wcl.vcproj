@@ -464,6 +464,9 @@
 				RelativePath="TrayIcon.cpp">
 			</File>
 			<File
+				RelativePath=".\TreeView.cpp">
+			</File>
+			<File
 				RelativePath="UpDownBtns.cpp">
 			</File>
 			<File
@@ -868,6 +871,9 @@
 			</File>
 			<File
 				RelativePath="TrayIcon.hpp">
+			</File>
+			<File
+				RelativePath=".\TreeView.hpp">
 			</File>
 			<File
 				RelativePath="UpDownBtns.hpp">
