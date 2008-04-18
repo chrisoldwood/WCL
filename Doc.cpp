@@ -14,7 +14,6 @@
 #include "FileException.hpp"
 #include "App.hpp"
 #include "FrameWnd.hpp"
-#include "DC.hpp"
 
 /******************************************************************************
 ** Method:		Constructor.
