@@ -23,19 +23,19 @@ class RegistryException : public Win32Exception
 {
 public:
 	//! Construction from a fully formatted error message.
-	RegistryException(const std::tstring& strOperation);
+	RegistryException(const tstring& strOperation);
 
 	//! Full constructor.
 	RegistryException(LONG lError, const tchar* pszOperation);
 
 	//! Full constructor.
-	RegistryException(LONG lError, const std::tstring& strOperation);
+	RegistryException(LONG lError, const tstring& strOperation);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from a fully formatted error message.
 
-inline RegistryException::RegistryException(const std::tstring& strOperation)
+inline RegistryException::RegistryException(const tstring& strOperation)
 	: Win32Exception()
 {
 	m_strErrorText = strOperation.c_str();
@@ -52,7 +52,7 @@ inline RegistryException::RegistryException(LONG lError, const tchar* pszOperati
 ////////////////////////////////////////////////////////////////////////////////
 //! Full constructor.
 
-inline RegistryException::RegistryException(LONG lError, const std::tstring& strOperation)
+inline RegistryException::RegistryException(LONG lError, const tstring& strOperation)
 	: Win32Exception(lError, strOperation.c_str())
 {
 }
