@@ -56,7 +56,7 @@ public:
 	virtual void  Write(const void* pBuffer, uint iNumBytes);
 	virtual ulong Seek(ulong lPos, uint nFrom = FILE_BEGIN);
 	virtual bool  IsEOF();
-	virtual void  Throw(int eErrCode);
+	virtual void  Throw(int eErrCode, DWORD dwLastError);
 
 	//
 	// Other operations.

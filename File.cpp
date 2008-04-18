@@ -75,12 +75,14 @@ void CFile::Create(const tchar* pszPath)
 	// Error?
 	if (m_hFile == INVALID_HANDLE_VALUE)
 	{
+		DWORD dwLastError = ::GetLastError();
+
 		// File is read-only?
 		if (m_Path.ReadOnly())
-			throw CFileException(CFileException::E_READ_ONLY, m_Path);
+			throw CFileException(CFileException::E_READ_ONLY, m_Path, ERROR_ACCESS_DENIED);
 		
 		// Unknown reason.
-		throw CFileException(CFileException::E_CREATE_FAILED, m_Path);
+		throw CFileException(CFileException::E_CREATE_FAILED, m_Path, dwLastError);
 	}
 }
 
@@ -108,16 +110,18 @@ void CFile::Open(const tchar* pszPath, uint nMode)
 	// Error?
 	if (m_hFile == INVALID_HANDLE_VALUE)
 	{
+		DWORD dwLastError = ::GetLastError();
+
 		// File exists?
 		if (!m_Path.Exists())
-			throw CFileException(CFileException::E_PATH_INVALID, m_Path);
+			throw CFileException(CFileException::E_PATH_INVALID, m_Path, ERROR_FILE_NOT_FOUND);
 
 		// Trying to write and file is read-only ?
 		if ( (nMode & GENERIC_WRITE) && (m_Path.ReadOnly()) )
-			throw CFileException(CFileException::E_READ_ONLY, m_Path);
+			throw CFileException(CFileException::E_READ_ONLY, m_Path, ERROR_ACCESS_DENIED);
 		
 		// Unknown reason.
-		throw CFileException(CFileException::E_OPEN_FAILED, m_Path);
+		throw CFileException(CFileException::E_OPEN_FAILED, m_Path, dwLastError);
 	}
 
 	// Get EOF.
@@ -171,7 +175,7 @@ void CFile::Read(void* pBuffer, uint iNumBytes)
 	DWORD dwRead = 0;
 
 	if (::ReadFile(m_hFile, pBuffer, iNumBytes, &dwRead, NULL) == 0)
-		throw CFileException(CFileException::E_READ_FAILED, m_Path);
+		throw CFileException(CFileException::E_READ_FAILED, m_Path, ::GetLastError());
 }
 
 /******************************************************************************
@@ -197,7 +201,7 @@ void CFile::Write(const void* pBuffer, uint iNumBytes)
 	DWORD dwWritten = 0;
 
 	if (::WriteFile(m_hFile, pBuffer, iNumBytes, &dwWritten, NULL) == 0)
-		throw CFileException(CFileException::E_WRITE_FAILED, m_Path);
+		throw CFileException(CFileException::E_WRITE_FAILED, m_Path, ::GetLastError());
 }
 
 /******************************************************************************
@@ -226,8 +230,10 @@ ulong CFile::Seek(ulong lPos, uint nFrom)
 	ulong lNewPos = ::SetFilePointer(m_hFile, lPos, NULL, nFrom);
 
 	// Error?
-	if (::GetLastError() != NO_ERROR)
-		throw CFileException(CFileException::E_SEEK_FAILED, m_Path);
+	DWORD dwLastError = ::GetLastError();
+
+	if (dwLastError != NO_ERROR)
+		throw CFileException(CFileException::E_SEEK_FAILED, m_Path, dwLastError);
 
 	return lNewPos;
 }
@@ -266,9 +272,9 @@ bool CFile::IsEOF()
 *******************************************************************************
 */
 
-void CFile::Throw(int eErrCode)
+void CFile::Throw(int eErrCode, DWORD dwLastError)
 {
-	throw CFileException(eErrCode, m_Path);
+	throw CFileException(eErrCode, m_Path, dwLastError);
 }
 
 /******************************************************************************
@@ -583,18 +589,29 @@ size_t CFile::ReadTextFile(const tchar* pszPath, CString& strContents, TextForma
 	// Read the file into our temporary buffer.
 	ReadFile(pszPath, vBuffer);
 
-	size_t nChars = 0;
+	size_t nChars  = 0;
+	size_t nOffset = 0;
 
-	// Determine the file format.
+	// Contains a Unicode BOM?.
 	if ( (vBuffer.size() >= 2) && (vBuffer[0] == 0xFF) && (vBuffer[1] == 0xFE) )
 	{
 		eFormat = UNICODE_TEXT;
 		nChars  = (vBuffer.size() - 2) / sizeof(wchar_t);
+		nOffset = 1;
 	}
+	// Contains a UTF-8 BOM?
+	else if ( (vBuffer.size() >= 3) && (vBuffer[0] == 0xEF) && (vBuffer[1] == 0xBB) && (vBuffer[2] == 0xBF) )
+	{
+		eFormat = ANSI_TEXT;
+		nChars  = vBuffer.size() - 3;
+		nOffset = 3;
+	}
+	// No BOM.
 	else
 	{
 		eFormat = ANSI_TEXT;
 		nChars  = vBuffer.size();
+		nOffset = 0;
 	}
 
 	// Allocate the final string buffer.
@@ -605,7 +622,7 @@ size_t CFile::ReadTextFile(const tchar* pszPath, CString& strContents, TextForma
 		// Copy the contents to the return buffer.
 		if (eFormat == ANSI_TEXT)
 		{
-			const char* pszBegin = reinterpret_cast<const char*>(&vBuffer.front());
+			const char* pszBegin = reinterpret_cast<const char*>(&vBuffer.front()) + nOffset;
 			const char* pszEnd   = pszBegin + nChars;
 
 #ifdef ANSI_BUILD
@@ -616,7 +633,7 @@ size_t CFile::ReadTextFile(const tchar* pszPath, CString& strContents, TextForma
 		}
 		else // (eFormat == UNICODE_TEXT)
 		{
-			const wchar_t* pszBegin = reinterpret_cast<const wchar_t*>(&vBuffer.front());
+			const wchar_t* pszBegin = reinterpret_cast<const wchar_t*>(&vBuffer.front()) + nOffset;
 			const wchar_t* pszEnd   = pszBegin + nChars;
 
 #ifdef ANSI_BUILD
