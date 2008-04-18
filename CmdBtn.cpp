@@ -92,7 +92,7 @@ LRESULT CCmdButton::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	{
 		// Mouse moved.
 		case WM_MOUSEMOVE:
-			OnMouseMove(CPoint(LOWORD(lParam), HIWORD(lParam)), wParam);
+			OnMouseMove(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), wParam);
 			break;
 
 		// Timer gone off.
