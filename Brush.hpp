@@ -32,6 +32,7 @@ public:
 	CBrush();
 	CBrush(int iID);
 	CBrush(COLORREF crClr);
+	CBrush(HBRUSH hBrush, bool bOwn = false);
 	~CBrush();
 
 	void Create(int iID);
@@ -65,6 +66,14 @@ inline CBrush::CBrush(int iID)
 inline CBrush::CBrush(COLORREF crClr)
 {
 	Create(crClr);
+}
+
+inline CBrush::CBrush(HBRUSH hBrush, bool bOwn)
+{
+	m_hBrush = hBrush;
+	m_bOwner = bOwn;
+
+	ASSERT(m_hBrush != NULL);
 }
 
 inline void CBrush::Create(int iID)
