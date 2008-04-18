@@ -73,6 +73,10 @@ extern "C" int WINAPI WinMain(HINSTANCE hCurrInst, HINSTANCE /*hPrevInst*/,
 		// Get the WM_QUIT message result code.
 		nResult = oApp.m_MainThread.Result();
 	}
+	catch (const Core::Exception& e)
+	{
+		WCL::ReportUnhandledException(TXT("Unexpected exception caught in WinMain()\n\n%s"), e.What());
+	}
 	catch (const std::exception& e)
 	{
 		WCL::ReportUnhandledException(TXT("Unexpected exception caught in WinMain()\n\n%hs"), e.what());
