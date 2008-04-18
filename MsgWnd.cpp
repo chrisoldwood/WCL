@@ -124,9 +124,14 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			OnCtlColour(iMsg, (HDC)wParam, (HWND)lParam);
 			return 0;
 
+		// Set cursor.
+		case WM_SETCURSOR:
+			OnSetCursor((HWND)wParam, LOWORD(lParam), HIWORD(lParam));
+			return 0;
+
 		// Hit test on the window.
 		case WM_NCHITTEST:
-			OnHitTest(CPoint(LOWORD(lParam), HIWORD(lParam)));
+			OnHitTest(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)));
 			return 0;
 
 		// Window resized.
