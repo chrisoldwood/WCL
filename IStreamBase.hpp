@@ -46,7 +46,7 @@ public:
 	virtual ulong Seek(ulong lPos, uint nFrom = FILE_BEGIN) = 0;
 
 	//! Throw a stream specific exception with the specified error code.
-	virtual void Throw(int eErrCode) = 0;
+	virtual void Throw(int eErrCode, DWORD dwLastError) = 0;
 
 protected:
 	//! Protected destructor.

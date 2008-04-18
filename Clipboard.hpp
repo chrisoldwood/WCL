@@ -57,7 +57,7 @@ public:
 	virtual void  Write(const void* pBuffer, size_t nNumBytes);
 	virtual ulong Seek(ulong lPos, uint nFrom = FILE_BEGIN);
 	virtual bool  IsEOF();
-	virtual void  Throw(int eErrCode);
+	virtual void  Throw(int eErrCode, DWORD dwLastError);
 
 	//
 	// Helper methods.
@@ -135,9 +135,9 @@ inline bool CClipboard::IsEOF()
 	return m_pStream->IsEOF();
 }
 
-inline void CClipboard::Throw(int eErrCode)
+inline void CClipboard::Throw(int eErrCode, DWORD dwLastError)
 {
-	m_pStream->Throw(eErrCode);
+	m_pStream->Throw(eErrCode, dwLastError);
 }
 
 #endif // WCL_CLIPBOARD_HPP
