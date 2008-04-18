@@ -36,6 +36,10 @@
 
 - Error handling, particularly the GUI controls - e.g. CB_ERRSPACE.
 
+- Replace MsgHandled and MsgResult with SetMsgResult().
+
+- Sort out WndProcs to return either LRESULT or SetMsgResult.
+
 UNICODE
 =======
 

@@ -245,6 +245,12 @@ BOOL DIALOGPROC DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			pDialog->MsgResultBuffer (plMsgResult);
 		}
 	}
+	catch (const Core::Exception& e)
+	{
+		WCL::ReportUnhandledException(	TXT("Unexpected exception caught in DlgProc()\n\n")
+										TXT("Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X\n\n%s"),
+										hWnd, iMsg, wParam, lParam, e.What());
+	}
 	catch (const std::exception& e)
 	{
 		WCL::ReportUnhandledException(	TXT("Unexpected exception caught in DlgProc()\n\n")

@@ -85,6 +85,10 @@ DWORD WINAPI ThreadPoolThread::ThreadFunction(LPVOID lpParam)
 		// Call the threads main function.
 		pThread->Run();
 	}
+	catch (const Core::Exception& e)
+	{
+		WCL::ReportUnhandledException(TXT("Unexpected exception caught in ThreadPoolThread::Run()\n\n%s"), e.What());
+	}
 	catch (const std::exception& e)
 	{
 		WCL::ReportUnhandledException(TXT("Unexpected exception caught in ThreadPoolThread::Run()\n\n%hs"), e.what());
@@ -247,6 +251,10 @@ void ThreadPoolThread::OnRunJob()
 	{
 		// Run it.
 		pJob->Run();
+	}
+	catch (const Core::Exception& e)
+	{
+		WCL::ReportUnhandledException(TXT("Unexpected exception caught in ThreadPoolThread::OnRunJob()\n\n%s"), e.What());
 	}
 	catch (const std::exception& e)
 	{
