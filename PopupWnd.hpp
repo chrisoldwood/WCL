@@ -96,6 +96,9 @@ protected:
 	virtual void OnShowMenuPopupHint(HMENU hMenu);
 	virtual void OnShowSystemMenuHint();
 	virtual void OnShowDefaultMenuHint();
+
+	//! Mouse capture lost.
+	virtual void OnCaptureChanged();
 };
 
 /******************************************************************************
