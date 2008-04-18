@@ -80,7 +80,6 @@ bool CSDIApp::OnOpen()
 			strPath.Delete(nLength-1);
 
 		static_cast<CSDICmds&>(m_rCmdControl).OpenFile(strPath);
-
 	}
 
 	return true;
@@ -102,4 +101,3 @@ bool CSDIApp::OnClose()
 {
 	return true;
 }
-
