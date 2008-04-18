@@ -45,7 +45,12 @@ public:
 	//
 	// Class methods.
 	//
+
+	//! Get the current cursor postion in screen co-ordinates.
 	static CPoint CurrentPos();
+
+	//! Get the current cursor postion in window co-ordinates.
+	static CPoint CurrentPos(HWND hWnd);
 
 protected:
 	//
@@ -62,28 +67,9 @@ protected:
 *******************************************************************************
 */
 
-inline void CCursor::LoadRsc(const tchar* pszRsc)
-{
-	ASSERT(m_hCursor == NULL);
-
-	m_hCursor = ::LoadCursor(NULL, pszRsc);
-	m_bOwner  = false;
-
-	ASSERT(m_hCursor != NULL);
-}
-
 inline HCURSOR CCursor::Handle() const
 {
 	return m_hCursor;
-}
-
-inline CPoint CCursor::CurrentPos()
-{
-	CPoint ptCursor;
-
-	::GetCursorPos(&ptCursor);
-
-	return ptCursor;
 }
 
 #endif //CURSOR_HPP

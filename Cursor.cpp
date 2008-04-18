@@ -70,3 +70,38 @@ void CCursor::LoadRsc(uint nRscID)
 
 	ASSERT(m_hCursor != NULL);
 }
+
+void CCursor::LoadRsc(const tchar* pszRsc)
+{
+	ASSERT(m_hCursor == NULL);
+
+	m_hCursor = ::LoadCursor(NULL, pszRsc);
+	m_bOwner  = false;
+
+	ASSERT(m_hCursor != NULL);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the current cursor postion in screen co-ordinates.
+
+CPoint CCursor::CurrentPos()
+{
+	CPoint ptCursor;
+
+	::GetCursorPos(&ptCursor);
+
+	return ptCursor;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the current cursor postion in screen co-ordinates.
+
+CPoint CCursor::CurrentPos(HWND hWnd)
+{
+	CPoint ptCursor;
+
+	::GetCursorPos(&ptCursor);
+	::ScreenToClient(hWnd, &ptCursor);
+
+	return ptCursor;
+}
