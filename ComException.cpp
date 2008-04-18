@@ -39,8 +39,8 @@ void ComException::FormatError(HRESULT hResult, IUnknown* pObject, const IID& rI
 	typedef WCL::ComPtr<ISupportErrorInfo> ISupportErrorInfoPtr;
 	typedef WCL::ComPtr<IErrorInfo> IErrorInfoPtr;
 
-	std::tstring strSource;
-	std::tstring strDescription;
+	tstring strSource;
+	tstring strDescription;
 
 	ISupportErrorInfoPtr pSupportErrorInfo;
 
@@ -66,7 +66,7 @@ void ComException::FormatError(HRESULT hResult, IUnknown* pObject, const IID& rI
 		}
 	}
 
-	std::tstring strResCode = CStrCvt::FormatError(hResult);
+	tstring strResCode = CStrCvt::FormatError(hResult);
 
 	// Format the error string.
 	if (!strSource.empty() || !strDescription.empty())
