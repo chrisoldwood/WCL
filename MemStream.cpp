@@ -287,7 +287,7 @@ bool CMemStream::IsEOF()
 *******************************************************************************
 */
 
-void CMemStream::Throw(int eErrCode)
+void CMemStream::Throw(int eErrCode, DWORD /*dwLastError*/)
 {
 	throw CMemStreamException(eErrCode);
 }
