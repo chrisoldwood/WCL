@@ -123,6 +123,9 @@ protected:
 	void MsgHandled(BOOL    bHandled);
 	void MsgResult (LRESULT lResult);
 
+	//! Set the result for the message.
+	void SetMsgResult(BOOL bHandled, LRESULT lResult);
+
 	BOOL*    MsgHandledBuffer(BOOL*    pbBuffer);
 	LRESULT* MsgResultBuffer (LRESULT* plBuffer);
 
@@ -204,6 +207,19 @@ inline void CMsgWnd::MsgResult(LRESULT lResult)
 	ASSERT(m_plMsgResult != NULL);
 
 	*m_plMsgResult = lResult;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Set the result for the message. This method replaces the need to make two 
+//! calls - one to MsgHandled() and one to MsgResult() - with a single call.
+
+inline void CMsgWnd::SetMsgResult(BOOL bHandled, LRESULT lResult)
+{
+	ASSERT(m_pbMsgHandled != NULL);
+	ASSERT(m_plMsgResult  != NULL);
+
+	*m_pbMsgHandled = bHandled;
+	*m_plMsgResult  = lResult;
 }
 
 inline BOOL* CMsgWnd::MsgHandledBuffer(BOOL* pbBuffer)
