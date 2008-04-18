@@ -68,6 +68,15 @@ void CSDIFrame::OnCreate(const CRect& rcClient)
 	CFrameWnd::OnCreate(rcClient);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//! Query whether to close the window.
+
+bool CSDIFrame::OnQueryClose()
+{
+	// Close the app if the file was closed.
+	return static_cast<CSDICmds&>(CSDIApp::This().m_rCmdControl).CloseFile();
+}
+
 /******************************************************************************
 ** Method:		OnDestroy()
 **

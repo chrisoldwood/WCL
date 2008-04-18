@@ -63,6 +63,9 @@ protected:
 	virtual void OnResize(int iFlag, const CSize& rNewSize);
 	virtual void OnDropFile(int nFile, const tchar* pszPath);
 	virtual void OnDestroy();
+
+	//! Query whether to close the window.
+	virtual bool OnQueryClose();
 };
 
 /******************************************************************************
