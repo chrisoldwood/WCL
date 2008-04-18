@@ -351,7 +351,7 @@ void CListView::ImageList(uint nType, uint nRscID, uint nImgWidth, COLORREF crMa
 uint CListView::StringWidth(size_t nChars) const
 {
 	// Create a string of 'X's.
-	std::tstring str(nChars, TXT('X'));
+	tstring str(nChars, TXT('X'));
 
 	return StringWidth(str.c_str());
 }
