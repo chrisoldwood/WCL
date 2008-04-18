@@ -57,6 +57,17 @@ public:
 	tchar* Buffer() const;
 
 	//
+	// Iterators.
+	//
+	typedef const tchar* const_iterator;
+	typedef tchar* iterator;
+
+	const_iterator begin() const;
+	const_iterator end() const;
+	iterator begin();
+	iterator end();
+
+	//
 	// Mutation.
 	//
 	void     Insert(size_t nPos, const tchar* pszString);
@@ -161,7 +172,7 @@ protected:
 	//
 	friend void operator >>(WCL::IInputStream&  rStream, CString& rString);
 	friend void operator <<(WCL::IOutputStream& rStream, const CString& rString);
-	friend std::tostream& operator<<(std::tostream& os, const CString& str);
+	friend tostream& operator<<(tostream& os, const CString& str);
 };
 
 /******************************************************************************
@@ -261,6 +272,34 @@ inline tchar* CString::Buffer() const
 	return m_pszData;
 }
 
+inline CString::const_iterator CString::begin() const
+{
+	ASSERT(m_pszData != nullptr);
+	
+	return m_pszData;
+}
+
+inline CString::const_iterator CString::end() const
+{
+	ASSERT(m_pszData != nullptr);
+	
+	return (m_pszData + tstrlen(m_pszData));
+}
+
+inline CString::iterator CString::begin()
+{
+	ASSERT(m_pszData != nullptr);
+	
+	return m_pszData;
+}
+
+inline CString::iterator CString::end()
+{
+	ASSERT(m_pszData != nullptr);
+	
+	return (m_pszData + tstrlen(m_pszData));
+}
+
 inline CString::operator const tchar*() const
 {
 	ASSERT(m_pszData);
@@ -357,7 +396,7 @@ inline CString operator+(const CString& strLHS, const CString& strRHS)
 ////////////////////////////////////////////////////////////////////////////////
 //! STL output stream inserter.
 
-inline std::tostream& operator<<(std::tostream& os, const CString& str)
+inline tostream& operator<<(tostream& os, const CString& str)
 {
 	os << str.c_str();
 	return os;
