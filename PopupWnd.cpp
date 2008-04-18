@@ -269,6 +269,12 @@ LRESULT WINDOWPROC PopupWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lPar
 		pWnd->MsgHandledBuffer(pbMsgHandled);
 		pWnd->MsgResultBuffer (plMsgResult);
 	}
+	catch (const Core::Exception& e)
+	{
+		WCL::ReportUnhandledException(	TXT("Unexpected exception caught in PopupWndProc()\n\n")
+										TXT("Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X\n\n%s"),
+										hWnd, iMsg, wParam, lParam, e.What());
+	}
 	catch (const std::exception& e)
 	{
 		WCL::ReportUnhandledException(	TXT("Unexpected exception caught in PopupWndProc()\n\n")
@@ -323,37 +329,37 @@ LRESULT CPopupWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		
         // Left button pressed.
 		case WM_LBUTTONDOWN:
-			OnLeftButtonDown(CPoint(LOWORD(lParam), HIWORD(lParam)), wParam);
+			OnLeftButtonDown(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), wParam);
 			break;
 
         // Left button released.
 		case WM_LBUTTONUP:
-			OnLeftButtonUp(CPoint(LOWORD(lParam), HIWORD(lParam)), wParam);
+			OnLeftButtonUp(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), wParam);
 			break;
 		
         // Left button double clicked.
 		case WM_LBUTTONDBLCLK:
-			OnLeftButtonDblClick(CPoint(LOWORD(lParam), HIWORD(lParam)), wParam);
+			OnLeftButtonDblClick(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), wParam);
 			break;
 
         // Right button pressed.
 		case WM_RBUTTONDOWN:
-			OnRightButtonDown(CPoint(LOWORD(lParam), HIWORD(lParam)), wParam);
+			OnRightButtonDown(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), wParam);
 			break;
 
         // Right button released.
 		case WM_RBUTTONUP:
-			OnRightButtonUp(CPoint(LOWORD(lParam), HIWORD(lParam)), wParam);
+			OnRightButtonUp(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), wParam);
 			break;
 		
         // Right button double clicked.
 		case WM_RBUTTONDBLCLK:
-			OnRightButtonDblClick(CPoint(LOWORD(lParam), HIWORD(lParam)), wParam);
+			OnRightButtonDblClick(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), wParam);
 			break;
 		
 		// Mouse moved.
 		case WM_MOUSEMOVE:
-			OnMouseMove(CPoint(LOWORD(lParam), HIWORD(lParam)), wParam);
+			OnMouseMove(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), wParam);
 			break;
 		
 		// Key pressed.
@@ -374,6 +380,11 @@ LRESULT CPopupWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		// Menu item selected.
 		case WM_MENUSELECT:
 			OnSelectMenu(HIWORD(wParam), LOWORD(wParam), (HMENU)lParam);
+			break;
+
+		// Mouse capture lost.
+		case WM_CAPTURECHANGED:
+			OnCaptureChanged();
 			break;
 
 		// Window being destroyed.
@@ -686,4 +697,11 @@ void CPopupWnd::OnShowDefaultMenuHint()
 	// Remove previous hint.
 	if (pStatusBar != NULL)
 		pStatusBar->Hint(TXT(""));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Mouse capture lost.
+
+void CPopupWnd::OnCaptureChanged()
+{
 }
