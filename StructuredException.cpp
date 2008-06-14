@@ -5,6 +5,7 @@
 
 #include "Common.hpp"
 #include "StructuredException.hpp"
+#include <Core/StringUtils.hpp>
 
 namespace WCL
 {
@@ -18,9 +19,9 @@ StructuredException::StructuredException(uint nCode, _EXCEPTION_POINTERS* /*pInf
 	const tchar* pszCode = FormatCode(m_nCode);
 
 	if (pszCode != nullptr)
-		m_strErrorText.Format(TXT("Structured Exception: %s"), pszCode);
+		m_strDetails = Core::Fmt(TXT("Structured Exception: %s"), pszCode);
 	else 
-		m_strErrorText.Format(TXT("Unknown Structured Exception: 0x%08X"), nCode);
+		m_strDetails = Core::Fmt(TXT("Unknown Structured Exception: 0x%08X"), nCode);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -11,7 +11,7 @@
 #pragma once
 #endif
 
-#include "Exception.hpp"
+#include <Core/Exception.hpp>
 #include "IFacePtr.hpp"
 
 namespace WCL
@@ -20,7 +20,7 @@ namespace WCL
 ////////////////////////////////////////////////////////////////////////////////
 //! The exception type thrown for COM errors.
 
-class ComException : public CException
+class ComException : public Core::Exception
 {
 public:
 	//! Construction from a non-IErrorInfo supported error.

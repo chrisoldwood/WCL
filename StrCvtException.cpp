@@ -10,6 +10,7 @@
 
 #include "Common.hpp"
 #include "StrCvtException.hpp"
+#include <Core/StringUtils.hpp>
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -29,11 +30,11 @@ CStrCvtException::CStrCvtException(int eErrCode)
 	switch(eErrCode)
 	{
 		case E_INVALID_FORMAT:
-			m_strErrorText = TXT("Invalid format");
+			m_strDetails = TXT("Invalid format");
 			break;
 
 		case E_INVALID_RANGE:
-			m_strErrorText = TXT("Number out of range");
+			m_strDetails = TXT("Number out of range");
 			break;
 
 		// Shouldn't happen!

@@ -9,6 +9,7 @@
 #include <Core/AnsiWide.hpp>
 #include "StrCvt.hpp"
 #include "ComPtr.hpp"
+#include <Core/StringUtils.hpp>
 
 namespace WCL
 {
@@ -20,7 +21,7 @@ namespace WCL
 ComException::ComException(HRESULT hResult, const tchar* pszOperation)
 	: m_hResult(hResult)
 {
-	m_strErrorText.Format(TXT("%s [0x%08X - %s]"), pszOperation, hResult, CStrCvt::FormatError(hResult));
+	m_strDetails = Core::Fmt(TXT("%s [0x%08X - %s]"), pszOperation, hResult, CStrCvt::FormatError(hResult));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -70,9 +71,9 @@ void ComException::FormatError(HRESULT hResult, IUnknown* pObject, const IID& rI
 
 	// Format the error string.
 	if (!strSource.empty() || !strDescription.empty())
-		m_strErrorText.Format(TXT("%s [0x%08X - %s] {%s : %s}"), pszOperation, hResult, strResCode.c_str(), strSource.c_str(), strDescription.c_str());
+		m_strDetails = Core::Fmt(TXT("%s [0x%08X - %s] {%s : %s}"), pszOperation, hResult, strResCode.c_str(), strSource.c_str(), strDescription.c_str());
 	else
-		m_strErrorText.Format(TXT("%s [0x%08X - %s]"), pszOperation, hResult, strResCode.c_str());
+		m_strDetails = Core::Fmt(TXT("%s [0x%08X - %s]"), pszOperation, hResult, strResCode.c_str());
 }
 
 //namespace WCL

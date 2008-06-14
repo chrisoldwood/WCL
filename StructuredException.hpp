@@ -11,7 +11,7 @@
 #pragma once
 #endif
 
-#include "Exception.hpp"
+#include <Core/Exception.hpp>
 
 namespace WCL
 {
@@ -19,7 +19,7 @@ namespace WCL
 ////////////////////////////////////////////////////////////////////////////////
 //! The type of exception thrown when a Win32 structured exception occurs.
 
-class StructuredException : public CException
+class StructuredException : public Core::Exception
 {
 public:
 	//! Constructor.

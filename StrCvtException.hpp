@@ -16,7 +16,7 @@
 #pragma once
 #endif
 
-#include "Exception.hpp"
+#include <Core/Exception.hpp>
 
 /******************************************************************************
 ** 
@@ -25,7 +25,7 @@
 *******************************************************************************
 */
 
-class CStrCvtException : public CException
+class CStrCvtException : public Core::Exception
 {
 public:
 	//

@@ -38,7 +38,7 @@ public:
 inline RegistryException::RegistryException(const tstring& strOperation)
 	: Win32Exception()
 {
-	m_strErrorText = strOperation.c_str();
+	m_strDetails = strOperation.c_str();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
