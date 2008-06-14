@@ -127,6 +127,9 @@ public:
 	void TextOut(int iX, int iY, const tchar* pszText);
 	void TextOut(const CPoint& rptOrigin, const tchar* pszText);
 	void DrawText(const CRect& rcRect, const tchar* pszText, int nFormat);
+
+	//! Convert the point size to pixels.
+	long PointSizeToPixels(long nPointSize) const;
 	
 	//
 	// Bit blitting.
@@ -328,6 +331,14 @@ inline void CDC::TextOut(const CPoint& rptOrigin, const tchar* pszText)
 inline void CDC::DrawText(const CRect& rcRect, const tchar* pszText, int nFormat)
 {
 	::DrawText(m_hDC, pszText, -1, const_cast<CRect*>(&rcRect), nFormat);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Convert the point size to pixels.
+
+inline long CDC::PointSizeToPixels(long nPointSize) const
+{
+	return ((nPointSize * ::GetDeviceCaps(m_hDC, LOGPIXELSY)) / 72);
 }
 
 inline void CDC::PatBlt(const CRect& rcDst, DWORD dwRop)
