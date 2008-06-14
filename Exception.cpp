@@ -6,54 +6,6 @@
 #include "Common.hpp"
 #include "Exception.hpp"
 #include "App.hpp"
-#include <Core/AnsiWide.hpp>
-
-////////////////////////////////////////////////////////////////////////////////
-//! Default constructor.
-
-CException::CException()
-{
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//! Destructor.
-
-CException::~CException()
-{
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//! Retrieve the error message in the native string format.
-
-const tchar* CException::ErrorText() const
-{
-	return m_strErrorText;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//! Get the exception details.
-
-const tchar* CException::What() const
-{
-	return m_strErrorText;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//! Retrieve the ANSI only error message. For Unicode builds we create the ANSI
-//! version of the error message on demand.
-
-const char* CException::what() const
-{
-#ifdef ANSI_BUILD
-	return m_strErrorText.c_str();
-#else
-	// Convert ANSI error message on demand.
-	if (m_strAnsiText.empty())
-		m_strAnsiText = Core::WideToAnsi(m_strErrorText.c_str(), m_strErrorText.c_str()+m_strErrorText.Length());
-
-	return m_strAnsiText.c_str();
-#endif
-}
 
 namespace WCL
 {
