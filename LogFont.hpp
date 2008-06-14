@@ -35,6 +35,9 @@ public:
 	CLogFont();
 	CLogFont(HFONT hFont);
 	~CLogFont();
+
+	//! Construction from a face name and height in pixels.
+	CLogFont(const tchar* pszFace, long nHeight);
 	
 	//
 	// Methods.
@@ -56,8 +59,11 @@ public:
 
 protected:
 	//
-	// Members.
+	// Internal methods.
 	//
+
+	//! Common construction.
+	void Initialise();
 };
 
 /******************************************************************************
