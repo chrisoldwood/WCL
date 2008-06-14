@@ -80,6 +80,8 @@ inline BSTR ComStr::Get() const
 
 inline BSTR* AttachTo(ComStr& bstr)
 {
+	ASSERT(bstr.m_bstr == nullptr);
+
 	return &bstr.m_bstr;
 }
 
