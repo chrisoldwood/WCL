@@ -101,7 +101,7 @@ bool CDoc::Load()
 	catch (const CFileException& rException)
 	{
 		// Notify user.
-		CApp::This().m_rMainWnd.AlertMsg(TXT("%s"), rException.ErrorText());
+		CApp::This().m_rMainWnd.AlertMsg(TXT("%s"), rException.What());
 		return false;
 	}
 
@@ -124,7 +124,7 @@ bool CDoc::Save()
 	catch (const CFileException& rException)
 	{
 		// Notify user.
-		CApp::This().m_rMainWnd.AlertMsg(TXT("%s"), rException.ErrorText());
+		CApp::This().m_rMainWnd.AlertMsg(TXT("%s"), rException.What());
 		return false;
 	}
 
