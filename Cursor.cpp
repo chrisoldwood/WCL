@@ -44,9 +44,21 @@ CCursor::CCursor()
 
 CCursor::~CCursor()
 {
-	// Delete if valid and we own it.
-	if ( (m_hCursor) && (m_bOwner) )
+	Release();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Release the resource.
+
+void CCursor::Release()
+{
+	// Aquired AND we own it?
+	if ( (m_hCursor != NULL) && m_bOwner )
 		::DestroyCursor(m_hCursor);
+
+	// Reset state.
+	m_hCursor = NULL;
+	m_bOwner  = false;
 }
 
 /******************************************************************************

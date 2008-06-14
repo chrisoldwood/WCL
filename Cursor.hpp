@@ -43,6 +43,13 @@ public:
 	HCURSOR Handle() const;
 
 	//
+	// Methods.
+	//
+
+	//! Release the resource.
+	void Release();
+
+	//
 	// Class methods.
 	//
 
