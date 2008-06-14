@@ -6,15 +6,11 @@
 
 - Fix CentreWindow() so it doesn't put dialogs off screen.
 
-- Add resource version info class.
-
 - Change app menus to contain button images.
 
 - More generic msg box function.
 
 - Add exception throwing to CIniFile, CPath classes.
-
-- Fix CIniFile ctor to handle ext properly.
 
 - Add copy ctors and assingment operators to GDI classes to check ownership.
 
@@ -24,15 +20,9 @@
 
 - Check declaration of seconds_t under VC++ 7/8.
 
-- Rebase exception types off of a new Core::Exception type which is Ansi/Wide aware.
-
 - Remove stream behaviour from Clipboard and use Memstream for streaming.
 
 - Rebase ThreadPoolThread off a new WorkerThread class.
-
-- Remove WCL::CException and replace with Core::Exception.
-
-- Add single MMF read/write static methods to CFile, e.g. ReadContents(CString);
 
 - Error handling, particularly the GUI controls - e.g. CB_ERRSPACE.
 
@@ -40,11 +30,14 @@
 
 - Sort out WndProcs to return either LRESULT or SetMsgResult.
 
+- Change Doc/View/SDI* types to use SharedPtr's.
+
+- GLOBAL: Change 'deletes' to use smart ptrs.
+
+
 UNICODE
 =======
 
 - Clipboard support (both ANSI and Unicode) via Template function (instantiated for char/wchar_t).
-
-- Unit Tests for CStrCvt and CPath.
 
 - Fix EditBox filter (256 char limit).
