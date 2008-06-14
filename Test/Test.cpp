@@ -15,6 +15,10 @@ extern void TestString();
 extern void TestDateAndTime();
 extern void TestIFacePtr();
 extern void TestComPtr();
+extern void TestVerInfoReader();
+extern void TestIniFile();
+extern void TestRect();
+extern void TestFolderIterator();
 
 ////////////////////////////////////////////////////////////////////////////////
 //! The entry point for the test harness.
@@ -28,6 +32,10 @@ int _tmain(int /*argc*/, _TCHAR* /*argv*/[])
 		TestDateAndTime();
 		TestIFacePtr();
 		TestComPtr();
+		TestVerInfoReader();
+		TestIniFile();
+		TestRect();
+		TestFolderIterator();
 
 		Core::SetTestRunFinalStatus(true);
 	}
