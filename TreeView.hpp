@@ -33,6 +33,9 @@ public:
 	// Properties.
 	//
 
+	//! Get the root item.
+	HTREEITEM Root() const;
+
 	//! Set an image list for the tree view.
 	void SetImageList(uint nType, const CImageList& oImageList);
 
@@ -55,6 +58,9 @@ public:
 	//! Update a tree item.
 	void UpdateItem(HTREEITEM hItem, const tstring& strText, bool bHasChildren, int nImage);
 
+	//! Select a tree item.
+	void Select(HTREEITEM hItem);
+
 protected:
 	//
 	// Internal methods.
@@ -65,10 +71,22 @@ protected:
 };
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Get the root item.
+
+inline HTREEITEM TreeView::Root() const
+{
+	ASSERT(m_hWnd != NULL);
+
+	return TreeView_GetRoot(m_hWnd);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Delete all items from the tree.
 
 inline void TreeView::Clear()
 {
+	ASSERT(m_hWnd != NULL);
+
 	TreeView_DeleteAllItems(m_hWnd);
 }
 

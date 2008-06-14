@@ -43,6 +43,7 @@ void TreeView::GetCreateParams(WNDCREATE& rParams)
 
 void TreeView::SetImageList(uint nType, const CImageList& oImageList)
 {
+	ASSERT(m_hWnd != NULL);
 	ASSERT(oImageList.Handle() != NULL);
 	ASSERT(oImageList.Owner()  == false);
 
@@ -68,6 +69,8 @@ void TreeView::SetImageList(uint nType, uint nRscID, uint nImgWidth, COLORREF cr
 HTREEITEM TreeView::InsertItem(HTREEITEM hParent, HTREEITEM hPredecessor, const tstring& strText,
 								bool bHasChildren, int nImage)
 {
+	ASSERT(m_hWnd != NULL);
+
 	TVINSERTSTRUCT oItem = { 0 };
 
 	oItem.hParent        = hParent;
@@ -91,6 +94,7 @@ HTREEITEM TreeView::InsertItem(HTREEITEM hParent, HTREEITEM hPredecessor, const 
 
 void TreeView::UpdateItem(HTREEITEM hItem, const tstring& strText, bool bHasChildren, int nImage)
 {
+	ASSERT(m_hWnd != NULL);
 	ASSERT(hItem != NULL);
 
 	TVITEM oItem = { 0 };
@@ -103,6 +107,17 @@ void TreeView::UpdateItem(HTREEITEM hItem, const tstring& strText, bool bHasChil
 	oItem.iSelectedImage = nImage;
 
 	TreeView_SetItem(m_hWnd, &oItem);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Select a tree item.
+
+void TreeView::Select(HTREEITEM hItem)
+{
+	ASSERT(m_hWnd != NULL);
+	ASSERT(hItem != NULL);
+
+	TreeView_SelectItem(m_hWnd, hItem);
 }
 
 //namespace WCL
