@@ -178,7 +178,7 @@ CDate::DateOrder CDate::DateFormatOrder()
 		eOrder = static_cast<DateOrder>(_ttoi(pszBuffer));
 
 		if ((eOrder != MONTH_DAY_YEAR) && (eOrder != DAY_MONTH_YEAR) && (eOrder != YEAR_MONTH_DAY))
-			throw std::runtime_error(T2A(Core::Fmt(TXT("Unsupported locale date order '%s'"), pszBuffer)));
+			throw Core::BadLogicException(Core::Fmt(TXT("Unsupported locale date order '%s'"), pszBuffer));
 	}
 
 	return eOrder;
