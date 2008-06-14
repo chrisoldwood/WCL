@@ -838,7 +838,7 @@ CString& CString::Trim(bool bLeft, bool bRight)
 	{
 		size_t nChars = 0;
 
-		for (tchar* psz = m_pszData; (*psz != TXT('\0')) && (isspace(static_cast<uchar>(*psz))); ++psz)
+		for (tchar* psz = m_pszData; (*psz != TXT('\0')) && (tisspace(static_cast<utchar>(*psz))); ++psz)
 			++nChars;
 
 		Delete(0, nChars);
@@ -851,7 +851,7 @@ CString& CString::Trim(bool bLeft, bool bRight)
 	{
 		size_t nChars = 0;
 
-		for (tchar* psz = m_pszData+nLength-1; (psz >= m_pszData) && (isspace(static_cast<uchar>(*psz))); --psz)
+		for (tchar* psz = m_pszData+nLength-1; (psz >= m_pszData) && (tisspace(static_cast<utchar>(*psz))); --psz)
 			++nChars;
 
 		Delete(nLength-nChars, nChars);
