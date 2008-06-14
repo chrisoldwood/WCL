@@ -184,4 +184,23 @@ inline CSize CRect::Size() const
 	return CSize(Width(), Height());
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//! Global equals operator for a pair of rectangles.
+
+inline bool operator==(const CRect& LHS, const CRect& RHS)
+{
+	return (   (LHS.left   == RHS.left)
+			&& (LHS.top    == RHS.top)
+			&& (LHS.right  == RHS.right)
+			&& (LHS.bottom == RHS.bottom) );
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Global not equals operator for a pair of rectangles.
+
+inline bool operator!=(const CRect& LHS, const CRect& RHS)
+{
+	return !operator==(LHS, RHS);
+}
+
 #endif //RECT_HPP
