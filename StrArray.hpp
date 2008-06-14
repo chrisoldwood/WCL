@@ -45,6 +45,7 @@ public:
 	//
 	// Methods.
 	//
+	bool Empty() const;
 	size_t Size() const;
 
 	const CString& At(size_t nIndex) const;
@@ -104,6 +105,11 @@ inline CStrArray& CStrArray::operator=(const CStrArray& oRHS)
 	}
 
 	return *this;
+}
+
+inline bool CStrArray::Empty() const
+{
+	return m_vStrings.empty();
 }
 
 inline size_t CStrArray::Size() const
