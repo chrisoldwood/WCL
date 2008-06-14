@@ -245,6 +245,9 @@
 				RelativePath="FileException.cpp">
 			</File>
 			<File
+				RelativePath=".\FolderIterator.cpp">
+			</File>
+			<File
 				RelativePath="Font.cpp">
 			</File>
 			<File
@@ -476,6 +479,9 @@
 				RelativePath=".\Variant.cpp">
 			</File>
 			<File
+				RelativePath=".\VerInfoReader.cpp">
+			</File>
+			<File
 				RelativePath="View.cpp">
 			</File>
 			<File
@@ -616,6 +622,9 @@
 			</File>
 			<File
 				RelativePath="FileException.hpp">
+			</File>
+			<File
+				RelativePath=".\FolderIterator.hpp">
 			</File>
 			<File
 				RelativePath="Font.hpp">
@@ -886,6 +895,9 @@
 			</File>
 			<File
 				RelativePath=".\VariantBool.hpp">
+			</File>
+			<File
+				RelativePath=".\VerInfoReader.hpp">
 			</File>
 			<File
 				RelativePath="View.hpp">
