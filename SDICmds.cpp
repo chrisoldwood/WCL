@@ -13,6 +13,7 @@
 #include "SDIApp.hpp"
 #include "SDIDoc.hpp"
 #include "View.hpp"
+#include <Core/UniquePtr.hpp>
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -150,6 +151,8 @@ bool CSDICmds::OpenMRUFile(size_t nIndex)
 
 bool CSDICmds::OpenFile(const CPath& strPath)
 {
+	typedef Core::UniquePtr<CSDIDoc> SDIDocPtr;
+
 	// Get application object.
 	CSDIApp& oApp = CSDIApp::This();
 
@@ -158,20 +161,16 @@ bool CSDICmds::OpenFile(const CPath& strPath)
 		return false;
 
 	// Create a new doc and set the path.
-	oApp.m_pDoc = oApp.CreateDoc();
-	oApp.m_pDoc->Path(strPath);
+	SDIDocPtr pDoc(oApp.CreateDoc());
+
+	pDoc->Path(strPath);
 
 	// Load the document.
-	if (!oApp.m_pDoc->Load())
-	{
-		// Failed, cleanup.
-		delete oApp.m_pDoc;
-		oApp.m_pDoc = NULL;
-
+	if (!pDoc->Load())
 		return false;
-	}
 
 	// Create a new view and attach the doc.
+	oApp.m_pDoc  = pDoc.Detach();
 	oApp.m_pView = oApp.CreateView(*oApp.m_pDoc);
 	oApp.m_pDoc->m_pView = oApp.m_pView;
 
