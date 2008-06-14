@@ -11,9 +11,20 @@
 // Constants.
 
 //! The thickness of the sizing bar.
-static const uint BAR_SIZE = 2;
+static const uint BAR_SIZE = 4;
 //! The thickness of a recessed client window border.
 static const uint CLIENT_BORDER = 2;
+
+////////////////////////////////////////////////////////////////////////////////
+//! Constructor.
+
+CSplitWnd::CSplitWnd(Sizing eSizing)
+	: m_eSplit(VERTICAL)
+	, m_eSizing(eSizing)
+	, m_nBarPos(100)
+{
+	Initialise();
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Constructor.
@@ -22,6 +33,14 @@ CSplitWnd::CSplitWnd(Split eSplit, Sizing eSizing)
 	: m_eSplit(eSplit)
 	, m_eSizing(eSizing)
 	, m_nBarPos(100)
+{
+	Initialise();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Common construction.
+
+void CSplitWnd::Initialise()
 {
 	m_pPanes[0] = nullptr;
 	m_pPanes[1] = nullptr;
@@ -68,15 +87,26 @@ void CSplitWnd::GetCreateParams(WNDCREATE& rParams)
 ////////////////////////////////////////////////////////////////////////////////
 //! Resize the child panes.
 
-void CSplitWnd::OnResize(int /*iFlag*/, const CSize& /*rNewSize*/)
+void CSplitWnd::OnResize(int /*iFlag*/, const CSize& rNewSize)
 {
+	// Clip the sizing bar to ensure it's always visible..
+	if (m_eSplit == VERTICAL)
+		m_nBarPos = ClipBarPos(m_nBarPos, 0, rNewSize.cx);
+	else
+		m_nBarPos = ClipBarPos(m_nBarPos, 0, rNewSize.cy);
+
+	CRect rcNewClient = CRect(CPoint(0, 0), rNewSize);
+	CRect rcPane = PaneRect(0, rcNewClient);
+
 	// Left/Top pane set and changed size?
-	if ( (m_pPanes[0] != nullptr) && (PaneRect(0).Size() != m_pPanes[0]->WindowRect().Size()) )
-		m_pPanes[0]->Move(PaneRect(0));
+	if ( (m_pPanes[0] != nullptr) && (rcPane != m_pPanes[0]->WindowRect()) )
+		m_pPanes[0]->Move(rcPane);
+
+	rcPane = PaneRect(1, rcNewClient);
 
 	// Right/Bottom pane set and changed size?
-	if ( (m_pPanes[1] != nullptr)&& (PaneRect(1).Size() != m_pPanes[1]->WindowRect().Size()) )
-		m_pPanes[1]->Move(PaneRect(1));
+	if ( (m_pPanes[1] != nullptr)&& (rcPane != m_pPanes[1]->WindowRect()) )
+		m_pPanes[1]->Move(rcPane);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -96,6 +126,26 @@ void CSplitWnd::OnPaint(CDC& rDC)
 	// If empty, draw the right/bottom pane border.
 	if (m_pPanes[1] == nullptr)
 		rDC.Border3D(PaneRect(1), false, true);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Set the split style.
+
+void CSplitWnd::SetSplitStyle(Split eSplit)
+{
+	// If required, load the correct sizing cursor.
+	if (m_eSizing == RESIZEABLE)
+	{
+		m_curSizer.Release();
+		m_curSizer.LoadRsc((eSplit == VERTICAL) ? IDC_SIZEWE : IDC_SIZENS);
+	}
+
+	// Update state.
+	m_eSplit = eSplit;
+
+	// Layout panes and repaint.
+	OnResize(SIZE_RESTORED, ClientRect().Size());
+	Invalidate();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -137,9 +187,19 @@ void CSplitWnd::SetPane(size_t nPane, CWnd* pWnd)
 
 CRect CSplitWnd::PaneRect(size_t nPane) const
 {
+	CRect rcClient = ClientRect();
+
+	return PaneRect(nPane, rcClient);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the rectangle for a pane.
+
+CRect CSplitWnd::PaneRect(size_t nPane, const CRect& rcClient) const
+{
 	ASSERT( (nPane == 0) || (nPane == 1) );
 
-	CRect rcPane(ClientRect());
+	CRect rcPane = rcClient;
 
 	// Calculate rect.
 	if ( (m_eSplit == VERTICAL) && (nPane == LEFT_PANE) )
@@ -246,41 +306,28 @@ void CSplitWnd::OnMouseMove(const CPoint& ptCursor, uint /*nKeyFlags*/)
 	if (::GetCapture() != m_hWnd)
 		return;
 
-	CRect rcClient     = ClientRect();
-	int   iBarWidth    = BAR_SIZE / 2;
-	int   iMinCltWidth = (CLIENT_BORDER * 2) + 1;
+	CRect rcClient = ClientRect();
+	int   iBarPos  = (m_eSplit == VERTICAL) ? ptCursor.x : ptCursor.y;
 
-	// Move the sizing bar.
-	if (m_eSplit == VERTICAL)
+	// Resize panes, only if changed..
+	if (m_nBarPos != static_cast<uint>(iBarPos))
 	{
-		int iBarPos = ptCursor.x;
-
-		// Clip to window edge.
-		iBarPos = max(iBarPos, rcClient.left  + (iBarWidth + iMinCltWidth));
-		iBarPos = min(iBarPos, rcClient.right - (iBarWidth + iMinCltWidth));
-
-		// Resize panes, only if changed..
-		if (m_nBarPos != static_cast<uint>(iBarPos))
-		{
-			m_nBarPos = iBarPos;
-			OnResize(SIZE_RESTORED, rcClient.Size());
-			Invalidate();
-		}
+		m_nBarPos = iBarPos;
+		OnResize(SIZE_RESTORED, rcClient.Size());
+		Invalidate();
 	}
-	else //(m_eSplit == HORIZONTAL)
-	{
-		int iBarPos = ptCursor.y;
+}
 
-		// Clip to window edge.
-		iBarPos = max(iBarPos, rcClient.top    + (iBarWidth + iMinCltWidth));
-		iBarPos = min(iBarPos, rcClient.bottom - (iBarWidth + iMinCltWidth));
+////////////////////////////////////////////////////////////////////////////////
+//! Clip the bar position.
 
-		// Resize panes, only if changed..
-		if (m_nBarPos != static_cast<uint>(iBarPos))
-		{
-			m_nBarPos = iBarPos;
-			OnResize(SIZE_RESTORED, rcClient.Size());
-			Invalidate();
-		}
-	}
+int CSplitWnd::ClipBarPos(int iBarPos, int iMin, int iMax)
+{
+	const int BAR_WIDTH        = BAR_SIZE / 2;
+	const int MIN_CLIENT_WIDTH = (CLIENT_BORDER * 2) + 2;
+
+	iBarPos = max(iBarPos, iMin + (BAR_WIDTH + MIN_CLIENT_WIDTH));
+	iBarPos = min(iBarPos, iMax - (BAR_WIDTH + MIN_CLIENT_WIDTH));
+
+	return iBarPos;
 }

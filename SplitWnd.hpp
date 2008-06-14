@@ -37,6 +37,9 @@ public:
 	};
 
 	//! Constructor.
+	CSplitWnd(Sizing eSizing);
+
+	//! Constructor.
 	CSplitWnd(Split eSplit, Sizing eSizing);
 
 	//! Destructor.
@@ -55,6 +58,12 @@ public:
 	//
 	// Properties.
 	//
+
+	//! Get the split style.
+	Split SplitStyle() const;
+
+	//! Set the split style.
+	void SetSplitStyle(Split eSplit);
 
 	//! Get the window inside a pane.
 	CWnd* Pane(size_t nPane) const;
@@ -120,7 +129,28 @@ protected:
 
 	//! Handle resizng of the panes.
 	virtual void OnMouseMove(const CPoint& ptCursor, uint nKeyFlags);
+
+	//
+	// Internal methods.
+	//
+
+	//! Common construction.
+	void Initialise();
+
+	//! Get the rectangle for a pane.
+	CRect PaneRect(size_t nPane, const CRect& rcClient) const;
+
+	//! Clip the bar position.
+	static int ClipBarPos(int iBarPos, int iMin, int iMax);
 };
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the split style.
+
+inline CSplitWnd::Split CSplitWnd::SplitStyle() const
+{
+	return m_eSplit;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the position of the sizing bar.
