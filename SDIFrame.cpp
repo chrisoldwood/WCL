@@ -144,12 +144,11 @@ void CSDIFrame::View(CView* pView)
 	// Setting the view?
 	if (m_pView != NULL)
 	{
+		CRect rcClient = ClientRect();
+
 		// Create the views' window?
 		if (m_pView->Handle() == NULL)
-			m_pView->Create(*this, IDC_VIEW, CRect(0,0,0,0));
-
-		// Resize view to fit client area.
-		m_pView->Move(ClientRect());
+			m_pView->Create(*this, IDC_VIEW, rcClient);
 	}
 }
 
