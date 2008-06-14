@@ -11,8 +11,9 @@
 #pragma once
 #endif
 
-#include "Exception.hpp"
+#include <Core/Exception.hpp>
 #include "StrCvt.hpp"
+#include <Core/StringUtils.hpp>
 
 namespace WCL
 {
@@ -21,7 +22,7 @@ namespace WCL
 //! The base class for all exception types that are the result of Win32 API
 //! calls.
 
-class Win32Exception : public CException
+class Win32Exception : public Core::Exception
 {
 public:
 	//! Partial constructor.
@@ -30,8 +31,14 @@ public:
 	//! Partial constructor that assumes ::GetLastError().
 	Win32Exception(const tchar* pszOperation);
 
+	//! Partial constructor that assumes ::GetLastError().
+	Win32Exception(const tstring& strOperation);
+
 	//! Full constructor.
 	Win32Exception(DWORD dwError, const tchar* pszOperation);
+
+	//! Full constructor.
+	Win32Exception(DWORD dwError, const tstring& strOperation);
 
 	//
 	// Members.
@@ -41,6 +48,13 @@ public:
 protected:
 	//! Default constructor.
 	Win32Exception();
+
+	//
+	// Internal methods.
+	//
+
+	//! Format the error message.
+	static tstring Format(const tchar* pszOperation, DWORD dwError);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -57,7 +71,16 @@ inline Win32Exception::Win32Exception(DWORD dwError)
 inline Win32Exception::Win32Exception(const tchar* pszOperation)
 	: m_dwError(::GetLastError())
 {
-	m_strErrorText.Format(TXT("%s [0x%08X - %s]"), pszOperation, m_dwError, CStrCvt::FormatError(m_dwError));
+	m_strDetails = Format(pszOperation, m_dwError);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Partial constructor that assumes ::GetLastError().
+
+inline Win32Exception::Win32Exception(const tstring& strOperation)
+	: m_dwError(::GetLastError())
+{
+	m_strDetails = Format(strOperation.c_str(), m_dwError);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -66,7 +89,16 @@ inline Win32Exception::Win32Exception(const tchar* pszOperation)
 inline Win32Exception::Win32Exception(DWORD dwError, const tchar* pszOperation)
 	: m_dwError(dwError)
 {
-	m_strErrorText.Format(TXT("%s [0x%08X - %s]"), pszOperation, m_dwError, CStrCvt::FormatError(m_dwError));
+	m_strDetails = Format(pszOperation, m_dwError);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Full constructor.
+
+inline Win32Exception::Win32Exception(DWORD dwError, const tstring& strOperation)
+	: m_dwError(dwError)
+{
+	m_strDetails = Format(strOperation.c_str(), m_dwError);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -76,6 +108,14 @@ inline Win32Exception::Win32Exception(DWORD dwError, const tchar* pszOperation)
 inline Win32Exception::Win32Exception()
 	: m_dwError(0)
 {
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Format the error message.
+
+inline tstring Win32Exception::Format(const tchar* pszOperation, DWORD dwError)
+{
+	return Core::Fmt(TXT("%s [0x%08X - %s]"), pszOperation, dwError, CStrCvt::FormatError(dwError));
 }
 
 //namespace WCL
