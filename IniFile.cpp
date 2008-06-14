@@ -16,6 +16,7 @@
 #include "StrArray.hpp"
 #include "Rect.hpp"
 #include <tchar.h>
+#include "Win32Exception.hpp"
 
 //! The size of the string buffer in characters.
 const size_t MAX_CHARS = 256;
@@ -35,17 +36,32 @@ const size_t MAX_CHARS = 256;
 
 CIniFile::CIniFile()
 {
-	tchar szPath[MAX_PATH+1];
+	tchar szPath[MAX_PATH+1] = { 0 };
 
 	// Get the Applications full path and name.
-	::GetModuleFileName(NULL, szPath, MAX_PATH);
+	DWORD dwChars = ::GetModuleFileName(NULL, szPath, MAX_PATH);
 
-	tchar* pszExt = tstrrchr(szPath, TXT('.'));
-	ASSERT(pszExt != NULL);
+	if (dwChars == 0)
+		throw WCL::Win32Exception(::GetLastError(), TXT("Failed to retrieve the full path of the module"));
 
-	// Replace .EXE with .INI.
-	tstrcpy(pszExt, TXT(".ini"));
+	// Assume no path by default.
+	tchar* pszFileName = szPath;
 
+	// Find the start of the filename.
+	tchar* pszFinalSep = tstrrchr(szPath, TXT('\\'));
+
+	if (pszFinalSep != nullptr)
+		pszFileName = pszFinalSep+1;
+
+	// Append or replace the extension.
+	tchar* pszExt = tstrrchr(pszFileName, TXT('.'));
+
+	if (pszExt != nullptr)
+		tstrcpy(pszExt, TXT(".ini"));
+	else
+		tstrcat(pszFileName, TXT(".ini"));
+
+	// Save final path.
 	m_strPath = szPath;
 }
 
