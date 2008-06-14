@@ -169,6 +169,8 @@ inline T** IFacePtr<T>::GetPtrMember()
 template <typename T>
 inline T** AttachTo(IFacePtr<T>& ptr)
 {
+	ASSERT(*ptr.GetPtrMember() == nullptr);
+
 	return ptr.GetPtrMember();
 }
 
