@@ -17,9 +17,11 @@ void TestFolderIterator()
 	CPath strTempDir = CPath::TempDir();
 	CPath strFolder1 = strTempDir / TXT("FolderIterator");
 	CPath strFolder2 = strTempDir / TXT("FolderIterator") / TXT("Test");
+	CPath strFolder3 = strTempDir / TXT("FolderIterator") / TXT("Test2");
 	CPath strFile    = strTempDir / TXT("FolderIterator") / TXT("Test.txt");
 
 	CFile::Delete(strFile);
+	CFile::DeleteFolder(strFolder3);
 	CFile::DeleteFolder(strFolder2);
 	CFile::DeleteFolder(strFolder1);
 
@@ -67,4 +69,33 @@ void TestFolderIterator()
 
 	TEST_THROWS(*end);
 	TEST_THROWS(++end);
+
+	CFile::CreateFolder(strFolder3);
+
+	uint nFolders = 0;
+
+	for (WCL::FolderIterator it(strFolder, TXT("*.*"), WCL::FolderIterator::FIND_FOLDERS); it != end; ++it)
+		++nFolders;
+
+	TEST_TRUE(nFolders == 2);
+
+	uint nFiles = 0;
+
+	for (WCL::FolderIterator it(strFolder, TXT("*.*"), WCL::FolderIterator::FIND_FILES); it != end; ++it)
+		++nFiles;
+
+	TEST_TRUE(nFiles == 1);
+
+	uint nTotal = 0;
+	int  nFlags = WCL::FolderIterator::FIND_FOLDERS | WCL::FolderIterator::FIND_FILES;
+
+	for (WCL::FolderIterator it(strFolder, TXT("*.*"), nFlags); it != end; ++it)
+		++nTotal;
+
+	TEST_TRUE(nTotal == 3);
+
+	CFile::Delete(strFile);
+	CFile::DeleteFolder(strFolder3);
+	CFile::DeleteFolder(strFolder2);
+	CFile::DeleteFolder(strFolder1);
 }
