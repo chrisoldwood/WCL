@@ -43,6 +43,7 @@ public:
 	// Entry read/write methods.
 	//
 	CString ReadString (const tchar* pszSection, const tchar* pszEntry, const tchar* pszDefault) const;
+	tstring ReadString (const tchar* pszSection, const tchar* pszEntry, const tstring& strDefault) const;
 	int     ReadInt    (const tchar* pszSection, const tchar* pszEntry, int nDefault) const;
 	uint    ReadUInt   (const tchar* pszSection, const tchar* pszEntry, uint nDefault) const;
 	long    ReadLong   (const tchar* pszSection, const tchar* pszEntry, long lDefault) const;
@@ -50,6 +51,7 @@ public:
 	CRect   ReadRect   (const tchar* pszSection, const tchar* pszEntry, const CRect& rcDefault) const;
 
 	void    WriteString(const tchar* pszSection, const tchar* pszEntry, const tchar* pszValue);
+	void    WriteString(const tchar* pszSection, const tchar* pszEntry, const tstring& strValue);
 	void    WriteInt   (const tchar* pszSection, const tchar* pszEntry, int nValue);
 	void    WriteUInt  (const tchar* pszSection, const tchar* pszEntry, uint nValue);
 	void    WriteLong  (const tchar* pszSection, const tchar* pszEntry, long lValue);

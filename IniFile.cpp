@@ -145,6 +145,19 @@ CString CIniFile::ReadString(const tchar* pszSection, const tchar* pszEntry,
 	return szBuffer;
 }
 						
+tstring CIniFile::ReadString(const tchar* pszSection, const tchar* pszEntry,
+						const tstring& strDefault) const
+{
+	ASSERT(pszSection != nullptr);
+	ASSERT(pszEntry != nullptr);
+	
+	tchar szBuffer[MAX_CHARS+1] = { 0 };
+
+	::GetPrivateProfileString(pszSection, pszEntry, strDefault.c_str(), szBuffer, MAX_CHARS, m_strPath);
+
+	return szBuffer;
+}
+
 void CIniFile::WriteString(const tchar* pszSection, const tchar* pszEntry, const tchar* pszValue)
 {
 	ASSERT(pszSection);
@@ -154,6 +167,14 @@ void CIniFile::WriteString(const tchar* pszSection, const tchar* pszEntry, const
 	::WritePrivateProfileString(pszSection, pszEntry, pszValue, m_strPath);
 }
 						
+void CIniFile::WriteString(const tchar* pszSection, const tchar* pszEntry, const tstring& strValue)
+{
+	ASSERT(pszSection != nullptr);
+	ASSERT(pszEntry != nullptr);
+	
+	::WritePrivateProfileString(pszSection, pszEntry, strValue.c_str(), m_strPath);
+}
+
 int CIniFile::ReadInt(const tchar* pszSection, const tchar* pszEntry, int nDefault) const
 {
 	ASSERT(pszSection);
