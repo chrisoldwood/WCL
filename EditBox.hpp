@@ -41,6 +41,7 @@ public:
 	void ReadOnly(bool bReadOnly = true) const;
 	void Select(int iFirstChar = 0, int iLastChar = -1) const;
 	void Text(const tchar* pszText);
+	void Text(const tstring& strText);
 	void ReplaceSel(const tchar* pszText, bool bCanUndo = true);
 	void Append(const tchar* pszText);
 	void TabWidth(uint nWidth);
@@ -115,6 +116,11 @@ inline void CEditBox::Selected(int& nStart, int& nEnd) const
 inline void CEditBox::Text(const tchar* pszText)
 {
 	Title(pszText);
+}
+
+inline void CEditBox::Text(const tstring& strText)
+{
+	Title(strText.c_str());
 }
 
 inline void CEditBox::ReplaceSel(const tchar* pszText, bool bCanUndo)
