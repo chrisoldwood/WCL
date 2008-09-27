@@ -36,7 +36,7 @@
 				UsePrecompiledHeader="3"
 				WarningLevel="4"
 				WarnAsError="TRUE"
-				DebugInformationFormat="4"/>
+				DebugInformationFormat="3"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -80,6 +80,7 @@
 				AdditionalOptions="/EHa"
 				AdditionalIncludeDirectories="../../../Lib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="0"
 				TreatWChar_tAsBuiltInType="TRUE"
