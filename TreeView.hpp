@@ -36,6 +36,9 @@ public:
 	//! Get the root item.
 	HTREEITEM Root() const;
 
+	//! Get the current selection.
+	HTREEITEM Selection() const;
+
 	//! Set an image list for the tree view.
 	void SetImageList(uint nType, const CImageList& oImageList);
 
@@ -78,6 +81,16 @@ inline HTREEITEM TreeView::Root() const
 	ASSERT(m_hWnd != NULL);
 
 	return TreeView_GetRoot(m_hWnd);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the current selection.
+
+inline HTREEITEM TreeView::Selection() const
+{
+	ASSERT(m_hWnd != NULL);
+
+	return TreeView_GetSelection(m_hWnd);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
