@@ -55,6 +55,7 @@ public:
 	size_t Length() const;
 	const tchar* c_str() const;
 	tchar* Buffer() const;
+	size_t Capacity() const;
 
 	//
 	// Iterators.
@@ -143,7 +144,7 @@ protected:
 
 	struct StringData
 	{
-		size_t	m_nAllocSize;	// Size of buffer in characters.
+		size_t	m_nAllocSize;	// Size of buffer in characters inc null terminator.
 		tchar	m_acData[1];	// Start of string data.
 	};
 
@@ -272,6 +273,15 @@ inline tchar* CString::Buffer() const
 	return m_pszData;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//! Get the capacity of the buffer in chars, inc the null termiantor. This is
+//! the same value that would be passed to BufferSize().
+
+inline size_t CString::Capacity() const
+{
+	return GetData()->m_nAllocSize;
+}
+
 inline CString::const_iterator CString::begin() const
 {
 	ASSERT(m_pszData != nullptr);
@@ -309,7 +319,7 @@ inline CString::operator const tchar*() const
 
 inline tchar& CString::operator[](size_t nChar)
 {
-	ASSERT(nChar < Length());
+	ASSERT(nChar < Capacity());
 
 	return m_pszData[nChar];
 }
