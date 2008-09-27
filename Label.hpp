@@ -38,6 +38,9 @@ public:
 	//
 	void Text(const tchar* pszText);
 
+	//! Set the text of the control.
+	void setText(const tstring& text);
+
 protected:
 	//
 	// Members.
@@ -59,6 +62,14 @@ protected:
 inline void CLabel::Text(const tchar* pszText)
 {
 	Title(pszText);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Set the text of the control.
+
+inline void CLabel::setText(const tstring& text)
+{
+	setTitle(text);
 }
 
 #endif //LABEL_HPP
