@@ -64,20 +64,31 @@ public:
 	void Reserve(size_t nItems);
 	size_t AppendItem(const tchar* pszText, size_t nImage = Core::npos);
 	size_t InsertItem(size_t nItem, const tchar* pszText, size_t nImage = -1);
+
+	//! Insert a new item into the control.
+	size_t insertItem(size_t item, const tstring& text, size_t icon = -1);
+
 	void DeleteItem(size_t nItem);
 	void DeleteAllItems();
 
+
 	void ItemText(size_t nItem, size_t nSubItem, const tchar* pszText);
+
+	//! Set the text value for a sub item.
+	void setItemText(size_t item, size_t subItem, const tstring& text);
+
 	void ItemImage(size_t nItem, size_t nImage);
 	void ItemState(size_t nItem, uint nState, uint nMask);
 	void ItemData(size_t nItem, LPARAM lParam);
 	void ItemPtr(size_t nItem, const void* pData);
+	void SetChecked(size_t nItem, bool bChecked = true);
 
 	CString ItemText(size_t nItem, size_t nSubItem) const;
 	size_t  ItemImage(size_t nItem) const;
 	uint    ItemState(size_t nItem, uint nMask = LVIS_SELECTED) const;
 	LPARAM  ItemData(size_t nItem) const;
 	void*   ItemPtr(size_t nItem) const;
+	bool    IsChecked(size_t nItem);
 
 	void Select(size_t nItem, bool bSelect = true);
 	bool IsSelection() const;
@@ -172,6 +183,14 @@ inline size_t CListView::AppendItem(const tchar* pszText, size_t nImage)
 	return InsertItem(ItemCount(), pszText, nImage);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//! Insert a new item into the control.
+
+inline size_t CListView::insertItem(size_t item, const tstring& text, size_t icon)
+{
+	return InsertItem(item, text.c_str(), icon);
+}
+
 inline void CListView::DeleteItem(size_t nItem)
 {
 	ListView_DeleteItem(m_hWnd, nItem);
@@ -187,6 +206,12 @@ inline void CListView::ItemText(size_t nItem, size_t nSubItem, const tchar* pszT
 	ListView_SetItemText(m_hWnd, nItem, nSubItem, const_cast<tchar*>(pszText));
 }
 
+//! Set the text value for a sub item.
+inline void CListView::setItemText(size_t item, size_t subItem, const tstring& text)
+{
+	ListView_SetItemText(m_hWnd, item, subItem, const_cast<tchar*>(text.c_str()));
+}
+
 inline void CListView::ItemState(size_t nItem, uint nState, uint nMask)
 {
 	ListView_SetItemState(m_hWnd, nItem, nState, nMask);
@@ -197,6 +222,11 @@ inline void CListView::ItemPtr(size_t nItem, const void* pData)
 	ItemData(nItem, (LPARAM)pData);
 }
 
+inline void CListView::SetChecked(size_t nItem, bool bChecked)
+{
+	ListView_SetCheckState(m_hWnd, nItem, bChecked);
+}
+
 inline uint CListView::ItemState(size_t nItem, uint nMask) const
 {
 	return ListView_GetItemState(m_hWnd, nItem, nMask);
@@ -205,6 +235,11 @@ inline uint CListView::ItemState(size_t nItem, uint nMask) const
 inline void* CListView::ItemPtr(size_t nItem) const
 {
 	return reinterpret_cast<void*>(ItemData(nItem));
+}
+
+inline bool CListView::IsChecked(size_t nItem)
+{
+	return ListView_GetCheckState(m_hWnd, nItem);
 }
 
 inline void CListView::Select(size_t nItem, bool bSelect)
