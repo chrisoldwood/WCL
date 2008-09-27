@@ -651,6 +651,19 @@ size_t CFile::ReadTextFile(const tchar* pszPath, CString& strContents, TextForma
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Read the entire contents of a text file.
+
+tstring CFile::ReadTextFile(const tchar* pszPath)
+{
+	CString    str;
+	TextFormat eFormat;
+
+	size_t nChars = ReadTextFile(pszPath, str, eFormat);
+
+	return tstring(str.Buffer(), str.Buffer()+nChars);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Write the entire contents of a binary file.
 
 void CFile::WriteFile(const tchar* pszPath, const std::vector<byte>& vBuffer)

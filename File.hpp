@@ -85,6 +85,9 @@ public:
 	//! Read the entire contents of a text file.
 	static size_t ReadTextFile(const tchar* pszPath, CString& strContents, TextFormat& eFormat);
 
+	//! Read the entire contents of a text file.
+	static tstring ReadTextFile(const tchar* pszPath);
+
 	//! Write the entire contents of a binary file.
 	static void WriteFile(const tchar* pszPath, const std::vector<byte>& vBuffer);
 
