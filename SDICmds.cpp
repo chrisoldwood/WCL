@@ -14,6 +14,7 @@
 #include "SDIDoc.hpp"
 #include "View.hpp"
 #include <Core/UniquePtr.hpp>
+#include "BusyCursor.hpp"
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -160,6 +161,8 @@ bool CSDICmds::OpenFile(const CPath& strPath)
 	if (!CloseFile())
 		return false;
 
+	CBusyCursor oBusyCursor;
+
 	// Create a new doc and set the path.
 	SDIDocPtr pDoc(oApp.CreateDoc());
 
@@ -213,6 +216,8 @@ bool CSDICmds::SaveFile()
 	if (oApp.m_pDoc->Untitled())
 		return SaveFileAs();
 
+	CBusyCursor oBusyCursor;
+
 	// Save the document.
 	if (!oApp.m_pDoc->Save())
 		return false;
@@ -259,6 +264,8 @@ bool CSDICmds::SaveFileAs()
 	if ( (Path.Exists())
 	  && (oApp.m_rMainWnd.QueryMsg(TXT("The file already exists:\n\n%s\n\nOverwrite?"), Path) != IDYES) )
 		return false;
+
+	CBusyCursor oBusyCursor;
 
 	// Save the document.
 	oApp.m_pDoc->Path(Path);
