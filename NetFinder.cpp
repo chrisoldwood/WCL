@@ -12,6 +12,9 @@
 #include "NetFinder.hpp"
 #include "StrArray.hpp"
 
+// Add .lib to linker.
+#pragma comment(lib, "mpr")
+
 /******************************************************************************
 ** Method:		FindDomains()
 **
