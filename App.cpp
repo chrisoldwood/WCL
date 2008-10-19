@@ -16,6 +16,7 @@
 #include "FrameWnd.hpp"
 
 // Linker directives.
+// NB: Required for building with VC++ Express.
 #pragma comment(lib, "user32")
 #pragma comment(lib, "gdi32")
 #pragma comment(lib, "advapi32")
