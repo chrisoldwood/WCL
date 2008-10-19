@@ -33,7 +33,7 @@ public:
 	//
 
 	//! The application C++ entry point.
-	virtual int Main(int nArgc, tchar* apszArgv[]);
+	virtual int main(int argc, tchar* argv[]);
 
 protected:
 	//
@@ -45,10 +45,10 @@ protected:
 	//
 
 	//! Run the application.
-	virtual int Run(int nArgc, tchar* apszArgv[]) = 0;
+	virtual int run(int nArgc, tchar* apszArgv[]) = 0;
 
 	//! Display the program options syntax.
-	virtual void ShowUsage() = 0;
+	virtual void showUsage() = 0;
 };
 
 //namespace WCL

@@ -29,18 +29,18 @@ ConsoleApp::~ConsoleApp()
 //! The application C++ entry point. This should be invoked by the C based entry
 //! point to run the application.
 
-int ConsoleApp::Main(int nArgc, tchar* apszArgv[])
+int ConsoleApp::main(int argc, tchar* argv[])
 {
-	int nResult = EXIT_FAILURE;
+	int result = EXIT_FAILURE;
 
 	try
 	{
-		nResult = Run(nArgc, apszArgv);
+		result = run(argc, argv);
 	}
 	catch (const Core::CmdLineException& e)
 	{
 		tcout << TXT("ERROR: ") << e.What() << std::endl;
-		ShowUsage();
+		showUsage();
 	}
 	catch (const Core::Exception& e)
 	{
@@ -55,7 +55,7 @@ int ConsoleApp::Main(int nArgc, tchar* apszArgv[])
 		tcout << TXT("ERROR: An unknown exception occured") << std::endl;
 	}
 
-	return nResult;
+	return result;
 }
 
 //namespace WCL
