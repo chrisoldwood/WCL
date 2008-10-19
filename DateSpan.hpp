@@ -33,7 +33,7 @@ public:
 	CDateSpan(days_t nDays);
 	
 	// Accessors.
-	int Days() const;
+	days_t Days() const;
 
 protected:
 	//
@@ -64,7 +64,7 @@ inline CDateSpan::CDateSpan(days_t nDays)
 {
 }
 
-inline int CDateSpan::Days() const
+inline days_t CDateSpan::Days() const
 {
 	return m_nSpan;
 }
