@@ -67,10 +67,8 @@ public:
     // Attributes.
     //
 	void Title(const tchar* lpszTitle);
+	void Title(const tstring& title);
 	CString Title() const;
-
-	//! Set the window title.
-	void setTitle(const tstring& title);
 
 	void Font(const CFont& rFont, bool bRedraw = true);
 	CFont Font() const;
@@ -223,7 +221,7 @@ inline void CWnd::Title(const tchar* pszTitle)
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the window title.
 
-inline void CWnd::setTitle(const tstring& title)
+inline void CWnd::Title(const tstring& title)
 {
 	::SetWindowText(m_hWnd, title.c_str());
 }

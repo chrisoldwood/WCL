@@ -37,9 +37,7 @@ public:
 	// Standard methods.
 	//
 	void Text(const tchar* pszText);
-
-	//! Set the text of the control.
-	void setText(const tstring& text);
+	void Text(const tstring& text);
 
 protected:
 	//
@@ -67,9 +65,9 @@ inline void CLabel::Text(const tchar* pszText)
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the text of the control.
 
-inline void CLabel::setText(const tstring& text)
+inline void CLabel::Text(const tstring& text)
 {
-	setTitle(text);
+	Title(text);
 }
 
 #endif //LABEL_HPP

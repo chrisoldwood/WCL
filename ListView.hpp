@@ -64,18 +64,13 @@ public:
 	void Reserve(size_t nItems);
 	size_t AppendItem(const tchar* pszText, size_t nImage = Core::npos);
 	size_t InsertItem(size_t nItem, const tchar* pszText, size_t nImage = -1);
-
-	//! Insert a new item into the control.
-	size_t insertItem(size_t item, const tstring& text, size_t icon = -1);
+	size_t InsertItem(size_t item, const tstring& text, size_t icon = -1);
 
 	void DeleteItem(size_t nItem);
 	void DeleteAllItems();
 
-
 	void ItemText(size_t nItem, size_t nSubItem, const tchar* pszText);
-
-	//! Set the text value for a sub item.
-	void setItemText(size_t item, size_t subItem, const tstring& text);
+	void ItemText(size_t item, size_t subItem, const tstring& text);
 
 	void ItemImage(size_t nItem, size_t nImage);
 	void ItemState(size_t nItem, uint nState, uint nMask);
@@ -186,7 +181,7 @@ inline size_t CListView::AppendItem(const tchar* pszText, size_t nImage)
 ////////////////////////////////////////////////////////////////////////////////
 //! Insert a new item into the control.
 
-inline size_t CListView::insertItem(size_t item, const tstring& text, size_t icon)
+inline size_t CListView::InsertItem(size_t item, const tstring& text, size_t icon)
 {
 	return InsertItem(item, text.c_str(), icon);
 }
@@ -206,8 +201,10 @@ inline void CListView::ItemText(size_t nItem, size_t nSubItem, const tchar* pszT
 	ListView_SetItemText(m_hWnd, nItem, nSubItem, const_cast<tchar*>(pszText));
 }
 
+////////////////////////////////////////////////////////////////////////////////
 //! Set the text value for a sub item.
-inline void CListView::setItemText(size_t item, size_t subItem, const tstring& text)
+
+inline void CListView::ItemText(size_t item, size_t subItem, const tstring& text)
 {
 	ListView_SetItemText(m_hWnd, item, subItem, const_cast<tchar*>(text.c_str()));
 }
