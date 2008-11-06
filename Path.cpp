@@ -21,6 +21,7 @@
 #include "Wnd.hpp"
 #include "StrArray.hpp"
 #include <tchar.h>
+#include "Win32Exception.hpp"
 
 // Directive to link to the Shell library.
 #pragma comment(lib, "shell32")
@@ -119,6 +120,28 @@ bool CPath::IsFolder() const
 	ASSERT(nResult == 0);
 
 	return ((nResult == 0) && (oInfo.st_mode & _S_IFDIR));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the attributes for the path.
+
+DWORD CPath::Attributes() const
+{
+	DWORD attributes = INVALID_FILE_ATTRIBUTES;
+
+	if ((attributes = ::GetFileAttributes(m_pszData)) == INVALID_FILE_ATTRIBUTES)
+		throw WCL::Win32Exception(::GetLastError(), Core::Fmt(TXT("Failed to query the file attributes for:-\n\n"), m_pszData));
+
+	return attributes;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Set the attributes for the path.
+
+void CPath::SetAttributes(DWORD attributes)
+{
+	if (::SetFileAttributes(m_pszData, attributes) == 0)
+		throw WCL::Win32Exception(::GetLastError(), Core::Fmt(TXT("Failed to set the file attributes on:-\n\n"), m_pszData));
 }
 
 /******************************************************************************

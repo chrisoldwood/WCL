@@ -44,6 +44,8 @@ public:
     bool Exists() const;
     bool ReadOnly() const;
 	bool IsFolder() const;
+	DWORD Attributes() const; // throw(Win32Exception)
+	void SetAttributes(DWORD attributes); // throw(Win32Exception)
 
 	//
 	// Path components.
