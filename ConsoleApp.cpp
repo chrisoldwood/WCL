@@ -39,21 +39,24 @@ int ConsoleApp::main(int argc, tchar* argv[])
 	}
 	catch (const Core::CmdLineException& e)
 	{
-		tcout << TXT("ERROR: ") << e.What() << std::endl;
+		tcerr << TXT("ERROR: ") << e.What() << std::endl;
 		showUsage();
 	}
 	catch (const Core::Exception& e)
 	{
-		tcout << TXT("ERROR: ") << e.What() << std::endl;
+		tcerr << TXT("ERROR: ") << e.What() << std::endl;
 	}
 	catch (const std::exception& e)
 	{
-		std::cout << "ERROR: " << e.what() << std::endl;
+		std::cerr << "ERROR: " << e.what() << std::endl;
 	}
 	catch (...)
 	{
-		tcout << TXT("ERROR: An unknown exception occured") << std::endl;
+		tcerr << TXT("ERROR: An unknown exception occured") << std::endl;
 	}
+
+	tcout.flush();
+	tcerr.flush();
 
 	return result;
 }
