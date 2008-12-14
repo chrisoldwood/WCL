@@ -12,6 +12,8 @@
 #include "MRUList.hpp"
 #include "Menu.hpp"
 #include "IniFile.hpp"
+#include <WCL/AppConfig.hpp>
+#include <Core/StringUtils.hpp>
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -124,6 +126,8 @@ void CMRUList::UpdateMenu(CMenu& rMenu, uint iCmdBase)
 **				Save()
 **
 ** Description:	Loads/Saves the MRU list from/to the given .ini file.
+**				These methods are deprecated as the new AppConfig class should
+**				be used as the storage for application settings.
 **
 ** Parameters:	None.
 **
@@ -166,5 +170,39 @@ void CMRUList::Save(CIniFile& rCfgFile, const tchar* pszSection)
 		// Valid path for this item?
 		if ( (i < m_Paths.Size()) && (m_Paths[i] != TXT("")) )
 			rCfgFile.WriteString(pszSection, strEntry, m_Paths[i]);
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Read the MRU list from the config storage.
+
+void CMRUList::Read(const WCL::AppConfig& appConfig, const tstring& section)
+{
+	// For all potential items...
+	for (size_t i = 0; i != m_nMaxSize; ++i)
+	{
+		// Read entry.
+		tstring key   = Core::Fmt(TXT("%u"), i+1);
+		tstring value = appConfig.readString(section, key, TXT(""));
+
+		// Append if valid.
+		if (!value.empty())
+			m_Paths.Add(value.c_str());
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Write the MRU list to the config storage.
+
+void CMRUList::Write(WCL::AppConfig& appConfig, const tstring& section)
+{
+	// For all items...
+	for (size_t i = 0; i != m_Paths.Size(); ++i)
+	{
+		tstring key   = Core::Fmt(TXT("%u"), i+1);
+		tstring value = m_Paths[i];
+
+		if (!value.empty())
+			appConfig.writeString(section, key, value);
 	}
 }

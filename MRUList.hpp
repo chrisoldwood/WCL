@@ -21,6 +21,10 @@
 // Forward declarations.
 class CMenu;
 class CIniFile;
+namespace WCL
+{
+class AppConfig;
+}
 
 /******************************************************************************
 ** 
@@ -55,6 +59,12 @@ public:
 	//
 	void Load(CIniFile& rCfgFile, const tchar* pszSection = TXT("MRU"));
 	void Save(CIniFile& rCfgFile, const tchar* pszSection = TXT("MRU"));
+
+	//! Read the MRU list from the config storage.
+	void Read(const WCL::AppConfig& appConfig, const tstring& section = TXT("MRU"));
+
+	//! Write the MRU list to the config storage.
+	void Write(WCL::AppConfig& appConfig, const tstring& section = TXT("MRU"));
 
 protected:
 	//
