@@ -196,7 +196,7 @@ void CMemStream::Write(const void* pBuffer, uint iNumBytes)
 	if ((m_lPos + iNumBytes) > m_lAllocSize)
 	{
 		// Extend block by 1 page or iNumBytes, if larger.
-		m_lAllocSize += max(ALLOC_SIZE, iNumBytes);
+		m_lAllocSize += std::max(ALLOC_SIZE, iNumBytes);
 
 		m_pBuffer = NULL;
 
@@ -212,7 +212,7 @@ void CMemStream::Write(const void* pBuffer, uint iNumBytes)
 	m_lPos += iNumBytes;
 
 	// Update EOF, if changed.
-	m_lEOF = max(m_lPos, m_lEOF);
+	m_lEOF = std::max(m_lPos, m_lEOF);
 }
 
 /******************************************************************************

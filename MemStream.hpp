@@ -69,7 +69,7 @@ protected:
 	ulong		m_lPos;			// Current position in the stream.
 
 	// Default allocation size in bytes (1K).
-	enum { ALLOC_SIZE = 1024 };
+	static const size_t ALLOC_SIZE = 1024;
 };
 
 /******************************************************************************
