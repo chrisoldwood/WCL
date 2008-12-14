@@ -52,7 +52,7 @@ public:
 	CRect   ReadRect   (const tchar* pszSection, const tchar* pszEntry, const CRect& rcDefault) const;
 
 	void    WriteString(const tchar* pszSection, const tchar* pszEntry, const tchar* pszValue);
-	void    WriteString(const tchar* pszSection, const tchar* pszEntry, const tstring& strValue);
+	void    WriteString(const tstring& strSection, const tstring& strEntry, const tstring& strValue);
 	void    WriteInt   (const tchar* pszSection, const tchar* pszEntry, int nValue);
 	void    WriteUInt  (const tchar* pszSection, const tchar* pszEntry, uint nValue);
 	void    WriteLong  (const tchar* pszSection, const tchar* pszEntry, long lValue);

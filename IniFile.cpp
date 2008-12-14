@@ -163,12 +163,9 @@ void CIniFile::WriteString(const tchar* pszSection, const tchar* pszEntry, const
 	::WritePrivateProfileString(pszSection, pszEntry, pszValue, m_strPath);
 }
 						
-void CIniFile::WriteString(const tchar* pszSection, const tchar* pszEntry, const tstring& strValue)
+void CIniFile::WriteString(const tstring& strSection, const tstring& strEntry, const tstring& strValue)
 {
-	ASSERT(pszSection != nullptr);
-	ASSERT(pszEntry != nullptr);
-	
-	::WritePrivateProfileString(pszSection, pszEntry, strValue.c_str(), m_strPath);
+	::WritePrivateProfileString(strSection.c_str(), strEntry.c_str(), strValue.c_str(), m_strPath);
 }
 
 int CIniFile::ReadInt(const tchar* pszSection, const tchar* pszEntry, int nDefault) const
