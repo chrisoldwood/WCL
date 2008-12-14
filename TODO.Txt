@@ -34,6 +34,8 @@
 
 - GLOBAL: Change 'deletes' to use smart ptrs.
 
+- Reduce the display string length of the MRU list items.
+
 
 UNICODE
 =======
