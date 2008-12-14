@@ -112,6 +112,7 @@ public:
 
 	const CString& operator=(const CString& strSrc);
 	const CString& operator=(const tchar* pszBuffer);
+	const CString& operator=(const tstring& string);
 
 	operator const tchar*() const;
 	
@@ -122,6 +123,8 @@ public:
 	bool operator ==(const CString& strString) const;
 	bool operator !=(const tchar* pszString) const;
 	bool operator !=(const CString& strString) const;
+	bool operator  <(const tchar* pszString) const;
+	bool operator  <(const CString& strString) const;
 
 	int Compare(const tchar* pszString, bool bIgnoreCase = true) const;
 	int Compare(const tchar* pszString, size_t nChars, bool bIgnoreCase = true) const;
@@ -259,6 +262,12 @@ inline const CString& CString::operator=(const tchar* pszBuffer)
 	return *this;
 }
 
+inline const CString& CString::operator=(const tstring& string)
+{
+	Copy(string.data(), string.length());
+	return *this;
+}
+
 inline const tchar* CString::c_str() const
 {
 	ASSERT(m_pszData);
@@ -342,6 +351,16 @@ inline bool CString::operator !=(const tchar* pszString) const
 inline bool CString::operator !=(const CString& strString) const
 {
 	return (tstrcmp(m_pszData, strString) != 0);
+}
+
+inline bool CString::operator <(const tchar* pszString) const
+{
+	return (tstrcmp(m_pszData, pszString) < 0);
+}
+
+inline bool CString::operator <(const CString& strString) const
+{
+	return (tstrcmp(m_pszData, strString.m_pszData) < 0);
 }
 
 inline int CString::Compare(const tchar* pszString, bool bIgnoreCase) const
