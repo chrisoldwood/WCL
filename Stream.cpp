@@ -83,6 +83,7 @@ CString CStream::ReadLine(TextFormat eFormat)
 #else
 		Core::AnsiToWide(pszBegin, pszEnd, strLine.Buffer());
 #endif
+		strLine[nChars] = TXT('\0');
 	}
 	else // (eFormat == UNICODE_TEXT)
 	{
@@ -104,6 +105,7 @@ CString CStream::ReadLine(TextFormat eFormat)
 #else
 		std::copy(pszBegin, pszEnd, strLine.Buffer());
 #endif
+		strLine[nChars] = TXT('\0');
 	}
 
 	return strLine;

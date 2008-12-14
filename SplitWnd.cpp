@@ -326,8 +326,8 @@ int CSplitWnd::ClipBarPos(int iBarPos, int iMin, int iMax)
 	const int BAR_WIDTH        = BAR_SIZE / 2;
 	const int MIN_CLIENT_WIDTH = (CLIENT_BORDER * 2) + 2;
 
-	iBarPos = max(iBarPos, iMin + (BAR_WIDTH + MIN_CLIENT_WIDTH));
-	iBarPos = min(iBarPos, iMax - (BAR_WIDTH + MIN_CLIENT_WIDTH));
+	iBarPos = std::max(iBarPos, iMin + (BAR_WIDTH + MIN_CLIENT_WIDTH));
+	iBarPos = std::min(iBarPos, iMax - (BAR_WIDTH + MIN_CLIENT_WIDTH));
 
 	return iBarPos;
 }
