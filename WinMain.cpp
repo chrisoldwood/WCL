@@ -66,12 +66,13 @@ extern "C" int WINAPI WinMain(HINSTANCE hCurrInst, HINSTANCE /*hPrevInst*/,
 
 		// Open, run and close the app...
 		if (oApp.Open())
+		{
 			oApp.Run();
+			oApp.Close();
 
-		oApp.Close();
-
-		// Get the WM_QUIT message result code.
-		nResult = oApp.m_MainThread.Result();
+			// Get the WM_QUIT message result code.
+			nResult = oApp.m_MainThread.Result();
+		}
 	}
 	catch (const Core::Exception& e)
 	{
