@@ -12,6 +12,7 @@
 #endif
 
 #include <Core/CmdLineParser.hpp>
+#include "MainThread.hpp"
 
 namespace WCL
 {
@@ -29,8 +30,21 @@ public:
 	virtual ~ConsoleApp();
 
 	//
+	// Properties.
+	//
+
+	//! Get the main thread.
+	CMainThread& mainThread();
+
+	//! Get if the app should terminate.
+	bool abort() const;
+
+	//
 	// Methods.
 	//
+
+	//! Get the singleton object.
+	static ConsoleApp& instance();
 
 	//! The application C++ entry point.
 	virtual int main(int argc, tchar* argv[]);
@@ -39,6 +53,8 @@ protected:
 	//
 	// Members.
 	//
+	CMainThread		m_mainThread;	//!< The main application thread.
+	volatile bool	m_abort;		//!< The flag to signal aborting of the app.
 
 	//
 	// Internal Methods.
@@ -49,7 +65,29 @@ protected:
 
 	//! Display the program options syntax.
 	virtual void showUsage() = 0;
+
+	//! The actual ctrl signal handler.
+	static BOOL WINAPI ctrlHandler(DWORD signal);
+
+	//! The ctrl signal handler.
+	virtual BOOL onCtrlSignal(DWORD signal);
 };
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the main thread.
+
+inline CMainThread& ConsoleApp::mainThread()
+{
+	return m_mainThread;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get if the app should terminate.
+
+inline bool ConsoleApp::abort() const
+{
+	return m_abort;
+}
 
 //namespace WCL
 }
