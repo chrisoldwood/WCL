@@ -33,6 +33,8 @@ public:
 	//
 	enum
 	{
+		E_INVALID_FILE,		//!< The file does not exist.
+		E_INVALID_FOLDER,	//!< The folder does not exist.
 		E_OPEN_FAILED,		// Generic open failure.
 		E_CREATE_FAILED,	// Generic create failure.
 		E_READ_FAILED,		// Read failure.
