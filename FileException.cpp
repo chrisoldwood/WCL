@@ -33,6 +33,14 @@ CFileException::CFileException(int eErrCode, const CPath& rPath, DWORD dwLastErr
 	// Convert error to string.
 	switch(eErrCode)
 	{
+		case E_INVALID_FILE:
+			m_strDetails = Core::Fmt(TXT("The file does not exist:\n\n%s"), rPath);
+			break;
+
+		case E_INVALID_FOLDER:
+			m_strDetails = Core::Fmt(TXT("The folder does not exist:\n\n%s"), rPath);
+			break;
+
 		case E_OPEN_FAILED:
 			m_strDetails = Core::Fmt(TXT("Failed to open file:\n\n%s\n\n%s"), rPath, strLastError);
 			break;
