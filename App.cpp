@@ -150,9 +150,9 @@ bool CApp::Open()
 		return false;
 	}
 
-	// Call Template Method.
+	// Call application method.
 	if (!OnOpen())
-		::PostQuitMessage(CMsgThread::THREAD_EXIT_FAILURE);
+		return false;
 
 	return true;
 }
