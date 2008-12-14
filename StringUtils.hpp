@@ -1,17 +1,17 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   StrConvs.hpp
-//! \brief  String conversion functions for Windows specfic types.
+//! \file   StringUtils.hpp
+//! \brief  String utility functions for Windows specific types.
 //! \author Chris Oldwood
 
 // Check for previous inclusion
-#ifndef WCL_STRCONVS_HPP
-#define WCL_STRCONVS_HPP
+#ifndef WCL_STRINGUTILS_HPP
+#define WCL_STRINGUTILS_HPP
 
 #if _MSC_VER > 1000
 #pragma once
 #endif
 
-#include <Core/AnsiWide.hpp>
+#include <Core/StringUtils.hpp>
 
 namespace WCL
 {
@@ -31,4 +31,25 @@ inline const wchar_t* BstrToWide(const BSTR bstr)
 //namespace WCL
 }
 
-#endif // WCL_STRCONVS_HPP
+// Forward declarations.
+class CRect;
+
+namespace Core
+{
+
+////////////////////////////////////////////////////////////////////////////////
+// Format a rectangle into a string.
+
+template<>
+tstring format(const CRect& value);
+
+////////////////////////////////////////////////////////////////////////////////
+// Parse a rectangle from a string.
+
+template<>
+CRect parse(const tstring& buffer); // throw(ParseException)
+
+//namespace Core
+}
+
+#endif // WCL_STRINGUTILS_HPP
