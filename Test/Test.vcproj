@@ -155,6 +155,9 @@
 				RelativePath=".\Test.cpp">
 			</File>
 			<File
+				RelativePath=".\TestAppConfig.cpp">
+			</File>
+			<File
 				RelativePath=".\TestComPtr.cpp">
 			</File>
 			<File
@@ -170,13 +173,22 @@
 				RelativePath=".\TestIniFile.cpp">
 			</File>
 			<File
+				RelativePath=".\TestIniFileCfgProvider.cpp">
+			</File>
+			<File
 				RelativePath=".\TestMisc.cpp">
 			</File>
 			<File
 				RelativePath=".\TestRect.cpp">
 			</File>
 			<File
+				RelativePath=".\TestRegistryCfgProvider.cpp">
+			</File>
+			<File
 				RelativePath=".\TestString.cpp">
+			</File>
+			<File
+				RelativePath=".\TestStringUtils.cpp">
 			</File>
 			<File
 				RelativePath=".\TestVerInfoReader.cpp">

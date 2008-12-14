@@ -15,4 +15,12 @@ void TestString()
 
 	TEST_TRUE(str == TXT("Hello World"));
 	TEST_TRUE(str != TXT("hello world"));
+
+	TEST_FALSE(str < TXT("HELLO WORLD"));
+	TEST_TRUE (str < TXT("hello world"));
+	TEST_FALSE(str < TXT("Hello World"));
+
+	TEST_FALSE(str < CString(TXT("HELLO WORLD")));
+	TEST_TRUE (str < CString(TXT("hello world")));
+	TEST_FALSE(str < CString(TXT("Hello World")));
 }
