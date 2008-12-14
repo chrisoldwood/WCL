@@ -75,11 +75,17 @@ public:
 	//! Delete the key.
 	static bool Delete(HKEY hParentKey, const tchar* pszSubKey);
 
+	//! Delete the entire sub-tree.
+	static bool DeleteTree(HKEY hParentKey, const tchar* pszSubKey);
+
 	//! Read the default value for a key.
 	static CString ReadKeyDefaultValue(HKEY hParentKey, const tchar* pszSubKey);
 
 	//! Write the default value for a key.
 	static void WriteKeyDefaultValue(HKEY hParentKey, const tchar* pszSubKey, const tchar* pszValue);
+
+	//! Read a named string value under a key.
+	static CString ReadKeyStringValue(HKEY hParentKey, const tchar* pszSubKey, const tchar* pszName, const tchar* pszDefault);
 
 	//! Write a named string value under a key.
 	static void WriteKeyStringValue(HKEY hParentKey, const tchar* pszSubKey, const tchar* pszName, const tchar* pszValue);

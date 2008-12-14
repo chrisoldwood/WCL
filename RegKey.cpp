@@ -9,9 +9,13 @@
 #include <Core/StringUtils.hpp>
 #include <limits>
 #include <tchar.h>
+#include <shlwapi.h>
 
 // Using declarations.
 using WCL::RegistryException;
+
+// Linker directives.
+#pragma comment(lib, "shlwapi.lib")
 
 namespace WCL
 {
@@ -212,6 +216,21 @@ bool RegKey::Delete(HKEY hParentKey, const tchar* pszSubKey)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Delete the entire sub-tree.
+//! If the method fails the error code can be retrieved with GetLastError().
+
+bool RegKey::DeleteTree(HKEY hParentKey, const tchar* pszSubKey)
+{
+	DWORD dwResult = ::SHDeleteKey(hParentKey, pszSubKey);
+
+	// Fill in LastError() for the caller.
+	if (dwResult != ERROR_SUCCESS)
+		::SetLastError(dwResult);
+
+	return (dwResult == ERROR_SUCCESS);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Read the default value for a key.
 
 CString RegKey::ReadKeyDefaultValue(HKEY hParentKey, const tchar* pszSubKey)
@@ -245,6 +264,30 @@ void RegKey::WriteKeyDefaultValue(HKEY hParentKey, const tchar* pszSubKey, const
 
 	// Set the value.
 	oKey.WriteDefaultValue(pszValue);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Read a named string value under a key.
+
+CString RegKey::ReadKeyStringValue(HKEY hParentKey, const tchar* pszSubKey, const tchar* pszName, const tchar* pszDefault)
+{
+	ASSERT(hParentKey != nullptr);
+	ASSERT(pszSubKey  != nullptr);
+	ASSERT(pszName    != nullptr);
+	ASSERT(pszDefault != nullptr);
+
+	CString strValue = pszDefault;
+
+	if (Exists(hParentKey, pszSubKey))
+	{
+		RegKey oKey;
+
+		oKey.Open(hParentKey, pszSubKey, KEY_READ);
+
+		strValue = oKey.ReadStringValue(pszName, pszDefault);
+	}
+
+	return strValue;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
