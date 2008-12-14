@@ -124,6 +124,9 @@
 				RelativePath="App.cpp">
 			</File>
 			<File
+				RelativePath=".\AppConfig.cpp">
+			</File>
+			<File
 				RelativePath="Bitmap.cpp">
 			</File>
 			<File
@@ -250,6 +253,9 @@
 				RelativePath="IniFile.cpp">
 			</File>
 			<File
+				RelativePath=".\IniFileCfgProvider.cpp">
+			</File>
+			<File
 				RelativePath="Label.cpp">
 			</File>
 			<File
@@ -346,6 +352,9 @@
 				RelativePath="RadioBtn.cpp">
 			</File>
 			<File
+				RelativePath=".\RegistryCfgProvider.cpp">
+			</File>
+			<File
 				RelativePath="RegKey.cpp">
 			</File>
 			<File
@@ -388,21 +397,6 @@
 				RelativePath="StdWnd.cpp">
 			</File>
 			<File
-				RelativePath=".\StrConvs.cpp">
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="StrCvt.cpp">
 			</File>
 			<File
@@ -413,6 +407,9 @@
 			</File>
 			<File
 				RelativePath="String.cpp">
+			</File>
+			<File
+				RelativePath=".\StringUtils.cpp">
 			</File>
 			<File
 				RelativePath="StrTok.cpp">
@@ -492,6 +489,9 @@
 			</File>
 			<File
 				RelativePath="App.hpp">
+			</File>
+			<File
+				RelativePath=".\AppConfig.hpp">
 			</File>
 			<File
 				RelativePath=".\AutoBool.hpp">
@@ -641,6 +641,9 @@
 				RelativePath="IconCtrl.hpp">
 			</File>
 			<File
+				RelativePath=".\IConfigProvider.hpp">
+			</File>
+			<File
 				RelativePath=".\IFacePtr.hpp">
 			</File>
 			<File
@@ -654,6 +657,9 @@
 			</File>
 			<File
 				RelativePath="IniFile.hpp">
+			</File>
+			<File
+				RelativePath=".\IniFileCfgProvider.hpp">
 			</File>
 			<File
 				RelativePath=".\IOutputStream.hpp">
@@ -755,6 +761,9 @@
 				RelativePath="Rect.hpp">
 			</File>
 			<File
+				RelativePath=".\RegistryCfgProvider.hpp">
+			</File>
+			<File
 				RelativePath=".\RegistryException.hpp">
 			</File>
 			<File
@@ -809,9 +818,6 @@
 				RelativePath="StrArray.hpp">
 			</File>
 			<File
-				RelativePath=".\StrConvs.hpp">
-			</File>
-			<File
 				RelativePath="StrCvt.hpp">
 			</File>
 			<File
@@ -825,6 +831,9 @@
 			</File>
 			<File
 				RelativePath="String.hpp">
+			</File>
+			<File
+				RelativePath=".\StringUtils.hpp">
 			</File>
 			<File
 				RelativePath="StrTok.hpp">
