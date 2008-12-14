@@ -260,19 +260,31 @@ CPath CPath::Module(HMODULE hModule)
 *******************************************************************************
 */
 
-CPath CPath::SpecialDir(int nCSIDL)
+CPath CPath::SpecialDir(int csidl)
 {
-	tchar szPath[MAX_PATH+1] = { 0 };
+	tchar buffer[MAX_PATH+1] = { 0 };
 
-	::SHGetSpecialFolderPath(NULL, szPath, nCSIDL, FALSE);
+	// Lookup the folder.
+	BOOL result = ::SHGetSpecialFolderPath(NULL, buffer, csidl, FALSE);
 
-	CPath str = szPath;
+	if (result)
+		return buffer;
 
-	// "Program Files" folder is only available with IE 5.x and later.
-	if ( (nCSIDL == CSIDL_PROGRAM_FILES) && (str == TXT("")) )
-		str = CPath::WindowsDir().Root() / TXT("Program Files");
+	// Try and simulate it.
+	CPath path;
 
-	return str;
+	// "Program Files" only available with IE 5.0 and later.
+	if (csidl == CSIDL_PROGRAM_FILES)
+	{
+		path = WindowsDir().Root() / TXT("Program Files");
+	}
+	// "Application Data" only available with IE 4.0 and later.
+	else if (csidl == CSIDL_APPDATA)
+	{
+		path = ApplicationDir();
+	}
+
+	return path;
 }
 
 /******************************************************************************
