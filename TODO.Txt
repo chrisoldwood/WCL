@@ -1,3 +1,7 @@
+- Find and fix any c-style casts, e.g. (DLGPROC) or (LPARAM).
+
+- Change to use specific types (keycode_t etc) instead of WORD, LRESULT, etc.
+
 - App helpers for reg file types/apps etc.
 
 - Two phase save support (SDI).
@@ -35,6 +39,8 @@
 - GLOBAL: Change 'deletes' to use smart ptrs.
 
 - Reduce the display string length of the MRU list items.
+
+- CFile/IStreamBase needs a getStreamPos() style method to replace use of Seek(0, CURRENT).
 
 
 UNICODE
