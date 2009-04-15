@@ -89,16 +89,16 @@ void CDateTimePicker::SetDate(const CDate& rDate)
 	rDate.Get(nDay, nMonth, nYear);
 
 	// Initialise date part.
-	SysTime.wDay       = (WORD) nDay;
-	SysTime.wMonth     = (WORD) nMonth;
-	SysTime.wYear      = (WORD) nYear;
-	SysTime.wDayOfWeek = (WORD) 0;
+	SysTime.wDay       = static_cast<WORD>(nDay);
+	SysTime.wMonth     = static_cast<WORD>(nMonth);
+	SysTime.wYear      = static_cast<WORD>(nYear);
+	SysTime.wDayOfWeek = 0;
 
 	// Set time part to midnight.
-	SysTime.wHour         = (WORD) 0;
-	SysTime.wMinute       = (WORD) 0;
-	SysTime.wSecond       = (WORD) 0;
-	SysTime.wMilliseconds = (WORD) 0;
+	SysTime.wHour         = 0;
+	SysTime.wMinute       = 0;
+	SysTime.wSecond       = 0;
+	SysTime.wMilliseconds = 0;
 
 	// Set the date in the control.
 	DateTime_SetSystemtime(m_hWnd, GDT_VALID, &SysTime);
@@ -134,28 +134,28 @@ void CDateTimePicker::SetDateRange(const CDate& rMin, const CDate& rMax)
 	int			nDay, nMonth, nYear;
 
 	// Set time parts to 00:00:00.
-	SysTime[0].wHour         = SysTime[1].wHour         = (WORD) 0;
-	SysTime[0].wMinute       = SysTime[1].wMinute       = (WORD) 0;
-	SysTime[0].wSecond       = SysTime[1].wSecond       = (WORD) 0;
-	SysTime[0].wMilliseconds = SysTime[1].wMilliseconds = (WORD) 0;
+	SysTime[0].wHour         = SysTime[1].wHour         = 0;
+	SysTime[0].wMinute       = SysTime[1].wMinute       = 0;
+	SysTime[0].wSecond       = SysTime[1].wSecond       = 0;
+	SysTime[0].wMilliseconds = SysTime[1].wMilliseconds = 0;
 
 	// Extract min date components.
 	rMin.Get(nDay, nMonth, nYear);
 
 	// Initialise min date part.
-	SysTime[0].wDay       = (WORD) nDay;
-	SysTime[0].wMonth     = (WORD) nMonth;
-	SysTime[0].wYear      = (WORD) nYear;
-	SysTime[0].wDayOfWeek = (WORD) 0;
+	SysTime[0].wDay       = static_cast<WORD>(nDay);
+	SysTime[0].wMonth     = static_cast<WORD>(nMonth);
+	SysTime[0].wYear      = static_cast<WORD>(nYear);
+	SysTime[0].wDayOfWeek = 0;
 
 	// Extract max date components.
 	rMax.Get(nDay, nMonth, nYear);
 
 	// Initialise max date part.
-	SysTime[1].wDay       = (WORD) nDay;
-	SysTime[1].wMonth     = (WORD) nMonth;
-	SysTime[1].wYear      = (WORD) nYear;
-	SysTime[1].wDayOfWeek = (WORD) 0;
+	SysTime[1].wDay       = static_cast<WORD>(nDay);
+	SysTime[1].wMonth     = static_cast<WORD>(nMonth);
+	SysTime[1].wYear      = static_cast<WORD>(nYear);
+	SysTime[1].wDayOfWeek = 0;
 
 	// Set the date range in the control.
 	DateTime_SetRange(m_hWnd, GDTR_MIN | GDTR_MAX, SysTime);
@@ -195,16 +195,16 @@ void CDateTimePicker::SetTime(const CTime& rTime)
 	rTime.Get(nHours, nMins, nSecs);
 
 	// Set date part to 01/01/2000.
-	SysTime.wDay       = (WORD) 1;
-	SysTime.wMonth     = (WORD) 1;
-	SysTime.wYear      = (WORD) 2000;
-	SysTime.wDayOfWeek = (WORD) 0;
+	SysTime.wDay       = 1;
+	SysTime.wMonth     = 1;
+	SysTime.wYear      = 2000;
+	SysTime.wDayOfWeek = 0;
 
 	// Initialise time part.
-	SysTime.wHour         = (WORD) nHours;
-	SysTime.wMinute       = (WORD) nMins;
-	SysTime.wSecond       = (WORD) nSecs;
-	SysTime.wMilliseconds = (WORD) 0;
+	SysTime.wHour         = static_cast<WORD>(nHours);
+	SysTime.wMinute       = static_cast<WORD>(nMins);
+	SysTime.wSecond       = static_cast<WORD>(nSecs);
+	SysTime.wMilliseconds = 0;
 
 	// Set the time in the control.
 	DateTime_SetSystemtime(m_hWnd, GDT_VALID, &SysTime);
@@ -240,28 +240,28 @@ void CDateTimePicker::SetTimeRange(const CTime& rMin, const CTime& rMax)
 	int			nHours, nMins, nSecs;
 
 	// Set date parts to 01/01/2000.
-	SysTime[0].wDay       = SysTime[1].wDay       = (WORD) 1;
-	SysTime[0].wMonth     = SysTime[1].wMonth     = (WORD) 1;
-	SysTime[0].wYear      = SysTime[1].wYear      = (WORD) 2000;
-	SysTime[0].wDayOfWeek = SysTime[1].wDayOfWeek = (WORD) 0;
+	SysTime[0].wDay       = SysTime[1].wDay       = 1;
+	SysTime[0].wMonth     = SysTime[1].wMonth     = 1;
+	SysTime[0].wYear      = SysTime[1].wYear      = 2000;
+	SysTime[0].wDayOfWeek = SysTime[1].wDayOfWeek = 0;
 
 	// Extract min time components.
 	rMin.Get(nHours, nMins, nSecs);
 
 	// Initialise min time part.
-	SysTime[0].wHour         = (WORD) nHours;
-	SysTime[0].wMinute       = (WORD) nMins;
-	SysTime[0].wSecond       = (WORD) nSecs;
-	SysTime[0].wMilliseconds = (WORD) 0;
+	SysTime[0].wHour         = static_cast<WORD>(nHours);
+	SysTime[0].wMinute       = static_cast<WORD>(nMins);
+	SysTime[0].wSecond       = static_cast<WORD>(nSecs);
+	SysTime[0].wMilliseconds = 0;
 
 	// Extract max time components.
 	rMax.Get(nHours, nMins, nSecs);
 
 	// Initialise max time part.
-	SysTime[1].wHour         = (WORD) nHours;
-	SysTime[1].wMinute       = (WORD) nMins;
-	SysTime[1].wSecond       = (WORD) nSecs;
-	SysTime[1].wMilliseconds = (WORD) 0;
+	SysTime[1].wHour         = static_cast<WORD>(nHours);
+	SysTime[1].wMinute       = static_cast<WORD>(nMins);
+	SysTime[1].wSecond       = static_cast<WORD>(nSecs);
+	SysTime[1].wMilliseconds = 0;
 
 	// Set the time range in the control.
 	DateTime_SetRange(m_hWnd, GDTR_MIN | GDTR_MAX, SysTime);
@@ -302,14 +302,14 @@ void CDateTimePicker::SetDateTime(const CDateTime& rDateTime)
 	rDateTime.Get(nDay, nMonth, nYear, nHours, nMins, nSecs);
 
 	// Initialise datetime parts 
-	SysTime.wDay          = (WORD) nDay;
-	SysTime.wMonth        = (WORD) nMonth;
-	SysTime.wYear         = (WORD) nYear;
-	SysTime.wDayOfWeek    = (WORD) 0;
-	SysTime.wHour         = (WORD) nHours;
-	SysTime.wMinute       = (WORD) nMins;
-	SysTime.wSecond       = (WORD) nSecs;
-	SysTime.wMilliseconds = (WORD) 0;
+	SysTime.wDay          = static_cast<WORD>(nDay);
+	SysTime.wMonth        = static_cast<WORD>(nMonth);
+	SysTime.wYear         = static_cast<WORD>(nYear);
+	SysTime.wDayOfWeek    = 0;
+	SysTime.wHour         = static_cast<WORD>(nHours);
+	SysTime.wMinute       = static_cast<WORD>(nMins);
+	SysTime.wSecond       = static_cast<WORD>(nSecs);
+	SysTime.wMilliseconds = 0;
 
 	// Set the time in the control.
 	DateTime_SetSystemtime(m_hWnd, GDT_VALID, &SysTime);
@@ -349,27 +349,27 @@ void CDateTimePicker::SetDateTimeRange(const CDateTime& rMin, const CDateTime& r
 	rMin.Get(nDay, nMonth, nYear, nHours, nMins, nSecs);
 
 	// Initialise min datetime part.
-	SysTime[0].wDay          = (WORD) nDay;
-	SysTime[0].wMonth        = (WORD) nMonth;
-	SysTime[0].wYear         = (WORD) nYear;
-	SysTime[0].wDayOfWeek    = (WORD) 0;
-	SysTime[0].wHour         = (WORD) nHours;
-	SysTime[0].wMinute       = (WORD) nMins;
-	SysTime[0].wSecond       = (WORD) nSecs;
-	SysTime[0].wMilliseconds = (WORD) 0;
+	SysTime[0].wDay          = static_cast<WORD>(nDay);
+	SysTime[0].wMonth        = static_cast<WORD>(nMonth);
+	SysTime[0].wYear         = static_cast<WORD>(nYear);
+	SysTime[0].wDayOfWeek    = 0;
+	SysTime[0].wHour         = static_cast<WORD>(nHours);
+	SysTime[0].wMinute       = static_cast<WORD>(nMins);
+	SysTime[0].wSecond       = static_cast<WORD>(nSecs);
+	SysTime[0].wMilliseconds = 0;
 
 	// Extract max datetime components.
 	rMax.Get(nDay, nMonth, nYear, nHours, nMins, nSecs);
 
 	// Initialise max datetime part.
-	SysTime[1].wDay          = (WORD) nDay;
-	SysTime[1].wMonth        = (WORD) nMonth;
-	SysTime[1].wYear         = (WORD) nYear;
-	SysTime[1].wDayOfWeek    = (WORD) 0;
-	SysTime[1].wHour         = (WORD) nHours;
-	SysTime[1].wMinute       = (WORD) nMins;
-	SysTime[1].wSecond       = (WORD) nSecs;
-	SysTime[1].wMilliseconds = (WORD) 0;
+	SysTime[1].wDay          = static_cast<WORD>(nDay);
+	SysTime[1].wMonth        = static_cast<WORD>(nMonth);
+	SysTime[1].wYear         = static_cast<WORD>(nYear);
+	SysTime[1].wDayOfWeek    = 0;
+	SysTime[1].wHour         = static_cast<WORD>(nHours);
+	SysTime[1].wMinute       = static_cast<WORD>(nMins);
+	SysTime[1].wSecond       = static_cast<WORD>(nSecs);
+	SysTime[1].wMilliseconds = 0;
 
 	// Set the time range in the control.
 	DateTime_SetRange(m_hWnd, GDTR_MIN | GDTR_MAX, SysTime);
