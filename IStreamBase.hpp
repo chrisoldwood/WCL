@@ -23,6 +23,18 @@ class IStreamBase
 {
 public:
 	//
+	// Types.
+	//
+
+	//! The relative file position to seek from.
+	enum SeekPos
+	{
+		BEGIN	= FILE_BEGIN,
+		CURRENT	= FILE_CURRENT,
+		END		= FILE_END,
+	};
+
+	//
 	// Properties.
 	//
 
@@ -43,7 +55,7 @@ public:
 	//
 
 	//! Move the stream pointer.
-	virtual ulong Seek(ulong lPos, uint nFrom = FILE_BEGIN) = 0;
+	virtual StreamPos Seek(StreamPos lPos, SeekPos eFrom = BEGIN) = 0;
 
 	//! Throw a stream specific exception with the specified error code.
 	virtual void Throw(int eErrCode, DWORD dwLastError) = 0;
