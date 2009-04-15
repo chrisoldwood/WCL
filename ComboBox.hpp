@@ -100,7 +100,7 @@ inline void CComboBox::TextLimit(size_t nLimit) const
 
 inline size_t CComboBox::Add(const tchar* pszText) const
 {
-	LRESULT lResult = SendMessage(CB_ADDSTRING, 0, (LPARAM)pszText);
+	LRESULT lResult = SendMessage(CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(pszText));
 
 	ASSERT((lResult != CB_ERR) && (lResult != CB_ERRSPACE));
 
@@ -127,7 +127,7 @@ inline size_t CComboBox::Add(const tchar* pszText, void*  pData) const
 
 inline size_t CComboBox::Insert(const tchar* pszText, size_t nItem) const
 {
-	LRESULT lResult = SendMessage(CB_INSERTSTRING, nItem, (LPARAM)pszText);
+	LRESULT lResult = SendMessage(CB_INSERTSTRING, nItem, reinterpret_cast<LPARAM>(pszText));
 
 	ASSERT((lResult != CB_ERR) && (lResult != CB_ERRSPACE));
 
@@ -145,12 +145,12 @@ inline size_t CComboBox::Delete(size_t nItem) const
 
 inline size_t CComboBox::Find(const tchar* pszText, size_t nFirst) const
 {
-	return SendMessage(CB_FINDSTRING, nFirst, (LPARAM)pszText);
+	return SendMessage(CB_FINDSTRING, nFirst, reinterpret_cast<LPARAM>(pszText));
 }
 
 inline size_t CComboBox::FindExact(const tchar* pszText, size_t nFirst) const
 {
-	return SendMessage(CB_FINDSTRINGEXACT, nFirst, (LPARAM)pszText);
+	return SendMessage(CB_FINDSTRINGEXACT, nFirst, reinterpret_cast<LPARAM>(pszText));
 }
 
 inline void CComboBox::ItemData(size_t nItem, LPARAM lData) const
@@ -165,7 +165,7 @@ inline LPARAM CComboBox::ItemData(size_t nItem) const
 
 inline void CComboBox::ItemPtr(size_t nItem, void* pData) const
 {
-	SendMessage(CB_SETITEMDATA, nItem, (LPARAM)pData);
+	SendMessage(CB_SETITEMDATA, nItem, reinterpret_cast<LPARAM>(pData));
 }
 
 inline void* CComboBox::ItemPtr(size_t nItem) const
@@ -190,7 +190,7 @@ inline void CComboBox::RemoveSelection()
 
 inline size_t CComboBox::CurSel(const tchar* pszText, size_t nFirst) const
 {
-	return SendMessage(CB_SELECTSTRING, nFirst, (LPARAM)pszText);
+	return SendMessage(CB_SELECTSTRING, nFirst, reinterpret_cast<LPARAM>(pszText));
 }
 
 inline size_t CComboBox::Select(const tchar* pszText, size_t nFirst) const

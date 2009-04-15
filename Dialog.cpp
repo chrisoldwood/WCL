@@ -89,7 +89,7 @@ bool CDialog::RunModeless(CWnd& rParent)
 
 	// Create it.
 	HWND hWnd = CreateDialogParam(CModule::This().Handle(), MAKEINTRESOURCE(m_iRscID),
-									rParent.Handle(), (DLGPROC)DlgProc, (LPARAM)this);
+									rParent.Handle(), DlgProc, reinterpret_cast<LPARAM>(this));
 
 	ASSERT(hWnd != NULL);
 
@@ -126,13 +126,13 @@ int CDialog::RunModal(CWnd& rParent)
 	ASSERT(m_iRscID);
 	
 	// Create it.
-	int iReturn = DialogBoxParam(CModule::This().Handle(), MAKEINTRESOURCE(m_iRscID),
-									rParent.Handle(), (DLGPROC)DlgProc, (LPARAM)this);
+	LRESULT iReturn = DialogBoxParam(CModule::This().Handle(), MAKEINTRESOURCE(m_iRscID),
+									rParent.Handle(), DlgProc, reinterpret_cast<LPARAM>(this));
 
 	ASSERT(iReturn != -1);
     
     // Return 
-	return iReturn;
+	return static_cast<int>(iReturn);
 }
 
 /******************************************************************************
@@ -168,7 +168,7 @@ void CDialog::EndDialog(int nResult)
 *******************************************************************************
 */
 
-BOOL DIALOGPROC DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
+WCL::DlgResult DIALOGPROC CDialog::DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
 	// Store the return values for this message.
 	BOOL     bMsgHandled = false;
@@ -265,7 +265,7 @@ BOOL DIALOGPROC DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	}
 
 	// Set the return value.
-	::SetWindowLong(hWnd, DWL_MSGRESULT, lMsgResult);
+	::SetWindowLongPtr(hWnd, DWLP_MSGRESULT, lMsgResult);
 
 	// Return if msg was handled.
 	return bMsgHandled;
@@ -432,7 +432,7 @@ void CDialog::OnResize(int /*iFlag*/, const CSize& rNewSize)
 		return;
 
 	// Allocate DWP handle.
-	HDWP hDWP = ::BeginDeferWindowPos(m_vGravities.size());
+	HDWP hDWP = ::BeginDeferWindowPos(static_cast<int>(m_vGravities.size()));
 
 	ASSERT(hDWP != NULL);
 
@@ -602,7 +602,7 @@ void CDialog::InitGravityTable()
 
 		// Get the controls starting position.
 		::GetWindowRect(it->hWnd, &it->rcStart);
-		::MapWindowPoints(NULL, m_hWnd, (LPPOINT) &it->rcStart, 2);
+		::MapWindowPoints(NULL, m_hWnd, reinterpret_cast<LPPOINT>(&it->rcStart), 2);
 	}
 }
 
