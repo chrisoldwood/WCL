@@ -58,7 +58,7 @@ public:
 	void Delete(size_t nIndex);
 	void DeleteAll();
 
-	int Find(const tchar* pszString, bool bIgnoreCase = false) const;
+	size_t Find(const tchar* pszString, bool bIgnoreCase = false) const;
 
 private:
 	//! The underlying array type..
@@ -168,7 +168,7 @@ inline void CStrArray::DeleteAll()
 	m_vStrings.clear();
 }
 
-inline int CStrArray::Find(const tchar* pszString, bool bIgnoreCase) const
+inline size_t CStrArray::Find(const tchar* pszString, bool bIgnoreCase) const
 {
 	ASSERT(pszString != NULL);
 
@@ -180,7 +180,7 @@ inline int CStrArray::Find(const tchar* pszString, bool bIgnoreCase) const
 			return std::distance(m_vStrings.begin(), it);
 	}
 
-	return -1;
+	return Core::npos;
 }
 
 #endif // WCL_STRARRAY_HPP

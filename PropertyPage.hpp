@@ -42,7 +42,7 @@ protected:
 	//
 	// General message handlers.
 	//
-	friend BOOL DIALOGPROC PropPageProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
+	static WCL::DlgResult DIALOGPROC PropPageProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
 
 	//
 	// Message processors.

@@ -27,7 +27,7 @@
 *******************************************************************************
 */
 
-ThreadPoolThread::ThreadPoolThread(CThreadPool& oPool, uint nPoolID)
+ThreadPoolThread::ThreadPoolThread(CThreadPool& oPool, size_t nPoolID)
 	: m_oPool(oPool)
 	, m_nPoolID(nPoolID)
 	, m_eStatus(STOPPED)

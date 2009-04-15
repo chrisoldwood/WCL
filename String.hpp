@@ -41,7 +41,7 @@ public:
 	CString();
 	CString(uint iRscID);
 	CString(const tchar* pszBuffer);
-	CString(const tchar* pszBuffer, uint iChars);
+	CString(const tchar* pszBuffer, size_t iChars);
 	CString(const CString& strSrc);
 	~CString();
 
@@ -84,8 +84,8 @@ public:
  	//
 	// Searching.
 	//
-	int Find(tchar cChar, size_t nStart = 0) const;
-	int Find(const tchar* pszStr, size_t nStart = 0) const;
+	size_t Find(tchar cChar, size_t nStart = 0) const;
+	size_t Find(const tchar* pszStr, size_t nStart = 0) const;
 	size_t Count(tchar cChar) const;
 	size_t Count(tchar cChar, size_t nStart, size_t nEnd) const;
 
@@ -203,7 +203,7 @@ inline CString::CString(const tchar* pszBuffer)
 	Copy(pszBuffer, tstrlen(pszBuffer));
 }
 
-inline CString::CString(const tchar* pszBuffer, uint iChars)
+inline CString::CString(const tchar* pszBuffer, size_t iChars)
 	: m_pszData(pszNULL)
 {
 	Copy(pszBuffer, iChars);

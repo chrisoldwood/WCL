@@ -60,7 +60,7 @@ CPropertyPage::~CPropertyPage()
 *******************************************************************************
 */
 
-BOOL DIALOGPROC PropPageProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
+WCL::DlgResult DIALOGPROC CPropertyPage::PropPageProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
 	CPropertyPage* pDialog;
 	
@@ -143,7 +143,7 @@ BOOL DIALOGPROC PropPageProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	pDialog->MsgResultBuffer (plMsgResult);
 
 	// Set the return value.
-	::SetWindowLong(hWnd, DWL_MSGRESULT, lMsgResult);
+	::SetWindowLongPtr(hWnd, DWLP_MSGRESULT, lMsgResult);
 
 	// Return if msg was handled.
 	return bMsgHandled;

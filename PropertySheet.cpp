@@ -68,7 +68,7 @@ bool CPropertySheet::RunModeless(CWnd& /*rParent*/)
 
 	// Create it.
 	HWND hWnd = CreateDialogParam(CModule::This().Handle(), MAKEINTRESOURCE(m_iRscID),
-									rParent.Handle(), (DLGPROC)DlgProc, (LPARAM)this);
+									rParent.Handle(), DlgProc, this);
 
 	ASSERT(hWnd);
 
@@ -110,8 +110,8 @@ int CPropertySheet::RunModal(CWnd& rParent)
 		oPage.pszTemplate = MAKEINTRESOURCE(rPage.m_pPage->m_iRscID);
 		oPage.hIcon       = NULL;
 		oPage.pszTitle    = rPage.m_pszLabel;
-		oPage.pfnDlgProc  = PropPageProc;
-		oPage.lParam      = (LPARAM) rPage.m_pPage;
+		oPage.pfnDlgProc  = CPropertyPage::PropPageProc;
+		oPage.lParam      = reinterpret_cast<LPARAM>(rPage.m_pPage);
 		oPage.pfnCallback = NULL;
 		oPage.pcRefParent = NULL;
 
@@ -130,18 +130,18 @@ int CPropertySheet::RunModal(CWnd& rParent)
 	oHeader.hInstance   = CModule::This().Handle();
 	oHeader.hIcon       = NULL;
 	oHeader.pszCaption  = m_strTitle;
-	oHeader.nPages      = m_vPages.size();
+	oHeader.nPages      = static_cast<int>(m_vPages.size());
 	oHeader.nStartPage  = 0;
 	oHeader.phpage      = (!m_vHandles.empty()) ? &m_vHandles.front() : nullptr;
 	oHeader.pfnCallback = NULL;
 
 	// Create it.
-	int nResult = ::PropertySheet(&oHeader);
+	WCL::DlgResult nResult = ::PropertySheet(&oHeader);
 
 	ASSERT(nResult != -1);
     
     // Return 
-	return nResult;
+	return static_cast<int>(nResult);
 }
 
 /******************************************************************************

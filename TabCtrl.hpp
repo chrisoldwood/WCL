@@ -83,7 +83,7 @@ inline size_t CTabCtrl::NumTabs() const
 
 inline size_t CTabCtrl::AddTab(const tchar* pszName, const void* pData)
 {
-	return AddTab(pszName, (LPARAM)pData);
+	return AddTab(pszName, reinterpret_cast<LPARAM>(pData));
 }
 
 inline int CTabCtrl::CurSel() const

@@ -36,7 +36,7 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	ThreadPoolThread(CThreadPool& oPool, uint nPoolID);
+	ThreadPoolThread(CThreadPool& oPool, size_t nPoolID);
 	virtual	~ThreadPoolThread();
 
 	// Thread status.
@@ -64,7 +64,7 @@ protected:
 	// Members.
 	//
 	CThreadPool&	m_oPool;		// The owning thread pool.
-	uint			m_nPoolID;		// The ID within the pool.
+	size_t			m_nPoolID;		// The ID within the pool.
 	ThreadStatus	m_eStatus;		// Current status.
 	CEvent			m_oSyncEvent;	// Start/Stop event object.
 	ThreadJobPtr	m_pJob;			// Current job, if one.

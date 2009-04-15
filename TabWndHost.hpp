@@ -38,7 +38,7 @@ public:
 	//
 	// Methods.
 	//
-	int  AddTab(const tchar* pszName, CWnd& oWnd);
+	size_t AddTab(const tchar* pszName, CWnd& oWnd);
 
 	int  CurSel() const;
 	void CurSel(int nTab);
@@ -66,7 +66,7 @@ protected:
 *******************************************************************************
 */
 
-inline int CTabWndHost::AddTab(const tchar* pszName, CWnd& oWnd)
+inline size_t CTabWndHost::AddTab(const tchar* pszName, CWnd& oWnd)
 {
 	oWnd.Show(SW_HIDE);
 	return CTabCtrl::AddTab(pszName, &oWnd);

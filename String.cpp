@@ -52,7 +52,7 @@ void CString::LoadRsc(uint iRscID)
 	BufferSize(nChars+1);
 
 	// Load until buffer is big enough.
-	while(static_cast<size_t>(::LoadString(CModule::This().Handle(), iRscID, m_pszData, nChars+1)) == nChars)
+	while(static_cast<size_t>(::LoadString(CModule::This().Handle(), iRscID, m_pszData, static_cast<int>(nChars+1))) == nChars)
 	{
 		nChars *= 2;
 		BufferSize(nChars+1);
@@ -175,8 +175,8 @@ void CString::operator +=(const tchar* pszString)
 	if (*pszString == TXT('\0'))
 		return;
 
-	uint iStrLen   = Length();
-	uint iParamLen = tstrlen(pszString);
+	size_t iStrLen   = Length();
+	size_t iParamLen = tstrlen(pszString);
 	
 	StringData* pOldData = GetData();
 
@@ -223,7 +223,7 @@ void CString::operator +=(tchar cChar)
 	if (cChar == TXT('\0'))
 		return;
 
-	uint iStrLen = Length();
+	size_t iStrLen = Length();
 	
 	StringData* pOldData = GetData();
 
@@ -405,13 +405,13 @@ CString CString::FmtEx(const tchar* pszFormat, va_list args)
 *******************************************************************************
 */
 
-int CString::Find(tchar cChar, size_t nStart) const
+size_t CString::Find(tchar cChar, size_t nStart) const
 {
 	ASSERT(nStart <= Length());
 
 	const tchar* psz = tstrchr(m_pszData + nStart, cChar);
 
-	return (psz == NULL) ? -1 : (psz - m_pszData);
+	return (psz == NULL) ? Core::npos : (psz - m_pszData);
 }
 
 /******************************************************************************
@@ -428,13 +428,13 @@ int CString::Find(tchar cChar, size_t nStart) const
 *******************************************************************************
 */
 
-int CString::Find(const tchar* pszStr, size_t nStart) const
+size_t CString::Find(const tchar* pszStr, size_t nStart) const
 {
 	ASSERT(nStart <= Length());
 
 	const tchar* psz = tstrstr(m_pszData + nStart, pszStr);
 
-	return (psz == NULL) ? -1 : (psz - m_pszData);
+	return (psz == NULL) ? Core::npos : (psz - m_pszData);
 }
 
 /******************************************************************************
@@ -453,9 +453,9 @@ int CString::Find(const tchar* pszStr, size_t nStart) const
 size_t CString::Count(tchar cChar) const
 {
 	size_t nMatches = 0;
-	int    nPos     = -1;
+	size_t nPos     = Core::npos;
 
-	while ((nPos = Find(cChar, nPos+1)) != -1)
+	while ((nPos = Find(cChar, nPos+1)) != Core::npos)
 		++nMatches;
 
 	return nMatches;
