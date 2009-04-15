@@ -93,7 +93,7 @@ void CToolBar::GetClassParams(WNDCLASS& rParams)
 	CCtrlWnd::GetClassParams(rParams);
 
 	// Override any settings.
-	rParams.hbrBackground = (HBRUSH) (COLOR_BTNFACE + 1);
+	rParams.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_BTNFACE + 1);
 	rParams.lpszClassName = TXT("ToolBar");
 }
 
@@ -253,7 +253,7 @@ LRESULT CToolBar::OnCtrlMsg(NMHDR& rMsgHdr)
 		ASSERT(oInfo.uFlags & TTF_IDISHWND);
 
 		// Get the tip (Assumes the ID is the controls HWND).
-		int nCtlID = ::GetDlgCtrlID((HWND)rMsgHdr.idFrom);
+		int nCtlID = ::GetDlgCtrlID(reinterpret_cast<HWND>(rMsgHdr.idFrom));
 
 		// Return it.
 		tstrcpy(oInfo.szText, CApp::This().m_rCmdControl.CmdToolTipStr(nCtlID));

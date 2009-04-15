@@ -120,5 +120,5 @@ void CToolTip::AddTool(uint nFlags, CWnd& oParent, uint nID, const CRect* prcRec
     oInfo.lpszText = const_cast<tchar*>(pszText);
 
 	// Add it.
-	SendMessage(TTM_ADDTOOL, 0, (LPARAM)&oInfo);
+	SendMessage(TTM_ADDTOOL, 0, reinterpret_cast<LPARAM>(&oInfo));
 }

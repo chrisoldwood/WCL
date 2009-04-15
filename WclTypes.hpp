@@ -11,21 +11,72 @@
 #pragma once
 #endif
 
+namespace WCL
+{
+
 ////////////////////////////////////////////////////////////////////////////////
-// Primitive types.
+// Internal primitive types.
 
 //! GMT based time_t used internally.
-typedef time_t seconds_t;
+typedef time_t Seconds;
 
 //! Count of days.
-typedef time_t days_t;
+typedef time_t Days;
+
+////////////////////////////////////////////////////////////////////////////////
+// Windows API types.
+
+//! The position within a stream.
+typedef unsigned __int64 StreamPos;
+
+#ifdef _WIN64
+//! The ID of a timer.
+typedef UINT_PTR TimerID;	
+#else
+//! The ID of a timer.
+typedef UINT TimerID;
+#endif
+
+//! The virtual code or character code of a key.
+typedef WORD KeyCode;
+
+//! The full state of a virtual key.
+typedef DWORD KeyState;
+
+//! The virtual key flags defined by the MK_* constants.
+typedef uint KeyFlags;
+
+//! The resize flags defined by the SIZE_* constants.
+typedef int ResizeFlags;
+
+//! The scrollbar flags defined by the SB_* constants.
+typedef uint ScrollbarFlags;
+
+#ifdef _WIN64
+//! The ID of a child control.
+typedef UINT_PTR ControlID;
+#else
+//! The ID of a child control.
+typedef UINT ControlID;
+#endif
+
+#ifdef _WIN64
+//! The result type of a DLGPROC.
+typedef INT_PTR DlgResult;
+#else
+//! The result type of a DLGPROC.
+typedef BOOL DlgResult;
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // Constants.
 
-const seconds_t SECS_PER_MIN  = 60;
-const seconds_t SECS_PER_HOUR = 60 * 60;
-const seconds_t SECS_PER_DAY  = 60 * 60 * 24;
+const Seconds SECS_PER_MIN  = 60;
+const Seconds SECS_PER_HOUR = 60 * 60;
+const Seconds SECS_PER_DAY  = 60 * 60 * 24;
+
+//namespace WCL
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // General definitions.
