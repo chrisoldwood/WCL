@@ -75,7 +75,7 @@ CString CComboBox::Text() const
 	strText.BufferSize(nChars+1);
 
 	// Fetch string.
-	ComboBox_GetText(m_hWnd, strText.Buffer(), nChars+1);
+	ComboBox_GetText(m_hWnd, strText.Buffer(), static_cast<int>(nChars+1));
 
 	return strText;
 }

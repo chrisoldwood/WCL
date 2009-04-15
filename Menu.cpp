@@ -125,7 +125,7 @@ CString CMenu::GetItemText(int nPos)
 	// Get the string.
 	str.BufferSize(nChars+1);
 
-	::GetMenuString(m_hMenu, nPos, str.Buffer(), nChars+1, MF_BYPOSITION);
+	::GetMenuString(m_hMenu, nPos, str.Buffer(), static_cast<int>(nChars+1), MF_BYPOSITION);
 
 	return str;
 }

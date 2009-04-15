@@ -406,7 +406,7 @@ size_t CIniFile::ReadSectionNames(CStrArray& astrNames)
 	tchar* pszNames = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
 
 	// Read all names, reallocating if necessary...
-	while (::GetPrivateProfileSectionNames(pszNames, nChars, m_strPath) >= (nChars-2))
+	while (::GetPrivateProfileSectionNames(pszNames, static_cast<DWORD>(nChars), m_strPath) >= (nChars-2))
 	{
 		// Double the buffer size.
 		nChars  *= 2;
@@ -445,7 +445,7 @@ size_t CIniFile::ReadSection(const tchar* pszSection, CStrArray& astrEntries)
 	tchar* pszEntries = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
 
 	// Read all entries, reallocating if necessary...
-	while (::GetPrivateProfileSection(pszSection, pszEntries, nChars, m_strPath) >= (nChars-2))
+	while (::GetPrivateProfileSection(pszSection, pszEntries, static_cast<DWORD>(nChars), m_strPath) >= (nChars-2))
 	{
 		// Double the buffer size.
 		nChars    *= 2;
@@ -490,8 +490,8 @@ size_t CIniFile::ReadSection(const tchar* pszSection, CStrArray& astrKeys, CStrA
 		{
 			// Split into key and value.
 			CString strEntry = astrEntries[i];
-			int     nLength  = strEntry.Length();
-			int     nSepPos  = strEntry.Find(TXT('='));
+			size_t  nLength  = strEntry.Length();
+			size_t  nSepPos  = strEntry.Find(TXT('='));
 
 			// Key set AND value set?
 			if ( (nSepPos > 0) && ((nLength-nSepPos-1) > 0) )

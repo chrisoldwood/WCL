@@ -208,7 +208,7 @@ bool CLogFont::Parse(const tchar* pszFont, CLogFont& oLogFont)
 		CStrArray astrFields;
 
 		// Split the font defintions into separate fields.
-		uint nFields = CStrTok::Split(pszFont, TXT(","), astrFields);
+		size_t nFields = CStrTok::Split(pszFont, TXT(","), astrFields);
 
 		ASSERT((nFields == FMT_MINIMAL) || (nFields == FMT_SHORT) || (nFields == FMT_FULL));
 
