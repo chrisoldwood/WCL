@@ -23,7 +23,7 @@ class IOutputStream : public WCL::IStreamBase
 {
 public:
 	//! Write a number of bytes to the stream.
-	virtual void Write(const void* pBuffer, uint iNumBytes) = 0;
+	virtual void Write(const void* pBuffer, size_t iNumBytes) = 0;
 	
 protected:
 	//! Protected destructor.
@@ -73,7 +73,7 @@ inline void operator<<(WCL::IOutputStream& rStream, uint32 rBuffer)
 
 inline void operator<<(WCL::IOutputStream& rStream, const char* pBuffer)
 {
-	uint32 nChars = strlen(pBuffer)+1;
+	uint32 nChars = static_cast<uint32>(strlen(pBuffer)+1);
 
 	rStream.Write(&nChars, sizeof(uint32));
 	rStream.Write(pBuffer, Core::NumBytes<char>(nChars));
@@ -81,7 +81,7 @@ inline void operator<<(WCL::IOutputStream& rStream, const char* pBuffer)
 
 inline void operator<<(WCL::IOutputStream& rStream, const wchar_t* pBuffer)
 {
-	uint32 nChars = wcslen(pBuffer)+1;
+	uint32 nChars = static_cast<uint32>(wcslen(pBuffer)+1);
 
 	rStream.Write(&nChars, sizeof(uint32));
 	rStream.Write(pBuffer, Core::NumBytes<wchar_t>(nChars));

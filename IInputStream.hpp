@@ -23,7 +23,7 @@ class IInputStream : public WCL::IStreamBase
 {
 public:
 	//!	Read a number of bytes from the stream.
-	virtual void Read(void* pBuffer, uint iNumBytes) = 0;
+	virtual void Read(void* pBuffer, size_t iNumBytes) = 0;
 
 	//! Query if the End of File has been reached.
 	virtual bool IsEOF() = 0;
