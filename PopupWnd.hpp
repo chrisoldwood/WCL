@@ -80,16 +80,16 @@ protected:
 	virtual void OnActivate(bool bActivating);
 	virtual void OnFocus();
 	virtual void OnFocusLost();
-	virtual void OnLeftButtonDown(const CPoint& ptCursor, uint iKeyFlags);
-	virtual void OnLeftButtonUp(const CPoint& ptCursor, uint iKeyFlags);
-	virtual void OnLeftButtonDblClick(const CPoint& ptCursor, uint iKeyFlags);
-	virtual void OnRightButtonDown(const CPoint& ptCursor, uint iKeyFlags);
-	virtual void OnRightButtonUp(const CPoint& ptCursor, uint iKeyFlags);
-	virtual void OnRightButtonDblClick(const CPoint& ptCursor, uint iKeyFlags);
-	virtual void OnMouseMove(const CPoint& ptCursor, uint iKeyFlags);
-	virtual void OnKeyDown(WORD wKey, DWORD dwFlags);
-	virtual void OnKeyUp(WORD wKey, DWORD dwFlags);
-	virtual void OnChar(WORD wKey, DWORD dwFlags);
+	virtual void OnLeftButtonDown(const CPoint& ptCursor, WCL::KeyFlags iKeyFlags);
+	virtual void OnLeftButtonUp(const CPoint& ptCursor, WCL::KeyFlags iKeyFlags);
+	virtual void OnLeftButtonDblClick(const CPoint& ptCursor, WCL::KeyFlags iKeyFlags);
+	virtual void OnRightButtonDown(const CPoint& ptCursor, WCL::KeyFlags iKeyFlags);
+	virtual void OnRightButtonUp(const CPoint& ptCursor, WCL::KeyFlags iKeyFlags);
+	virtual void OnRightButtonDblClick(const CPoint& ptCursor, WCL::KeyFlags iKeyFlags);
+	virtual void OnMouseMove(const CPoint& ptCursor, WCL::KeyFlags iKeyFlags);
+	virtual void OnKeyDown(WCL::KeyCode wKey, WCL::KeyState dwFlags);
+	virtual void OnKeyUp(WCL::KeyCode wKey, WCL::KeyState dwFlags);
+	virtual void OnChar(WCL::KeyCode wKey, WCL::KeyState dwFlags);
 	virtual void OnSelectMenu(uint iFlags, uint iItemID, HMENU hMenu);
 
 	virtual void OnShowMenuItemHint(uint iItemID);

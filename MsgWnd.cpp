@@ -74,7 +74,7 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			if (lParam == NULL)
 				OnCmdMsg(LOWORD(wParam));
 			else
-				OnCtrlMsg(LOWORD(wParam), HIWORD(wParam), (HWND)lParam);
+				OnCtrlMsg(LOWORD(wParam), HIWORD(wParam), reinterpret_cast<HWND>(lParam));
 			break;
 
 		// Child control message.
@@ -97,7 +97,7 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				*m_plMsgResult  = TRUE;
 
 				// Construct a device and call the method.
-				CScreenDC	DC((HDC) wParam);
+				CScreenDC	DC(reinterpret_cast<HDC>(wParam));
 				OnEraseBackground(DC);
 				return 0;
 			}
@@ -121,12 +121,12 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		case WM_CTLCOLORBTN:
 		case WM_CTLCOLORSCROLLBAR:
 		case WM_CTLCOLORSTATIC:
-			OnCtlColour(iMsg, (HDC)wParam, (HWND)lParam);
+			OnCtlColour(iMsg, reinterpret_cast<HDC>(wParam), reinterpret_cast<HWND>(lParam));
 			return 0;
 
 		// Set cursor.
 		case WM_SETCURSOR:
-			OnSetCursor((HWND)wParam, LOWORD(lParam), HIWORD(lParam));
+			OnSetCursor(reinterpret_cast<HWND>(wParam), LOWORD(lParam), HIWORD(lParam));
 			return 0;
 
 		// Hit test on the window.
@@ -138,7 +138,7 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		case WM_SIZE:
 			{
 				CSize NewSize(LOWORD(lParam), HIWORD(lParam));
-				OnResize(wParam, NewSize);
+				OnResize(static_cast<WCL::ResizeFlags>(wParam), NewSize);
 			}
 			break;
 
@@ -153,12 +153,12 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 		// Horizontal scrollbar changed.
 		case WM_HSCROLL:
-			OnHorizScroll(wParam, LOWORD(lParam));
+			OnHorizScroll(static_cast<WCL::ScrollbarFlags>(wParam), LOWORD(lParam));
 			break;
 
 		// Vertical scrollbar changed.
 		case WM_VSCROLL:
-			OnVertScroll(wParam, LOWORD(lParam));
+			OnVertScroll(static_cast<WCL::ScrollbarFlags>(wParam), LOWORD(lParam));
 			break;
 
 		// Window being shown.
@@ -214,7 +214,7 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		// Help requested.
 		case WM_HELP:
 			{
-				HELPINFO* pInfo = (LPHELPINFO)lParam;
+				HELPINFO* pInfo = reinterpret_cast<LPHELPINFO>(lParam);
 
 				OnHelp(*pInfo);
 			}
@@ -303,7 +303,7 @@ void CMsgWnd::OnPaint(CDC& /*rDC*/)
 *******************************************************************************
 */
 
-void CMsgWnd::OnResize(int /*iFlag*/, const CSize& /*rNewSize*/)
+void CMsgWnd::OnResize(WCL::ResizeFlags /*iFlag*/, const CSize& /*rNewSize*/)
 {
 }
 
@@ -319,7 +319,7 @@ void CMsgWnd::OnResize(int /*iFlag*/, const CSize& /*rNewSize*/)
 *******************************************************************************
 */
 
-void CMsgWnd::OnTimer(uint /*iTimerID*/)
+void CMsgWnd::OnTimer(WCL::TimerID /*iTimerID*/)
 {
 }
 
@@ -389,11 +389,11 @@ void CMsgWnd::OnNCDestroy()
 *******************************************************************************
 */
 
-void CMsgWnd::OnHorizScroll(uint /*iCode*/, uint /*iPos*/)
+void CMsgWnd::OnHorizScroll(WCL::ScrollbarFlags /*iCode*/, uint /*iPos*/)
 {
 }
 
-void CMsgWnd::OnVertScroll(uint /*iCode*/, uint /*iPos*/)
+void CMsgWnd::OnVertScroll(WCL::ScrollbarFlags /*iCode*/, uint /*iPos*/)
 {
 }
 
@@ -453,7 +453,7 @@ void CMsgWnd::OnCtrlMsg(uint iID, uint iMsg, HWND hControl)
 	if ( (pCtrlMsg) && (pCtrlMsg->m_iMsgType == WM_COMMAND)
 	  && (pCtrlMsg->m_iCtrlID == iID) && (pCtrlMsg->m_iMsgID == iMsg) )
 	{
-		PFNCMDMSGHANDLER pfnMsgHandler = (PFNCMDMSGHANDLER) pCtrlMsg->m_pfnMsgHandler;
+		PFNCMDMSGHANDLER pfnMsgHandler = reinterpret_cast<PFNCMDMSGHANDLER>(pCtrlMsg->m_pfnMsgHandler);
 		(this->*pfnMsgHandler)();
 	}
 }
@@ -485,7 +485,7 @@ LRESULT CMsgWnd::OnCtrlMsg(NMHDR& rMsgHdr)
 
 	LRESULT  lResult  = 0;
 	CTRLMSG* pCtrlMsg = m_pCtrlMsgTable;
-	uint	 iID      = rMsgHdr.idFrom;
+	WCL::ControlID iID = rMsgHdr.idFrom;
 	uint	 iMsg     = rMsgHdr.code;
 	
 	// Find control callback function.
@@ -497,7 +497,7 @@ LRESULT CMsgWnd::OnCtrlMsg(NMHDR& rMsgHdr)
 	if ( (pCtrlMsg) && (pCtrlMsg->m_iMsgType == WM_NOTIFY)
 	  && (pCtrlMsg->m_iCtrlID == iID) && (pCtrlMsg->m_iMsgID == iMsg) )
 	{
-		PFNNFYMSGHANDLER pfnMsgHandler = (PFNNFYMSGHANDLER) pCtrlMsg->m_pfnMsgHandler;
+		PFNNFYMSGHANDLER pfnMsgHandler = reinterpret_cast<PFNNFYMSGHANDLER>(pCtrlMsg->m_pfnMsgHandler);
 		lResult = (this->*pfnMsgHandler)(rMsgHdr);
 	}
 

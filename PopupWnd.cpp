@@ -56,7 +56,7 @@ void CPopupWnd::GetClassParams(WNDCLASS& rParams)
 	rParams.hInstance     = CModule::This().Handle();
 	rParams.hIcon         = NULL;
 	rParams.hCursor       = ::LoadCursor(NULL, MAKEINTRESOURCE(IDC_ARROW));
-	rParams.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);
+	rParams.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
 	rParams.lpszMenuName  = NULL;
 	rParams.lpszClassName = NULL;
 }
@@ -329,57 +329,57 @@ LRESULT CPopupWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		
         // Left button pressed.
 		case WM_LBUTTONDOWN:
-			OnLeftButtonDown(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), wParam);
+			OnLeftButtonDown(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), static_cast<WCL::KeyFlags>(wParam));
 			break;
 
         // Left button released.
 		case WM_LBUTTONUP:
-			OnLeftButtonUp(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), wParam);
+			OnLeftButtonUp(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), static_cast<WCL::KeyFlags>(wParam));
 			break;
 		
         // Left button double clicked.
 		case WM_LBUTTONDBLCLK:
-			OnLeftButtonDblClick(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), wParam);
+			OnLeftButtonDblClick(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), static_cast<WCL::KeyFlags>(wParam));
 			break;
 
         // Right button pressed.
 		case WM_RBUTTONDOWN:
-			OnRightButtonDown(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), wParam);
+			OnRightButtonDown(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), static_cast<WCL::KeyFlags>(wParam));
 			break;
 
         // Right button released.
 		case WM_RBUTTONUP:
-			OnRightButtonUp(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), wParam);
+			OnRightButtonUp(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), static_cast<WCL::KeyFlags>(wParam));
 			break;
 		
         // Right button double clicked.
 		case WM_RBUTTONDBLCLK:
-			OnRightButtonDblClick(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), wParam);
+			OnRightButtonDblClick(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), static_cast<WCL::KeyFlags>(wParam));
 			break;
 		
 		// Mouse moved.
 		case WM_MOUSEMOVE:
-			OnMouseMove(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), wParam);
+			OnMouseMove(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), static_cast<WCL::KeyFlags>(wParam));
 			break;
 		
 		// Key pressed.
 		case WM_KEYDOWN:
-			OnKeyDown((WORD)wParam, lParam);
+			OnKeyDown(static_cast<WCL::KeyCode>(wParam), static_cast<WCL::KeyState>(lParam));
 			break;
 		
 		// Key released.
 		case WM_KEYUP:
-			OnKeyUp((WORD)wParam, lParam);
+			OnKeyUp(static_cast<WCL::KeyCode>(wParam), static_cast<WCL::KeyState>(lParam));
 			break;
 
 		// Translated WM_KEYDOWN/UP.
 		case WM_CHAR:
-			OnChar((WORD)wParam, lParam);
+			OnChar(static_cast<WCL::KeyCode>(wParam), static_cast<WCL::KeyState>(lParam));
 			break;
 
 		// Menu item selected.
 		case WM_MENUSELECT:
-			OnSelectMenu(HIWORD(wParam), LOWORD(wParam), (HMENU)lParam);
+			OnSelectMenu(HIWORD(wParam), LOWORD(wParam), reinterpret_cast<HMENU>(lParam));
 			break;
 
 		// Mouse capture lost.
@@ -494,31 +494,31 @@ void CPopupWnd::OnFocusLost()
 *******************************************************************************
 */
 
-void CPopupWnd::OnLeftButtonDown(const CPoint& /*ptCursor*/, uint /*iKeyFlags*/)
+void CPopupWnd::OnLeftButtonDown(const CPoint& /*ptCursor*/, WCL::KeyFlags /*iKeyFlags*/)
 {
 }
 
-void CPopupWnd::OnLeftButtonUp(const CPoint& /*ptCursor*/, uint /*iKeyFlags*/)
+void CPopupWnd::OnLeftButtonUp(const CPoint& /*ptCursor*/, WCL::KeyFlags /*iKeyFlags*/)
 {
 }
 
-void CPopupWnd::OnLeftButtonDblClick(const CPoint& /*ptCursor*/, uint /*iKeyFlags*/)
+void CPopupWnd::OnLeftButtonDblClick(const CPoint& /*ptCursor*/, WCL::KeyFlags /*iKeyFlags*/)
 {
 }
 
-void CPopupWnd::OnRightButtonDown(const CPoint& /*ptCursor*/, uint /*iKeyFlags*/)
+void CPopupWnd::OnRightButtonDown(const CPoint& /*ptCursor*/, WCL::KeyFlags /*iKeyFlags*/)
 {
 }
 
-void CPopupWnd::OnRightButtonUp(const CPoint& /*ptCursor*/, uint /*iKeyFlags*/)
+void CPopupWnd::OnRightButtonUp(const CPoint& /*ptCursor*/, WCL::KeyFlags /*iKeyFlags*/)
 {
 }
 
-void CPopupWnd::OnRightButtonDblClick(const CPoint& /*ptCursor*/, uint /*iKeyFlags*/)
+void CPopupWnd::OnRightButtonDblClick(const CPoint& /*ptCursor*/, WCL::KeyFlags /*iKeyFlags*/)
 {
 }
 
-void CPopupWnd::OnMouseMove(const CPoint& /*ptCursor*/, uint /*iKeyFlags*/)
+void CPopupWnd::OnMouseMove(const CPoint& /*ptCursor*/, WCL::KeyFlags /*iKeyFlags*/)
 {
 }
 
@@ -537,15 +537,15 @@ void CPopupWnd::OnMouseMove(const CPoint& /*ptCursor*/, uint /*iKeyFlags*/)
 *******************************************************************************
 */
 
-void CPopupWnd::OnKeyDown(WORD /*wKey*/, DWORD /*dwFlags*/)
+void CPopupWnd::OnKeyDown(WCL::KeyCode /*wKey*/, WCL::KeyState /*dwFlags*/)
 {
 }
 
-void CPopupWnd::OnKeyUp(WORD /*wKey*/, DWORD /*dwFlags*/)
+void CPopupWnd::OnKeyUp(WCL::KeyCode /*wKey*/, WCL::KeyState /*dwFlags*/)
 {
 }
 
-void CPopupWnd::OnChar(WORD /*wKey*/, DWORD /*dwFlags*/)
+void CPopupWnd::OnChar(WCL::KeyCode /*wKey*/, WCL::KeyState /*dwFlags*/)
 {
 }
 

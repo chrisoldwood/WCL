@@ -89,13 +89,13 @@ protected:
 	virtual void OnActivate(bool bActivating);
 	virtual	void OnEraseBackground(CDC& rDC);
 	virtual	void OnPaint(CDC& rDC);
-	virtual void OnResize(int iFlag, const CSize& NewSize);
-	virtual void OnTimer(uint iTimerID);
+	virtual void OnResize(WCL::ResizeFlags iFlag, const CSize& NewSize);
+	virtual void OnTimer(WCL::TimerID iTimerID);
 	virtual	void OnShow(bool bShowing);
 	virtual void OnDestroy();
 	virtual void OnNCDestroy();
-	virtual void OnHorizScroll(uint iCode, uint iPos);
-	virtual void OnVertScroll(uint iCode, uint iPos);
+	virtual void OnHorizScroll(WCL::ScrollbarFlags iCode, uint iPos);
+	virtual void OnVertScroll(WCL::ScrollbarFlags iCode, uint iPos);
 	virtual void OnCmdMsg(uint iID);
 	virtual void OnCtrlMsg(uint iID, uint iMsg, HWND hControl);
 	virtual LRESULT OnCtrlMsg(NMHDR& rMsgHdr);
@@ -192,7 +192,7 @@ inline void CMsgWnd::VertScrollRange(int iMin, int iMax, bool bRepaint)
 
 inline WNDPROC CMsgWnd::WindowProc(WNDPROC lpfnWndProc)
 {
-	return (WNDPROC) ::SetWindowLong(m_hWnd, GWL_WNDPROC, (LONG)lpfnWndProc);
+	return reinterpret_cast<WNDPROC>(::SetWindowLongPtr(m_hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(lpfnWndProc)));
 }
 
 inline void CMsgWnd::MsgHandled(BOOL bHandled)
