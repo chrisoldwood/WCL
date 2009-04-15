@@ -100,7 +100,7 @@ public:
 	// Column methods.
 	//
 	size_t NumColumns() const;
-	void InsertColumn(size_t nColumn, const tchar* pszName, uint nWidth, uint nFormat = LVCFMT_LEFT);
+	void InsertColumn(size_t nColumn, const tchar* pszName, size_t nWidth, uint nFormat = LVCFMT_LEFT);
 	void InsertColumns(const LVColumn* pColumns, size_t nColumns);
 	void DeleteColumn(size_t nColumn);
 	void DeleteAllColumns();
@@ -122,8 +122,8 @@ public:
 	void ImageList(uint nType, const CImageList& oImageList);
 	void ImageList(uint nType, uint nRscID, uint nImgWidth, COLORREF crMask);
 	void IconSpacing(uint iHorzSpacing, uint iVertSpacing);
-	uint StringWidth(const tchar* pszString) const;
-	uint StringWidth(size_t nChars) const;
+	size_t StringWidth(const tchar* pszString) const;
+	size_t StringWidth(size_t nChars) const;
 	int  Sort(PFNLVCOMPARE pfnCompare, LPARAM lParamSort);
 
 protected:
@@ -198,7 +198,7 @@ inline void CListView::DeleteAllItems()
 
 inline void CListView::ItemText(size_t nItem, size_t nSubItem, const tchar* pszText)
 {
-	ListView_SetItemText(m_hWnd, nItem, nSubItem, const_cast<tchar*>(pszText));
+	ListView_SetItemText(m_hWnd, static_cast<int>(nItem), static_cast<int>(nSubItem), const_cast<tchar*>(pszText));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -206,7 +206,7 @@ inline void CListView::ItemText(size_t nItem, size_t nSubItem, const tchar* pszT
 
 inline void CListView::ItemText(size_t item, size_t subItem, const tstring& text)
 {
-	ListView_SetItemText(m_hWnd, item, subItem, const_cast<tchar*>(text.c_str()));
+	ListView_SetItemText(m_hWnd, static_cast<int>(item), static_cast<int>(subItem), const_cast<tchar*>(text.c_str()));
 }
 
 inline void CListView::ItemState(size_t nItem, uint nState, uint nMask)
@@ -216,7 +216,7 @@ inline void CListView::ItemState(size_t nItem, uint nState, uint nMask)
 
 inline void CListView::ItemPtr(size_t nItem, const void* pData)
 {
-	ItemData(nItem, (LPARAM)pData);
+	ItemData(nItem, reinterpret_cast<LPARAM>(pData));
 }
 
 inline void CListView::SetChecked(size_t nItem, bool bChecked)

@@ -140,7 +140,7 @@ bool CMsgThread::ProcessMsgQueue(bool bRepostQuitMsg)
 		// Is WM_QUIT?
 		if (!GetMessage(&m_oMsg, NULL, NULL, NULL))
 		{
-			m_nResult = m_oMsg.wParam;
+			m_nResult = static_cast<int>(m_oMsg.wParam);
 
 			if (bRepostQuitMsg)
 				::PostQuitMessage(m_nResult);

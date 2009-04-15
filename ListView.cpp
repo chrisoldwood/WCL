@@ -70,9 +70,9 @@ size_t CListView::InsertItem(size_t nItem, const tchar* pszText, size_t nImage)
 
 	// Initialise item structure.
 	lvItem.mask    = LVIF_TEXT | LVIF_PARAM;
-	lvItem.iItem   = nItem;
+	lvItem.iItem   = static_cast<int>(nItem);
 	lvItem.pszText = const_cast<tchar*>(pszText);
-	lvItem.iImage  = nImage;
+	lvItem.iImage  = static_cast<int>(nImage);
 	lvItem.lParam  = NULL;
 
 	// Image specified?
@@ -101,8 +101,8 @@ void CListView::ItemImage(size_t nItem, size_t nImage)
 
 	// Initialise item structure.
 	lvItem.mask   = LVIF_IMAGE;
-	lvItem.iItem  = nItem;
-	lvItem.iImage = nImage;
+	lvItem.iItem  = static_cast<int>(nItem);
+	lvItem.iImage = static_cast<int>(nImage);
 
 	ListView_SetItem(m_hWnd, &lvItem);
 }
@@ -126,7 +126,7 @@ void CListView::ItemData(size_t nItem, LPARAM lParam)
 
 	// Initialise item structure.
 	lvItem.mask   = LVIF_PARAM;
-	lvItem.iItem  = nItem;
+	lvItem.iItem  = static_cast<int>(nItem);
 	lvItem.lParam = lParam;
 
 	ListView_SetItem(m_hWnd, &lvItem);
@@ -155,13 +155,13 @@ CString CListView::ItemText(size_t nItem, size_t nSubItem) const
 
 	// Initialise item structure.
 	lvItem.mask       = LVIF_TEXT;
-	lvItem.iItem      = nItem;
-	lvItem.iSubItem   = nSubItem;
+	lvItem.iItem      = static_cast<int>(nItem);
+	lvItem.iSubItem   = static_cast<int>(nSubItem);
 	lvItem.pszText    = szText;
 	lvItem.cchTextMax = MAX_LEN;
 
 	// Get the item text.
-	SendMessage(LVM_GETITEMTEXT, nItem, (LPARAM)&lvItem);
+	SendMessage(LVM_GETITEMTEXT, nItem, reinterpret_cast<LPARAM>(&lvItem));
 
 	return szText;
 }
@@ -184,7 +184,7 @@ size_t CListView::ItemImage(size_t nItem) const
 
 	// Initialise item structure.
 	lvItem.mask  = LVIF_IMAGE;
-	lvItem.iItem = nItem;
+	lvItem.iItem = static_cast<int>(nItem);
 
 	ListView_GetItem(m_hWnd, &lvItem);
 
@@ -209,7 +209,7 @@ LPARAM CListView::ItemData(size_t nItem) const
 
 	// Initialise item structure.
 	lvItem.mask  = LVIF_PARAM;
-	lvItem.iItem = nItem;
+	lvItem.iItem = static_cast<int>(nItem);
 
 	ListView_GetItem(m_hWnd, &lvItem);
 
@@ -228,7 +228,7 @@ LPARAM CListView::ItemData(size_t nItem) const
 *******************************************************************************
 */
 
-uint CListView::Selections(Items& vItems) const
+size_t CListView::Selections(Items& vItems) const
 {
 	ASSERT(vItems.size() == 0);
 
@@ -257,15 +257,15 @@ uint CListView::Selections(Items& vItems) const
 *******************************************************************************
 */
 
-void CListView::InsertColumn(size_t nColumn, const tchar* pszName, uint iWidth, uint iFormat)
+void CListView::InsertColumn(size_t nColumn, const tchar* pszName, size_t iWidth, uint iFormat)
 {
 	LVCOLUMN lvColumn = { 0 };
 
     lvColumn.mask     = LVCF_TEXT | LVCF_WIDTH | LVCF_FMT;
     lvColumn.fmt      = iFormat;
-    lvColumn.cx       = iWidth;
+    lvColumn.cx       = static_cast<int>(iWidth);
     lvColumn.pszText  = const_cast<tchar*>(pszName);
-    lvColumn.iSubItem = nColumn;
+    lvColumn.iSubItem = static_cast<int>(nColumn);
 
 	ListView_InsertColumn(m_hWnd, nColumn, &lvColumn);
 }
@@ -348,7 +348,7 @@ void CListView::ImageList(uint nType, uint nRscID, uint nImgWidth, COLORREF crMa
 *******************************************************************************
 */
 
-uint CListView::StringWidth(size_t nChars) const
+size_t CListView::StringWidth(size_t nChars) const
 {
 	// Create a string of 'X's.
 	tstring str(nChars, TXT('X'));
@@ -400,7 +400,7 @@ size_t CListView::FindItem(const void* pData, size_t nStart) const
 	LVFINDINFO oInfo = { 0 };
 
 	oInfo.flags  = LVFI_PARAM;
-	oInfo.lParam = (LPARAM)pData;
+	oInfo.lParam = reinterpret_cast<LPARAM>(pData);
 
 	return ListView_FindItem(m_hWnd, nStart, &oInfo);
 }
@@ -423,9 +423,9 @@ size_t CListView::FindItem(const void* pData, size_t nStart) const
 
 size_t CListView::FindAllItems(const void* pData, Items& vItems) const
 {
-	int n = -1;
+	size_t n = Core::npos;
 
-	while ((n = FindItem(pData, n)) != LB_ERR)
+	while ((n = FindItem(pData, n)) != Core::npos)
 		vItems.push_back(n);
 
 	return vItems.size();
