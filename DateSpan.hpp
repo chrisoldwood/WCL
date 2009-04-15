@@ -30,16 +30,16 @@ public:
 	// Constructors/Destructor.
 	//
 	CDateSpan();
-	CDateSpan(days_t nDays);
+	CDateSpan(WCL::Days nDays);
 	
 	// Accessors.
-	days_t Days() const;
+	WCL::Days Days() const;
 
 protected:
 	//
 	// Members.
 	//
-	days_t	m_nSpan;
+	WCL::Days	m_nSpan;
 
 	//
 	// Friends.
@@ -59,12 +59,12 @@ inline CDateSpan::CDateSpan()
 {
 }
 
-inline CDateSpan::CDateSpan(days_t nDays)
+inline CDateSpan::CDateSpan(WCL::Days nDays)
 	: m_nSpan(nDays)
 {
 }
 
-inline days_t CDateSpan::Days() const
+inline WCL::Days CDateSpan::Days() const
 {
 	return m_nSpan;
 }

@@ -367,7 +367,7 @@ CString CDate::ToString(int nFormat) const
 		pszValue = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars)));
 
 		// Format the string.
-		::GetDateFormat(LOCALE_USER_DEFAULT, nDateFmt, &st, NULL, pszValue, nChars);
+		::GetDateFormat(LOCALE_USER_DEFAULT, nDateFmt, &st, NULL, pszValue, static_cast<int>(nChars));
 	}
 
 	return pszValue;
@@ -390,7 +390,7 @@ bool CDate::FromString(const tchar* pszDate)
 {
 	ASSERT(pszDate != NULL);
 
-	int nLength = tstrlen(pszDate);
+	size_t nLength = tstrlen(pszDate);
 
 	// Check length is exactly "YYYY-MM-DD".
 	if (nLength != ISO_FMT_MAX_LEN)

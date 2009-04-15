@@ -44,7 +44,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CDateTime();
-	CDateTime(seconds_t tDateTime);
+	CDateTime(WCL::Seconds tDateTime);
 	CDateTime(int iDay, int iMonth, int iYear, int iHours, int iMins, int iSecs);
 	CDateTime(const CDate& rDate, const CTime& rTime);
 
@@ -58,7 +58,7 @@ public:
 	// Core accessors & mutators.
 	//
 	void Set();
-	void Set(seconds_t tDateTime);
+	void Set(WCL::Seconds tDateTime);
 	void Set(int  iDay, int  iMonth, int  iYear, int  iHours, int  iMins, int  iSecs);
 	void Get(int& iDay, int& iMonth, int& iYear, int& iHours, int& iMins, int& iSecs) const;
 
@@ -68,7 +68,7 @@ public:
 	CTime Time() const;
 	void  Time(const CTime& rTime);
 
-	seconds_t GetDateTimeInSecs() const;
+	WCL::Seconds GetDateTimeInSecs() const;
 
 	static CDateTime Current();
 
@@ -100,7 +100,7 @@ protected:
 	//
 	// Members.
 	//
-	seconds_t	m_tDateTime;
+	WCL::Seconds	m_tDateTime;
 
 	//
 	// Friends.
@@ -129,7 +129,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CDateTimeSpan();
-	CDateTimeSpan(seconds_t tSecs);
+	CDateTimeSpan(WCL::Seconds tSecs);
 	CDateTimeSpan(const CDateTime& rDateTime);
 	
 	//
@@ -144,7 +144,7 @@ protected:
 	//
 	// Members.
 	//
-	seconds_t	m_tSpan;
+	WCL::Seconds	m_tSpan;
 
 	//
 	// Friends.
@@ -164,7 +164,7 @@ inline CDateTime::CDateTime()
 {
 }
 
-inline CDateTime::CDateTime(seconds_t tDateTime)
+inline CDateTime::CDateTime(WCL::Seconds tDateTime)
 {
 	Set(tDateTime);
 }
@@ -197,7 +197,7 @@ inline void CDateTime::Set()
 	*this = CDateTime(oDate, oTime);
 }
 
-inline void CDateTime::Set(seconds_t tDateTime)
+inline void CDateTime::Set(WCL::Seconds tDateTime)
 {
 	m_tDateTime = tDateTime;
 }
@@ -221,7 +221,7 @@ inline void CDateTime::Get(int& iDay, int& iMonth, int& iYear, int& iHours, int&
 
 inline CDate CDateTime::Date() const
 {
-	return CDate(m_tDateTime - (m_tDateTime % SECS_PER_DAY));
+	return CDate(m_tDateTime - (m_tDateTime % WCL::SECS_PER_DAY));
 }
 
 inline void  CDateTime::Date(const CDate& rDate)
@@ -233,7 +233,7 @@ inline void  CDateTime::Date(const CDate& rDate)
 
 inline CTime CDateTime::Time() const
 {
-	return CTime(m_tDateTime % SECS_PER_DAY);
+	return CTime(m_tDateTime % WCL::SECS_PER_DAY);
 }
 
 inline void  CDateTime::Time(const CTime& rTime)
@@ -250,7 +250,7 @@ inline CString CDateTime::ToString(int nDateFormat, int nTimeFormat) const
 	return Date().ToString(nDateFormat) + pszSep + Time().ToString(nTimeFormat);
 }
 
-inline seconds_t CDateTime::GetDateTimeInSecs() const
+inline WCL::Seconds CDateTime::GetDateTimeInSecs() const
 {
 	return m_tDateTime;
 }
@@ -307,7 +307,7 @@ inline CDateTimeSpan::CDateTimeSpan()
 {
 }
 
-inline CDateTimeSpan::CDateTimeSpan(seconds_t tSecs)
+inline CDateTimeSpan::CDateTimeSpan(WCL::Seconds tSecs)
 	: m_tSpan(tSecs)
 {
 }
@@ -324,17 +324,17 @@ inline int CDateTimeSpan::Secs() const
 
 inline int CDateTimeSpan::Mins() const
 {
-	return static_cast<int>(m_tSpan / SECS_PER_MIN);
+	return static_cast<int>(m_tSpan / WCL::SECS_PER_MIN);
 }
 
 inline int CDateTimeSpan::Hours() const
 {
-	return static_cast<int>(m_tSpan / SECS_PER_HOUR);
+	return static_cast<int>(m_tSpan / WCL::SECS_PER_HOUR);
 }
 
 inline int CDateTimeSpan::Days() const
 {
-	return static_cast<int>(m_tSpan / SECS_PER_DAY);
+	return static_cast<int>(m_tSpan / WCL::SECS_PER_DAY);
 }
 
 #endif // WCL_DATETIME_HPP

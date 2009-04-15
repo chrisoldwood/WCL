@@ -43,7 +43,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CDate();
-	CDate(seconds_t tSecs);
+	CDate(WCL::Seconds tSecs);
 	CDate(int iDay, int iMonth, int iYear);
 
 	//
@@ -56,7 +56,7 @@ public:
 	// Core accessors & mutators.
 	//
 	void Set();
-	void Set(seconds_t tSecs);
+	void Set(WCL::Seconds tSecs);
 	void Set(int  iDay, int  iMonth, int  iYear);
 	void Get(int& iDay, int& iMonth, int& iYear) const;
 
@@ -70,7 +70,7 @@ public:
 	int DayOfWeek() const;
 	int DaysInMonth() const;
 
-	seconds_t GetDateInSecs() const;
+	WCL::Seconds GetDateInSecs() const;
 
 	static CDate Current();
 
@@ -132,7 +132,7 @@ protected:
 	//
 	// Members.
 	//
-	seconds_t	m_tDate;
+	WCL::Seconds	m_tDate;
 
 	//
 	// Internal methods.
@@ -164,7 +164,7 @@ inline CDate::CDate()
 {
 }
 
-inline CDate::CDate(seconds_t tDate)
+inline CDate::CDate(WCL::Seconds tDate)
 {
 	Set(tDate);
 }
@@ -184,9 +184,9 @@ inline CDate CDate::Max()
 	return CDate(1, 1, 2038);
 }
 
-inline void CDate::Set(seconds_t tDate)
+inline void CDate::Set(WCL::Seconds tDate)
 {
-	m_tDate = (tDate - (tDate % SECS_PER_DAY));
+	m_tDate = (tDate - (tDate % WCL::SECS_PER_DAY));
 }
 
 inline void CDate::Day(int iDay)
@@ -242,7 +242,7 @@ inline int CDate::Year() const
 
 inline int CDate::DayOfWeek() const
 {
-	return static_cast<int>(((m_tDate / SECS_PER_DAY) + 3) % 7);
+	return static_cast<int>(((m_tDate / WCL::SECS_PER_DAY) + 3) % 7);
 }
 
 inline int CDate::DaysInMonth() const
@@ -254,7 +254,7 @@ inline int CDate::DaysInMonth() const
 	return DaysInMonth(iMonth, iYear);
 }
 
-inline seconds_t CDate::GetDateInSecs() const
+inline WCL::Seconds CDate::GetDateInSecs() const
 {
 	return m_tDate;
 }
@@ -291,17 +291,17 @@ inline bool CDate::operator >=(const CDate& rRHS) const
 
 inline CDateSpan CDate::operator -(const CDate& rRHS) const
 {
-	return CDateSpan(static_cast<int>((m_tDate - rRHS.m_tDate) / SECS_PER_DAY));
+	return CDateSpan(static_cast<int>((m_tDate - rRHS.m_tDate) / WCL::SECS_PER_DAY));
 }
 
 inline void CDate::operator +=(const CDateSpan& rRHS)
 {
-	m_tDate += (rRHS.m_nSpan * SECS_PER_DAY);
+	m_tDate += (rRHS.m_nSpan * WCL::SECS_PER_DAY);
 }
 
 inline void CDate::operator -=(const CDateSpan& rRHS)
 {
-	m_tDate -= (rRHS.m_nSpan * SECS_PER_DAY);
+	m_tDate -= (rRHS.m_nSpan * WCL::SECS_PER_DAY);
 }
 
 #endif // WCL_DATE_HPP

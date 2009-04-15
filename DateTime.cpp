@@ -82,7 +82,7 @@ bool CDateTime::FromString(const tchar* pszDateTime)
 {
 	ASSERT(pszDateTime != NULL);
 
-	int nLength = tstrlen(pszDateTime);
+	size_t nLength = tstrlen(pszDateTime);
 
 	// Check length is exactly "YYYY-MM-DDT00:00:00".
 	if (nLength != ISO_FMT_MAX_LEN)
