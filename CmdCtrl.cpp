@@ -73,13 +73,13 @@ void CCmdControl::Execute(uint iCmdID)
 		// Handler for a single command?
 		if (pCmd->m_eType == CmdSingle)
 		{
-			PFNCMDENTRYHANDLER lpfnHandler = (PFNCMDENTRYHANDLER) pCmd->m_lpfnCmdHandler;
+			PFNCMDENTRYHANDLER lpfnHandler = pCmd->m_lpfnCmdHandler;
 			(this->*lpfnHandler)();
 		}
 		// Handler for a range of commands?
 		else if (pCmd->m_eType == CmdRange)
 		{
-			PFNCMDRANGEHANDLER lpfnHandler = (PFNCMDRANGEHANDLER) pCmd->m_lpfnCmdHandler;
+			PFNCMDRANGEHANDLER lpfnHandler = reinterpret_cast<PFNCMDRANGEHANDLER>(pCmd->m_lpfnCmdHandler);
 			(this->*lpfnHandler)(iCmdID);
 		}
 	}
@@ -219,10 +219,10 @@ int CCmdControl::CmdToolTipID(uint iCmdID) const
 CString CCmdControl::CmdHintStr(uint iCmdID) const
 {
 	CString str(CmdHintID(iCmdID));
-	int		nEOL = str.Find(TXT('\n'));
+	size_t	nEOL = str.Find(TXT('\n'));
 
 	// Hint only?
-	if (nEOL == -1)
+	if (nEOL == Core::npos)
 		return str;
 
 	// Strip tooltip.
@@ -246,10 +246,10 @@ CString CCmdControl::CmdHintStr(uint iCmdID) const
 CString CCmdControl::CmdToolTipStr(uint iCmdID) const
 {
 	CString str(CmdHintID(iCmdID));
-	int		nEOL = str.Find(TXT('\n'));
+	size_t	nEOL = str.Find(TXT('\n'));
 
 	// Hint only?
-	if (nEOL == -1)
+	if (nEOL == Core::npos)
 		return TXT("");
 
 	// Strip tooltip.
