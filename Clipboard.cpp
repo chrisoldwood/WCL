@@ -204,8 +204,8 @@ bool CClipboard::CopyText(HWND hOwner, const tchar* pszText)
 		// Clear existing contents.
 		if (::EmptyClipboard())
 		{
-			int     nLen  = tstrlen(pszText);
-			HGLOBAL hData = ::GlobalAlloc(GMEM_MOVEABLE, Core::NumBytes<tchar>(nLen+1));
+			size_t  nChars = tstrlen(pszText);
+			HGLOBAL hData = ::GlobalAlloc(GMEM_MOVEABLE, Core::NumBytes<tchar>(nChars+1));
 
 			// Allocated block?
 			if (hData != NULL)
