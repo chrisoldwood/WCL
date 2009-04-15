@@ -255,7 +255,7 @@ bool CDecimalBox::FilterKey(tchar cChar)
 		// Is decimal point AND caret after it AND no selection
 		// AND max decimal places entered?
 		if ( (pszDecPt != NULL) && (nSelStart > (pszDecPt - szText)) && (nSelChars < 1)
-		  && (tstrlen(pszDecPt + 1) >= (size_t)m_nDecDigits) )
+		  && (tstrlen(pszDecPt + 1) >= m_nDecDigits) )
 			return true;
 	}
 
