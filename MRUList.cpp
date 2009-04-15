@@ -64,14 +64,14 @@ CMRUList::~CMRUList()
 void CMRUList::Add(const tchar* pszPath)
 {
 	// See if the path exists already.
-	int iOldPos = m_Paths.Find(pszPath, true);
+	size_t iOldPos = m_Paths.Find(pszPath, true);
 
 	// Already at the top?
 	if (iOldPos == 0)
 		return;
 
 	// Remove the path, if lower down.
-	if (iOldPos != -1)
+	if (iOldPos != Core::npos)
 		m_Paths.Delete(iOldPos);
 
 	// Insert the path at the top.
