@@ -74,7 +74,8 @@ inline void CPoint::Set(int iX, int iY)
 
 inline bool CPoint::IsIn(const CRect& rcRect) const
 {
-	return PtInRect((LPRECT)&rcRect, *this);
+	// NB: reinterpret_cast is needed because of the forward declaration of CRect.
+	return ::PtInRect(reinterpret_cast<const RECT*>(&rcRect), *this);
 }
 
 #endif //POINT_HPP

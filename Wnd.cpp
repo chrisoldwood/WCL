@@ -68,7 +68,7 @@ CRect CWnd::ClientRect() const
 {
 	CRect rcClient;
 
-	::GetClientRect(m_hWnd, (LPRECT) &rcClient);
+	::GetClientRect(m_hWnd, &rcClient);
 
 	return rcClient;
 }
@@ -92,7 +92,7 @@ CRect CWnd::ChildRect(const CWnd& rWnd) const
 	CRect rcWnd = rWnd.WindowRect();
 
 	// Convert to relative to this window.
-	::MapWindowPoints(NULL, m_hWnd, (LPPOINT)&rcWnd, 2);
+	::MapWindowPoints(NULL, m_hWnd, reinterpret_cast<LPPOINT>(&rcWnd), 2);
 
 	return rcWnd;
 }
@@ -148,7 +148,7 @@ void CWnd::Centre()
 		hParent = GetDesktopWindow();
 		
 	// Get the window dimensions.
-	::GetWindowRect(hParent, (LPRECT)&rcParent);
+	::GetWindowRect(hParent, &rcParent);
 	rcThis = WindowRect();
 	dmThis = rcThis.Size();
 	

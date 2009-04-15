@@ -572,7 +572,7 @@ bool CPath::SelectDir(const CWnd& rParent, const tchar* pszTitle, const tchar* p
 	oInfo.lpszTitle = pszTitle;
 	oInfo.ulFlags   = BIF_RETURNONLYFSDIRS | BIF_STATUSTEXT;
 	oInfo.lpfn      = BrowseCallbackProc;
-	oInfo.lParam    = (LPARAM)pszDir;
+	oInfo.lParam    = reinterpret_cast<LPARAM>(pszDir);
 
 	// Prompt the user.
 	pItemIDList = ::SHBrowseForFolder(&oInfo);
@@ -620,8 +620,8 @@ int CALLBACK CPath::BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPAR
 		{
 			tchar szDir[MAX_PATH+1] = { 0 };
 
-			if (::SHGetPathFromIDList((LPITEMIDLIST) lParam, szDir))
-				::SendMessage(hWnd, BFFM_SETSTATUSTEXT, 0, (LPARAM)szDir);
+			if (::SHGetPathFromIDList(reinterpret_cast<LPITEMIDLIST>(lParam), szDir))
+				::SendMessage(hWnd, BFFM_SETSTATUSTEXT, 0, reinterpret_cast<LPARAM>(szDir));
 		}
 		break;
 	}
@@ -716,7 +716,7 @@ void CPath::Normalise(tchar* pszPath)
 {
 	ASSERT(pszPath != NULL);
 
-	int nLength = tstrlen(pszPath);
+	size_t nLength = tstrlen(pszPath);
 
 	// "\" or "/" is a valid root. 
 	if (nLength > 1)
@@ -837,7 +837,7 @@ void CPath::operator/=(const tchar* pszPath)
 	// Check RHS path for leading separator.
 	if ((*pszPath != TXT('\\')) && (*pszPath != TXT('/')))
 	{
-		int nLength = Length();
+		size_t nLength = Length();
 
 		// Check LHS path for trailing separator.
 		if ( (nLength > 0) && (m_pszData[nLength-1] != TXT('\\')) )

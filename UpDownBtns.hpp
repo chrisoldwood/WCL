@@ -69,7 +69,9 @@ inline bool CUpDownBtns::PosValid()
 
 inline int CUpDownBtns::Pos()
 {
-	return SendMessage(UDM_GETPOS, 0, 0);
+	LRESULT result = SendMessage(UDM_GETPOS, 0, 0);
+
+	return static_cast<int>(result);
 }
 
 inline void CUpDownBtns::Pos(int nPos)

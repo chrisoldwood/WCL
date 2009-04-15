@@ -70,7 +70,7 @@ LRESULT CURLLabel::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	{
 		// Set cursor.
 		case WM_SETCURSOR:
-			OnSetCursor((HWND)wParam, LOWORD(lParam), HIWORD(lParam));
+			OnSetCursor(reinterpret_cast<HWND>(wParam), LOWORD(lParam), HIWORD(lParam));
 
 			// Consume message.
 			MsgHandled(true);

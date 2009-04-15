@@ -109,8 +109,8 @@ public:
     //
     // Timers.
     //
-	uint StartTimer(uint iTimerID, uint iTimeout);
-	void StopTimer(uint iTimerID);
+	WCL::TimerID StartTimer(WCL::TimerID iTimerID, uint iTimeout);
+	void StopTimer(WCL::TimerID iTimerID);
 
     //
     // Painting.
@@ -233,7 +233,7 @@ inline void CWnd::Font(const CFont& rFont, bool bRedraw)
 
 inline CFont CWnd::Font() const
 {
-	return CFont((HFONT)SendMessage(WM_GETFONT, 0, 0), false);
+	return CFont(reinterpret_cast<HFONT>(SendMessage(WM_GETFONT, 0, 0)), false);
 }
 
 inline void CWnd::WindowExStyle(DWORD dwExStyle)
@@ -311,7 +311,7 @@ inline void CWnd::Redraw(bool bRedraw)
 
 inline void CWnd::Invalidate(const CRect& rArea, bool bErase)
 {
-	::InvalidateRect(m_hWnd, (LPRECT)&rArea, bErase);
+	::InvalidateRect(m_hWnd, &rArea, bErase);
 }
 
 inline void CWnd::Invalidate(bool bErase)
@@ -335,12 +335,12 @@ inline void CWnd::DrawMenuBar()
 	::DrawMenuBar(m_hWnd);
 }
 
-inline uint CWnd::StartTimer(uint iTimerID, uint iTimeout)
+inline WCL::TimerID CWnd::StartTimer(WCL::TimerID iTimerID, uint iTimeout)
 {
 	return ::SetTimer(m_hWnd, iTimerID, iTimeout, NULL);
 }
 
-inline void CWnd::StopTimer(uint iTimerID)
+inline void CWnd::StopTimer(WCL::TimerID iTimerID)
 {
 	::KillTimer(m_hWnd, iTimerID);
 }
