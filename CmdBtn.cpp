@@ -92,7 +92,7 @@ LRESULT CCmdButton::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	{
 		// Mouse moved.
 		case WM_MOUSEMOVE:
-			OnMouseMove(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), wParam);
+			OnMouseMove(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), static_cast<WCL::KeyFlags>(wParam));
 			break;
 
 		// Timer gone off.
@@ -201,7 +201,7 @@ void CCmdButton::OnDrawItem(uint iID, uint iAction, uint iState, CDC& rDC,
 *******************************************************************************
 */
 
-void CCmdButton::OnMouseMove(const CPoint& /*ptCursor*/, uint /*iKeyFlags*/)
+void CCmdButton::OnMouseMove(const CPoint& /*ptCursor*/, WCL::KeyFlags /*iKeyFlags*/)
 {
 	// Ignore, if not on a toolbar.
 	if (!m_bOnToolbar)
@@ -240,7 +240,7 @@ void CCmdButton::OnMouseMove(const CPoint& /*ptCursor*/, uint /*iKeyFlags*/)
 *******************************************************************************
 */
 
-void CCmdButton::OnTimer(uint iTimerID)
+void CCmdButton::OnTimer(WCL::TimerID iTimerID)
 {
 	DEBUG_USE_ONLY(iTimerID);
 	ASSERT(iTimerID == TIMER_ID);

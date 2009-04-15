@@ -17,6 +17,7 @@
 #endif
 
 #include "Button.hpp"
+#include "WclTypes.hpp"
 
 /******************************************************************************
 ** 
@@ -51,8 +52,8 @@ protected:
 	virtual	LRESULT WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
 	virtual void OnNCDestroy();
 	virtual void OnDrawItem(uint iID, uint iAction, uint iState, CDC& rDC, uint iItem, const CRect& rcItem);
-	virtual void OnMouseMove(const CPoint& ptCursor, uint iKeyFlags);
-	virtual void OnTimer(uint iTimerID);
+	virtual void OnMouseMove(const CPoint& ptCursor, WCL::KeyFlags iKeyFlags);
+	virtual void OnTimer(WCL::TimerID iTimerID);
 
 	//
 	// Class members.
