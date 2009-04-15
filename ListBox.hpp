@@ -96,7 +96,7 @@ inline size_t CListBox::Count() const
 
 inline size_t CListBox::Add(const tchar* pszText) const
 {
-	return SendMessage(LB_ADDSTRING, 0, (LPARAM)pszText);
+	return SendMessage(LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(pszText));
 }
 
 inline size_t CListBox::Add(const tchar* pszText, LPARAM lData) const
@@ -119,7 +119,7 @@ inline size_t CListBox::Add(const tchar* pszText, void*  pData) const
 
 inline size_t CListBox::Insert(const tchar* pszText, size_t nItem) const
 {
-	return SendMessage(LB_INSERTSTRING, nItem, (LPARAM)pszText);
+	return SendMessage(LB_INSERTSTRING, nItem, reinterpret_cast<LPARAM>(pszText));
 }
 
 inline size_t CListBox::Delete(size_t nItem) const
@@ -129,12 +129,12 @@ inline size_t CListBox::Delete(size_t nItem) const
 
 inline size_t CListBox::Find(const tchar* pszText, size_t nFirst) const
 {
-	return SendMessage(LB_FINDSTRING, nFirst, (LPARAM)pszText);
+	return SendMessage(LB_FINDSTRING, nFirst, reinterpret_cast<LPARAM>(pszText));
 }
 
 inline size_t CListBox::FindExact(const tchar* pszText, size_t nFirst) const
 {
-	return SendMessage(LB_FINDSTRINGEXACT, nFirst, (LPARAM)pszText);
+	return SendMessage(LB_FINDSTRINGEXACT, nFirst, reinterpret_cast<LPARAM>(pszText));
 }
 
 inline void CListBox::ItemData(size_t nItem, LPARAM lData) const
@@ -149,7 +149,7 @@ inline LPARAM CListBox::ItemData(size_t nItem) const
 
 inline void CListBox::ItemPtr(size_t nItem, void* pData) const
 {
-	SendMessage(LB_SETITEMDATA, nItem, (LPARAM)pData);
+	SendMessage(LB_SETITEMDATA, nItem, reinterpret_cast<LPARAM>(pData));
 }
 
 inline void* CListBox::ItemPtr(size_t nItem) const

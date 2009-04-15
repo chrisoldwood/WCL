@@ -128,7 +128,7 @@ void CIcon::LoadRsc(uint nRscID, uint nWidth, uint nHeight)
 {
 	ASSERT(m_hIcon == NULL);
 
-	m_hIcon  = (HICON) ::LoadImage(CModule::This().Handle(), MAKEINTRESOURCE(nRscID), IMAGE_ICON, nWidth, nHeight, LR_SHARED);
+	m_hIcon  = reinterpret_cast<HICON>(::LoadImage(CModule::This().Handle(), MAKEINTRESOURCE(nRscID), IMAGE_ICON, nWidth, nHeight, LR_SHARED));
 	m_bOwner = false;
 
 	ASSERT(m_hIcon != NULL);

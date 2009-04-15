@@ -90,7 +90,7 @@ void CFrameWnd::GetClassParams(WNDCLASS& rParams)
 
 	// Override any settings.
 	rParams.hIcon         = ::LoadIcon(CModule::This().Handle(), MAKEINTRESOURCE(m_iIconID));
-	rParams.hbrBackground = (HBRUSH) (COLOR_BTNSHADOW + 1);
+	rParams.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_BTNSHADOW + 1);
 	rParams.lpszClassName = CLASS_NAME;
 
 	ASSERT(rParams.hIcon);
@@ -235,7 +235,7 @@ LRESULT CFrameWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		// Drag'n'drop performed.
 		case WM_DROPFILES:
 			{
-				HDROP hDrop  = (HDROP)wParam;
+				HDROP hDrop  = reinterpret_cast<HDROP>(wParam);
 				int   nFiles = ::DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
 
 				// For all files

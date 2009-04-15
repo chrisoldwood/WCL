@@ -33,11 +33,11 @@ CMemDC::CMemDC(const CDC& rDC)
 
 #ifdef _DEBUG
 	// Passify BoundsChecker.
-	m_hOrgBitmap  = (HBITMAP)  ::GetCurrentObject(m_hDC, OBJ_BITMAP);
-	m_hOrgBrush   = (HBRUSH)   ::GetCurrentObject(m_hDC, OBJ_BRUSH );
-	m_hOrgFont    = (HFONT)    ::GetCurrentObject(m_hDC, OBJ_FONT  );
-	m_hOrgPalette = (HPALETTE) ::GetCurrentObject(m_hDC, OBJ_PAL   );
-	m_hOrgPen     = (HPEN)     ::GetCurrentObject(m_hDC, OBJ_PEN   );
+	m_hOrgBitmap  = reinterpret_cast<HBITMAP> (::GetCurrentObject(m_hDC, OBJ_BITMAP));
+	m_hOrgBrush   = reinterpret_cast<HBRUSH>  (::GetCurrentObject(m_hDC, OBJ_BRUSH ));
+	m_hOrgFont    = reinterpret_cast<HFONT>   (::GetCurrentObject(m_hDC, OBJ_FONT  ));
+	m_hOrgPalette = reinterpret_cast<HPALETTE>(::GetCurrentObject(m_hDC, OBJ_PAL   ));
+	m_hOrgPen     = reinterpret_cast<HPEN>    (::GetCurrentObject(m_hDC, OBJ_PEN   ));
 #endif
 }
 
