@@ -30,7 +30,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CTimeSpan();
-	CTimeSpan(seconds_t tSecs);
+	CTimeSpan(WCL::Seconds tSecs);
 	
 	// Accessors.
 	int Secs() const;
@@ -42,7 +42,7 @@ protected:
 	//
 	// Members.
 	//
-	seconds_t	m_tSpan;
+	WCL::Seconds	m_tSpan;
 
 	//
 	// Friends.
@@ -62,7 +62,7 @@ inline CTimeSpan::CTimeSpan()
 {
 }
 
-inline CTimeSpan::CTimeSpan(seconds_t tSecs)
+inline CTimeSpan::CTimeSpan(WCL::Seconds tSecs)
 	: m_tSpan(tSecs)
 {
 }
@@ -74,17 +74,17 @@ inline int CTimeSpan::Secs() const
 
 inline int CTimeSpan::Mins() const
 {
-	return static_cast<int>(m_tSpan / SECS_PER_MIN);
+	return static_cast<int>(m_tSpan / WCL::SECS_PER_MIN);
 }
 
 inline int CTimeSpan::Hours() const
 {
-	return static_cast<int>(m_tSpan / SECS_PER_HOUR);
+	return static_cast<int>(m_tSpan / WCL::SECS_PER_HOUR);
 }
 
 inline int CTimeSpan::Days() const
 {
-	return static_cast<int>(m_tSpan / SECS_PER_DAY);
+	return static_cast<int>(m_tSpan / WCL::SECS_PER_DAY);
 }
 
 #endif // WCL_TIMESPAN_HPP

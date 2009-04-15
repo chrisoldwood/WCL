@@ -42,7 +42,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CTime();
-	CTime(seconds_t tTime);
+	CTime(WCL::Seconds tTime);
 	CTime(int  iHours, int  iMins, int  iSecs);
 
 	//
@@ -55,7 +55,7 @@ public:
 	// Core accessors & mutators.
 	//
 	void Set();
-	void Set(seconds_t tTime);
+	void Set(WCL::Seconds tTime);
 	void Set(int  iHours, int  iMins, int  iSecs);
 	void Get(int& iHours, int& iMins, int& iSecs) const;
 
@@ -66,7 +66,7 @@ public:
 	void Secs(int iSecs);
 	int  Secs() const;
 
-	seconds_t GetTimeInSecs() const;
+	WCL::Seconds GetTimeInSecs() const;
 
 	static CTime Current();
 
@@ -113,7 +113,7 @@ protected:
 	//
 	// Members.
 	//
-	seconds_t	m_tTime;
+	WCL::Seconds	m_tTime;
 
 	//
 	// Friends.
@@ -140,7 +140,7 @@ inline CTime::CTime()
 {
 }
 
-inline CTime::CTime(seconds_t tTime)
+inline CTime::CTime(WCL::Seconds tTime)
 {
 	Set(tTime);
 }
@@ -160,9 +160,9 @@ inline CTime CTime::Max()
 	return CTime(23, 59, 59);
 }
 
-inline void CTime::Set(seconds_t tTime)
+inline void CTime::Set(WCL::Seconds tTime)
 {
-	m_tTime = (tTime % SECS_PER_DAY);
+	m_tTime = (tTime % WCL::SECS_PER_DAY);
 }
 
 inline void CTime::Hours(int iHours)
@@ -216,7 +216,7 @@ inline int CTime::Secs() const
 	return iSecs;
 }
 
-inline seconds_t CTime::GetTimeInSecs() const
+inline WCL::Seconds CTime::GetTimeInSecs() const
 {
 	return m_tTime;
 }

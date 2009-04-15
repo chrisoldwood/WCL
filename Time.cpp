@@ -70,7 +70,7 @@ void CTime::Set(int iHours, int iMins, int iSecs)
 	ASSERT( (iMins  >= 0) && (iMins  <= 59) );
 	ASSERT( (iSecs  >= 0) && (iSecs  <= 59) );
 
-	m_tTime = (iHours * SECS_PER_HOUR) + (iMins * SECS_PER_MIN) + iSecs;
+	m_tTime = (iHours * WCL::SECS_PER_HOUR) + (iMins * WCL::SECS_PER_MIN) + iSecs;
 }
 
 /******************************************************************************
@@ -88,8 +88,8 @@ void CTime::Set(int iHours, int iMins, int iSecs)
 void CTime::Get(int& iHours, int& iMins, int& iSecs) const
 {
 	iSecs  = static_cast<int>(m_tTime % 60);
-	iMins  = static_cast<int>((m_tTime % SECS_PER_HOUR) / SECS_PER_MIN);
-	iHours = static_cast<int>(m_tTime / SECS_PER_HOUR);
+	iMins  = static_cast<int>((m_tTime % WCL::SECS_PER_HOUR) / WCL::SECS_PER_MIN);
+	iHours = static_cast<int>(m_tTime / WCL::SECS_PER_HOUR);
 }
 
 /******************************************************************************
@@ -200,7 +200,7 @@ CString CTime::ToString(int nFormat) const
 		pszValue = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars)));
 
 		// Format the string.
-		::GetTimeFormat(LOCALE_USER_DEFAULT, nTimeFmt, &st, NULL, pszValue, nChars);
+		::GetTimeFormat(LOCALE_USER_DEFAULT, nTimeFmt, &st, NULL, pszValue, static_cast<int>(nChars));
 	}
 	// Unsupported format.
 	else
@@ -228,7 +228,7 @@ bool CTime::FromString(const tchar* pszTime)
 {
 	ASSERT(pszTime != NULL);
 
-	int nLength = tstrlen(pszTime);
+	size_t nLength = tstrlen(pszTime);
 
 	// Check length is at least "00:00" and at most "00:00:00".
 	if ( (nLength < ISO_FMT_MIN_LEN) || (nLength > ISO_FMT_MAX_LEN) )
