@@ -332,7 +332,7 @@ CString CBuffer::ToString(TextFormat eFormat) const
 
 void CBuffer::FromString(const CString& str, TextFormat eFormat, bool bIncNull)
 {
-	int nChars = str.Length();
+	size_t nChars = str.Length();
 
 	// Allow for '\0'?
 	if (bIncNull)
@@ -392,7 +392,7 @@ void operator >>(WCL::IInputStream& rStream, CBuffer& rBuffer)
 
 void operator <<(WCL::IOutputStream& rStream, const CBuffer& rBuffer)
 {
-	uint32 nSize = rBuffer.Size();
+	uint32 nSize = static_cast<uint32>(rBuffer.Size());
 
 	rStream.Write(&nSize, sizeof(uint32));
 	rStream.Write(rBuffer.Buffer(), nSize);
