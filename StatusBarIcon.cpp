@@ -75,7 +75,7 @@ void CStatusBarIcon::GetClassParams(WNDCLASS& rParams)
 	CStatusBarPanel::GetClassParams(rParams);
 
 	// Override any settings.
-	rParams.hbrBackground = (HBRUSH) (COLOR_BTNFACE + 1);
+	rParams.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_BTNFACE + 1);
 	rParams.lpszClassName = TXT("StatusBarIcon");
 }
 

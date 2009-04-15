@@ -140,7 +140,7 @@ CString RegKey::ReadStringValue(const tchar* pszName, const tchar* pszDefault) c
 	memset(pszBuffer, 0, dwSize);
 
 	// Fetch the data.
-	if (::RegQueryValueEx(m_hKey, pszName, NULL, &dwType, (LPBYTE)pszBuffer, &dwSize) != ERROR_SUCCESS)
+	if (::RegQueryValueEx(m_hKey, pszName, NULL, &dwType, reinterpret_cast<LPBYTE>(pszBuffer), &dwSize) != ERROR_SUCCESS)
 		return pszDefault;
 
 	return pszBuffer;
@@ -154,7 +154,7 @@ void RegKey::WriteDefaultValue(const tchar* pszValue)
 	ASSERT(m_hKey   != NULL);
 	ASSERT(pszValue != NULL);
 
-	LONG lResult = ::RegSetValue(m_hKey, NULL, REG_SZ, pszValue, tstrlen(pszValue));
+	LONG lResult = ::RegSetValue(m_hKey, NULL, REG_SZ, pszValue, static_cast<DWORD>(tstrlen(pszValue)));
 
 	if (lResult != ERROR_SUCCESS)
 		throw RegistryException(lResult, TXT("Failed to write the default key value"));
@@ -171,7 +171,7 @@ void RegKey::WriteStringValue(const tchar* pszName, const tchar* pszValue)
 	size_t nChars = tstrlen(pszValue);
 	size_t nBytes = Core::NumBytes<tchar>(nChars) + sizeof(tchar);
 
-	LONG lResult = ::RegSetValueEx(m_hKey, pszName, 0, REG_SZ, reinterpret_cast<CONST BYTE*>(pszValue), nBytes);
+	LONG lResult = ::RegSetValueEx(m_hKey, pszName, 0, REG_SZ, reinterpret_cast<CONST BYTE*>(pszValue), static_cast<DWORD>(nBytes));
 
 	if (lResult != ERROR_SUCCESS)
 		throw RegistryException(lResult, TXT("Failed to write a regsitry value"));

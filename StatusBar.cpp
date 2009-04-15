@@ -86,7 +86,7 @@ void CStatusBar::GetClassParams(WNDCLASS& rParams)
 	CCtrlWnd::GetClassParams(rParams);
 
 	// Override any settings.
-	rParams.hbrBackground = (HBRUSH) (COLOR_BTNFACE + 1);
+	rParams.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_BTNFACE + 1);
 	rParams.lpszClassName = TXT("StatusBar");
 }
 
@@ -216,7 +216,7 @@ void CStatusBar::OnResize(int /*iFlag*/, const CSize& rNewSize)
 		dmSize.cx -= SIZE_GRIP_SIZE + PANEL_GAP_SIZE;
 
 	// Allocate DWP handle.
-	HDWP hDWP = ::BeginDeferWindowPos(m_apPanels.size() + 1);
+	HDWP hDWP = ::BeginDeferWindowPos(static_cast<int>(m_apPanels.size()+1));
 
 	ASSERT(hDWP != NULL);
 

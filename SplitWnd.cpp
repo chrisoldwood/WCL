@@ -67,7 +67,7 @@ void CSplitWnd::GetClassParams(WNDCLASS& rParams)
 	CCtrlWnd::GetClassParams(rParams);
 
 	// Override any settings.
-	rParams.hbrBackground = (HBRUSH) (COLOR_BTNSHADOW + 1);
+	rParams.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_BTNSHADOW + 1);
 	rParams.lpszClassName = TXT("SplitWnd");
 	rParams.hCursor       = NULL;
 }

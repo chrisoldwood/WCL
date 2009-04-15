@@ -90,8 +90,8 @@ bool CPrinter::Select(const CWnd& rParent)
 		ASSERT(PrtDlg.hDevNames);
 		
 		// Get a pointer to the description.
-		const tchar* lpszDevNames = static_cast<const tchar*>(GlobalLock(PrtDlg.hDevNames));
-		LPDEVNAMES	 lpDevNames   = (LPDEVNAMES) lpszDevNames;
+		const tchar* lpszDevNames  = static_cast<const tchar*>(GlobalLock(PrtDlg.hDevNames));
+		const DEVNAMES* lpDevNames = reinterpret_cast<const DEVNAMES*>(lpszDevNames);
 		
 		// Copy description.
 		m_strName   = lpszDevNames + lpDevNames->wDeviceOffset;
