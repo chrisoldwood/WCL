@@ -303,7 +303,7 @@ int CApp::FatalMsg(const tchar* pszMsg, ...) const
 *******************************************************************************
 */
 
-void CALLBACK CApp::TimerProc(HWND /*hWnd*/, UINT /*uMsg*/, UINT nTimerID, DWORD /*dwTime*/)
+void CALLBACK CApp::TimerProc(HWND /*hWnd*/, UINT /*uMsg*/, WCL::TimerID nTimerID, DWORD /*dwTime*/)
 {
 	ASSERT(g_pThis != NULL);
 
@@ -323,7 +323,7 @@ void CALLBACK CApp::TimerProc(HWND /*hWnd*/, UINT /*uMsg*/, UINT nTimerID, DWORD
 *******************************************************************************
 */
 
-void CApp::OnTimer(uint /*nTimerID*/)
+void CApp::OnTimer(WCL::TimerID /*nTimerID*/)
 {
 }
 

@@ -56,8 +56,8 @@ public:
     //
     // Timer methods.
     //
-	uint StartTimer(uint nFrequency);
-	void StopTimer(uint nTimerID);
+	WCL::TimerID StartTimer(uint nFrequency);
+	void StopTimer(WCL::TimerID nTimerID);
 
     //
     // Message boxes.
@@ -110,7 +110,7 @@ protected:
 	//
 	// Message handlers.
 	//
-	virtual void OnTimer(uint nTimerID);
+	virtual void OnTimer(WCL::TimerID nTimerID);
 	virtual void OnThreadMsg(UINT nMsg, WPARAM wParam, LPARAM lParam);
 
 private:
@@ -135,7 +135,7 @@ private:
 	CApp& operator=(const CApp&);
 
 	// The timer callback function.
-	static void CALLBACK TimerProc(HWND hWnd, UINT uMsg, UINT nTimerID, DWORD dwTime);
+	static void CALLBACK TimerProc(HWND hWnd, UINT uMsg, WCL::TimerID nTimerID, DWORD dwTime);
 
 	//
 	// Class members.
@@ -156,7 +156,7 @@ inline const CFont& CApp::DefaultFont()
 {
 	// Create, if first call.
 	if (m_DefaultFont.Handle() == NULL)
-		m_DefaultFont.Create((HFONT)::GetStockObject(DEFAULT_GUI_FONT));
+		m_DefaultFont.Create(reinterpret_cast<HFONT>(::GetStockObject(DEFAULT_GUI_FONT)));
 
 	return m_DefaultFont;
 }
@@ -206,12 +206,12 @@ inline const CPen& CApp::DarkestPen()
 	return m_DarkestPen;
 }
 
-inline uint CApp::StartTimer(uint nFrequency)
+inline WCL::TimerID CApp::StartTimer(uint nFrequency)
 {
 	return ::SetTimer(NULL, 0, nFrequency, TimerProc);
 }
 
-inline void CApp::StopTimer(uint nTimerID)
+inline void CApp::StopTimer(WCL::TimerID nTimerID)
 {
 	::KillTimer(NULL, nTimerID);
 }
