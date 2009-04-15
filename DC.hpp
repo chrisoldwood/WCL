@@ -274,12 +274,12 @@ inline void CDC::ViewportOrigin(const CPoint& rptOrigin)
 
 inline void CDC::LPtoDP(CPoint* pPoints, int iNumPoints) const
 {
-	::LPtoDP(m_hDC, (LPPOINT) pPoints, iNumPoints);
+	::LPtoDP(m_hDC, pPoints, iNumPoints);
 }
 
 inline void CDC::DPtoLP(CPoint* pPoints, int iNumPoints) const
 {
-	::DPtoLP(m_hDC, (LPPOINT) pPoints, iNumPoints);
+	::DPtoLP(m_hDC, pPoints, iNumPoints);
 }
 
 inline void CDC::Rectangle(const CRect& rRect)
@@ -300,7 +300,7 @@ inline void CDC::Arc(const CRect& rRect, const CPoint& ptStart, const CPoint& pt
 
 inline void CDC::Fill(const CRect& rRect, const CBrush& rBrush)
 {
-	::FillRect(m_hDC, (LPRECT) &rRect, rBrush.Handle());
+	::FillRect(m_hDC, &rRect, rBrush.Handle());
 }
 
 inline int CDC::BkMode(int iMode)
@@ -320,12 +320,12 @@ inline COLORREF CDC::BkColour(COLORREF crColour)
 
 inline void CDC::TextOut(int iX, int iY, const tchar* pszText)
 {
-	::TextOut(m_hDC, iX, iY, pszText, tstrlen(pszText));
+	::TextOut(m_hDC, iX, iY, pszText, static_cast<int>(tstrlen(pszText)));
 }
 
 inline void CDC::TextOut(const CPoint& rptOrigin, const tchar* pszText)
 {
-	::TextOut(m_hDC, rptOrigin.x, rptOrigin.y, pszText, tstrlen(pszText));
+	::TextOut(m_hDC, rptOrigin.x, rptOrigin.y, pszText, static_cast<int>(tstrlen(pszText)));
 }
 
 inline void CDC::DrawText(const CRect& rcRect, const tchar* pszText, int nFormat)

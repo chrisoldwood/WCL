@@ -95,7 +95,7 @@ void CCtrlWnd::GetCreateParams(WNDCREATE& rParams)
 	rParams.dwStyle = WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VISIBLE;
 	rParams.rcPos   = m_rcPos;
 	rParams.hParent = m_pParent->Handle();
-	rParams.hMenu   = (HMENU)m_iID;
+	rParams.hMenu   = reinterpret_cast<HMENU>(m_iID);
 }
 
 /******************************************************************************
