@@ -15,6 +15,7 @@
 #include <shlobj.h>
 #include <Core/AnsiWide.hpp>
 #include <tchar.h>
+#include <limits>
 
 /******************************************************************************
 ** Method:		Default constructor
@@ -167,14 +168,15 @@ void CFile::Close()
 *******************************************************************************
 */
 
-void CFile::Read(void* pBuffer, uint iNumBytes)
+void CFile::Read(void* pBuffer, size_t iNumBytes)
 {
 	ASSERT(m_hFile != INVALID_HANDLE_VALUE);
 	ASSERT(m_nMode & GENERIC_READ);
+	ASSERT(iNumBytes <= std::numeric_limits<DWORD>::max());
 
 	DWORD dwRead = 0;
 
-	if (::ReadFile(m_hFile, pBuffer, iNumBytes, &dwRead, NULL) == 0)
+	if (::ReadFile(m_hFile, pBuffer, static_cast<DWORD>(iNumBytes), &dwRead, NULL) == 0)
 		throw CFileException(CFileException::E_READ_FAILED, m_Path, ::GetLastError());
 }
 
@@ -193,14 +195,15 @@ void CFile::Read(void* pBuffer, uint iNumBytes)
 *******************************************************************************
 */
 
-void CFile::Write(const void* pBuffer, uint iNumBytes)
+void CFile::Write(const void* pBuffer, size_t iNumBytes)
 {
 	ASSERT(m_hFile != INVALID_HANDLE_VALUE);
 	ASSERT(m_nMode & GENERIC_WRITE);
+	ASSERT(iNumBytes <= std::numeric_limits<DWORD>::max());
 
 	DWORD dwWritten = 0;
 
-	if (::WriteFile(m_hFile, pBuffer, iNumBytes, &dwWritten, NULL) == 0)
+	if (::WriteFile(m_hFile, pBuffer, static_cast<DWORD>(iNumBytes), &dwWritten, NULL) == 0)
 		throw CFileException(CFileException::E_WRITE_FAILED, m_Path, ::GetLastError());
 }
 
@@ -219,7 +222,7 @@ void CFile::Write(const void* pBuffer, uint iNumBytes)
 *******************************************************************************
 */
 
-ulong CFile::Seek(ulong lPos, uint nFrom)
+WCL::StreamPos CFile::Seek(WCL::StreamPos lPos, SeekPos eFrom)
 {
 	ASSERT(m_hFile != INVALID_HANDLE_VALUE);
 
@@ -227,7 +230,7 @@ ulong CFile::Seek(ulong lPos, uint nFrom)
 	::SetLastError(NO_ERROR);
 
 	// Try the seek.
-	ulong lNewPos = ::SetFilePointer(m_hFile, lPos, NULL, nFrom);
+	WCL::StreamPos lNewPos = ::SetFilePointer(m_hFile, static_cast<LONG>(lPos), NULL, eFrom);
 
 	// Error?
 	DWORD dwLastError = ::GetLastError();
@@ -255,7 +258,7 @@ bool CFile::IsEOF()
 	ASSERT(m_hFile != INVALID_HANDLE_VALUE);
 	ASSERT(m_nMode & GENERIC_READ);
 
-	return (Seek(0, FILE_CURRENT) >= m_lEOF);
+	return (Seek(0, CURRENT) >= m_lEOF);
 }
 
 /******************************************************************************
@@ -306,12 +309,12 @@ void CFile::SetEOF()
 *******************************************************************************
 */
 
-ulong CFile::Size()
+WCL::StreamPos CFile::Size()
 {
-	ulong lCurPos = Seek(0, FILE_CURRENT);
-	ulong lSize   = Seek(0, FILE_END);
+	WCL::StreamPos lCurPos = Seek(0, CURRENT);
+	WCL::StreamPos lSize   = Seek(0, END);
 
-	Seek(lCurPos, FILE_BEGIN);
+	Seek(lCurPos, BEGIN);
 
 	return lSize;
 }
@@ -565,7 +568,7 @@ size_t CFile::ReadFile(const tchar* pszPath, std::vector<byte>& vBuffer)
 	oFile.Open(pszPath, GENERIC_READ);
 
 	// Allocate a buffer for the entire file.
-	size_t nLength = oFile.Size();
+	size_t nLength = static_cast<size_t>(oFile.Size());
 
 	vBuffer.resize(nLength);
 

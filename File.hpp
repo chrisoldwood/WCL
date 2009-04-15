@@ -52,9 +52,9 @@ public:
 	//
 	// Overriden generic operations.
 	//
-	virtual void  Read(void* pBuffer, uint iNumBytes);
-	virtual void  Write(const void* pBuffer, uint iNumBytes);
-	virtual ulong Seek(ulong lPos, uint nFrom = FILE_BEGIN);
+	virtual void  Read(void* pBuffer, size_t iNumBytes);
+	virtual void  Write(const void* pBuffer, size_t iNumBytes);
+	virtual WCL::StreamPos Seek(WCL::StreamPos lPos, SeekPos eFrom = BEGIN);
 	virtual bool  IsEOF();
 	virtual void  Throw(int eErrCode, DWORD dwLastError);
 
@@ -62,7 +62,7 @@ public:
 	// Other operations.
 	//
 	void  SetEOF();
-	ulong Size();
+	WCL::StreamPos Size();
 
 	//
 	// Class methods.
@@ -98,9 +98,9 @@ protected:
 	//
 	// Internal members.
 	//
-	HANDLE	m_hFile;	// The files' handle.
-	CPath	m_Path;		// The files' path.
-	ulong	m_lEOF;		// Used to determine EOF.
+	HANDLE			m_hFile;	// The files' handle.
+	CPath			m_Path;		// The files' path.
+	WCL::StreamPos	m_lEOF;		// Used to determine EOF.
 };
 
 
