@@ -42,7 +42,7 @@ public:
 	//
 	// Properties.
 	//
-	ulong Size() const;
+	size_t Size() const;
 
 	//
 	// Open/Close operations.
@@ -55,7 +55,7 @@ public:
 	//
 	virtual void  Read(void* pBuffer, size_t nNumBytes);
 	virtual void  Write(const void* pBuffer, size_t nNumBytes);
-	virtual ulong Seek(ulong lPos, uint nFrom = FILE_BEGIN);
+	virtual WCL::StreamPos Seek(WCL::StreamPos lPos, SeekPos eFrom = BEGIN);
 	virtual bool  IsEOF();
 	virtual void  Throw(int eErrCode, DWORD dwLastError);
 
@@ -110,7 +110,7 @@ private:
 *******************************************************************************
 */
 
-inline ulong CClipboard::Size() const
+inline size_t CClipboard::Size() const
 {
 	return m_pStream->Size();
 }
@@ -125,9 +125,9 @@ inline void CClipboard::Write(const void* pBuffer, size_t nNumBytes)
 	m_pStream->Write(pBuffer, nNumBytes);
 }
 
-inline ulong CClipboard::Seek(ulong lPos, uint nFrom)
+inline WCL::StreamPos CClipboard::Seek(WCL::StreamPos lPos, SeekPos eFrom)
 {
-	return m_pStream->Seek(lPos, nFrom);
+	return m_pStream->Seek(lPos, eFrom);
 }
 
 inline bool CClipboard::IsEOF()
