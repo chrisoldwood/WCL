@@ -39,7 +39,7 @@ public:
 	//
 	void TextLimit(int iLimit) const;
 	void ReadOnly(bool bReadOnly = true) const;
-	void Select(int iFirstChar = 0, int iLastChar = -1) const;
+	void Select(size_t iFirstChar = 0, size_t iLastChar = Core::npos) const;
 	void Text(const tchar* pszText);
 	void Text(const tstring& strText);
 	void ReplaceSel(const tchar* pszText, bool bCanUndo = true);
@@ -47,7 +47,7 @@ public:
 	void TabWidth(uint nWidth);
 
 	void    Selected(int& nStart, int& nEnd) const;
-	int     TextLength() const;
+	size_t  TextLength() const;
 	CString Text() const;
 
 	//
@@ -98,7 +98,7 @@ inline void CEditBox::ReadOnly(bool bReadOnly) const
 	SendMessage(EM_SETREADONLY, bReadOnly, 0L);
 }
 
-inline void	CEditBox::Select(int iFirstChar, int iLastChar) const
+inline void	CEditBox::Select(size_t iFirstChar, size_t iLastChar) const
 {
 	SendMessage(EM_SETSEL, iFirstChar, iLastChar);
 }
@@ -107,7 +107,7 @@ inline void CEditBox::Selected(int& nStart, int& nEnd) const
 {
 	DWORD dwFirst, dwLast;
 
-	SendMessage(EM_GETSEL, (WPARAM)&dwFirst, (LPARAM)&dwLast);
+	SendMessage(EM_GETSEL, reinterpret_cast<WPARAM>(&dwFirst), reinterpret_cast<LPARAM>(&dwLast));
 
 	nStart = dwFirst;
 	nEnd   = dwLast;
@@ -125,15 +125,15 @@ inline void CEditBox::Text(const tstring& strText)
 
 inline void CEditBox::ReplaceSel(const tchar* pszText, bool bCanUndo)
 {
-	SendMessage(EM_REPLACESEL, bCanUndo, (LPARAM)pszText);
+	SendMessage(EM_REPLACESEL, bCanUndo, reinterpret_cast<LPARAM>(pszText));
 }
 
 inline void CEditBox::TabWidth(uint nWidth)
 {
-	::SendMessage(m_hWnd, EM_SETTABSTOPS, 1, (LPARAM)&nWidth);
+	::SendMessage(m_hWnd, EM_SETTABSTOPS, 1, reinterpret_cast<LPARAM>(&nWidth));
 }
 
-inline int CEditBox::TextLength() const
+inline size_t CEditBox::TextLength() const
 {
 	return SendMessage(WM_GETTEXTLENGTH, 0, 0L);
 }

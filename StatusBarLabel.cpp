@@ -64,7 +64,7 @@ void CStatusBarLabel::GetClassParams(WNDCLASS& rParams)
 	CStatusBarPanel::GetClassParams(rParams);
 
 	// Override any settings.
-	rParams.hbrBackground = (HBRUSH) (COLOR_BTNFACE + 1);
+	rParams.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_BTNFACE + 1);
 	rParams.lpszClassName = TXT("StatusBarLabel");
 }
 
@@ -91,9 +91,13 @@ void CStatusBarLabel::GetCreateParams(WNDCREATE& rParams)
     DC.Select(CApp::This().DefaultFont());
     CSize FontSize = DC.TextExtents(TXT("Ly"));
 
+	int count  = static_cast<int>(m_nChars);
+	int right  = ((FontSize.cx*count)/2) + (2*BORDER_SIZE);
+	int bottom = FontSize.cy + (2*BORDER_SIZE);
+
 	// Override any settings.
 	rParams.pszClassName = TXT("StatusBarLabel");
-	rParams.rcPos.Set(0, 0, ((FontSize.cx*m_nChars)/2) + (2*BORDER_SIZE), FontSize.cy + (2*BORDER_SIZE));
+	rParams.rcPos.Set(0, 0, right, bottom);
 }
 
 /******************************************************************************

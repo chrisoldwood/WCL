@@ -250,7 +250,7 @@ bool CEditBox::FilterKey(tchar cChar)
 
 void CEditBox::Append(const tchar* pszText)
 {
-	int n = TextLength();
+	size_t n = TextLength();
 
 	Select(n, n);
 	ReplaceSel(pszText, false);
