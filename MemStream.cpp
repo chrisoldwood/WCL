@@ -12,6 +12,7 @@
 #include "MemStream.hpp"
 #include "MemStreamException.hpp"
 #include "Buffer.hpp"
+#include <limits>
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -150,7 +151,7 @@ void CMemStream::Close()
 *******************************************************************************
 */
 
-void CMemStream::Read(void* pBuffer, uint iNumBytes)
+void CMemStream::Read(void* pBuffer, size_t iNumBytes)
 {
 	ASSERT(m_pBuffer != NULL);
 	ASSERT(m_nMode & GENERIC_READ);
@@ -183,7 +184,7 @@ void CMemStream::Read(void* pBuffer, uint iNumBytes)
 *******************************************************************************
 */
 
-void CMemStream::Write(const void* pBuffer, uint iNumBytes)
+void CMemStream::Write(const void* pBuffer, size_t iNumBytes)
 {
 	ASSERT(m_pBuffer != NULL);
 	ASSERT(m_nMode & GENERIC_WRITE);
@@ -230,21 +231,22 @@ void CMemStream::Write(const void* pBuffer, uint iNumBytes)
 *******************************************************************************
 */
 
-ulong CMemStream::Seek(ulong lPos, uint nFrom)
+WCL::StreamPos CMemStream::Seek(WCL::StreamPos lPos, SeekPos eFrom)
 {
 	ASSERT(m_pBuffer != NULL);
+	ASSERT(lPos <= std::numeric_limits<size_t>::max());
 
 	// Stream open?
 	if (m_pBuffer == NULL)
 		throw CMemStreamException(CMemStreamException::E_SEEK_FAILED);
 
 	// Calculate new position.
-	switch(nFrom)
+	switch(eFrom)
 	{
-		case FILE_BEGIN:	m_lPos  = lPos;				break;
-		case FILE_CURRENT:	m_lPos += lPos;				break;
-		case FILE_END:		m_lPos  = m_lEOF - lPos;	break;
-		default:			ASSERT_FALSE();				break;
+		case BEGIN:		m_lPos  = static_cast<size_t>(lPos);			break;
+		case CURRENT:	m_lPos += static_cast<size_t>(lPos);			break;
+		case END:		m_lPos  = m_lEOF - static_cast<size_t>(lPos);	break;
+		default:		ASSERT_FALSE();									break;
 	}
 		   
 	// Seeked to invalid position?
