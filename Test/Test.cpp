@@ -13,6 +13,7 @@
 extern void TestMisc();
 extern void TestString();
 extern void TestStringUtils();
+extern void TestPath();
 extern void TestDateAndTime();
 extern void TestIFacePtr();
 extern void TestComPtr();
@@ -34,6 +35,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		TEST_CASE(TestMisc);
 		TEST_CASE(TestString);
 		TEST_CASE(TestStringUtils);
+		TEST_CASE(TestPath);
 		TEST_CASE(TestDateAndTime);
 		TEST_CASE(TestIFacePtr);
 		TEST_CASE(TestComPtr);

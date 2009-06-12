@@ -179,6 +179,9 @@
 				RelativePath=".\TestMisc.cpp">
 			</File>
 			<File
+				RelativePath=".\TestPath.cpp">
+			</File>
+			<File
 				RelativePath=".\TestRect.cpp">
 			</File>
 			<File
