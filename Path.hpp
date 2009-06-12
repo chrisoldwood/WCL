@@ -153,6 +153,7 @@ inline CPath& CPath::operator=(const tchar* pszSrc)
 	ASSERT(pszSrc != NULL);
 
 	Copy(pszSrc);
+	Normalise(m_pszData);
 
 	return *this;
 }
@@ -160,6 +161,7 @@ inline CPath& CPath::operator=(const tchar* pszSrc)
 inline CPath& CPath::operator=(const CString& strSrc)
 {
 	Copy(strSrc);
+	Normalise(m_pszData);
 
 	return *this;
 }

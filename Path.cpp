@@ -49,11 +49,13 @@ CPath::CPath(const tchar* pszPath)
 	ASSERT(pszPath != NULL);
 
 	Copy(pszPath);
+	Normalise(m_pszData);
 }
 
 CPath::CPath(const CString& strSrc)
 {
 	Copy(strSrc);
+	Normalise(m_pszData);
 }
 
 CPath::CPath(const tchar* pszDir, const tchar* pszFile)
@@ -63,6 +65,7 @@ CPath::CPath(const tchar* pszDir, const tchar* pszFile)
 
 	Copy(pszDir);
 	operator /=(pszFile);
+	Normalise(m_pszData);
 }
 
 /******************************************************************************
@@ -116,8 +119,6 @@ bool CPath::IsFolder() const
 	struct _stat oInfo = { 0 };
 
 	int nResult = ::_tstat(m_pszData, &oInfo);
-
-	ASSERT(nResult == 0);
 
 	return ((nResult == 0) && (oInfo.st_mode & _S_IFDIR));
 }
