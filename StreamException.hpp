@@ -19,7 +19,7 @@
 #include <Core/Exception.hpp>
 
 /******************************************************************************
-** 
+**
 ** This is the base class for all exceptions thrown from streams.
 **
 *******************************************************************************
@@ -28,6 +28,8 @@
 class CStreamException : public Core::Exception
 {
 public:
+	virtual ~CStreamException() throw() {}
+
 	//
 	// Exception codes (0 - 9).
 	//

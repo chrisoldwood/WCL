@@ -17,6 +17,7 @@
 #include "Rect.hpp"
 #include <tchar.h>
 #include "Win32Exception.hpp"
+#include <malloc.h>
 
 //! The size of the string buffer in characters.
 const size_t MAX_CHARS = 256;

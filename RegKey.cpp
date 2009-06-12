@@ -10,6 +10,7 @@
 #include <limits>
 #include <tchar.h>
 #include <shlwapi.h>
+#include <malloc.h>
 
 // Using declarations.
 using WCL::RegistryException;

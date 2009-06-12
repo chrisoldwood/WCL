@@ -18,9 +18,10 @@
 
 #include "StdWnd.hpp"
 #include "ImageList.hpp"
+#include <vector>
 
 /******************************************************************************
-** 
+**
 ** Structure used to define an array of ListView columns.
 **
 *******************************************************************************
@@ -34,7 +35,7 @@ struct LVColumn
 };
 
 /******************************************************************************
-** 
+**
 ** This is a ListView control.
 **
 *******************************************************************************
@@ -130,7 +131,7 @@ protected:
 	//
 	// Members.
 	//
-	
+
 	//
 	// Window creation template methods.
 	//
@@ -248,7 +249,7 @@ inline void CListView::Select(size_t nItem, bool bSelect)
 
 inline bool CListView::IsSelection() const
 {
-	return (Selection() != LB_ERR);
+	return (Selection() != Core::npos);
 }
 
 inline bool CListView::IsSelected(size_t nItem) const

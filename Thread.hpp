@@ -17,7 +17,7 @@
 #endif
 
 /******************************************************************************
-** 
+**
 ** The base class from which threads are derived.
 **
 *******************************************************************************
@@ -31,7 +31,7 @@ public:
 	//
 	CThread();
 	virtual ~CThread();
-	
+
 	//
 	// Accessors.
 	//
@@ -63,7 +63,7 @@ protected:
 
 inline CThread::CThread()
 	: m_hThread(NULL)
-	, m_dwID(NULL)
+	, m_dwID(0)
 {
 }
 
@@ -83,7 +83,7 @@ inline DWORD CThread::ID() const
 
 inline bool CThread::PostMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 {
-	ASSERT(m_dwID != NULL);
+	ASSERT(m_dwID != 0);
 
 	return (::PostThreadMessage(m_dwID, nMsg, wParam, lParam) != 0);
 }

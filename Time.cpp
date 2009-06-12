@@ -18,6 +18,7 @@
 #include <Core/AnsiWide.hpp>
 #include <Core/StringUtils.hpp>
 #include <Core/BadLogicException.hpp>
+#include <malloc.h>
 
 /******************************************************************************
 **

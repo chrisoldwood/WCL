@@ -31,8 +31,8 @@ public:
 	ComException(HRESULT hResult, IFacePtr<T>& pObject, const tchar* pszOperation);
 
 	//! Destructor.
-	virtual ~ComException();
-	
+	virtual ~ComException() throw();
+
 	//
 	// Members.
 	//

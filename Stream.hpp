@@ -14,6 +14,7 @@
 #include "IStreamBase.hpp"
 #include "IInputStream.hpp"
 #include "IOutputStream.hpp"
+#include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////
 //! The legacy abstract base class used for bidirectional I/O.
@@ -52,7 +53,7 @@ public:
 
 	//! Set the stream contents version.
 	virtual void SetVersion(uint32 nVersion);
-	
+
 protected:
 	//
 	// Members.

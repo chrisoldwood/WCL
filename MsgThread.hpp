@@ -17,12 +17,13 @@
 #endif
 
 #include "Thread.hpp"
+#include <list>
 
 // Forward declarations.
 class IMsgFilter;
 
 /******************************************************************************
-** 
+**
 ** A thread derived class which is message driven.
 **
 *******************************************************************************

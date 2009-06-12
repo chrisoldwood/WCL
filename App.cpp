@@ -15,6 +15,7 @@
 #include <commctrl.h>
 #include "FrameWnd.hpp"
 
+#ifdef _MSC_VER
 // Linker directives.
 // NB: Required for building with VC++ Express.
 #pragma comment(lib, "user32")
@@ -22,6 +23,7 @@
 #pragma comment(lib, "advapi32")
 #pragma comment(lib, "comctl32")
 #pragma comment(lib, "ole32")
+#endif
 
 /******************************************************************************
 **
@@ -36,7 +38,7 @@ CApp* CApp::g_pThis = NULL;
 /******************************************************************************
 ** Method:		Default Constructor
 **
-** Description:	It just saves a copy of itself so that access to it can be 
+** Description:	It just saves a copy of itself so that access to it can be
 **				obtained from anywhere.
 **
 ** Parameters:	None.
@@ -242,10 +244,10 @@ int CApp::AlertMsg(const tchar* pszMsg, ...) const
 	// Setup arguments.
 	va_list	args;
 	va_start(args, pszMsg);
-	
+
 	// Format message.
 	strMsg.FormatEx(pszMsg, args);
-	
+
 	return MessageBox(m_rMainWnd.Handle(), strMsg, m_strTitle, MB_OK | MB_ICONEXCLAMATION | MB_TASKMODAL);
 }
 
@@ -256,10 +258,10 @@ int CApp::NotifyMsg(const tchar* pszMsg, ...) const
 	// Setup arguments.
 	va_list	args;
 	va_start(args, pszMsg);
-	
+
 	// Format message.
 	strMsg.FormatEx(pszMsg, args);
-	
+
 	return MessageBox(m_rMainWnd.Handle(), strMsg, m_strTitle, MB_OK | MB_ICONINFORMATION | MB_TASKMODAL);
 }
 
@@ -270,10 +272,10 @@ int CApp::QueryMsg(const tchar* pszMsg, ...) const
 	// Setup arguments.
 	va_list	args;
 	va_start(args, pszMsg);
-	
+
 	// Format message.
 	strMsg.FormatEx(pszMsg, args);
-	
+
 	return MessageBox(m_rMainWnd.Handle(), strMsg, m_strTitle, MB_YESNOCANCEL | MB_ICONQUESTION | MB_TASKMODAL);
 }
 
@@ -284,10 +286,10 @@ int CApp::FatalMsg(const tchar* pszMsg, ...) const
 	// Setup arguments.
 	va_list	args;
 	va_start(args, pszMsg);
-	
+
 	// Format message.
 	strMsg.FormatEx(pszMsg, args);
-	
+
 	return MessageBox(m_rMainWnd.Handle(), strMsg, m_strTitle, MB_OK | MB_ICONSTOP | MB_TASKMODAL);
 }
 

@@ -13,6 +13,7 @@
 
 #include "IConfigProvider.hpp"
 #include <Core/StringUtils.hpp>
+#include <vector>
 
 namespace WCL
 {
@@ -51,7 +52,7 @@ public:
 
 	//! Destructor.
 	~AppConfig();
-	
+
 	//
 	// Properties.
 	//

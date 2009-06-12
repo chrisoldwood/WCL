@@ -49,7 +49,7 @@ public:
 
 	//! Set the stream contents version.
 	virtual void SetVersion(uint32 nVersion) = 0;
-	
+
 	//
 	// Methods.
 	//
@@ -62,7 +62,7 @@ public:
 
 protected:
 	//! Protected destructor.
-	virtual ~IStreamBase() = 0 {}; 
+	virtual ~IStreamBase() {};
 };
 
 //namespace WCL

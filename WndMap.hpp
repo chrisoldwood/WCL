@@ -16,6 +16,8 @@
 #pragma once
 #endif
 
+#include <map>
+
 // Forward declarations.
 class CWnd;
 

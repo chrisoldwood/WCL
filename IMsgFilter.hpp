@@ -17,7 +17,7 @@
 #endif
 
 /******************************************************************************
-** 
+**
 ** The interface used for pre-processing Windows messages.
 **
 *******************************************************************************
@@ -33,7 +33,7 @@ public:
 
 protected:
 	// Make abstract.
-	virtual ~IMsgFilter() = 0 {};
+	virtual ~IMsgFilter() {};
 };
 
 #endif //IMSGFILTER_HPP

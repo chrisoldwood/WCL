@@ -21,7 +21,7 @@ class IConfigProvider
 {
 public:
 	//! Destructor.
-	virtual ~IConfigProvider() = 0 {};
+	virtual ~IConfigProvider() {};
 
 	//
 	// Methods.

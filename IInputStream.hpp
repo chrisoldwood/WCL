@@ -30,7 +30,7 @@ public:
 
 protected:
 	//! Protected destructor.
-	virtual ~IInputStream() = 0 {}; 
+	virtual ~IInputStream() {};
 };
 
 //namespace WCL

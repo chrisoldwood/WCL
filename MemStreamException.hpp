@@ -22,7 +22,7 @@
 class CMemStream;
 
 /******************************************************************************
-** 
+**
 ** This exception class is thrown by CMemStream.
 **
 *******************************************************************************
@@ -35,8 +35,8 @@ public:
 	// Constructors/Destructor.
 	//
 	CMemStreamException(int eErrCode);
-	virtual ~CMemStreamException();
-	
+	virtual ~CMemStreamException() throw();
+
 protected:
 	//
 	// Members.

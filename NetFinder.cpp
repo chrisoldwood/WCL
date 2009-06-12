@@ -11,6 +11,7 @@
 #include "Common.hpp"
 #include "NetFinder.hpp"
 #include "StrArray.hpp"
+#include <malloc.h>
 
 // Add .lib to linker.
 #pragma comment(lib, "mpr")

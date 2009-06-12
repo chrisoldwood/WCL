@@ -24,10 +24,10 @@ class IOutputStream : public WCL::IStreamBase
 public:
 	//! Write a number of bytes to the stream.
 	virtual void Write(const void* pBuffer, size_t iNumBytes) = 0;
-	
+
 protected:
 	//! Protected destructor.
-	virtual ~IOutputStream() = 0 {}; 
+	virtual ~IOutputStream() {};
 };
 
 //namespace WCL
