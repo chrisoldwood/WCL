@@ -158,6 +158,9 @@
 				RelativePath=".\TestAppConfig.cpp">
 			</File>
 			<File
+				RelativePath=".\TestComException.cpp">
+			</File>
+			<File
 				RelativePath=".\TestComPtr.cpp">
 			</File>
 			<File
@@ -206,6 +209,9 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h">
+			</File>
+			<File
+				RelativePath=".\TestIFaceTraits.hpp">
 			</File>
 		</Filter>
 		<Filter

@@ -17,6 +17,7 @@ extern void TestPath();
 extern void TestDateAndTime();
 extern void TestIFacePtr();
 extern void TestComPtr();
+extern void TestComException();
 extern void TestVerInfoReader();
 extern void TestIniFile();
 extern void TestRect();
@@ -39,6 +40,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		TEST_CASE(TestDateAndTime);
 		TEST_CASE(TestIFacePtr);
 		TEST_CASE(TestComPtr);
+		TEST_CASE(TestComException);
 		TEST_CASE(TestVerInfoReader);
 		TEST_CASE(TestIniFile);
 		TEST_CASE(TestRect);
