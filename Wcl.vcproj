@@ -647,6 +647,9 @@
 				RelativePath=".\IFacePtr.hpp">
 			</File>
 			<File
+				RelativePath=".\IFaceTraits.hpp">
+			</File>
+			<File
 				RelativePath=".\IInputStream.hpp">
 			</File>
 			<File
