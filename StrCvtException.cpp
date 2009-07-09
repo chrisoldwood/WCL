@@ -56,6 +56,6 @@ CStrCvtException::CStrCvtException(int eErrCode)
 *******************************************************************************
 */
 
-CStrCvtException::~CStrCvtException()
+CStrCvtException::~CStrCvtException() throw()
 {
 }

@@ -26,7 +26,7 @@ public:
 	StructuredException(uint nCode, _EXCEPTION_POINTERS* pInfo);
 
 	//! Destructor.
-	~StructuredException();
+	~StructuredException() throw();
 	
 	//
 	// Members.

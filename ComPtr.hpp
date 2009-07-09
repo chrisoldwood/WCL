@@ -13,7 +13,6 @@
 
 #include "IFacePtr.hpp"
 #include "ComException.hpp"
-#include <guiddef.h>
 #include <objbase.h>
 #include <Core/AnsiWide.hpp>
 #include <Core/BadLogicException.hpp>
@@ -162,30 +161,30 @@ template <typename T>
 inline void ComPtr<T>::CreateInstance(const CLSID& rCLSID)
 {
 	// Release the current interface.
-	Release();
+	this->Release();
 
-	IID oIID = __uuidof(T);
+	const IID& oIID = IFaceTraits<T>::uuidof();
 
 	// Create the object.
-	HRESULT hr = ::CoCreateInstance(rCLSID, nullptr, CLSCTX_ALL, oIID, reinterpret_cast<LPVOID*>(&m_pPointer));
+	HRESULT hr = ::CoCreateInstance(rCLSID, nullptr, CLSCTX_ALL, oIID, reinterpret_cast<LPVOID*>(&this->m_pPointer));
 
 	if (FAILED(hr))
 	{
 		wchar_t szBuffer[MAX_GUID_CHARS+1];
 
-		// Convert the CLSID to a string.		
+		// Convert the CLSID to a string.
 		if (::StringFromGUID2(rCLSID, szBuffer, MAX_GUID_CHARS+1) == 0)
 			throw Core::BadLogicException(TXT("Invalid buffer size passed to StringFromGUID2()"));
 
 		CString strCLSID = W2T(szBuffer);
 
-		// Convert the IID to a string.		
+		// Convert the IID to a string.
 		if (::StringFromGUID2(oIID, szBuffer, MAX_GUID_CHARS+1) == 0)
 			throw Core::BadLogicException(TXT("Invalid buffer size passed to StringFromGUID2()"));
 
 		CString strIID = W2T(szBuffer);
 
-		throw ComException(hr, CString::Fmt(TXT("Failed to create a COM object of class %s or obtain the interface %s"), strCLSID, strIID));
+		throw ComException(hr, CString::Fmt(TXT("Failed to create a COM object of class %s or obtain the interface %s"), strCLSID.c_str(), strIID.c_str()));
 	}
 }
 
@@ -196,23 +195,23 @@ template <typename T> template <typename U>
 inline void ComPtr<T>::QueryInterface(const IFacePtr<U>& rhs)
 {
 	// Release the current interface.
-	Release();
+	this->Release();
 
-	IID oIID = __uuidof(T);
+	const IID& oIID = IFaceTraits<T>::uuidof();
 
-	HRESULT hr = rhs.Get()->QueryInterface(oIID, reinterpret_cast<LPVOID*>(&m_pPointer));
+	HRESULT hr = rhs.Get()->QueryInterface(oIID, reinterpret_cast<LPVOID*>(&this->m_pPointer));
 
 	if (FAILED(hr))
 	{
 		wchar_t szBuffer[MAX_GUID_CHARS+1];
 
-		// Convert the IID to a string.		
+		// Convert the IID to a string.
 		if (::StringFromGUID2(oIID, szBuffer, MAX_GUID_CHARS+1) == 0)
 			throw Core::BadLogicException(TXT("Invalid buffer size passed to StringFromGUID2()"));
 
 		CString strIID = W2T(szBuffer);
 
-		throw ComException(hr, CString::Fmt(TXT("Failed to obtain the interface %s"), strIID));
+		throw ComException(hr, CString::Fmt(TXT("Failed to obtain the interface %s"), strIID.c_str()));
 	}
 }
 

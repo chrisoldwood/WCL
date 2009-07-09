@@ -47,7 +47,8 @@ void TreeView::SetImageList(uint nType, const CImageList& oImageList)
 	ASSERT(oImageList.Handle() != NULL);
 	ASSERT(oImageList.Owner()  == false);
 
-	TreeView_SetImageList(m_hWnd, oImageList.Handle(), nType);
+//	TreeView_SetImageList(m_hWnd, oImageList.Handle(), nType);
+    SendMessage(TVM_SETIMAGELIST, nType, reinterpret_cast<LPARAM>(oImageList.Handle()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

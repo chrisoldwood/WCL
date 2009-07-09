@@ -262,7 +262,7 @@ bool CSDICmds::SaveFileAs()
 
 	// Warn user if file exists.
 	if ( (Path.Exists())
-	  && (oApp.m_rMainWnd.QueryMsg(TXT("The file already exists:\n\n%s\n\nOverwrite?"), Path) != IDYES) )
+	  && (oApp.m_rMainWnd.QueryMsg(TXT("The file already exists:\n\n%s\n\nOverwrite?"), Path.c_str()) != IDYES) )
 		return false;
 
 	CBusyCursor oBusyCursor;
@@ -309,7 +309,7 @@ bool CSDICmds::CloseFile()
 	if (oApp.m_pDoc->Modified())
 	{
 		// Query user to save changes.
-		int nRes = oApp.m_rMainWnd.QueryMsg(TXT("Save changes to: %s?"), oApp.m_pDoc->Path());
+		int nRes = oApp.m_rMainWnd.QueryMsg(TXT("Save changes to: %s?"), oApp.m_pDoc->Path().c_str());
 
 		// Abort?
 		if (nRes == IDCANCEL)

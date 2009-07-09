@@ -16,7 +16,9 @@ namespace WCL
 SeTranslator::SeTranslator()
 	: m_lpfnOldTranslator(nullptr)
 {
+#ifdef _MSC_VER
 	m_lpfnOldTranslator = _set_se_translator(Translate);
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -24,11 +26,13 @@ SeTranslator::SeTranslator()
 
 SeTranslator::~SeTranslator()
 {
+#ifdef _MSC_VER
 	_se_translator_function lpfn = _set_se_translator(m_lpfnOldTranslator);
 
 	ASSERT(lpfn == Translate);
 
 	DEBUG_USE_ONLY(lpfn);
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -37,7 +41,11 @@ SeTranslator::~SeTranslator()
 
 _se_translator_function SeTranslator::Install()
 {
+#ifdef _MSC_VER
 	return _set_se_translator(Translate);
+#else
+	return nullptr;
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////

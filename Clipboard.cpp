@@ -20,7 +20,7 @@
 *******************************************************************************
 */
 
-CClipboard::FmtEntry CClipboard::s_oStdFormats[] = 
+CClipboard::FmtEntry CClipboard::s_oStdFormats[] =
 {
 	{ CF_TEXT,			TXT("CF_TEXT")         },
 	{ CF_BITMAP,		TXT("CF_BITMAP")       },
@@ -39,7 +39,7 @@ CClipboard::FmtEntry CClipboard::s_oStdFormats[] =
 	{ CF_HDROP,			TXT("CF_HDROP")        },
 	{ CF_LOCALE,		TXT("CF_LOCALE")       },
 	{ CF_DIBV5,			TXT("CF_DIBV5")        },
-	{ NULL,				NULL                   }
+	{ 0,				NULL                   }
 };
 
 /******************************************************************************
@@ -296,14 +296,14 @@ bool CClipboard::PasteText(CString& strString)
 
 			// Locked block?
 			if (psz != NULL)
-			{ 
+			{
 				// Copy string to return buffer.
 				strString = psz;
-			
-				::GlobalUnlock(hData); 
+
+				::GlobalUnlock(hData);
 
 				bPasted = true;
-			} 
+			}
 		}
 
 		// Close it.
@@ -363,10 +363,10 @@ uint CClipboard::RegisterFormat(const tchar* pszFormat)
 CString CClipboard::FormatName(uint nFormat)
 {
 	// Is predefined format?
-	if (IsStdFormat(nFormat))	
+	if (IsStdFormat(nFormat))
 	{
 		// Search lookup table.
-		for (FmtEntry* pEntry = s_oStdFormats; (pEntry->m_nFormat != NULL); ++pEntry)
+		for (FmtEntry* pEntry = s_oStdFormats; (pEntry->m_nFormat != 0); ++pEntry)
 		{
 			if (nFormat == pEntry->m_nFormat)
 				return pEntry->m_pszFormat;
@@ -405,7 +405,7 @@ uint CClipboard::FormatHandle(const tchar* pszFormat)
 	ASSERT(pszFormat != NULL);
 
 	// Search standard formats lookup table first.
-	for (FmtEntry* pEntry = s_oStdFormats; (pEntry->m_nFormat != NULL); ++pEntry)
+	for (FmtEntry* pEntry = s_oStdFormats; (pEntry->m_nFormat != 0); ++pEntry)
 	{
 		if (tstricmp(pszFormat, pEntry->m_pszFormat) == 0)
 			return pEntry->m_nFormat;

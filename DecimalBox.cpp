@@ -17,6 +17,15 @@
 #include <Core/StringUtils.hpp>
 #include <Core/BadLogicException.hpp>
 
+////////////////////////////////////////////////////////////////////////////////
+// Constants.
+
+#ifdef _MSC_VER
+static const size_t MAX_DBL_STR_LEN = _CVTBUFSIZE;
+#else
+static const size_t MAX_DBL_STR_LEN = 309 + 40; // == _CVTBUFSIZE [VS2003]
+#endif
+
 /******************************************************************************
 ** Method:		Constructor.
 **
@@ -110,9 +119,9 @@ double CDecimalBox::RealValue() const
 
 void CDecimalBox::RealValue(double dValue)
 {
-	tchar szText[_CVTBUFSIZE];
+	tchar szText[MAX_DBL_STR_LEN+1] = { 0 };
 
-	int nResult = _sntprintf(szText, _CVTBUFSIZE, TXT("%.*f"), m_nDecDigits, dValue);
+	int nResult = _sntprintf(szText, MAX_DBL_STR_LEN, TXT("%.*f"), m_nDecDigits, dValue);
 
 	ASSERT(nResult >= 0);
 
@@ -215,11 +224,11 @@ bool CDecimalBox::FilterKey(tchar cChar)
 	if (CEditBox::FilterKey(cChar))
 		return true;
 
-	tchar szText[_CVTBUFSIZE] = { 0 };
+	tchar szText[MAX_DBL_STR_LEN+1] = { 0 };
 	int	 nSelStart, nSelEnd;
 
 	// Get the current text.
-	Edit_GetText(m_hWnd, szText, _CVTBUFSIZE);
+	Edit_GetText(m_hWnd, szText, MAX_DBL_STR_LEN);
 
 	// Get the current selection.
 	Selected(nSelStart, nSelEnd);

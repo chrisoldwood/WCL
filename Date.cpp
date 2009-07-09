@@ -20,6 +20,7 @@
 #include <Core/StringUtils.hpp>
 #include <Core/BadLogicException.hpp>
 #include <malloc.h>
+#include <Core/InvalidArgException.hpp>
 
 /******************************************************************************
 **
@@ -333,12 +334,10 @@ CString CDate::ToString(int nFormat) const
 	// Get the date components.
 	Get(iDay, iMonth, iYear);
 
-	tchar* pszValue = TXT("");
-
 	// ISO standard format?
 	if (nFormat == FMT_ISO)
 	{
-		pszValue = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(ISO_FMT_MAX_LEN+1)));
+		tchar* pszValue = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(ISO_FMT_MAX_LEN+1)));
 
 		int nResult = _sntprintf(pszValue, ISO_FMT_MAX_LEN+1, TXT("%04d-%02d-%02d"), iYear, iMonth, iDay);
 
@@ -346,6 +345,8 @@ CString CDate::ToString(int nFormat) const
 
 		if (nResult < 0)
 			throw Core::BadLogicException(Core::Fmt(TXT("Insufficient buffer size used in CDate::ToString(). Result: %d"), nResult));
+
+		return pszValue;
 	}
 	// Windows locale derived format?
 	else if ((nFormat == FMT_WIN_SHORT) || (nFormat == FMT_WIN_LONG))
@@ -363,15 +364,17 @@ CString CDate::ToString(int nFormat) const
 		st.wDay   = static_cast<WORD>(iDay);
 
 		// Calculate buffer size.
-		size_t nChars = ::GetDateFormat(LOCALE_USER_DEFAULT, nDateFmt, &st, NULL, pszValue, 0);
+		size_t nChars = ::GetDateFormat(LOCALE_USER_DEFAULT, nDateFmt, &st, NULL, nullptr, 0);
 
-		pszValue = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars)));
+		tchar* pszValue = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars)));
 
 		// Format the string.
 		::GetDateFormat(LOCALE_USER_DEFAULT, nDateFmt, &st, NULL, pszValue, static_cast<int>(nChars));
+
+		return pszValue;
 	}
 
-	return pszValue;
+	throw Core::InvalidArgException(TXT("Invalid string format requested"));
 }
 
 /******************************************************************************
@@ -398,10 +401,10 @@ bool CDate::FromString(const tchar* pszDate)
 		return false;
 
 	tchar szDate[ISO_FMT_MAX_LEN+1] = { 0 };
-	
+
 	// Copy to non-const buffer.
 	tstrncpy(szDate, pszDate, ISO_FMT_MAX_LEN);
-	
+
 	// Break up string.
 	const tchar* pszYear  = tstrtok(szDate, TXT("-"));
 	const tchar* pszMonth = tstrtok(NULL,   TXT("-"));
@@ -415,7 +418,7 @@ bool CDate::FromString(const tchar* pszDate)
 	int	iDate  = CStrCvt::ParseInt(pszDay,   CStrCvt::PARSE_DECIMAL_ONLY);
 	int iMonth = CStrCvt::ParseInt(pszMonth, CStrCvt::PARSE_DECIMAL_ONLY);
 	int iYear  = CStrCvt::ParseInt(pszYear,  CStrCvt::PARSE_DECIMAL_ONLY);
-	
+
 	// Validate each componet.
 	if ( (iYear  < MIN_YEAR) || (iYear  > MAX_YEAR) )					return false;
 	if ( (iMonth < 1)        || (iMonth > 12) )							return false;
@@ -440,26 +443,19 @@ bool CDate::FromString(const tchar* pszDate)
 *******************************************************************************
 */
 
-#pragma warning(push)
-// conditional expression is constant (caused by the ASSERTs).
-#pragma warning(disable:4127)
-
 void operator >>(WCL::IInputStream& rStream, CDate& rDate)
 {
-	ASSERT(sizeof(rDate.m_tDate) == sizeof(time_t));
+	STATIC_ASSERT(sizeof(rDate.m_tDate) == sizeof(time_t));
 
 	rStream.Read(&rDate.m_tDate, sizeof(rDate.m_tDate));
 }
 
 void operator <<(WCL::IOutputStream& rStream, const CDate& rDate)
 {
-	ASSERT(sizeof(rDate.m_tDate) == sizeof(time_t));
+	STATIC_ASSERT(sizeof(rDate.m_tDate) == sizeof(time_t));
 
 	rStream.Write(&rDate.m_tDate, sizeof(rDate.m_tDate));
 }
-
-// C4127
-#pragma warning(pop)
 
 /******************************************************************************
 ** Method:		DaysInMonth()

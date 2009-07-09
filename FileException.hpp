@@ -46,7 +46,7 @@ public:
 	// Constructors/Destructor.
 	//
 	CFileException(int eErrCode, const CPath& rPath, DWORD dwLastError);
-	virtual	~CFileException();
+	virtual	~CFileException() throw();
 	
 protected:
 	//

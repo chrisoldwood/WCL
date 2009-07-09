@@ -67,6 +67,6 @@ CMemStreamException::CMemStreamException(int eErrCode)
 *******************************************************************************
 */
 
-CMemStreamException::~CMemStreamException()
+CMemStreamException::~CMemStreamException() throw()
 {
 }

@@ -12,6 +12,7 @@
 #include "Dll.hpp"
 #include "TraceLogger.hpp"
 
+#ifdef _MSC_VER
 // Linker directives.
 // NB: Required for building with VC++ Express.
 #pragma comment(lib, "user32")
@@ -19,6 +20,7 @@
 #pragma comment(lib, "advapi32")
 #pragma comment(lib, "comctl32")
 #pragma comment(lib, "ole32")
+#endif
 
 // Symbol used to ensure DllMain.cpp is linked.
 extern bool g_bLinkDllMain;

@@ -18,6 +18,15 @@
 #include <Core/BadLogicException.hpp>
 #include <limits>
 
+////////////////////////////////////////////////////////////////////////////////
+// Constants.
+
+#ifdef _MSC_VER
+static const size_t MAX_DBL_STR_LEN = _CVTBUFSIZE;
+#else
+static const size_t MAX_DBL_STR_LEN = 309 + 40; // == _CVTBUFSIZE [VS2003]
+#endif
+
 /******************************************************************************
 ** Method:		FormatInt()
 **
@@ -83,7 +92,7 @@ CString CStrCvt::FormatLong(long lValue)
 
 CString CStrCvt::FormatDouble(double dValue)
 {
-	char szValue[_CVTBUFSIZE];
+	char szValue[MAX_DBL_STR_LEN+1];
 
 	return A2T(_gcvt(dValue, 16, szValue));
 }

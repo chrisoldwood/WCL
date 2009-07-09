@@ -17,6 +17,7 @@
 #endif
 
 #include "HintBar.hpp"
+#include <vector>
 
 // Forward declarations.
 class CStatusBarPanel;

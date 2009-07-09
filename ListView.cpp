@@ -76,7 +76,7 @@ size_t CListView::InsertItem(size_t nItem, const tchar* pszText, size_t nImage)
 	lvItem.lParam  = NULL;
 
 	// Image specified?
-	if (nImage != -1)
+	if (nImage != Core::npos)
 		lvItem.mask |= LVIF_IMAGE;
 
 	return ListView_InsertItem(m_hWnd, &lvItem);
@@ -307,7 +307,8 @@ void CListView::ImageList(uint nType, const CImageList& oImageList)
 	ASSERT(oImageList.Handle() != NULL);
 	ASSERT(oImageList.Owner()  == false);
 
-	ListView_SetImageList(m_hWnd, oImageList.Handle(), nType);
+//	ListView_SetImageList(m_hWnd, oImageList.Handle(), nType);
+    SendMessage(LVM_SETIMAGELIST, nType, reinterpret_cast<LPARAM>(oImageList.Handle()));
 }
 
 /******************************************************************************
@@ -450,7 +451,7 @@ void CListView::RestoreSel(size_t nItem)
 	size_t nCount = ItemCount();
 
 	// Handle no selection, or invalid selection.
-	nItem = (nItem == LB_ERR) ? 0 : nItem;
+	nItem = (nItem == Core::npos) ? 0 : nItem;
 	nItem = (nItem >= nCount) ? (nCount-1) : nItem;
 
 	Select(nItem);

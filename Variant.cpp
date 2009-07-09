@@ -52,7 +52,7 @@ Variant::Variant(const VARIANT& vtVariant, VARTYPE eType)
 
 	if (FAILED(hr))
 		throw ComException(hr, Core::Fmt(TXT("Failed to convert a variant from %s to %s"),
-				FormatFullType(&vtVariant), FormatType(eType)).c_str());
+				FormatFullType(&vtVariant).c_str(), FormatType(eType)).c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////

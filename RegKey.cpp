@@ -15,8 +15,10 @@
 // Using declarations.
 using WCL::RegistryException;
 
+#ifdef _MSC_VER
 // Linker directives.
 #pragma comment(lib, "shlwapi.lib")
+#endif
 
 namespace WCL
 {

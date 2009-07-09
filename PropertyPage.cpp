@@ -10,6 +10,7 @@
 
 #include "Common.hpp"
 #include "PropertyPage.hpp"
+#include <prsht.h>
 
 /******************************************************************************
 ** Method:		Constructor.

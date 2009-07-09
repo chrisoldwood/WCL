@@ -19,6 +19,7 @@
 #include <Core/StringUtils.hpp>
 #include <Core/BadLogicException.hpp>
 #include <malloc.h>
+#include <Core/InvalidArgException.hpp>
 
 /******************************************************************************
 **
@@ -162,12 +163,10 @@ CString CTime::ToString(int nFormat) const
 	// Get the time components.
 	Get(iHours, iMins, iSecs);
 
-	tchar* pszValue = TXT("");
-
 	// ISO standard format?
 	if (nFormat == FMT_ISO)
 	{
-		pszValue = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(ISO_FMT_MAX_LEN+1)));
+		tchar* pszValue = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(ISO_FMT_MAX_LEN+1)));
 
 		int nResult = _sntprintf(pszValue, ISO_FMT_MAX_LEN+1, TXT("%02d:%02d:%02d"), iHours, iMins, iSecs);
 
@@ -175,6 +174,8 @@ CString CTime::ToString(int nFormat) const
 
 		if (nResult < 0)
 			throw Core::BadLogicException(Core::Fmt(TXT("Insufficient buffer size used in CTime::ToString(). Result: %d"), nResult));
+
+		return pszValue;
 	}
 	// Windows locale derived format?
 	else if ((nFormat == FMT_WIN_SHORT) || (nFormat == FMT_WIN_LONG))
@@ -196,20 +197,17 @@ CString CTime::ToString(int nFormat) const
 		st.wSecond = static_cast<WORD>(iSecs);
 
 		// Calculate buffer size.
-		size_t nChars = ::GetTimeFormat(LOCALE_USER_DEFAULT, nTimeFmt, &st, NULL, pszValue, 0);
+		size_t nChars = ::GetTimeFormat(LOCALE_USER_DEFAULT, nTimeFmt, &st, NULL, nullptr, 0);
 
-		pszValue = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars)));
+		tchar* pszValue = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars)));
 
 		// Format the string.
 		::GetTimeFormat(LOCALE_USER_DEFAULT, nTimeFmt, &st, NULL, pszValue, static_cast<int>(nChars));
-	}
-	// Unsupported format.
-	else
-	{
-		ASSERT_FALSE();
+
+		return pszValue;
 	}
 
-	return pszValue;
+	throw Core::InvalidArgException(TXT("Invalid string format requested"));
 }
 
 /******************************************************************************
@@ -282,23 +280,16 @@ bool CTime::FromString(const tchar* pszTime)
 *******************************************************************************
 */
 
-#pragma warning(push)
-// conditional expression is constant (caused by the ASSERTs).
-#pragma warning(disable:4127)
-
 void operator >>(WCL::IInputStream& rStream, CTime& rTime)
 {
-	ASSERT(sizeof(rTime.m_tTime) == sizeof(time_t));
+	STATIC_ASSERT(sizeof(rTime.m_tTime) == sizeof(time_t));
 
 	rStream.Read(&rTime.m_tTime, sizeof(rTime.m_tTime));
 }
 
 void operator <<(WCL::IOutputStream& rStream, const CTime& rTime)
 {
-	ASSERT(sizeof(rTime.m_tTime) == sizeof(time_t));
+	STATIC_ASSERT(sizeof(rTime.m_tTime) == sizeof(time_t));
 
 	rStream.Write(&rTime.m_tTime, sizeof(rTime.m_tTime));
 }
-
-// C4127
-#pragma warning(pop)

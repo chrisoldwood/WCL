@@ -46,7 +46,8 @@ CString CListBox::Text(size_t nItem) const
 	// Allocate space.
 	strText.BufferSize(TextLength(nItem)+1);
 
-	ListBox_GetText(m_hWnd, nItem, strText.Buffer());
+//	ListBox_GetText(m_hWnd, nItem, strText.Buffer());
+	SendMessage(LB_GETTEXT, nItem, reinterpret_cast<LPARAM>(strText.Buffer()));
 
 	return strText;
 }

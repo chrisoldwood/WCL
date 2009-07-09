@@ -200,7 +200,7 @@ void CMRUList::Write(WCL::AppConfig& appConfig, const tstring& section)
 	for (size_t i = 0; i != m_Paths.Size(); ++i)
 	{
 		tstring key   = Core::Fmt(TXT("%u"), i+1);
-		tstring value = m_Paths[i];
+		tstring value = m_Paths[i].c_str();
 
 		if (!value.empty())
 			appConfig.writeString(section, key, value);

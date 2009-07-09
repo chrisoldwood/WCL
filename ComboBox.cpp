@@ -47,7 +47,8 @@ CString CComboBox::Text(size_t nItem) const
 	strText.BufferSize(TextLength(nItem)+1);
 
 	// Get string.
-	ComboBox_GetLBText(m_hWnd, nItem, strText.Buffer());
+//	ComboBox_GetLBText(m_hWnd, nItem, strText.Buffer());
+	SendMessage(CB_GETLBTEXT, nItem, reinterpret_cast<LPARAM>(strText.Buffer()));
 
 	return strText;
 }

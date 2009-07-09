@@ -166,7 +166,11 @@ void CEditBox::Filter(const tchar* pszFilter, bool bAllow)
 
 	// Make valid all chars in the filter.
 	while (*pszFilter != TXT('\0'))
-		m_pFilter[*pszFilter++] = bAllow;
+	{
+		size_t nIndex = *pszFilter++;
+
+		m_pFilter[nIndex] = bAllow;
+	}
 }
 
 /******************************************************************************
@@ -186,7 +190,9 @@ void CEditBox::Filter(tchar cFilter, bool bAllow)
 {
 	AllocFilterMap();
 
-	m_pFilter[cFilter] = bAllow;
+	size_t nIndex = cFilter;
+
+	m_pFilter[nIndex] = bAllow;
 }
 
 /******************************************************************************
@@ -232,8 +238,10 @@ void CEditBox::AllocFilterMap()
 
 bool CEditBox::FilterKey(tchar cChar)
 {
+	size_t nIndex = cChar;
+
 	// Filter set AND key disallowed?
-	return ( (m_pFilter != NULL) && (m_pFilter[cChar] == false) );
+	return ( (m_pFilter != NULL) && (m_pFilter[nIndex] == false) );
 }
 
 /******************************************************************************

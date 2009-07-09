@@ -10,8 +10,10 @@
 #include <winver.h>
 #include <algorithm>
 
+#ifdef _MSC_VER
 // Add .lib to linker.
 #pragma comment(lib, "version")
+#endif
 
 namespace WCL
 {
@@ -101,8 +103,10 @@ const VS_FIXEDFILEINFO* VerInfoReader::GetFileInfo() const
 	void* pValue = nullptr;
 	uint  nBytes = 0;
 
+	tchar* lpSubBlock = const_cast<tchar*>(TXT("\\"));
+
 	// Read the block of translations.
-	BOOL bResult = ::VerQueryValue(m_pBuffer.Get(), TXT("\\"), &pValue, &nBytes);
+	BOOL bResult = ::VerQueryValue(m_pBuffer.Get(), lpSubBlock, &pValue, &nBytes);
 
 	if ( (bResult == 0) || (pValue == nullptr) )
 		throw Win32Exception(NO_ERROR, TXT("Failed to read the file information block"));
@@ -125,8 +129,10 @@ size_t VerInfoReader::GetTranslations(TranslationIter& itBegin, TranslationIter&
 	void* pValue = nullptr;
 	uint  nBytes = 0;
 
+	tchar* lpSubBlock = const_cast<tchar*>(TXT("\\VarFileInfo\\Translation"));
+
 	// Get the block of translations.
-	/*BOOL bResult =*/ ::VerQueryValue(m_pBuffer.Get(), TXT("\\VarFileInfo\\Translation"), &pValue, &nBytes);
+	/*BOOL bResult =*/ ::VerQueryValue(m_pBuffer.Get(), lpSubBlock, &pValue, &nBytes);
 
 	// Convert raw buffer to output iterator pair.
 	size_t nCount = nBytes / sizeof(Translation);

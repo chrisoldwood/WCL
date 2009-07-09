@@ -18,6 +18,7 @@
 
 #include "CriticalSection.hpp"
 #include "ThreadJob.hpp"
+#include <vector>
 
 // Forward declarations.
 class ThreadPoolThread;

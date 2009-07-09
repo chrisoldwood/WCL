@@ -55,7 +55,7 @@ void CPopupWnd::GetClassParams(WNDCLASS& rParams)
 	rParams.cbWndExtra    = 0;
 	rParams.hInstance     = CModule::This().Handle();
 	rParams.hIcon         = NULL;
-	rParams.hCursor       = ::LoadCursor(NULL, MAKEINTRESOURCE(IDC_ARROW));
+	rParams.hCursor       =::LoadCursor(NULL, IDC_ARROW);
 	rParams.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
 	rParams.lpszMenuName  = NULL;
 	rParams.lpszClassName = NULL;
@@ -78,7 +78,7 @@ void CPopupWnd::GetClassParams(WNDCLASS& rParams)
 bool CPopupWnd::Register(WNDCLASS& rParams)
 {
 	WNDCLASS	wcPrev;
-	
+
 	ASSERT(rParams.lpfnWndProc);
 	ASSERT(rParams.hInstance);
 	ASSERT(rParams.hbrBackground);
@@ -87,7 +87,7 @@ bool CPopupWnd::Register(WNDCLASS& rParams)
 	// Is already registered?
 	if (GetClassInfo(rParams.hInstance, rParams.lpszClassName, &wcPrev))
 		return true;
-	
+
 	// Do it.
 	return ::RegisterClass(&rParams);
 }
@@ -145,12 +145,12 @@ bool CPopupWnd::Create(WNDCREATE& rCreate)
 								CModule::This().Handle(),
 								rCreate.lpCreation );
 	ASSERT(m_hWnd);
-	
+
 	// Setup Window/Object mapping.
 	CWnd::s_WndMap.Add(*this);
-	
+
 	// Change WndProc to our multi purpose one.
-	m_lpfnOldWndProc = WindowProc(::PopupWndProc);
+	m_lpfnOldWndProc = WindowProc(PopupWndProc);
 
 	// Initialise.
 	OnCreate(ClientRect());
@@ -230,7 +230,7 @@ bool CPopupWnd::Create(DWORD dwExStyle, DWORD dwStyle)
 ** Description:	This is the real CPopupWnd based window message procedure. It
 **				works out which object belongs to the window handle and passes
 **				the message straight onto that object for processing.
-**				
+**
 ** Parameters:	Standard window procedure parameters.
 **
 ** Returns:		LRESULT based on the message
@@ -238,7 +238,7 @@ bool CPopupWnd::Create(DWORD dwExStyle, DWORD dwStyle)
 *******************************************************************************
 */
 
-LRESULT WINDOWPROC PopupWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
+LRESULT WINDOWPROC CPopupWnd::PopupWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
 	// Store the return values for this message.
 	BOOL    bMsgHandled = false;
@@ -247,7 +247,7 @@ LRESULT WINDOWPROC PopupWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lPar
 	try
 	{
 		CPopupWnd* pWnd;
-		
+
 		// Get the window object.
 		pWnd = static_cast<CPopupWnd*>(CWnd::s_WndMap.Find(hWnd));
 		ASSERT(pWnd);
@@ -261,7 +261,7 @@ LRESULT WINDOWPROC PopupWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lPar
 		// Push the existing messages' return values onto the stack.
 		BOOL*	 pbMsgHandled = pWnd->MsgHandledBuffer(&bMsgHandled);
 		LRESULT* plMsgResult  = pWnd->MsgResultBuffer (&lMsgResult);
-		
+
 		// Call real message handler.
 		pWnd->WndProc(hWnd, iMsg, wParam, lParam);
 
@@ -299,7 +299,7 @@ LRESULT WINDOWPROC PopupWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lPar
 **				This is a virtual function and is overriden by derived clases
 **				to farm out more specific messages, but should always be called
 **				by derived clases to get the default processing.
-**				
+**
 ** Parameters:	Standard window procedure parameters.
 **
 ** Returns:		LRESULT based on the message.
@@ -316,17 +316,17 @@ LRESULT CPopupWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		case WM_ACTIVATE:
 			OnActivate(wParam != WA_INACTIVE);
 			break;
-		
+
 		// Window gained the focus.
 		case WM_SETFOCUS:
 			OnFocus();
 			break;
-		
+
 		// Window lost the focus.
 		case WM_KILLFOCUS:
 			OnFocusLost();
 			break;
-		
+
         // Left button pressed.
 		case WM_LBUTTONDOWN:
 			OnLeftButtonDown(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), static_cast<WCL::KeyFlags>(wParam));
@@ -336,7 +336,7 @@ LRESULT CPopupWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		case WM_LBUTTONUP:
 			OnLeftButtonUp(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), static_cast<WCL::KeyFlags>(wParam));
 			break;
-		
+
         // Left button double clicked.
 		case WM_LBUTTONDBLCLK:
 			OnLeftButtonDblClick(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), static_cast<WCL::KeyFlags>(wParam));
@@ -351,22 +351,22 @@ LRESULT CPopupWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		case WM_RBUTTONUP:
 			OnRightButtonUp(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), static_cast<WCL::KeyFlags>(wParam));
 			break;
-		
+
         // Right button double clicked.
 		case WM_RBUTTONDBLCLK:
 			OnRightButtonDblClick(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), static_cast<WCL::KeyFlags>(wParam));
 			break;
-		
+
 		// Mouse moved.
 		case WM_MOUSEMOVE:
 			OnMouseMove(CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), static_cast<WCL::KeyFlags>(wParam));
 			break;
-		
+
 		// Key pressed.
 		case WM_KEYDOWN:
 			OnKeyDown(static_cast<WCL::KeyCode>(wParam), static_cast<WCL::KeyState>(lParam));
 			break;
-		
+
 		// Key released.
 		case WM_KEYUP:
 			OnKeyUp(static_cast<WCL::KeyCode>(wParam), static_cast<WCL::KeyState>(lParam));
@@ -391,15 +391,15 @@ LRESULT CPopupWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		case WM_NCDESTROY:
 			// Restore WndProc.
 			WindowProc(m_lpfnOldWndProc);
-			
+
 			OnNCDestroy();
 			break;
-		
+
 		// Call the default handler.
 		default:
 			return CMsgWnd::WndProc(hWnd, iMsg, wParam, lParam);
 	}
-	
+
 	MsgHandled(true);
 	MsgResult (0);
 
@@ -411,7 +411,7 @@ LRESULT CPopupWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 **
 ** Description:	This is the handler for all non-handled messages. It calls
 **				DefWindowProc().
-**				
+**
 ** Parameters:	Standard window procedure parameters.
 **
 ** Returns:		LRESULT based on the message.
@@ -431,7 +431,7 @@ LRESULT CPopupWnd::DefaultWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lP
 ** Method:		OnActivate()
 **
 ** Description:	The window has been activated or deactivated.
-**				
+**
 ** Parameters:	bActivating		Window being activated or deactivated?
 **
 ** Returns:		Nothing.
@@ -447,7 +447,7 @@ void CPopupWnd::OnActivate(bool /*bActivating*/)
 ** Method:		OnFocus()
 **
 ** Description:	Window has gained the focus.
-**				
+**
 ** Parameters:	None.
 **
 ** Returns:		Nothing.
@@ -463,7 +463,7 @@ void CPopupWnd::OnFocus()
 ** Method:		OnFocusLost()
 **
 ** Description:	Window has lost the focus.
-**				
+**
 ** Parameters:	None.
 **
 ** Returns:		Nothing.
@@ -582,7 +582,7 @@ void CPopupWnd::OnSelectMenu(uint iFlags, uint iItemID, HMENU hMenu)
 			OnShowSystemMenuHint();
 		}
 		// Popup menu.
-		else 
+		else
 		{
 			OnShowMenuPopupHint(GetSubMenu(hMenu, iItemID));
 		}
@@ -596,7 +596,7 @@ void CPopupWnd::OnSelectMenu(uint iFlags, uint iItemID, HMENU hMenu)
 			OnShowDefaultMenuHint();
 		}
 		// Menu item.
-		else 
+		else
 		{
 			OnShowMenuItemHint(iItemID);
 		}
@@ -646,7 +646,7 @@ void CPopupWnd::OnShowMenuPopupHint(HMENU hMenu)
 {
 	// Get ID of first item in menu.
 	int iFirstID = GetMenuItemID(hMenu, 0);
-    
+
     // Menu not empty?
     if (iFirstID != -1)
 		OnShowMenuItemHint(iFirstID - (iFirstID % 10));

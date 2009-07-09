@@ -13,8 +13,10 @@
 #include "StrArray.hpp"
 #include <malloc.h>
 
+#ifdef _MSC_VER
 // Add .lib to linker.
 #pragma comment(lib, "mpr")
+#endif
 
 /******************************************************************************
 ** Method:		FindDomains()
@@ -129,10 +131,10 @@ size_t CNetFinder::FindComputers(const tchar* pszDomain, CStrArray& astrComputer
 	oNetRsc.dwType        = RESOURCETYPE_ANY;
 	oNetRsc.dwDisplayType = RESOURCEDISPLAYTYPE_DOMAIN;
 	oNetRsc.dwUsage       = RESOURCEUSAGE_CONTAINER;
-	oNetRsc.lpLocalName   = TXT("");
+	oNetRsc.lpLocalName   = const_cast<tchar*>(TXT(""));
 	oNetRsc.lpRemoteName  = const_cast<tchar*>(pszDomain);
-	oNetRsc.lpComment     = TXT("");
-	oNetRsc.lpProvider    = TXT("");
+	oNetRsc.lpComment     = const_cast<tchar*>(TXT(""));
+	oNetRsc.lpProvider    = const_cast<tchar*>(TXT(""));
 
 	FindComputers(&oNetRsc, astrComputers);
 

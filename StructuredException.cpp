@@ -27,7 +27,7 @@ StructuredException::StructuredException(uint nCode, _EXCEPTION_POINTERS* /*pInf
 ////////////////////////////////////////////////////////////////////////////////
 //! Destructor.
 
-StructuredException::~StructuredException()
+StructuredException::~StructuredException() throw()
 {
 }
 

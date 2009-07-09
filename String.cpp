@@ -338,21 +338,49 @@ void CString::Format(const tchar* pszFormat, ...)
 
 void CString::FormatEx(const tchar* pszFormat, va_list args)
 {
+#ifdef _MSC_VER
+
 	// Allocate the buffer.
-	int nLength = _vsctprintf(pszFormat, args);
+	size_t nLength = _vsctprintf(pszFormat, args);
 
 	BufferSize(nLength+1);
 
 	// Format string.
 	int nResult = _vsntprintf(m_pszData, nLength, pszFormat, args);
 
-	ASSERT(nResult == nLength);
+	ASSERT(static_cast<size_t>(nResult) == nLength);
 
 	// Check for buffer overrun.
 	if (nResult < 0)
 		throw Core::BadLogicException(Core::Fmt(TXT("Insufficient buffer size calculated in CString::FormatEx(). Result: %d"), nResult));
 
 	m_pszData[nResult] = TXT('\0');
+
+#else
+
+	// Allocate an initial buffer.
+	size_t nLength = 256;
+
+	BufferSize(nLength+1);
+
+	int nResult = -1;
+
+	// Format the string, growing the buffer and repeating if necessary.
+	while ((nResult = _vsntprintf(m_pszData, nLength, pszFormat, args)) == -1)
+	{
+		nLength *= 2;
+		BufferSize(nLength+1);
+	}
+
+	ASSERT(static_cast<size_t>(nResult) <= nLength);
+
+	// Handle any errors.
+	if (nResult < 0)
+		throw Core::BadLogicException(Core::Fmt(TXT("Insufficient buffer size calculated in CString::FormatEx(). Result: %d"), nResult));
+
+	m_pszData[nResult] = TXT('\0');
+
+#endif
 }
 
 /******************************************************************************

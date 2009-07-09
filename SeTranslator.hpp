@@ -11,6 +11,12 @@
 #pragma once
 #endif
 
+#ifdef _MSC_VER
+#include <eh.h>
+#else
+typedef void (__cdecl *_se_translator_function)(unsigned int, struct _EXCEPTION_POINTERS*);
+#endif
+
 namespace WCL
 {
 

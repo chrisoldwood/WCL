@@ -17,12 +17,13 @@
 #endif
 
 #include "MsgWnd.hpp"
+#include <vector>
 
 // Forward declarations.
 class CCtrlWnd;
 
 /******************************************************************************
-** 
+**
 ** This is the base class from which all modal and modeless	dialogs are
 ** derived. The diaog can be run modal or modeless depending on the method
 ** used.
@@ -38,7 +39,7 @@ public:
 	//
 	CDialog(uint iRscID);
 	virtual ~CDialog();
-	
+
 	//
 	// Creation methods.
 	//
@@ -102,7 +103,7 @@ protected:
 	CWnd*		m_pParentWnd;	// Parent window.
 	bool		m_bNoSizeGrip;	// No size grip?
 	CRect		m_rcOldGrip;	// Old resizing grip position.
-	
+
 	//
 	// General message handlers.
 	//
@@ -142,7 +143,7 @@ protected:
 };
 
 /******************************************************************************
-** 
+**
 ** Macros used to ease the definition of the control table.
 **
 *******************************************************************************
@@ -156,7 +157,7 @@ protected:
 							ControlTable(Ctrls);
 
 /******************************************************************************
-** 
+**
 ** Macros used to ease the definition of the control gravity table.
 **
 *******************************************************************************

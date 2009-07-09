@@ -17,7 +17,7 @@
 #endif
 
 /******************************************************************************
-** 
+**
 ** Interface for controlling a thread lock.
 **
 *******************************************************************************
@@ -31,10 +31,10 @@ public:
 	//
 	virtual void Aquire() = 0;
 	virtual void Release() = 0;
-	
+
 protected:
 	// Make interface.
-	virtual ~IThreadLock() = 0 {}; 
+	virtual ~IThreadLock() {};
 };
 
 /******************************************************************************

@@ -36,6 +36,7 @@ public:
 	CPath();
     CPath(const tchar* pszPath);
 	CPath(const CString& strSrc);
+	CPath(const tstring& source);
     CPath(const tchar* pszDir, const tchar* pszFile);
 
 	//
@@ -107,6 +108,7 @@ public:
 
 	CPath& operator=(const tchar* pszSrc);
 	CPath& operator=(const CString& strSrc);
+	CPath& operator=(const tstring& source);
 	
 	void operator/=(const tchar* pszPath);
 
@@ -161,6 +163,14 @@ inline CPath& CPath::operator=(const tchar* pszSrc)
 inline CPath& CPath::operator=(const CString& strSrc)
 {
 	Copy(strSrc);
+	Normalise(m_pszData);
+
+	return *this;
+}
+
+inline CPath& CPath::operator=(const tstring& source)
+{
+	Copy(source.c_str());
 	Normalise(m_pszData);
 
 	return *this;

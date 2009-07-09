@@ -23,10 +23,12 @@
 #include <tchar.h>
 #include "Win32Exception.hpp"
 
+#ifdef _MSC_VER
 // Directive to link to the Shell library.
 #pragma comment(lib, "shell32")
 // Directive to link to the Common Dialog library.
 #pragma comment(lib, "comdlg32")
+#endif
 
 /******************************************************************************
 ** Method:		Constructors
@@ -55,6 +57,12 @@ CPath::CPath(const tchar* pszPath)
 CPath::CPath(const CString& strSrc)
 {
 	Copy(strSrc);
+	Normalise(m_pszData);
+}
+
+CPath::CPath(const tstring& source)
+{
+	Copy(source.c_str());
 	Normalise(m_pszData);
 }
 
@@ -189,7 +197,7 @@ CPath CPath::ModuleDir(HMODULE hModule)
 
 	// Get full executable path name.
 	::GetModuleFileName(hModule, szPath, MAX_PATH+1);
-	
+
 	// Strip file name.
 	tchar* pszExeName = tstrrchr(szPath, TXT('\\'));
 
@@ -245,7 +253,7 @@ CPath CPath::Module(HMODULE hModule)
 
 	// Get full executable path name.
 	::GetModuleFileName(hModule, szPath, MAX_PATH+1);
-	
+
 	return CPath(szPath);
 }
 
@@ -335,7 +343,7 @@ CPath CPath::Root() const
 	{
 		strRoot = szDrive;
 
-		if (strRoot.Find(TXT('\\')) == -1)
+		if (strRoot.Find(TXT('\\')) == Core::npos)
 			strRoot += TXT('\\');
 	}
 	// Counld be a UNC share? ("\\m\d" is minimum).
@@ -509,7 +517,7 @@ bool CPath::Select(const CWnd& rParent, DlgMode eMode, const tchar* pszExts,
 	ofnFile.lCustData         = NULL;
 	ofnFile.lpfnHook          = NULL;
 	ofnFile.lpTemplateName    = NULL;
-	
+
 	// Get the filename.
 	if (eMode == OpenFile)
 	{
@@ -525,14 +533,14 @@ bool CPath::Select(const CWnd& rParent, DlgMode eMode, const tchar* pszExts,
 		ofnFile.lpstrTitle = TXT("Select");
 		bOkay = GetOpenFileName(&ofnFile);
 	}
-	
+
 	// Error or cancel?
 	if (!bOkay)
 		return false;
-		
+
 	// Save filename.
 	Copy(szFileName);
-	
+
 	return true;
 }
 
@@ -589,7 +597,7 @@ bool CPath::SelectDir(const CWnd& rParent, const tchar* pszTitle, const tchar* p
 
 	// Cleanup.
 	pMalloc->Release();
-     
+
 	return pItemIDList != NULL;
 }
 
@@ -612,7 +620,7 @@ int CALLBACK CPath::BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPAR
 		case BFFM_INITIALIZED:
 		{
 			// Set initial directory, if specified.
-			if (lpData != NULL)
+			if (lpData != 0)
 				::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, lpData);
 		}
 		break;
@@ -679,7 +687,7 @@ bool CPath::SelectComputer(const CWnd& rParent, const tchar* pszTitle)
 
 	// Cleanup.
 	pMalloc->Release();
-     
+
 	return pItemIDList != NULL;
 }
 
@@ -719,7 +727,7 @@ void CPath::Normalise(tchar* pszPath)
 
 	size_t nLength = tstrlen(pszPath);
 
-	// "\" or "/" is a valid root. 
+	// "\" or "/" is a valid root.
 	if (nLength > 1)
 	{
 		tchar* pszEnd = pszPath+nLength-1;
@@ -778,7 +786,7 @@ bool CPath::SelectFiles(const CWnd& rParent, const tchar* pszExts, const tchar* 
 	ofnFile.lCustData         = NULL;
 	ofnFile.lpfnHook          = NULL;
 	ofnFile.lpTemplateName    = NULL;
-	
+
 	if (!::GetOpenFileName(&ofnFile))
 		return false;
 
@@ -803,7 +811,7 @@ bool CPath::SelectFiles(const CWnd& rParent, const tchar* pszExts, const tchar* 
 		const tchar *pszFileName = pszDir + tstrlen(pszDir) + 1;
 
 		while (*pszFileName != 0)
-		{ 
+		{
 			astrFiles.Add(CPath(pszDir, pszFileName));
 
 			pszFileName += tstrlen(pszFileName) + 1;
@@ -864,7 +872,7 @@ void CPath::operator/=(const tchar* pszPath)
 void CPath::ExpandVars()
 {
 	// Do a crude search and replace on all possible matches.
-	if (Find(TXT('%')) != -1)
+	if (Find(TXT('%')) != Core::npos)
 	{
 		Replace(TXT("%ProgramFiles%"), CPath::SpecialDir(CSIDL_PROGRAM_FILES));
 		Replace(TXT("%SystemRoot%"),   CPath::WindowsDir());

@@ -27,9 +27,9 @@
 */
 
 CMsgWnd::CMsgWnd()
-	: m_pbMsgHandled(NULL)
+	: m_pCtrlMsgTable(NULL)
+	, m_pbMsgHandled(NULL)
 	, m_plMsgResult(NULL)
-	, m_pCtrlMsgTable(NULL)
 {
 }
 
@@ -41,7 +41,7 @@ CMsgWnd::CMsgWnd()
 **				This is a virtual function and is overriden by derived clases
 **				to farm out more specific messages, but should always be called
 **				by derived clases to get the default processing.
-**				
+**
 ** Parameters:	Standard window procedure parameters.
 **
 ** Returns:		LRESULT based on the message.
@@ -65,13 +65,13 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	// Is in RegisterWindowMessage() range ?
 	if ( (iMsg >= 0xC000) && (iMsg < 0xFFFF) )
 		OnRegisteredMsg(iMsg, wParam, lParam);
-	
+
 	// Decode message.
 	switch(iMsg)
 	{
 		// Child control message.
 		case WM_COMMAND:
-			if (lParam == NULL)
+			if (lParam == 0)
 				OnCmdMsg(LOWORD(wParam));
 			else
 				OnCtrlMsg(LOWORD(wParam), HIWORD(wParam), reinterpret_cast<HWND>(lParam));
@@ -103,7 +103,7 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 
-		// Window needs redrawing.	
+		// Window needs redrawing.
 		case WM_PAINT:
 			PAINTSTRUCT psPaint;
 			BeginPaint(hWnd, &psPaint);
@@ -145,7 +145,7 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		// Window is being enabled or disabled.
 		case WM_ENABLE:
 			break;
-        
+
 		// Timer gone off.
 		case WM_TIMER:
 			OnTimer(wParam);
@@ -195,11 +195,11 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					// Get control.
 					CMsgWnd* pWnd = static_cast<CMsgWnd*>(CWnd::s_WndMap.Find(lpInfo->hwndItem));
 					ASSERT(pWnd);
-					
+
 					// Construct a paint DC.
 					CScreenDC	dcPaint(lpInfo->hDC);
 					CRect		rcItem(&lpInfo->rcItem);
-					
+
 					pWnd->OnDrawItem(lpInfo->CtlID, lpInfo->itemAction, lpInfo->itemState,
 										dcPaint, lpInfo->itemID, rcItem);
 				}
@@ -210,7 +210,7 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				}
 			}
 			break;
-		
+
 		// Help requested.
 		case WM_HELP:
 			{
@@ -224,7 +224,7 @@ LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		case WM_DESTROY:
 			OnDestroy();
 			break;
-		
+
 		// Window being destroyed (Non-client).
 		case WM_NCDESTROY:
 			OnNCDestroy();
@@ -443,7 +443,7 @@ void CMsgWnd::OnCtrlMsg(uint iID, uint iMsg, HWND hControl)
 		pWnd->OnReflectedCtrlMsg(iMsg);
 
 	CTRLMSG* pCtrlMsg = m_pCtrlMsgTable;
-	
+
 	// Find control callback function.
 	while ( (pCtrlMsg) && (pCtrlMsg->m_iCtrlID)
 		 && ((pCtrlMsg->m_iMsgType != WM_COMMAND) || (pCtrlMsg->m_iCtrlID != iID) || (pCtrlMsg->m_iMsgID != iMsg)) )
@@ -487,7 +487,7 @@ LRESULT CMsgWnd::OnCtrlMsg(NMHDR& rMsgHdr)
 	CTRLMSG* pCtrlMsg = m_pCtrlMsgTable;
 	WCL::ControlID iID = rMsgHdr.idFrom;
 	uint	 iMsg     = rMsgHdr.code;
-	
+
 	// Find control callback function.
 	while ( (pCtrlMsg) && (pCtrlMsg->m_iCtrlID)
 		 && ((pCtrlMsg->m_iMsgType != WM_NOTIFY) || (pCtrlMsg->m_iCtrlID != iID) || (pCtrlMsg->m_iMsgID != iMsg)) )

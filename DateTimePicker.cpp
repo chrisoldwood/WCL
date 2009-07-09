@@ -130,7 +130,7 @@ CDate CDateTimePicker::GetDate()
 
 void CDateTimePicker::SetDateRange(const CDate& rMin, const CDate& rMax)
 {
-	SYSTEMTIME	SysTime[2] = { 0 };
+	SYSTEMTIME	SysTime[2] = { { 0 }, { 0 } };
 	int			nDay, nMonth, nYear;
 
 	// Set time parts to 00:00:00.
@@ -163,7 +163,7 @@ void CDateTimePicker::SetDateRange(const CDate& rMin, const CDate& rMax)
 
 void CDateTimePicker::GetDateRange(CDate& rMin, CDate& rMax)
 {
-	SYSTEMTIME	SysTime[2] = { 0 };
+	SYSTEMTIME	SysTime[2] = { { 0 }, { 0 } };
 
 	// Get the date range from the control.
 	DateTime_GetRange(m_hWnd, SysTime);
@@ -236,7 +236,7 @@ CTime CDateTimePicker::GetTime()
 
 void CDateTimePicker::SetTimeRange(const CTime& rMin, const CTime& rMax)
 {
-	SYSTEMTIME	SysTime[2] = { 0 };
+	SYSTEMTIME	SysTime[2] = { { 0 }, { 0 } };
 	int			nHours, nMins, nSecs;
 
 	// Set date parts to 01/01/2000.
@@ -269,7 +269,7 @@ void CDateTimePicker::SetTimeRange(const CTime& rMin, const CTime& rMax)
 
 void CDateTimePicker::GetTimeRange(CTime& rMin, CTime& rMax)
 {
-	SYSTEMTIME	SysTime[2] = { 0 };
+	SYSTEMTIME	SysTime[2] = { { 0 }, { 0 } };
 
 	// Get the time range from the control.
 	DateTime_GetRange(m_hWnd, SysTime);
@@ -301,7 +301,7 @@ void CDateTimePicker::SetDateTime(const CDateTime& rDateTime)
 	// Extract datetime components.
 	rDateTime.Get(nDay, nMonth, nYear, nHours, nMins, nSecs);
 
-	// Initialise datetime parts 
+	// Initialise datetime parts
 	SysTime.wDay          = static_cast<WORD>(nDay);
 	SysTime.wMonth        = static_cast<WORD>(nMonth);
 	SysTime.wYear         = static_cast<WORD>(nYear);
@@ -341,7 +341,7 @@ CDateTime CDateTimePicker::GetDateTime()
 
 void CDateTimePicker::SetDateTimeRange(const CDateTime& rMin, const CDateTime& rMax)
 {
-	SYSTEMTIME	SysTime[2] = { 0 };
+	SYSTEMTIME	SysTime[2] = { { 0 }, { 0 } };
 	int			nDay,   nMonth, nYear;
 	int			nHours, nMins,  nSecs;
 
@@ -377,7 +377,7 @@ void CDateTimePicker::SetDateTimeRange(const CDateTime& rMin, const CDateTime& r
 
 void CDateTimePicker::GetDateTimeRange(CDateTime& rMin, CDateTime& rMax)
 {
-	SYSTEMTIME	SysTime[2] = { 0 };
+	SYSTEMTIME	SysTime[2] = { { 0 }, { 0 } };
 
 	// Get the time range from the control.
 	DateTime_GetRange(m_hWnd, SysTime);

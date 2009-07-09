@@ -11,6 +11,8 @@
 #pragma once
 #endif
 
+#include "IFaceTraits.hpp"
+
 namespace WCL
 {
 
@@ -55,10 +57,10 @@ public:
 
 	//! Release the interface.
 	void Release();
-	
+
 	//! Take ownership of the interface.
 	T* Detach();
-	
+
 private:
 	//! Access the underlying pointer member.
 	T** GetPtrMember();
@@ -82,8 +84,8 @@ template <typename T>
 inline IFacePtr<T>::IFacePtr(T* pInterface, bool bAddRef)
 	: Core::SmartPtr<T>(pInterface)
 {
-	if ((m_pPointer != nullptr) && bAddRef)
-		m_pPointer->AddRef();
+	if ((this->m_pPointer != nullptr) && bAddRef)
+		this->m_pPointer->AddRef();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -93,8 +95,8 @@ template <typename T>
 inline IFacePtr<T>::IFacePtr(const IFacePtr& oPtr)
 	: Core::SmartPtr<T>(oPtr.m_pPointer)
 {
-	if (m_pPointer != nullptr)
-		m_pPointer->AddRef();
+	if (this->m_pPointer != nullptr)
+		this->m_pPointer->AddRef();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -117,10 +119,10 @@ inline IFacePtr<T>& IFacePtr<T>::operator=(const IFacePtr& oPtr)
 	{
 		Release();
 
-		m_pPointer = oPtr.m_pPointer;
+		this->m_pPointer = oPtr.m_pPointer;
 
-		if (m_pPointer != nullptr)
-			m_pPointer->AddRef();
+		if (this->m_pPointer != nullptr)
+			this->m_pPointer->AddRef();
 	}
 
 	return *this;
@@ -132,10 +134,10 @@ inline IFacePtr<T>& IFacePtr<T>::operator=(const IFacePtr& oPtr)
 template <typename T>
 inline void IFacePtr<T>::Release()
 {
-	if (m_pPointer != nullptr)
+	if (this->m_pPointer != nullptr)
 	{
-		m_pPointer->Release();
-		m_pPointer = nullptr;
+		this->m_pPointer->Release();
+		this->m_pPointer = nullptr;
 	}
 }
 
@@ -145,8 +147,9 @@ inline void IFacePtr<T>::Release()
 template <typename T>
 inline T* IFacePtr<T>::Detach()
 {
-	T* pPointer = m_pPointer;
-	m_pPointer = nullptr;
+	T* pPointer = this->m_pPointer;
+
+	this->m_pPointer = nullptr;
 
 	return pPointer;
 }
@@ -158,7 +161,7 @@ inline T* IFacePtr<T>::Detach()
 template <typename T>
 inline T** IFacePtr<T>::GetPtrMember()
 {
-	return &m_pPointer;
+	return &this->m_pPointer;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -172,6 +175,27 @@ inline T** AttachTo(IFacePtr<T>& ptr)
 	ASSERT(*ptr.GetPtrMember() == nullptr);
 
 	return ptr.GetPtrMember();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Query the object for a new interface.
+
+template<typename I>
+HRESULT QueryInterface(IUnknown* object, I** iface)
+{
+	ASSERT(object != nullptr);
+	ASSERT(iface != nullptr);
+
+	return object->QueryInterface(IFaceTraits<I>::uuidof(), reinterpret_cast<void**>(iface));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Query the object for a new interface.
+
+template<typename O, typename I>
+HRESULT QueryInterface(IFacePtr<O>& object, IFacePtr<I>& iface)
+{
+	return QueryInterface<I>(object.Get(), AttachTo(iface));
 }
 
 //namespace WCL

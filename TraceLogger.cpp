@@ -29,7 +29,7 @@ bool TraceLogger::g_bConsume = false;
 
 void TraceLogger::Install()
 {
-#ifdef _DEBUG
+#ifdef CORE_CRTDBG_ENABLED
 	_CrtSetReportHook(ReportHook);
 #endif
 }

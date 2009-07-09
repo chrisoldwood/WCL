@@ -17,6 +17,8 @@
 #endif
 
 #include "Wnd.hpp"
+#include <vector>
+#include <prsht.h>
 
 // Forward declarations.
 class CPropertyPage;

@@ -178,7 +178,7 @@ bool CCtrlWnd::Create(CMsgWnd& rParent, uint iID, HWND hWnd)
 	CWnd::s_WndMap.Add(*this);
 
 	// Change WndProc to our multi purpose one.
-	m_lpfnOldWndProc = WindowProc(::PopupWndProc);
+	m_lpfnOldWndProc = WindowProc(PopupWndProc);
 
 	// Initialise.
 	OnCreate(ClientRect());

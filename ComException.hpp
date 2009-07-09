@@ -53,7 +53,7 @@ private:
 template<typename T>
 inline ComException::ComException(HRESULT hResult, IFacePtr<T>& pObject, const tchar* pszOperation)
 {
-	FormatError(hResult, pObject.Get(), __uuidof(T), pszOperation);
+	FormatError(hResult, pObject.Get(), IFaceTraits<T>::uuidof(), pszOperation);
 }
 
 //namespace WCL

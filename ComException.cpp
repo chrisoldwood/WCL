@@ -11,6 +11,10 @@
 #include "ComPtr.hpp"
 #include <Core/StringUtils.hpp>
 
+#ifndef _MSC_VER
+WCL_DECLARE_IFACETRAITS(ISupportErrorInfo, IID_ISupportErrorInfo);
+#endif
+
 namespace WCL
 {
 
@@ -21,13 +25,13 @@ namespace WCL
 ComException::ComException(HRESULT hResult, const tchar* pszOperation)
 	: m_hResult(hResult)
 {
-	m_strDetails = Core::Fmt(TXT("%s [0x%08X - %s]"), pszOperation, hResult, CStrCvt::FormatError(hResult));
+	m_strDetails = Core::Fmt(TXT("%s [0x%08X - %s]"), pszOperation, hResult, CStrCvt::FormatError(hResult).c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Destructor.
 
-ComException::~ComException()
+ComException::~ComException() throw()
 {
 }
 
@@ -46,7 +50,7 @@ void ComException::FormatError(HRESULT hResult, IUnknown* pObject, const IID& rI
 	ISupportErrorInfoPtr pSupportErrorInfo;
 
 	// Query if the object supports IErrorInfo on the interface.
-	if ( (SUCCEEDED(pObject->QueryInterface(AttachTo(pSupportErrorInfo))))
+	if ( (SUCCEEDED(QueryInterface(pObject, AttachTo(pSupportErrorInfo))))
 	  && (pSupportErrorInfo->InterfaceSupportsErrorInfo(rIID) == S_OK) )
 	{
 		IErrorInfoPtr pErrorInfo;
@@ -67,7 +71,7 @@ void ComException::FormatError(HRESULT hResult, IUnknown* pObject, const IID& rI
 		}
 	}
 
-	tstring strResCode = CStrCvt::FormatError(hResult);
+	tstring strResCode(CStrCvt::FormatError(hResult));
 
 	// Format the error string.
 	if (!strSource.empty() || !strDescription.empty())
