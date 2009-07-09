@@ -4,13 +4,13 @@
 	<Project>
 		<Option title="Test" />
 		<Option pch_mode="2" />
-		<Option compiler="gnu_gcc_4x_compiler" />
+		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug Win32">
-				<Option output="Test" prefix_auto="1" extension_auto="1" />
+				<Option output="Debug\Test" prefix_auto="1" extension_auto="1" />
 				<Option object_output="Debug" />
 				<Option type="1" />
-				<Option compiler="gnu_gcc_4x_compiler" />
+				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-DWIN32" />
 					<Add option="-D_DEBUG" />
@@ -21,14 +21,15 @@
 					<Add directory="..\..\..\Lib" />
 				</ResourceCompiler>
 				<Linker>
-					<Add option="/debug" />
+					<Add library="..\..\Core\Debug\lib.a" />
+					<Add library="..\Debug\lib.a" />
 				</Linker>
 			</Target>
 			<Target title="Release Win32">
-				<Option output="Test" prefix_auto="1" extension_auto="1" />
+				<Option output="Release\Test" prefix_auto="1" extension_auto="1" />
 				<Option object_output="Release" />
 				<Option type="1" />
-				<Option compiler="gnu_gcc_4x_compiler" />
+				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-DWIN32" />
 					<Add option="-DNDEBUG" />
@@ -39,10 +40,19 @@
 					<Add directory="..\..\..\Lib" />
 				</ResourceCompiler>
 				<Linker>
-					<Add option="/debug" />
+					<Add library="..\..\Core\Release\lib.a" />
+					<Add library="..\Release\lib.a" />
 				</Linker>
 			</Target>
 		</Build>
+		<Linker>
+			<Add library="ole32" />
+			<Add library="oleaut32" />
+			<Add library="uuid" />
+			<Add library="shlwapi" />
+			<Add library="version" />
+			<Add library="shell32" />
+		</Linker>
 		<Unit filename="PtrTest.hpp" />
 		<Unit filename="Test.cpp" />
 		<Unit filename="Test.rc">
@@ -50,10 +60,12 @@
 		</Unit>
 		<Unit filename="Test.rcv" />
 		<Unit filename="TestAppConfig.cpp" />
+		<Unit filename="TestComException.cpp" />
 		<Unit filename="TestComPtr.cpp" />
 		<Unit filename="TestDateTime.cpp" />
 		<Unit filename="TestFolderIterator.cpp" />
 		<Unit filename="TestIFacePtr.cpp" />
+		<Unit filename="TestIFaceTraits.hpp" />
 		<Unit filename="TestIniFile.cpp" />
 		<Unit filename="TestIniFileCfgProvider.cpp" />
 		<Unit filename="TestMisc.cpp" />
