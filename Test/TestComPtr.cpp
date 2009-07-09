@@ -8,6 +8,8 @@
 #include <WCL/ComPtr.hpp>
 #include <WCL/AutoCom.hpp>
 #include <shlobj.h>
+#include <shlguid.h>
+#include "TestIFaceTraits.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
 //! The unit tests for the ComPtr class.
@@ -79,7 +81,7 @@ void TestComPtr()
 
 	TEST_THROWS(pFactory.QueryInterface(pMalloc2));
 
-	IUnknownPtr pShell(CLSID_Shell);
+	IUnknownPtr pShell(CLSID_ShellDesktop);
 
 	TEST_TRUE(pShell.Get() != nullptr);
 
@@ -87,7 +89,7 @@ void TestComPtr()
 
 	TEST_TRUE(pShell.Get() == nullptr);
 
-	pShell.CreateInstance(CLSID_Shell);
+	pShell.CreateInstance(CLSID_ShellDesktop);
 
 	TEST_TRUE(pShell.Get() != nullptr);
 

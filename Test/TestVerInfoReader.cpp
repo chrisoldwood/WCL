@@ -13,8 +13,8 @@
 
 void TestVerInfoReader()
 {
-	tstring strFileName = CPath::Application();
-	tstring strBadFile  = CPath::SystemDir() / TXT("compmgmt.msc");
+	tstring strFileName(CPath::Application());
+	tstring strBadFile(CPath::SystemDir() / TXT("compmgmt.msc"));
 
 	TEST_TRUE(WCL::VerInfoReader::HasVersionInfo(strBadFile) == false);
 	TEST_TRUE(WCL::VerInfoReader::HasVersionInfo(strFileName) == true);
