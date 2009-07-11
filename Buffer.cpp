@@ -306,7 +306,7 @@ CString CBuffer::ToString(TextFormat eFormat) const
 #ifdef ANSI_BUILD
 			return CString(pBuffer, nChars);
 #else
-			return CString(Core::AnsiToWide(pBuffer, pBuffer+nChars).c_str());
+			return CString(Core::ansiToWide(pBuffer, pBuffer+nChars).c_str());
 #endif
 		}
 		else //(eFormat == UNICODE_TEXT)
@@ -317,7 +317,7 @@ CString CBuffer::ToString(TextFormat eFormat) const
 			const wchar_t* pBuffer = static_cast<const wchar_t*>(m_pBuffer);
 
 #ifdef ANSI_BUILD
-			return CString(Core::WideToAnsi(pBuffer, pBuffer+nChars).c_str());
+			return CString(Core::wideToAnsi(pBuffer, pBuffer+nChars).c_str());
 #else
 			return CString(pBuffer, nChars);
 #endif
@@ -340,7 +340,7 @@ void CBuffer::FromString(const CString& str, TextFormat eFormat, bool bIncNull)
 
 	if (eFormat == ANSI_TEXT)
 	{
-		size_t nBytes = Core::NumBytes<char>(nChars);
+		size_t nBytes = Core::numBytes<char>(nChars);
 
 		Size(nBytes);
 
@@ -352,7 +352,7 @@ void CBuffer::FromString(const CString& str, TextFormat eFormat, bool bIncNull)
 	}
 	else // (eFormat == UNICODE_TEXT)
 	{
-		size_t nBytes = Core::NumBytes<wchar_t>(nChars);
+		size_t nBytes = Core::numBytes<wchar_t>(nChars);
 
 		Size(nBytes);
 

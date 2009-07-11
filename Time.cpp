@@ -132,7 +132,7 @@ CString CTime::FieldSeparator()
 	// Get the size of the buffer and allocate one.
 	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIME, NULL, 0);
 
-	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
+	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::numBytes<tchar>(nChars+1)));
 
 	pszBuffer[0] = TXT('\0');
 
@@ -166,14 +166,14 @@ CString CTime::ToString(int nFormat) const
 	// ISO standard format?
 	if (nFormat == FMT_ISO)
 	{
-		tchar* pszValue = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(ISO_FMT_MAX_LEN+1)));
+		tchar* pszValue = static_cast<tchar*>(alloca(Core::numBytes<tchar>(ISO_FMT_MAX_LEN+1)));
 
 		int nResult = _sntprintf(pszValue, ISO_FMT_MAX_LEN+1, TXT("%02d:%02d:%02d"), iHours, iMins, iSecs);
 
 		ASSERT(nResult >= 0);
 
 		if (nResult < 0)
-			throw Core::BadLogicException(Core::Fmt(TXT("Insufficient buffer size used in CTime::ToString(). Result: %d"), nResult));
+			throw Core::BadLogicException(Core::fmt(TXT("Insufficient buffer size used in CTime::ToString(). Result: %d"), nResult));
 
 		return pszValue;
 	}
@@ -199,7 +199,7 @@ CString CTime::ToString(int nFormat) const
 		// Calculate buffer size.
 		size_t nChars = ::GetTimeFormat(LOCALE_USER_DEFAULT, nTimeFmt, &st, NULL, nullptr, 0);
 
-		tchar* pszValue = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars)));
+		tchar* pszValue = static_cast<tchar*>(alloca(Core::numBytes<tchar>(nChars)));
 
 		// Format the string.
 		::GetTimeFormat(LOCALE_USER_DEFAULT, nTimeFmt, &st, NULL, pszValue, static_cast<int>(nChars));

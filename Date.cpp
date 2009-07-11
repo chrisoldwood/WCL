@@ -170,7 +170,7 @@ CDate::DateOrder CDate::DateFormatOrder()
 	// Get the size of the buffer and allocate one.
 	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IDATE, NULL, 0);
 
-	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
+	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::numBytes<tchar>(nChars+1)));
 
 	pszBuffer[0] = TXT('\0');
 
@@ -180,7 +180,7 @@ CDate::DateOrder CDate::DateFormatOrder()
 		eOrder = static_cast<DateOrder>(_ttoi(pszBuffer));
 
 		if ((eOrder != MONTH_DAY_YEAR) && (eOrder != DAY_MONTH_YEAR) && (eOrder != YEAR_MONTH_DAY))
-			throw Core::BadLogicException(Core::Fmt(TXT("Unsupported locale date order '%s'"), pszBuffer));
+			throw Core::BadLogicException(Core::fmt(TXT("Unsupported locale date order '%s'"), pszBuffer));
 	}
 
 	return eOrder;
@@ -203,7 +203,7 @@ CString CDate::FieldSeparator()
 	// Get the size of the buffer and allocate one.
 	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDATE, NULL, 0);
 
-	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
+	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::numBytes<tchar>(nChars+1)));
 
 	pszBuffer[0] = TXT('\0');
 
@@ -236,7 +236,7 @@ CString CDate::DayOfWeekName(int nDay, bool bFullName)
 	// Get the size of the buffer and allocate one.
 	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, nLCType, NULL, 0);
 
-	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
+	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::numBytes<tchar>(nChars+1)));
 
 	pszBuffer[0] = TXT('\0');
 
@@ -269,7 +269,7 @@ CString CDate::MonthName(int nMonth, bool bFullName)
 	// Get the size of the buffer and allocate one.
 	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, nLCType, NULL, 0);
 
-	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
+	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::numBytes<tchar>(nChars+1)));
 
 	pszBuffer[0] = TXT('\0');
 
@@ -337,14 +337,14 @@ CString CDate::ToString(int nFormat) const
 	// ISO standard format?
 	if (nFormat == FMT_ISO)
 	{
-		tchar* pszValue = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(ISO_FMT_MAX_LEN+1)));
+		tchar* pszValue = static_cast<tchar*>(alloca(Core::numBytes<tchar>(ISO_FMT_MAX_LEN+1)));
 
 		int nResult = _sntprintf(pszValue, ISO_FMT_MAX_LEN+1, TXT("%04d-%02d-%02d"), iYear, iMonth, iDay);
 
 		ASSERT(nResult >= 0);
 
 		if (nResult < 0)
-			throw Core::BadLogicException(Core::Fmt(TXT("Insufficient buffer size used in CDate::ToString(). Result: %d"), nResult));
+			throw Core::BadLogicException(Core::fmt(TXT("Insufficient buffer size used in CDate::ToString(). Result: %d"), nResult));
 
 		return pszValue;
 	}
@@ -366,7 +366,7 @@ CString CDate::ToString(int nFormat) const
 		// Calculate buffer size.
 		size_t nChars = ::GetDateFormat(LOCALE_USER_DEFAULT, nDateFmt, &st, NULL, nullptr, 0);
 
-		tchar* pszValue = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars)));
+		tchar* pszValue = static_cast<tchar*>(alloca(Core::numBytes<tchar>(nChars)));
 
 		// Format the string.
 		::GetDateFormat(LOCALE_USER_DEFAULT, nDateFmt, &st, NULL, pszValue, static_cast<int>(nChars));

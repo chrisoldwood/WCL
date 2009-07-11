@@ -18,7 +18,7 @@ RegistryCfgProvider::RegistryCfgProvider(const tstring& publisher, const tstring
 	: m_publisher(publisher)
 	, m_application(application)
 	, m_rootKey(HKEY_CURRENT_USER)
-	, m_keyPath(Core::Fmt(TXT("Software\\%s\\%s"), publisher.c_str(), application.c_str()))
+	, m_keyPath(Core::fmt(TXT("Software\\%s\\%s"), publisher.c_str(), application.c_str()))
 {
 }
 
@@ -35,7 +35,7 @@ RegistryCfgProvider::~RegistryCfgProvider()
 bool RegistryCfgProvider::isAvailable(const tstring& publisher, const tstring& application)
 {
 	HKEY    rootKey = HKEY_CURRENT_USER;
-	tstring path    = Core::Fmt(TXT("Software\\%s\\%s"), publisher.c_str(), application.c_str());
+	tstring path    = Core::fmt(TXT("Software\\%s\\%s"), publisher.c_str(), application.c_str());
 
 	return RegKey::Exists(rootKey, path.c_str());
 }
@@ -46,7 +46,7 @@ bool RegistryCfgProvider::isAvailable(const tstring& publisher, const tstring& a
 void RegistryCfgProvider::removeConfig(const tstring& publisher, const tstring& application)
 {
 	HKEY    rootKey = HKEY_CURRENT_USER;
-	tstring path    = Core::Fmt(TXT("Software\\%s\\%s"), publisher.c_str(), application.c_str());
+	tstring path    = Core::fmt(TXT("Software\\%s\\%s"), publisher.c_str(), application.c_str());
 
 	RegKey::DeleteTree(rootKey, path.c_str());
 }

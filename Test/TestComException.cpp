@@ -65,7 +65,7 @@ void TestComException()
 {
 	WCL::ComException e(S_FALSE, TXT("UnitTest"));
 
-	tstring str = e.What();
+	tstring str = e.twhat();
 
 	TEST_TRUE(str.find(TXT("UnitTest")) != tstring::npos);
 	TEST_TRUE(str.find(TXT("0x00000001")) != tstring::npos);
@@ -79,7 +79,7 @@ void TestComException()
 
 	WCL::ComException e(hr, allocator, TXT("UnitTest"));
 
-	tstring str = e.What();
+	tstring str = e.twhat();
 
 	TEST_TRUE(str.find(TXT('{')) == tstring::npos);
 }
@@ -100,7 +100,7 @@ void TestComException()
 
 	ASSERT(SUCCEEDED(hr));
 
-	hr = ::SetErrorInfo(0, pErrorInfo.Get());
+	hr = ::SetErrorInfo(0, pErrorInfo.get());
 
 	ASSERT(SUCCEEDED(hr));
 
@@ -110,7 +110,7 @@ void TestComException()
 	IErrorLogPtr		iface(&object);
 	WCL::ComException	e(S_FALSE, iface, TXT("UnitTest"));
 
-	tstring str = e.What();
+	tstring str = e.twhat();
 
 	TEST_TRUE(str.find(TXT("Source")) != tstring::npos);
 	TEST_TRUE(str.find(TXT("Description")) != tstring::npos);

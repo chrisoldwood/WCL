@@ -195,7 +195,7 @@ HRESULT QueryInterface(IUnknown* object, I** iface)
 template<typename O, typename I>
 HRESULT QueryInterface(IFacePtr<O>& object, IFacePtr<I>& iface)
 {
-	return QueryInterface<I>(object.Get(), AttachTo(iface));
+	return QueryInterface<I>(object.get(), AttachTo(iface));
 }
 
 //namespace WCL

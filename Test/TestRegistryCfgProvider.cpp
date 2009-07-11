@@ -17,9 +17,9 @@ void TestRegistryCfgProvider()
 {
 	HKEY    rootKey     = HKEY_CURRENT_USER;
 	tstring publisher   = TXT("Chris Oldwood");
-	tstring pubPath     = Core::Fmt(TXT("Software\\%s"), publisher.c_str());
+	tstring pubPath     = Core::fmt(TXT("Software\\%s"), publisher.c_str());
 	tstring application = TXT("Unit Tests");
-	tstring appPath     = Core::Fmt(TXT("Software\\%s\\%s"), publisher.c_str(), application.c_str());
+	tstring appPath     = Core::fmt(TXT("Software\\%s\\%s"), publisher.c_str(), application.c_str());
 
 	WCL::RegKey::DeleteTree(rootKey, appPath.c_str());
 	ASSERT(!WCL::RegKey::Exists(rootKey, appPath.c_str()));

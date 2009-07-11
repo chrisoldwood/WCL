@@ -58,7 +58,7 @@ CApp::CApp(CFrameWnd& rFrameWnd, CCmdControl& rCmdControl)
 	g_pThis = this;
 
 	// Report memory leaks.
-	Core::EnableLeakReporting(true);
+	Core::enableLeakReporting(true);
 }
 
 /******************************************************************************

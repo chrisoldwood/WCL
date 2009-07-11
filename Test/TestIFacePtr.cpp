@@ -21,16 +21,16 @@ void TestIFacePtr()
 	ITestPtr pITest4(new PtrTest);
 	ITestPtr pITest5(pITest3);
 
-	TEST_TRUE(pITest1.Get() == nullptr);
-	TEST_TRUE(pITest3.Get() != nullptr);
-	TEST_TRUE(pITest4.Get() != nullptr);
-	TEST_TRUE(pITest5.Get() != nullptr);
+	TEST_TRUE(pITest1.get() == nullptr);
+	TEST_TRUE(pITest3.get() != nullptr);
+	TEST_TRUE(pITest4.get() != nullptr);
+	TEST_TRUE(pITest5.get() != nullptr);
 
 	pITest1 = pITest3;
 	pITest1 = pITest1;
 //	IPtrTest* pIRaw = pITest1;				// Shouldn't compile.
 
-	TEST_TRUE(pITest1.Get() == pITest3.Get());
+	TEST_TRUE(pITest1.get() == pITest3.get());
 
 	pITest1->Run();
 	(*pITest1).Run();
@@ -43,11 +43,11 @@ void TestIFacePtr()
 
 	pITest1.Release();
 
-	TEST_TRUE(pITest1.Get() == nullptr);
+	TEST_TRUE(pITest1.get() == nullptr);
 
 	delete pITest4.Detach();
 
-	TEST_TRUE(pITest4.Get() == nullptr);
+	TEST_TRUE(pITest4.get() == nullptr);
 
 //	delete pTest1;	// Shouldn't compile.
 }

@@ -35,7 +35,7 @@ void ReportUnhandledException(const tchar* pszMsg, ...)
 	{
 		ASSERT_FALSE();
 
-		Core::DebugWrite(TXT("%s\n"), strMsg.c_str());
+		Core::debugWrite(TXT("%s\n"), strMsg.c_str());
 	}
 }
 

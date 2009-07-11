@@ -173,7 +173,7 @@ bool CSDICmds::OpenFile(const CPath& strPath)
 		return false;
 
 	// Create a new view and attach the doc.
-	oApp.m_pDoc  = pDoc.Detach();
+	oApp.m_pDoc  = pDoc.detach();
 	oApp.m_pView = oApp.CreateView(*oApp.m_pDoc);
 	oApp.m_pDoc->m_pView = oApp.m_pView;
 

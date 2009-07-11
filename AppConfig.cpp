@@ -66,7 +66,7 @@ void AppConfig::setStorageType(Storage storage)
 
 		// Update state.
 		m_storage = storage;
-		m_provider.Reset();
+		m_provider.reset();
 	}
 }
 
@@ -149,7 +149,7 @@ AppConfig::Storage AppConfig::determineProvider() const
 IConfigProviderPtr AppConfig::getProvider() const
 {
 	// Return cached provider.
-	if (m_provider.Get() != nullptr)
+	if (m_provider.get() != nullptr)
 		return m_provider;
 
 	// Need to determine the provider?
@@ -168,7 +168,7 @@ IConfigProviderPtr AppConfig::getProvider() const
 		m_provider = IConfigProviderPtr(new IniFileCfgProvider(m_publisher, m_application));
 	}
 
-	ASSERT(m_provider.Get() != nullptr);
+	ASSERT(m_provider.get() != nullptr);
 
 	return m_provider;
 }

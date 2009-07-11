@@ -51,7 +51,7 @@ Variant::Variant(const VARIANT& vtVariant, VARTYPE eType)
 	HRESULT hr = ::VariantChangeType(this, const_cast<VARIANT*>(&vtVariant), 0, eType);
 
 	if (FAILED(hr))
-		throw ComException(hr, Core::Fmt(TXT("Failed to convert a variant from %s to %s"),
+		throw ComException(hr, Core::fmt(TXT("Failed to convert a variant from %s to %s"),
 				FormatFullType(&vtVariant).c_str(), FormatType(eType)).c_str());
 }
 

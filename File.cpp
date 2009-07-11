@@ -631,7 +631,7 @@ size_t CFile::ReadTextFile(const tchar* pszPath, CString& strContents, TextForma
 #ifdef ANSI_BUILD
 			std::copy(pszBegin, pszEnd, strContents.Buffer());
 #else
-			Core::AnsiToWide(pszBegin, pszEnd, strContents.Buffer());
+			Core::ansiToWide(pszBegin, pszEnd, strContents.Buffer());
 #endif
 		}
 		else // (eFormat == UNICODE_TEXT)
@@ -640,7 +640,7 @@ size_t CFile::ReadTextFile(const tchar* pszPath, CString& strContents, TextForma
 			const wchar_t* pszEnd   = pszBegin + nChars;
 
 #ifdef ANSI_BUILD
-			Core::WideToAnsi(pszBegin, pszEnd, strContents.Buffer());
+			Core::wideToAnsi(pszBegin, pszEnd, strContents.Buffer());
 #else
 			std::copy(pszBegin, pszEnd, strContents.Buffer());
 #endif
@@ -692,9 +692,9 @@ void CFile::WriteTextFile(const tchar* pszPath, const CString& strContents, Text
 	std::vector<byte> vBuffer;
 
 	if (eFormat == ANSI_TEXT)
-		vBuffer.resize(Core::NumBytes<char>(nChars));
+		vBuffer.resize(Core::numBytes<char>(nChars));
 	else
-		vBuffer.resize(Core::NumBytes<wchar_t>(nChars) + 2);
+		vBuffer.resize(Core::numBytes<wchar_t>(nChars) + 2);
 
 	// Write Unicode header, if required.
 	if (eFormat == UNICODE_TEXT)
@@ -721,7 +721,7 @@ void CFile::WriteTextFile(const tchar* pszPath, const CString& strContents, Text
 #ifdef ANSI_BUILD
 			std::copy(pszBegin, pszEnd, pszDest);
 #else
-			Core::WideToAnsi(pszBegin, pszEnd, pszDest);
+			Core::wideToAnsi(pszBegin, pszEnd, pszDest);
 #endif
 		}
 		else // (eFormat == UNICODE_TEXT)
@@ -729,7 +729,7 @@ void CFile::WriteTextFile(const tchar* pszPath, const CString& strContents, Text
 			wchar_t* pszDest = reinterpret_cast<wchar_t*>(&vBuffer.front()+2);
 
 #ifdef ANSI_BUILD
-			Core::AnsiToWide(pszBegin, pszEnd, pszDest);
+			Core::ansiToWide(pszBegin, pszEnd, pszDest);
 #else
 			std::copy(pszBegin, pszEnd, pszDest);
 #endif

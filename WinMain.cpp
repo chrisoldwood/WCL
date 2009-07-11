@@ -76,7 +76,7 @@ extern "C" int WINAPI WinMain(HINSTANCE hCurrInst, HINSTANCE /*hPrevInst*/,
 	}
 	catch (const Core::Exception& e)
 	{
-		WCL::ReportUnhandledException(TXT("Unexpected exception caught in WinMain()\n\n%s"), e.What());
+		WCL::ReportUnhandledException(TXT("Unexpected exception caught in WinMain()\n\n%s"), e.twhat());
 	}
 	catch (const std::exception& e)
 	{

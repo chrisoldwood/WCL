@@ -125,7 +125,7 @@ void FolderIterator::Begin()
 
 		// Enumeration failed?
 		if (dwLastError != ERROR_FILE_NOT_FOUND)
-			throw Win32Exception(Core::Fmt(TXT("Failed to find files with query '%s'"), strQuery.c_str()));
+			throw Win32Exception(Core::fmt(TXT("Failed to find files with query '%s'"), strQuery.c_str()));
 	}
 
 	// Update state.
@@ -164,7 +164,7 @@ void FolderIterator::Next()
 
 		// Enumeration failed?
 		if (dwLastError != ERROR_NO_MORE_FILES)
-			throw Win32Exception(Core::Fmt(TXT("Failed to continue enumerating folder '%s'"), m_strFolder.c_str()));
+			throw Win32Exception(Core::fmt(TXT("Failed to continue enumerating folder '%s'"), m_strFolder.c_str()));
 
 		// Enumeration completed.
 		Reset();

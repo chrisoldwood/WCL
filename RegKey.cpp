@@ -132,7 +132,7 @@ CString RegKey::ReadStringValue(const tchar* pszName, const tchar* pszDefault) c
 		return pszDefault;
 
 	if (dwType != REG_SZ)
-		throw RegistryException(Core::Fmt(TXT("Failed to read a string registry key because its type is %s"), KeyTypeToStr(dwType)));
+		throw RegistryException(Core::fmt(TXT("Failed to read a string registry key because its type is %s"), KeyTypeToStr(dwType)));
 
 	// Allow for a nul terminator.
 	dwSize += sizeof(tchar);
@@ -172,7 +172,7 @@ void RegKey::WriteStringValue(const tchar* pszName, const tchar* pszValue)
 	ASSERT(pszValue != NULL);
 
 	size_t nChars = tstrlen(pszValue);
-	size_t nBytes = Core::NumBytes<tchar>(nChars) + sizeof(tchar);
+	size_t nBytes = Core::numBytes<tchar>(nChars) + sizeof(tchar);
 
 	LONG lResult = ::RegSetValueEx(m_hKey, pszName, 0, REG_SZ, reinterpret_cast<CONST BYTE*>(pszValue), static_cast<DWORD>(nBytes));
 

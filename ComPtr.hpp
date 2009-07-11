@@ -199,7 +199,7 @@ inline void ComPtr<T>::QueryInterface(const IFacePtr<U>& rhs)
 
 	const IID& oIID = IFaceTraits<T>::uuidof();
 
-	HRESULT hr = rhs.Get()->QueryInterface(oIID, reinterpret_cast<LPVOID*>(&this->m_pPointer));
+	HRESULT hr = rhs.get()->QueryInterface(oIID, reinterpret_cast<LPVOID*>(&this->m_pPointer));
 
 	if (FAILED(hr))
 	{

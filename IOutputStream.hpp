@@ -76,7 +76,7 @@ inline void operator<<(WCL::IOutputStream& rStream, const char* pBuffer)
 	uint32 nChars = static_cast<uint32>(strlen(pBuffer)+1);
 
 	rStream.Write(&nChars, sizeof(uint32));
-	rStream.Write(pBuffer, Core::NumBytes<char>(nChars));
+	rStream.Write(pBuffer, Core::numBytes<char>(nChars));
 }
 
 inline void operator<<(WCL::IOutputStream& rStream, const wchar_t* pBuffer)
@@ -84,7 +84,7 @@ inline void operator<<(WCL::IOutputStream& rStream, const wchar_t* pBuffer)
 	uint32 nChars = static_cast<uint32>(wcslen(pBuffer)+1);
 
 	rStream.Write(&nChars, sizeof(uint32));
-	rStream.Write(pBuffer, Core::NumBytes<wchar_t>(nChars));
+	rStream.Write(pBuffer, Core::numBytes<wchar_t>(nChars));
 }
 
 #endif // WCL_IOUTPUTSTREAM_HPP

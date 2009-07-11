@@ -31,7 +31,7 @@ ConsoleApp::ConsoleApp()
 	::SetConsoleCtrlHandler(ctrlHandler, TRUE);
 
 	// Report memory leaks.
-	Core::EnableLeakReporting(true);
+	Core::enableLeakReporting(true);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -72,12 +72,12 @@ int ConsoleApp::main(int argc, tchar* argv[])
 	}
 	catch (const Core::CmdLineException& e)
 	{
-		tcerr << TXT("ERROR: ") << e.What() << std::endl;
+		tcerr << TXT("ERROR: ") << e.twhat() << std::endl;
 		showUsage();
 	}
 	catch (const Core::Exception& e)
 	{
-		tcerr << TXT("ERROR: ") << e.What() << std::endl;
+		tcerr << TXT("ERROR: ") << e.twhat() << std::endl;
 	}
 	catch (const std::exception& e)
 	{

@@ -82,8 +82,8 @@ void CString::BufferSize(size_t nChars)
 	if (pData->m_nAllocSize < nChars)
 	{
 		Free();
-		
-		size_t nBytes = Core::NumBytes<tchar>(nChars);
+
+		size_t nBytes = Core::numBytes<tchar>(nChars);
 
 		// Allocate new buffer.
 		pData = static_cast<StringData*>(malloc(nBytes + sizeof(StringData)));
@@ -149,7 +149,7 @@ void CString::Free()
 	// Not empty string?
 	if (m_pszData != pszNULL)
 		free(GetData());
-	
+
 	m_pszData = pszNULL;
 }
 
@@ -177,7 +177,7 @@ void CString::operator +=(const tchar* pszString)
 
 	size_t iStrLen   = Length();
 	size_t iParamLen = tstrlen(pszString);
-	
+
 	StringData* pOldData = GetData();
 
 	// Buffer big enough?
@@ -188,11 +188,11 @@ void CString::operator +=(const tchar* pszString)
 
 		// Allocate a new buffer.
 		BufferSize(iStrLen+iParamLen+1);
-		
+
 		// Copy old string and cat new one.
 		tstrcpy(m_pszData, pOldData->m_acData);
 		tstrcat(m_pszData, pszString);
-		
+
 		// Free old string, if not empty string.
 		if (pOldData != &strNULL)
 			free(pOldData);
@@ -224,7 +224,7 @@ void CString::operator +=(tchar cChar)
 		return;
 
 	size_t iStrLen = Length();
-	
+
 	StringData* pOldData = GetData();
 
 	// Buffer big enough?
@@ -235,12 +235,12 @@ void CString::operator +=(tchar cChar)
 
 		// Allocate a new buffer.
 		BufferSize(iStrLen+2);
-		
+
 		// Copy old string and cat new one.
 		tstrcpy(m_pszData, pOldData->m_acData);
 		m_pszData[iStrLen]   = cChar;
 		m_pszData[iStrLen+1] = TXT('\0');
-		
+
 		// Free old string, if not empty string.
 		if (pOldData != &strNULL)
 			free(pOldData);
@@ -352,7 +352,7 @@ void CString::FormatEx(const tchar* pszFormat, va_list args)
 
 	// Check for buffer overrun.
 	if (nResult < 0)
-		throw Core::BadLogicException(Core::Fmt(TXT("Insufficient buffer size calculated in CString::FormatEx(). Result: %d"), nResult));
+		throw Core::BadLogicException(Core::fmt(TXT("Insufficient buffer size calculated in CString::FormatEx(). Result: %d"), nResult));
 
 	m_pszData[nResult] = TXT('\0');
 
@@ -376,7 +376,7 @@ void CString::FormatEx(const tchar* pszFormat, va_list args)
 
 	// Handle any errors.
 	if (nResult < 0)
-		throw Core::BadLogicException(Core::Fmt(TXT("Insufficient buffer size calculated in CString::FormatEx(). Result: %d"), nResult));
+		throw Core::BadLogicException(Core::fmt(TXT("Insufficient buffer size calculated in CString::FormatEx(). Result: %d"), nResult));
 
 	m_pszData[nResult] = TXT('\0');
 
@@ -571,7 +571,7 @@ CString CString::Mid(size_t nFirst, size_t nCount)
 {
 	ASSERT(nFirst <= Length());
 	ASSERT(nCount <= Length());
-	ASSERT((nFirst + nCount) <= Length()); 
+	ASSERT((nFirst + nCount) <= Length());
 
 	// Empty string?
 	if ( (nCount == 0) || (Length() == 0) )
@@ -658,7 +658,7 @@ void CString::Insert(size_t nPos, const tchar* pszString)
 
 		// Allocate a new buffer.
 		BufferSize(nThisLen+nTextLen+1);
-		
+
 		// Copy leading chars from old text.
 		tstrncpy(m_pszData, pOldData->m_acData, nPos);
 

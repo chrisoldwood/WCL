@@ -25,7 +25,7 @@ namespace WCL
 ComException::ComException(HRESULT hResult, const tchar* pszOperation)
 	: m_hResult(hResult)
 {
-	m_strDetails = Core::Fmt(TXT("%s [0x%08X - %s]"), pszOperation, hResult, CStrCvt::FormatError(hResult).c_str());
+	m_strDetails = Core::fmt(TXT("%s [0x%08X - %s]"), pszOperation, hResult, CStrCvt::FormatError(hResult).c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -75,9 +75,9 @@ void ComException::FormatError(HRESULT hResult, IUnknown* pObject, const IID& rI
 
 	// Format the error string.
 	if (!strSource.empty() || !strDescription.empty())
-		m_strDetails = Core::Fmt(TXT("%s [0x%08X - %s] {%s : %s}"), pszOperation, hResult, strResCode.c_str(), strSource.c_str(), strDescription.c_str());
+		m_strDetails = Core::fmt(TXT("%s [0x%08X - %s] {%s : %s}"), pszOperation, hResult, strResCode.c_str(), strSource.c_str(), strDescription.c_str());
 	else
-		m_strDetails = Core::Fmt(TXT("%s [0x%08X - %s]"), pszOperation, hResult, strResCode.c_str());
+		m_strDetails = Core::fmt(TXT("%s [0x%08X - %s]"), pszOperation, hResult, strResCode.c_str());
 }
 
 //namespace WCL

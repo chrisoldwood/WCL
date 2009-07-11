@@ -404,14 +404,14 @@ size_t CIniFile::ReadSectionNames(CStrArray& astrNames)
 {
 	// Allocate initial buffer.
 	size_t nChars   = 1024;
-	tchar* pszNames = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
+	tchar* pszNames = static_cast<tchar*>(alloca(Core::numBytes<tchar>(nChars+1)));
 
 	// Read all names, reallocating if necessary...
 	while (::GetPrivateProfileSectionNames(pszNames, static_cast<DWORD>(nChars), m_strPath) >= (nChars-2))
 	{
 		// Double the buffer size.
 		nChars  *= 2;
-		pszNames = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
+		pszNames = static_cast<tchar*>(alloca(Core::numBytes<tchar>(nChars+1)));
 	}
 
 	// For all strings.
@@ -443,14 +443,14 @@ size_t CIniFile::ReadSection(const tchar* pszSection, CStrArray& astrEntries)
 
 	// Allocate initial buffer.
 	size_t nChars     = 1024;
-	tchar* pszEntries = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
+	tchar* pszEntries = static_cast<tchar*>(alloca(Core::numBytes<tchar>(nChars+1)));
 
 	// Read all entries, reallocating if necessary...
 	while (::GetPrivateProfileSection(pszSection, pszEntries, static_cast<DWORD>(nChars), m_strPath) >= (nChars-2))
 	{
 		// Double the buffer size.
 		nChars    *= 2;
-		pszEntries = static_cast<tchar*>(alloca(Core::NumBytes<tchar>(nChars+1)));
+		pszEntries = static_cast<tchar*>(alloca(Core::numBytes<tchar>(nChars+1)));
 	}
 
 	// For all strings.

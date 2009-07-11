@@ -87,7 +87,7 @@ DWORD WINAPI ThreadPoolThread::ThreadFunction(LPVOID lpParam)
 	}
 	catch (const Core::Exception& e)
 	{
-		WCL::ReportUnhandledException(TXT("Unexpected exception caught in ThreadPoolThread::Run()\n\n%s"), e.What());
+		WCL::ReportUnhandledException(TXT("Unexpected exception caught in ThreadPoolThread::Run()\n\n%s"), e.twhat());
 	}
 	catch (const std::exception& e)
 	{
@@ -172,10 +172,10 @@ void ThreadPoolThread::Stop()
 
 void ThreadPoolThread::RunJob(ThreadJobPtr& pJob)
 {
-	ASSERT(pJob.Get() != nullptr);
+	ASSERT(pJob.get() != nullptr);
 	ASSERT(pJob->Status() == CThreadJob::PENDING);
 	ASSERT(m_eStatus == IDLE);
-	ASSERT(m_pJob.Get() == nullptr);
+	ASSERT(m_pJob.get() == nullptr);
 
 	// Update job state.
 	pJob->Status(CThreadJob::RUNNING);
@@ -241,7 +241,7 @@ void ThreadPoolThread::OnStartThread()
 
 void ThreadPoolThread::OnRunJob()
 {
-	ASSERT(m_pJob.Get() != nullptr);
+	ASSERT(m_pJob.get() != nullptr);
 	ASSERT(m_pJob->Status() == CThreadJob::RUNNING);
 
 	// Get the job to run.
@@ -254,7 +254,7 @@ void ThreadPoolThread::OnRunJob()
 	}
 	catch (const Core::Exception& e)
 	{
-		WCL::ReportUnhandledException(TXT("Unexpected exception caught in ThreadPoolThread::OnRunJob()\n\n%s"), e.What());
+		WCL::ReportUnhandledException(TXT("Unexpected exception caught in ThreadPoolThread::OnRunJob()\n\n%s"), e.twhat());
 	}
 	catch (const std::exception& e)
 	{
@@ -270,7 +270,7 @@ void ThreadPoolThread::OnRunJob()
 
 	// Update thread state.
 	m_eStatus = IDLE;
-	m_pJob.Reset();
+	m_pJob.reset();
 
 	// Notify thread pool.
 	m_oPool.OnJobCompleted(pJob);

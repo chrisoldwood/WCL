@@ -245,7 +245,7 @@ bool CLogFont::Parse(const tchar* pszFont, CLogFont& oLogFont)
 	catch (const CStrCvtException& e)
 	{
 		DEBUG_USE_ONLY(e);
-		TRACE1(TXT("CLogFont::Parse() failed - %s"), e.What());
+		TRACE1(TXT("CLogFont::Parse() failed - %s"), e.twhat());
 		return false;
 	}
 

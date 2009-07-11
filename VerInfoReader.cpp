@@ -67,7 +67,7 @@ void VerInfoReader::Open(const tstring& strFileName)
 
 	Buffer pBuffer(new byte[dwSize]);
 
-	BOOL bResult = ::GetFileVersionInfo(strFileName.c_str(), dwHandle, dwSize, pBuffer.Get());
+	BOOL bResult = ::GetFileVersionInfo(strFileName.c_str(), dwHandle, dwSize, pBuffer.get());
 
 	if (bResult == 0)
 		throw Win32Exception(::GetLastError(), TXT("Failed to open the file for reading"));
@@ -76,7 +76,7 @@ void VerInfoReader::Open(const tstring& strFileName)
 	m_bOpen       = true;
 	m_strFileName = strFileName;
 	m_dwBufSize   = dwSize;
-	m_pBuffer.Reset(pBuffer.Detach());
+	m_pBuffer.reset(pBuffer.detach());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -88,7 +88,7 @@ void VerInfoReader::Close()
 	m_bOpen = false;
 	m_strFileName.clear();
 	m_dwBufSize = 0;
-	m_pBuffer.Reset();
+	m_pBuffer.reset();
 	m_pDefTrans = nullptr;
 }
 
@@ -98,7 +98,7 @@ void VerInfoReader::Close()
 const VS_FIXEDFILEINFO* VerInfoReader::GetFileInfo() const
 {
 	ASSERT(m_bOpen);
-	ASSERT(m_pBuffer.Get() != nullptr);
+	ASSERT(m_pBuffer.get() != nullptr);
 
 	void* pValue = nullptr;
 	uint  nBytes = 0;
@@ -106,7 +106,7 @@ const VS_FIXEDFILEINFO* VerInfoReader::GetFileInfo() const
 	tchar* lpSubBlock = const_cast<tchar*>(TXT("\\"));
 
 	// Read the block of translations.
-	BOOL bResult = ::VerQueryValue(m_pBuffer.Get(), lpSubBlock, &pValue, &nBytes);
+	BOOL bResult = ::VerQueryValue(m_pBuffer.get(), lpSubBlock, &pValue, &nBytes);
 
 	if ( (bResult == 0) || (pValue == nullptr) )
 		throw Win32Exception(NO_ERROR, TXT("Failed to read the file information block"));
@@ -124,7 +124,7 @@ const VS_FIXEDFILEINFO* VerInfoReader::GetFileInfo() const
 size_t VerInfoReader::GetTranslations(TranslationIter& itBegin, TranslationIter& itEnd) const
 {
 	ASSERT(m_bOpen);
-	ASSERT(m_pBuffer.Get() != nullptr);
+	ASSERT(m_pBuffer.get() != nullptr);
 
 	void* pValue = nullptr;
 	uint  nBytes = 0;
@@ -132,7 +132,7 @@ size_t VerInfoReader::GetTranslations(TranslationIter& itBegin, TranslationIter&
 	tchar* lpSubBlock = const_cast<tchar*>(TXT("\\VarFileInfo\\Translation"));
 
 	// Get the block of translations.
-	/*BOOL bResult =*/ ::VerQueryValue(m_pBuffer.Get(), lpSubBlock, &pValue, &nBytes);
+	/*BOOL bResult =*/ ::VerQueryValue(m_pBuffer.get(), lpSubBlock, &pValue, &nBytes);
 
 	// Convert raw buffer to output iterator pair.
 	size_t nCount = nBytes / sizeof(Translation);
@@ -171,18 +171,18 @@ const VerInfoReader::Translation* VerInfoReader::GetDefaultTranslation() const
 tstring VerInfoReader::GetStringValue(const Translation& oTranslation, const tchar* pszName)
 {
 	ASSERT(m_bOpen);
-	ASSERT(m_pBuffer.Get() != nullptr);
+	ASSERT(m_pBuffer.get() != nullptr);
 	ASSERT(pszName != nullptr);
 
 	// Format the path to the value.
-	tstring strEntry = Core::Fmt(TXT("\\StringFileInfo\\%04hX%04hX\\%s"),
+	tstring strEntry = Core::fmt(TXT("\\StringFileInfo\\%04hX%04hX\\%s"),
 										oTranslation.m_wLanguage, oTranslation.m_wCodePage, pszName);
 
 	void* pValue = nullptr;
 	uint  nChars = 0;
 
 	// Read the value.
-	BOOL bResult = ::VerQueryValue(m_pBuffer.Get(), const_cast<tchar*>(strEntry.c_str()), &pValue, &nChars);
+	BOOL bResult = ::VerQueryValue(m_pBuffer.get(), const_cast<tchar*>(strEntry.c_str()), &pValue, &nChars);
 
 	tstring strResult;
 

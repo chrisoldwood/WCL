@@ -126,7 +126,7 @@ void CDecimalBox::RealValue(double dValue)
 	ASSERT(nResult >= 0);
 
 	if (nResult < 0)
-		throw Core::BadLogicException(Core::Fmt(TXT("Insufficient buffer size used in CDecimalBox::RealValue(). Result: %d"), nResult));
+		throw Core::BadLogicException(Core::fmt(TXT("Insufficient buffer size used in CDecimalBox::RealValue(). Result: %d"), nResult));
 
 	// Remove trailing zeroes?
 	if (m_nFlags & NO_TRAIL_ZEROES)

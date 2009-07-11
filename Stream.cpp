@@ -34,7 +34,7 @@ size_t CStream::ReadLine(std::vector<CharT>& vBuffer)
 	if (!IsEOF())
 	{
 		CharT cChar;
-		
+
 		do
 		{
 			// Read a char.
@@ -81,7 +81,7 @@ CString CStream::ReadLine(TextFormat eFormat)
 #ifdef ANSI_BUILD
 		std::copy(pszBegin, pszEnd, strLine.Buffer());
 #else
-		Core::AnsiToWide(pszBegin, pszEnd, strLine.Buffer());
+		Core::ansiToWide(pszBegin, pszEnd, strLine.Buffer());
 #endif
 		strLine[nChars] = TXT('\0');
 	}
@@ -100,8 +100,8 @@ CString CStream::ReadLine(TextFormat eFormat)
 		// Allocate the return buffer.
 		strLine.BufferSize(nChars+1);
 
-#ifdef ANSI_BUILD	
-		Core::WideToAnsi(pszBegin, pszEnd, strLine.Buffer());
+#ifdef ANSI_BUILD
+		Core::wideToAnsi(pszBegin, pszEnd, strLine.Buffer());
 #else
 		std::copy(pszBegin, pszEnd, strLine.Buffer());
 #endif
@@ -122,22 +122,22 @@ void CStream::WriteLine(const CString& str, TextFormat eFormat)
 	if (eFormat == ANSI_TEXT)
 	{
 #ifdef ANSI_BUILD
-		Write(str.Buffer(), Core::NumBytes<char>(nChars));
+		Write(str.Buffer(), Core::numBytes<char>(nChars));
 #else
-		Write(T2A(str), Core::NumBytes<char>(nChars));
+		Write(T2A(str), Core::numBytes<char>(nChars));
 #endif
 
-		Write("\r\n",  Core::NumBytes<char>(2));
+		Write("\r\n",  Core::numBytes<char>(2));
 	}
 	else // (eFormat == UNICODE_TEXT)
 	{
 #ifdef ANSI_BUILD
-		Write(T2W(str), Core::NumBytes<wchar_t>(nChars));
+		Write(T2W(str), Core::numBytes<wchar_t>(nChars));
 #else
-		Write(str.Buffer(), Core::NumBytes<wchar_t>(nChars));
+		Write(str.Buffer(), Core::numBytes<wchar_t>(nChars));
 #endif
 
-		Write(L"\r\n", Core::NumBytes<wchar_t>(2));
+		Write(L"\r\n", Core::numBytes<wchar_t>(2));
 	}
 }
 

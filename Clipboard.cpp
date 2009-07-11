@@ -148,7 +148,7 @@ void CClipboard::Open(uint nMode, uint iFormat)
 void CClipboard::Close()
 {
 	// Stream created?
-	if ( (m_pBuffer.Get() != nullptr) && (m_pStream.Get() != nullptr) )
+	if ( (m_pBuffer.get() != nullptr) && (m_pStream.get() != nullptr) )
 	{
 		// Close the memory stream.
 		m_pStream->Close();
@@ -170,8 +170,8 @@ void CClipboard::Close()
 	::CloseClipboard();
 
 	// Delete memory stream and buffer.
-	m_pBuffer.Reset();
-	m_pStream.Reset();
+	m_pBuffer.reset();
+	m_pStream.reset();
 
 	// Reset members.
 	m_nMode   = NULL;
@@ -205,7 +205,7 @@ bool CClipboard::CopyText(HWND hOwner, const tchar* pszText)
 		if (::EmptyClipboard())
 		{
 			size_t  nChars = tstrlen(pszText);
-			HGLOBAL hData = ::GlobalAlloc(GMEM_MOVEABLE, Core::NumBytes<tchar>(nChars+1));
+			HGLOBAL hData = ::GlobalAlloc(GMEM_MOVEABLE, Core::numBytes<tchar>(nChars+1));
 
 			// Allocated block?
 			if (hData != NULL)
