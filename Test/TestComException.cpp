@@ -13,9 +13,6 @@
 #endif
 #include "TestIFaceTraits.hpp"
 
-////////////////////////////////////////////////////////////////////////////////
-//! The com class used to implement ISupportErrorInfo.
-
 class TestComClass : public IErrorLog,
 					 public ISupportErrorInfo
 {
@@ -56,19 +53,17 @@ class TestComClass : public IErrorLog,
 	}
 };
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the ComException class.
-
-void TestComException()
+TEST_SET(ComException)
 {
 	WCL::AutoCom com(COINIT_APARTMENTTHREADED);
 {
-	WCL::ComException e(S_FALSE, TXT("UnitTest"));
+	WCL::ComException e(E_FAIL, TXT("UnitTest"));
 
 	tstring str = e.twhat();
 
+	TEST_TRUE(e.m_result == E_FAIL);
 	TEST_TRUE(str.find(TXT("UnitTest")) != tstring::npos);
-	TEST_TRUE(str.find(TXT("0x00000001")) != tstring::npos);
+	TEST_TRUE(str.find(TXT("0x80004005")) != tstring::npos);
 }
 {
 	typedef WCL::IFacePtr<IMalloc> IMallocPtr;
@@ -77,10 +72,13 @@ void TestComException()
 
 	HRESULT hr = CoGetMalloc(1, WCL::AttachTo(allocator));
 
-	WCL::ComException e(hr, allocator, TXT("UnitTest"));
+	ASSERT(hr == S_OK);
+
+	WCL::ComException e(E_FAIL, allocator, TXT("UnitTest"));
 
 	tstring str = e.twhat();
 
+	TEST_TRUE(e.m_result == E_FAIL);
 	TEST_TRUE(str.find(TXT('{')) == tstring::npos);
 }
 {
@@ -108,11 +106,13 @@ void TestComException()
 
 	TestComClass		object;
 	IErrorLogPtr		iface(&object);
-	WCL::ComException	e(S_FALSE, iface, TXT("UnitTest"));
+	WCL::ComException	e(E_POINTER, iface, TXT("UnitTest"));
 
 	tstring str = e.twhat();
 
+	TEST_TRUE(e.m_result == E_POINTER);
 	TEST_TRUE(str.find(TXT("Source")) != tstring::npos);
 	TEST_TRUE(str.find(TXT("Description")) != tstring::npos);
 }
 }
+TEST_SET_END
