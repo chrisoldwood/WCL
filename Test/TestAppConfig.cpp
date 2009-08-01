@@ -11,10 +11,7 @@
 #include <WCL/IniFile.hpp>
 #include <WCL/File.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the AppConfig class.
-
-void TestAppConfig()
+TEST_SET(AppConfig)
 {
 	HKEY    rootKey     = HKEY_CURRENT_USER;
 	tstring publisher   = TXT("Chris Oldwood");
@@ -106,3 +103,4 @@ void TestAppConfig()
 	CFile::Delete(iniFile.m_strPath);
 	ASSERT(!iniFile.m_strPath.Exists());
 }
+TEST_SET_END

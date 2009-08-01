@@ -7,10 +7,7 @@
 #include <Core/UnitTest.hpp>
 #include <WCL/Path.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the CPath class.
-
-void TestPath()
+TEST_SET(Path)
 {
 {
 	TEST_TRUE(CPath().Empty());
@@ -46,3 +43,4 @@ void TestPath()
 //	TEST_TRUE(path_tstring == TXT("C:\\Temp"));
 }
 }
+TEST_SET_END

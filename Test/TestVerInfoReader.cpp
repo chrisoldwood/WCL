@@ -8,10 +8,7 @@
 #include <WCL/VerInfoReader.hpp>
 #include <WCL/Path.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the VerInfoReader class.
-
-void TestVerInfoReader()
+TEST_SET(VerInfoReader)
 {
 	tstring strFileName(CPath::Application());
 	tstring strBadFile(CPath::SystemDir() / TXT("compmgmt.msc"));
@@ -63,3 +60,4 @@ void TestVerInfoReader()
 
 	TEST_TRUE(WCL::VerInfoReader::GetStringValue(strFileName, WCL::VerInfoReader::LEGAL_COPYRIGHT) == TXT("(C) Chris Oldwood"));
 }
+TEST_SET_END

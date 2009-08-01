@@ -6,10 +6,7 @@
 #include "stdafx.h"
 #include <Core/UnitTest.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the CString class.
-
-void TestString()
+TEST_SET(String)
 {
 	CString str = CString::Fmt(TXT("%s"), TXT("Hello World"));
 
@@ -24,3 +21,4 @@ void TestString()
 	TEST_TRUE (str < CString(TXT("hello world")));
 	TEST_FALSE(str < CString(TXT("Hello World")));
 }
+TEST_SET_END

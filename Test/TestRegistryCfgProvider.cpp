@@ -10,10 +10,7 @@
 #include <Core/StringUtils.hpp>
 #include <WCL/RegKey.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the RegistryCfgProvider class.
-
-void TestRegistryCfgProvider()
+TEST_SET(RegistryCfgProvider)
 {
 	HKEY    rootKey     = HKEY_CURRENT_USER;
 	tstring publisher   = TXT("Chris Oldwood");
@@ -58,3 +55,4 @@ void TestRegistryCfgProvider()
 	WCL::RegKey::DeleteTree(rootKey, appPath.c_str());
 	ASSERT(!WCL::RegKey::Exists(rootKey, appPath.c_str()));
 }
+TEST_SET_END

@@ -7,10 +7,7 @@
 #include <Core/UnitTest.hpp>
 #include <WCL/Rect.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the CRect class.
-
-void TestRect()
+TEST_SET(Rect)
 {
 	CRect rc;
 
@@ -26,3 +23,4 @@ void TestRect()
 	TEST_TRUE(rc1 == rc2);
 	TEST_TRUE(rc1 != rc3);
 }
+TEST_SET_END

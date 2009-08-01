@@ -9,10 +9,7 @@
 #include <WCL/Path.hpp>
 #include <WCL/File.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the FolderIterator class.
-
-void TestFolderIterator()
+TEST_SET(FolderIterator)
 {
 	CPath strTempDir = CPath::TempDir();
 	CPath strFolder1 = strTempDir / TXT("FolderIterator");
@@ -99,3 +96,4 @@ void TestFolderIterator()
 	CFile::DeleteFolder(strFolder2);
 	CFile::DeleteFolder(strFolder1);
 }
+TEST_SET_END

@@ -8,10 +8,7 @@
 #include <WCL/IniFileCfgProvider.hpp>
 #include <WCL/File.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the IniFileCfgProvider class.
-
-void TestIniFileCfgProvider()
+TEST_SET(IniFileCfgProvider)
 {
 	tstring publisher   = TXT("Chris Oldwood");
 	tstring application = TXT("Unit Tests");
@@ -42,3 +39,4 @@ void TestIniFileCfgProvider()
 	CFile::Delete(iniFile.m_strPath);
 	ASSERT(!iniFile.m_strPath.Exists());
 }
+TEST_SET_END

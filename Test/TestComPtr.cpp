@@ -11,10 +11,7 @@
 #include <shlguid.h>
 #include "TestIFaceTraits.hpp"
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the ComPtr class.
-
-void TestComPtr()
+TEST_SET(ComPtr)
 {
 	typedef WCL::ComPtr<IMalloc> IMallocPtr;
 	typedef WCL::IFacePtr<IMalloc> IFaceOnlyPtr;
@@ -95,3 +92,4 @@ void TestComPtr()
 
 	pShell.Release();
 }
+TEST_SET_END

@@ -8,10 +8,7 @@
 #include <WCL/IFacePtr.hpp>
 #include "PtrTest.hpp"
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the IFacePtr class.
-
-void TestIFacePtr()
+TEST_SET(IFacePtr)
 {
 	typedef WCL::IFacePtr<IPtrTest> ITestPtr;
 
@@ -51,3 +48,4 @@ void TestIFacePtr()
 
 //	delete pTest1;	// Shouldn't compile.
 }
+TEST_SET_END

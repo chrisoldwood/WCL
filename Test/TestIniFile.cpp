@@ -7,10 +7,7 @@
 #include <Core/UnitTest.hpp>
 #include <WCL/IniFile.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the IniFile class.
-
-void TestIniFile()
+TEST_SET(IniFile)
 {
 	CPath strFileName(CPath::ApplicationDir(), TXT("test.INI"));
 
@@ -18,3 +15,4 @@ void TestIniFile()
 
 	TEST_TRUE(tstricmp(strFileName, oIniFile.m_strPath) == 0);
 }
+TEST_SET_END

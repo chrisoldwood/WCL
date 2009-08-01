@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestMisc.cpp
-//! \brief  The unit tests for misc types and functions.
+//! \file   TestSeTranslator.cpp
+//! \brief  The unit tests for the SeTranslator class.
 //! \author Chris Oldwood
 
 #include "stdafx.h"
@@ -8,10 +8,7 @@
 #include <WCL/SeTranslator.hpp>
 #include <WCL/StructuredException.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for other misc types and functions.
-
-void TestSE()
+TEST_SET(SeTranslator)
 {
 	WCL::SeTranslator oSeTranslator;
 
@@ -19,11 +16,4 @@ void TestSE()
 
 	TEST_THROWS(*p = TXT('\0'));
 }
-
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for other misc types and functions.
-
-void TestMisc()
-{
-	TestSE();
-}
+TEST_SET_END
