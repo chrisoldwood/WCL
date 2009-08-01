@@ -11,6 +11,8 @@
 #pragma once
 #endif
 
+#include <basetyps.h>
+
 namespace WCL
 {
 

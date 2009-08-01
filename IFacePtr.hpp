@@ -12,6 +12,7 @@
 #endif
 
 #include "IFaceTraits.hpp"
+#include <unknwn.h>
 
 namespace WCL
 {
