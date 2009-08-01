@@ -28,7 +28,7 @@ public:
 	//! Default constructor.
 	ComStr();
 
-	//! Construction by taking ownership of an exsiting string.
+	//! Construction by taking ownership of an existing string.
 	explicit ComStr(BSTR bstr);
 
 	//! Construction from an ANSI string.
@@ -36,6 +36,9 @@ public:
 
 	//! Construction from a UNICODE string.
 	explicit ComStr(const wchar_t* psz);
+
+	//! Construction from a std string.
+	explicit ComStr(const tstring& str);
 
 	//! Destructor.
 	~ComStr();

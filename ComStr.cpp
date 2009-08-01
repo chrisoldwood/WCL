@@ -19,7 +19,7 @@ ComStr::ComStr()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Construction by taking ownership of an exsiting string.
+//! Construction by taking ownership of an existing string.
 
 ComStr::ComStr(BSTR bstr)
 	: m_bstr(bstr)
@@ -51,6 +51,17 @@ ComStr::ComStr(const wchar_t* psz)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Construction from a std string.
+
+ComStr::ComStr(const tstring& str)
+{
+	m_bstr = ::SysAllocString(T2W(str.c_str()));
+
+	if (m_bstr == nullptr)
+		throw std::bad_alloc();
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Destructor.
 
 ComStr::~ComStr()
@@ -76,6 +87,8 @@ void ComStr::Release()
 
 void ComStr::Attach(BSTR bstr)
 {
+	Release();
+
 	m_bstr = bstr;
 }
 
