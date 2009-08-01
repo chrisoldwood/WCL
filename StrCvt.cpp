@@ -149,15 +149,20 @@ CString CStrCvt::FormatError(DWORD dwError)
 	tchar*  pszError;
 
 	// Format string using default language.
-	::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-					NULL, dwError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), reinterpret_cast<tchar*>(&pszError), 0, NULL);
+	DWORD dwResult = ::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+										NULL, dwError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+										reinterpret_cast<tchar*>(&pszError), 0, NULL);
 
 	// Copy message and free buffer.
-	strError = pszError;
-	::LocalFree(pszError);
+	if (dwResult != 0)
+	{
+		ASSERT(pszError != nullptr);
 
-	// Trim excess whitespace.
-	strError.Trim();
+		strError = pszError;
+		strError.Trim();
+
+		::LocalFree(pszError);
+	}
 
 	return strError;
 }
