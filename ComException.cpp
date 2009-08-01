@@ -19,13 +19,21 @@ namespace WCL
 {
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Construction from an error code.
+
+ComException::ComException(HRESULT result)
+	: m_result(result)
+{
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Constructor for use with non-IErrorInfo errors. The pszOperation parameter
 //! is used as the prefix for the message and the error code is appended.
 
-ComException::ComException(HRESULT hResult, const tchar* pszOperation)
-	: m_hResult(hResult)
+ComException::ComException(HRESULT result, const tchar* operation)
+	: m_result(result)
 {
-	m_strDetails = Core::fmt(TXT("%s [0x%08X - %s]"), pszOperation, hResult, CStrCvt::FormatError(hResult).c_str());
+	m_strDetails = Core::fmt(TXT("%s [0x%08X - %s]"), operation, result, CStrCvt::FormatError(result).c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -38,46 +46,58 @@ ComException::~ComException() throw()
 ////////////////////////////////////////////////////////////////////////////////
 //! Format the error using the IErrorInfo details.
 
-void ComException::FormatError(HRESULT hResult, IUnknown* pObject, const IID& rIID, const tchar* pszOperation)
+void ComException::formatError(HRESULT result, IUnknown* object, const IID& iid, const tchar* operation)
+{
+	tstring source;
+	tstring description;
+	tstring resultCode(CStrCvt::FormatError(result));
+
+	// Query for IErrorInfo details.
+	extractErrorInfo(object, iid, source, description);
+
+	// Format the error string.
+	if (!source.empty() || !description.empty())
+		m_strDetails = Core::fmt(TXT("%s [0x%08X - %s] {%s : %s}"), operation, result, resultCode.c_str(), source.c_str(), description.c_str());
+	else
+		m_strDetails = Core::fmt(TXT("%s [0x%08X - %s]"), operation, result, resultCode.c_str());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Extract the ErrorInfo details from the COM object, if present.
+
+bool ComException::extractErrorInfo(IUnknown* object, const IID& iid, tstring& source, tstring& description)
 {
 	// Type shorthands.
 	typedef WCL::ComPtr<ISupportErrorInfo> ISupportErrorInfoPtr;
 	typedef WCL::ComPtr<IErrorInfo> IErrorInfoPtr;
 
-	tstring strSource;
-	tstring strDescription;
-
-	ISupportErrorInfoPtr pSupportErrorInfo;
+	ISupportErrorInfoPtr supportErrorInfo;
 
 	// Query if the object supports IErrorInfo on the interface.
-	if ( (SUCCEEDED(QueryInterface(pObject, AttachTo(pSupportErrorInfo))))
-	  && (pSupportErrorInfo->InterfaceSupportsErrorInfo(rIID) == S_OK) )
+	if ( (SUCCEEDED(QueryInterface(object, AttachTo(supportErrorInfo))))
+	  && (supportErrorInfo->InterfaceSupportsErrorInfo(iid) == S_OK) )
 	{
-		IErrorInfoPtr pErrorInfo;
+		IErrorInfoPtr errorInfo;
 
 		// Get the IErrorInfo object.
-		if (::GetErrorInfo(0, AttachTo(pErrorInfo)) == S_OK)
+		if (::GetErrorInfo(0, AttachTo(errorInfo)) == S_OK)
 		{
 			WCL::ComStr bstrSource;
 			WCL::ComStr bstrDescription;
 
 			// Get the exception details.
-			pErrorInfo->GetSource(AttachTo(bstrSource));
-			pErrorInfo->GetDescription(AttachTo(bstrDescription));
+			errorInfo->GetSource(AttachTo(bstrSource));
+			errorInfo->GetDescription(AttachTo(bstrDescription));
 
 			// Convert to C++ strings.
-			strSource      = W2T(bstrSource.Get());
-			strDescription = W2T(bstrDescription.Get());
+			source      = W2T(bstrSource.Get());
+			description = W2T(bstrDescription.Get());
+
+			return true;
 		}
 	}
 
-	tstring strResCode(CStrCvt::FormatError(hResult));
-
-	// Format the error string.
-	if (!strSource.empty() || !strDescription.empty())
-		m_strDetails = Core::fmt(TXT("%s [0x%08X - %s] {%s : %s}"), pszOperation, hResult, strResCode.c_str(), strSource.c_str(), strDescription.c_str());
-	else
-		m_strDetails = Core::fmt(TXT("%s [0x%08X - %s]"), pszOperation, hResult, strResCode.c_str());
+	return false;
 }
 
 //namespace WCL

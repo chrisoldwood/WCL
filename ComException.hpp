@@ -24,11 +24,11 @@ class ComException : public Core::Exception
 {
 public:
 	//! Construction from a non-IErrorInfo supported error.
-	ComException(HRESULT hResult, const tchar* pszOperation);
+	ComException(HRESULT result, const tchar* operation);
 
 	//! Construction from an IErrorInfo supported error.
 	template<typename T>
-	ComException(HRESULT hResult, IFacePtr<T>& pObject, const tchar* pszOperation);
+	ComException(HRESULT result, IFacePtr<T>& object, const tchar* operation);
 
 	//! Destructor.
 	virtual ~ComException() throw();
@@ -36,7 +36,18 @@ public:
 	//
 	// Members.
 	//
-	HRESULT	m_hResult;	//!< The underlying COM error code.
+	HRESULT	m_result;	//!< The underlying COM error code.
+
+protected:
+	//
+	// Internal methods.
+	//
+
+	//! Construction from an error code.
+	ComException(HRESULT result);
+
+	//! Extract the ErrorInfo details from the COM object, if present.
+	static bool extractErrorInfo(IUnknown* object, const IID& iid, tstring& source, tstring& description);
 
 private:
 	//
@@ -44,16 +55,17 @@ private:
 	//
 
 	//! Format the error using the IErrorInfo details.
-	void FormatError(HRESULT hResult, IUnknown* pObject, const IID& rIID, const tchar* pszOperation);
+	void formatError(HRESULT result, IUnknown* object, const IID& iid, const tchar* operation);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from an IErrorInfo supported error.
 
 template<typename T>
-inline ComException::ComException(HRESULT hResult, IFacePtr<T>& pObject, const tchar* pszOperation)
+inline ComException::ComException(HRESULT result, IFacePtr<T>& object, const tchar* operation)
+	: m_result(result)
 {
-	FormatError(hResult, pObject.get(), IFaceTraits<T>::uuidof(), pszOperation);
+	formatError(result, object.get(), IFaceTraits<T>::uuidof(), operation);
 }
 
 //namespace WCL
