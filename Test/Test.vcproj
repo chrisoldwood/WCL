@@ -164,6 +164,12 @@
 				RelativePath=".\TestComPtr.cpp">
 			</File>
 			<File
+				RelativePath=".\TestComStr.cpp">
+			</File>
+			<File
+				RelativePath=".\TestDate.cpp">
+			</File>
+			<File
 				RelativePath=".\TestDateTime.cpp">
 			</File>
 			<File
@@ -179,9 +185,6 @@
 				RelativePath=".\TestIniFileCfgProvider.cpp">
 			</File>
 			<File
-				RelativePath=".\TestMisc.cpp">
-			</File>
-			<File
 				RelativePath=".\TestPath.cpp">
 			</File>
 			<File
@@ -191,10 +194,16 @@
 				RelativePath=".\TestRegistryCfgProvider.cpp">
 			</File>
 			<File
+				RelativePath=".\TestSeTranslator.cpp">
+			</File>
+			<File
 				RelativePath=".\TestString.cpp">
 			</File>
 			<File
 				RelativePath=".\TestStringUtils.cpp">
+			</File>
+			<File
+				RelativePath=".\TestTime.cpp">
 			</File>
 			<File
 				RelativePath=".\TestVerInfoReader.cpp">
