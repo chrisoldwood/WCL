@@ -55,6 +55,27 @@ class TestComClass : public IErrorLog,
 
 TEST_SET(ComException)
 {
+
+TEST_CASE(ComException, constructionFromCstring)
+{
+	WCL::ComException e(E_FAIL, TXT("UnitTest"));
+
+	tstring str = e.twhat();
+
+	TEST_TRUE(str.find(TXT("UnitTest")) != tstring::npos);
+}
+TEST_CASE_END
+
+TEST_CASE(ComException, constructionFromTstring)
+{
+	WCL::ComException e(E_FAIL, tstring(TXT("UnitTest")));
+
+	tstring str = e.twhat();
+
+	TEST_TRUE(str.find(TXT("UnitTest")) != tstring::npos);
+}
+TEST_CASE_END
+
 	WCL::AutoCom com(COINIT_APARTMENTTHREADED);
 {
 	WCL::ComException e(E_FAIL, TXT("UnitTest"));
@@ -73,6 +94,7 @@ TEST_SET(ComException)
 	HRESULT hr = CoGetMalloc(1, WCL::AttachTo(allocator));
 
 	ASSERT(hr == S_OK);
+	DEBUG_USE_ONLY(hr);
 
 	WCL::ComException e(E_FAIL, allocator, TXT("UnitTest"));
 
