@@ -37,6 +37,15 @@ ComException::ComException(HRESULT result, const tchar* operation)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Construction from a non-IErrorInfo supported error.
+
+ComException::ComException(HRESULT result, const tstring& operation)
+	: m_result(result)
+{
+	m_strDetails = Core::fmt(TXT("%s [0x%08X - %s]"), operation.c_str(), result, CStrCvt::FormatError(result).c_str());
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Destructor.
 
 ComException::~ComException() throw()

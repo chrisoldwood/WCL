@@ -26,6 +26,9 @@ public:
 	//! Construction from a non-IErrorInfo supported error.
 	ComException(HRESULT result, const tchar* operation);
 
+	//! Construction from a non-IErrorInfo supported error.
+	ComException(HRESULT result, const tstring& operation);
+
 	//! Construction from an IErrorInfo supported error.
 	template<typename T>
 	ComException(HRESULT result, IFacePtr<T>& object, const tchar* operation);
