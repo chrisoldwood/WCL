@@ -1,15 +1,18 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   SafeVector.hpp
-//! \brief  The SafeVector class declaration.
+//! \file   VariantVector.hpp
+//! \brief  The VariantVector class declaration.
 //! \author Chris Oldwood
 
 // Check for previous inclusion
-#ifndef WCL_SAFEVECTOR_HPP
-#define WCL_SAFEVECTOR_HPP
+#ifndef WCL_VARIANTVECTOR_HPP
+#define WCL_VARIANTVECTOR_HPP
 
 #if _MSC_VER > 1000
 #pragma once
 #endif
+
+#include "ComException.hpp"
+#include <Core/Scoped.hpp>
 
 namespace WCL
 {
@@ -18,20 +21,20 @@ namespace WCL
 //! A Wrapper Facade for a 1-dimension SAFEARRAY.
 
 template <typename T>
-class SafeVector : public Core::NotCopyable
+class VariantVector : public Core::NotCopyable
 {
 public:
 	//! Default constructor.
-	SafeVector();
+	VariantVector();
 
 	//! Construction of a fixed size array.
-	explicit SafeVector(size_t nSize, VARTYPE eVarType = VT_VARIANT);
+	explicit VariantVector(size_t nSize, VARTYPE eVarType = VT_VARIANT);
 
-	//! Take ownership of a existing SAFEARRAY.
-	explicit SafeVector(SAFEARRAY* pSafeArray, VARTYPE eVarType = VT_VARIANT);
+	//! Take ownership of an existing SAFEARRAY.
+	explicit VariantVector(SAFEARRAY* pSafeArray, VARTYPE eVarType = VT_VARIANT);
 
 	//! Destructor.
-	~SafeVector();
+	~VariantVector();
 
 	//
 	// Properties.
@@ -39,6 +42,16 @@ public:
 
 	//! Get the size of the vector.
 	size_t Size() const;
+
+	//
+	// Operators.
+	//
+
+	//! Access the element at the given index.
+	const T& operator[](size_t index) const;
+
+	//! Access the element at the given index.
+	T& operator[](size_t index);
 
 	//
 	// Methods.
@@ -49,7 +62,13 @@ public:
 	typedef const T* const_iterator;
 
 	//! Get an iterator to the start of the vector.
+	const_iterator begin() const;
+
+	//! Get an iterator to the start of the vector.
 	iterator begin();
+
+	//! Get an iterator to one past the end of the vector.
+	const_iterator end() const;
 
 	//! Get an iterator to one past the end of the vector.
 	iterator end();
@@ -58,6 +77,9 @@ public:
 	SAFEARRAY* Detach();
 	
 private:
+	//! The RAII type used to manage the SAFEARRAY.
+	typedef Core::Scoped<SAFEARRAY*> SafeArrayPtr;
+
 	//
 	// Members.
 	//
@@ -74,13 +96,16 @@ private:
 
 	//! Release the underlying SAFEARRAY.
 	void Release();
+
+	//! Helper function for destroying a SAFEARRAY as a Scoped<SAFEARRAY*>.
+	static void DestroySafeArray(SAFEARRAY* pSafeArray);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Default constructor.
 
 template <typename T>
-inline SafeVector<T>::SafeVector()
+inline VariantVector<T>::VariantVector()
 	: m_nSize(0)
 	, m_pSafeArray(nullptr)
 	, m_pData(nullptr)
@@ -91,103 +116,85 @@ inline SafeVector<T>::SafeVector()
 //! Construction of a fixed size array.
 
 template <typename T>
-inline SafeVector<T>::SafeVector(size_t nSize, VARTYPE eVarType)
+inline VariantVector<T>::VariantVector(size_t nSize, VARTYPE eVarType)
 	: m_nSize(0)
 	, m_pSafeArray(nullptr)
 	, m_pData(nullptr)
 {
 	// Allocate the storage for the vector.
-	SAFEARRAY* pSafeArray = ::SafeArrayCreateVector(eVarType, 0, nSize);
+	SafeArrayPtr safeArray(::SafeArrayCreateVector(eVarType, 0, nSize), DestroySafeArray);
 
-	if (pSafeArray == nullptr)
+	if (safeArray.get() == nullptr)
 		throw WCL::ComException(E_OUTOFMEMORY, TXT("Failed to allocate a SAFEARRAY"));
 
 	T* pData = nullptr;
 
 	// Lock the storage immediately for access.
-	HRESULT hr = ::SafeArrayAccessData(pSafeArray, reinterpret_cast<void**>(&pData));
+	HRESULT hr = ::SafeArrayAccessData(safeArray.get(), reinterpret_cast<void**>(&pData));
 
 	if (FAILED(hr))
-	{
-		::SafeArrayDestroy(pSafeArray);
 		throw WCL::ComException(hr, TXT("Failed to lock the SAFEARRAY for access"));
-	}
 
 	// Update state.
 	m_nSize      = nSize;
-	m_pSafeArray = pSafeArray;
+	m_pSafeArray = safeArray.detach();
 	m_pData      = pData;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Take ownership of a existing SAFEARRAY.
+//! Take ownership of an existing SAFEARRAY.
 
 template <typename T>
-inline SafeVector<T>::SafeVector(SAFEARRAY* pSafeArray, VARTYPE eVarType)
+inline VariantVector<T>::VariantVector(SAFEARRAY* pSafeArray, VARTYPE eVarType)
 	: m_nSize(0)
 	, m_pSafeArray(nullptr)
 	, m_pData(nullptr)
 {
+	// Temporarily manage input SAFEARRAY.
+	SafeArrayPtr safeArray(pSafeArray, DestroySafeArray);
+
 	VARTYPE eArrayType;
 
 	// Check the value type.
-	HRESULT hr = ::SafeArrayGetVartype(pSafeArray, &eArrayType);
+	HRESULT hr = ::SafeArrayGetVartype(safeArray.get(), &eArrayType);
 
 	if (FAILED(hr))
-	{
-		::SafeArrayDestroy(pSafeArray);
 		throw WCL::ComException(hr, TXT("Failed to get the SAFEARRAY value type"));
-	}
 
 	if (eArrayType != eVarType)
-	{
-		::SafeArrayDestroy(pSafeArray);
 		throw WCL::ComException(E_INVALIDARG, TXT("The SAFEARRAY does not contain the correct value type"));
-	}
 
 	// Check the number of dimensions.
-	UINT nDims = ::SafeArrayGetDim(pSafeArray);
+	UINT nDims = ::SafeArrayGetDim(safeArray.get());
 
 	if (nDims != 1)
-	{
-		::SafeArrayDestroy(pSafeArray);
 		throw WCL::ComException(E_INVALIDARG, TXT("The SAFEARRAY does not contain a single dimension"));
-	}
 
 	LONG lLowerBound;
 	LONG lUpperBound;
 
 	// Get the lower and upper bounds.
-	hr = ::SafeArrayGetLBound(pSafeArray, 1, &lLowerBound);
+	hr = ::SafeArrayGetLBound(safeArray.get(), 1, &lLowerBound);
 
 	if (FAILED(hr))
-	{
-		::SafeArrayDestroy(pSafeArray);
 		throw WCL::ComException(hr, TXT("Failed to get the SAFEARRAY lower bound"));
-	}
 
-	hr = ::SafeArrayGetUBound(pSafeArray, 1, &lUpperBound);
+	hr = ::SafeArrayGetUBound(safeArray.get(), 1, &lUpperBound);
 
 	if (FAILED(hr))
-	{
-		::SafeArrayDestroy(pSafeArray);
 		throw WCL::ComException(hr, TXT("Failed to get the SAFEARRAY upper bound"));
-	}
 
 	T* pData = nullptr;
 
 	// Lock the storage immediately for access.
-	hr = ::SafeArrayAccessData(pSafeArray, reinterpret_cast<void**>(&pData));
+	hr = ::SafeArrayAccessData(safeArray.get(), reinterpret_cast<void**>(&pData));
 
 	if (FAILED(hr))
-	{
-		::SafeArrayDestroy(pSafeArray);
 		throw WCL::ComException(hr, TXT("Failed to lock the SAFEARRAY for access"));
-	}
 
 	// Update state.
 	m_nSize      = lUpperBound - lLowerBound + 1;
-	m_pSafeArray = pSafeArray;
+	m_pSafeArray = safeArray.detach();
 	m_pData      = pData;
 }
 
@@ -195,7 +202,7 @@ inline SafeVector<T>::SafeVector(SAFEARRAY* pSafeArray, VARTYPE eVarType)
 //! Destructor.
 
 template <typename T>
-inline SafeVector<T>::~SafeVector()
+inline VariantVector<T>::~VariantVector()
 {
 	Release();
 
@@ -208,16 +215,51 @@ inline SafeVector<T>::~SafeVector()
 //! Get the size of the vector.
 
 template <typename T>
-inline size_t SafeVector<T>::Size() const
+inline size_t VariantVector<T>::Size() const
 {
 	return m_nSize;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Access the element at the given index.
+
+template <typename T>
+inline const T& VariantVector<T>::operator[](size_t index) const
+{
+	ASSERT(index < Size());
+	ASSERT(m_pData != nullptr);
+
+	return *(m_pData+index);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Access the element at the given index.
+
+template <typename T>
+inline T& VariantVector<T>::operator[](size_t index)
+{
+	ASSERT(index < Size());
+	ASSERT(m_pData != nullptr);
+
+	return *(m_pData+index);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Get an iterator to the start of the vector.
 
 template <typename T>
-inline typename SafeVector<T>::iterator SafeVector<T>::begin()
+inline typename VariantVector<T>::const_iterator VariantVector<T>::begin() const
+{
+	ASSERT(m_pData != nullptr);
+
+	return m_pData;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get an iterator to the start of the vector.
+
+template <typename T>
+inline typename VariantVector<T>::iterator VariantVector<T>::begin()
 {
 	ASSERT(m_pData != nullptr);
 
@@ -228,7 +270,18 @@ inline typename SafeVector<T>::iterator SafeVector<T>::begin()
 //! Get an iterator to one past the end of the vector.
 
 template <typename T>
-inline typename SafeVector<T>::iterator SafeVector<T>::end()
+inline typename VariantVector<T>::const_iterator VariantVector<T>::end() const
+{
+	ASSERT(m_pData != nullptr);
+
+	return m_pData+m_nSize;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get an iterator to one past the end of the vector.
+
+template <typename T>
+inline typename VariantVector<T>::iterator VariantVector<T>::end()
 {
 	ASSERT(m_pData != nullptr);
 
@@ -239,7 +292,7 @@ inline typename SafeVector<T>::iterator SafeVector<T>::end()
 //! Take ownership of the SAFEARRAY.
 
 template <typename T>
-inline SAFEARRAY* SafeVector<T>::Detach()
+inline SAFEARRAY* VariantVector<T>::Detach()
 {
 	Unlock();
 
@@ -256,7 +309,7 @@ inline SAFEARRAY* SafeVector<T>::Detach()
 //! Unlock the underlying storage.
 
 template <typename T>
-inline void SafeVector<T>::Unlock()
+inline void VariantVector<T>::Unlock()
 {
 	if (m_pData != nullptr)
 	{
@@ -274,7 +327,7 @@ inline void SafeVector<T>::Unlock()
 //! required.
 
 template <typename T>
-inline void SafeVector<T>::Release()
+inline void VariantVector<T>::Release()
 {
 	Unlock();
 
@@ -288,7 +341,16 @@ inline void SafeVector<T>::Release()
 	}
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//! Helper function for destroying a SAFEARRAY as a Scoped<SAFEARRAY*>.
+
+template <typename T>
+inline void VariantVector<T>::DestroySafeArray(SAFEARRAY* pSafeArray)
+{
+	::SafeArrayDestroy(pSafeArray);
+}
+
 //namespace WCL
 }
 
-#endif // WCL_SAFEVECTOR_HPP
+#endif // WCL_VARIANTVECTOR_HPP
