@@ -206,6 +206,12 @@
 				RelativePath=".\TestTime.cpp">
 			</File>
 			<File
+				RelativePath=".\TestVariant.cpp">
+			</File>
+			<File
+				RelativePath=".\TestVariantVector.cpp">
+			</File>
+			<File
 				RelativePath=".\TestVerInfoReader.cpp">
 			</File>
 		</Filter>
