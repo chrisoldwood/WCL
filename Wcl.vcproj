@@ -773,9 +773,6 @@
 				RelativePath="RegKey.hpp">
 			</File>
 			<File
-				RelativePath=".\SafeVector.hpp">
-			</File>
-			<File
 				RelativePath="ScreenDC.hpp">
 			</File>
 			<File
@@ -900,6 +897,9 @@
 			</File>
 			<File
 				RelativePath=".\VariantBool.hpp">
+			</File>
+			<File
+				RelativePath=".\VariantVector.hpp">
 			</File>
 			<File
 				RelativePath=".\VerInfoReader.hpp">
