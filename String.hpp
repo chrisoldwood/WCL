@@ -92,9 +92,9 @@ public:
 	//
 	// Extraction.
 	//
-	CString Left(size_t nCount);
-	CString Mid(size_t nFirst, size_t nCount);
-	CString Right(size_t nCount);
+	CString Left(size_t nCount) const;
+	CString Mid(size_t nFirst, size_t nCount) const;
+	CString Right(size_t nCount) const;
 
 	//
 	// Formating.
@@ -134,6 +134,7 @@ public:
 	//
 	void operator +=(const tchar* pszString);
 	void operator +=(tchar cChar);
+	void operator +=(const tstring& string);
 
 protected:
 	/******************************************************************************
@@ -371,6 +372,11 @@ inline int CString::Compare(const tchar* pszString, bool bIgnoreCase) const
 inline int CString::Compare(const tchar* pszString, size_t nChars, bool bIgnoreCase) const
 {
 	return (bIgnoreCase) ? tstrnicmp(m_pszData, pszString, nChars) : tstrncmp(m_pszData, pszString, nChars);
+}
+
+inline void CString::operator +=(const tstring& string)
+{
+	operator +=(string.c_str());
 }
 
 inline void CString::Copy(const tchar* lpszBuffer)

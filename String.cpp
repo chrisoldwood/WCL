@@ -536,7 +536,7 @@ size_t CString::Count(tchar cChar, size_t nStart, size_t nEnd) const
 *******************************************************************************
 */
 
-CString CString::Left(size_t nCount)
+CString CString::Left(size_t nCount) const
 {
 	ASSERT(nCount <= Length());
 
@@ -567,7 +567,7 @@ CString CString::Left(size_t nCount)
 *******************************************************************************
 */
 
-CString CString::Mid(size_t nFirst, size_t nCount)
+CString CString::Mid(size_t nFirst, size_t nCount) const
 {
 	ASSERT(nFirst <= Length());
 	ASSERT(nCount <= Length());
@@ -598,7 +598,7 @@ CString CString::Mid(size_t nFirst, size_t nCount)
 *******************************************************************************
 */
 
-CString CString::Right(size_t nCount)
+CString CString::Right(size_t nCount) const
 {
 	ASSERT(nCount <= Length());
 
