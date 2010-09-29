@@ -259,6 +259,8 @@ size_t CListView::Selections(Items& vItems) const
 
 void CListView::InsertColumn(size_t nColumn, const tchar* pszName, size_t iWidth, uint iFormat)
 {
+	ASSERT(m_hWnd != NULL);
+
 	LVCOLUMN lvColumn = { 0 };
 
     lvColumn.mask     = LVCF_TEXT | LVCF_WIDTH | LVCF_FMT;
