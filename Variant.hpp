@@ -65,6 +65,9 @@ public:
 	//! Get the values' type.
 	VARTYPE type() const;
 
+	//! Is a variant array?
+	bool IsArray() const;
+
 	//
 	// Methods.
 	//
@@ -89,6 +92,16 @@ public:
 inline VARTYPE Variant::type() const
 {
 	return V_VT(this);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Is a variant array?
+
+inline bool Variant::IsArray() const
+{
+	ushort flags = static_cast<ushort>(type() & (~VT_TYPEMASK));
+
+	return (flags & VT_ARRAY);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
