@@ -62,11 +62,14 @@ public:
 	// Properties.
 	//
 
-	//! Get the values' type.
+	//! Get the values' full type.
 	VARTYPE type() const;
 
 	//! Is a variant array?
-	bool IsArray() const;
+	bool isArray() const;
+
+	//! Get the value type.
+	VARTYPE valueType() const;
 
 	//
 	// Methods.
@@ -74,6 +77,9 @@ public:
 
 	//! Convert the variant value to a string.
 	tstring format() const; // throw(ComException)
+
+	//! Try and convert the variant value to a string.
+	bool tryFormat(tstring& result) const;
 
 	//
 	// Class methods.
@@ -87,7 +93,8 @@ public:
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Get the values' type.
+//! Get the values' full type. This returns the actual type as stored in the
+//! vt member of the underlying variant type.
 
 inline VARTYPE Variant::type() const
 {
@@ -97,15 +104,24 @@ inline VARTYPE Variant::type() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Is a variant array?
 
-inline bool Variant::IsArray() const
+inline bool Variant::isArray() const
 {
-	ushort flags = static_cast<ushort>(type() & (~VT_TYPEMASK));
+	VARTYPE flags = static_cast<VARTYPE>(type() & (~VT_TYPEMASK));
 
 	return (flags & VT_ARRAY);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Helper function to get the variant value as a specific type.
+//! Get the value type. This returns just the data type part of the undelying
+//! vt member, i.e. it strips of any flags such as VT_ARRAY.
+
+inline VARTYPE Variant::valueType() const
+{
+	return static_cast<VARTYPE>(type() & VT_TYPEMASK);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Helper function to get the variant value as a specific type.
 
 template<typename T>
 T getValue(const Variant& value); // throw(ComException)

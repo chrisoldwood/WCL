@@ -178,6 +178,49 @@ tstring Variant::format() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Try and convert the variant value to a string.
+
+bool Variant::tryFormat(tstring& result) const
+{
+	VARTYPE type = V_VT(this);
+
+	// No type as such?
+	if ( (type == VT_EMPTY) || (type == VT_NULL) )
+	{
+		result = TXT("");
+		return true;
+	}
+
+	// Already a string?
+	if (type == VT_BSTR)
+	{
+		result = W2T(V_BSTR(this));
+		return true;
+	}
+
+	// Special handling for booleans.
+	if (type == VT_BOOL)
+	{
+		result = (IsTrue(V_BOOL(this)) ? TXT("True") : TXT("False"));
+		return true;
+	}
+
+	ASSERT(!isArray());
+
+	Variant value;
+
+	// Attempt standard conversion.
+	HRESULT hr = ::VariantChangeType(&value, const_cast<VARIANT*>(static_cast<const VARIANT*>(this)), 0, VT_BSTR);
+
+	if (FAILED(hr))
+		return false;
+
+	result = W2T(V_BSTR(&value));
+
+	return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Format the variant type as a string.
 
 const tchar* Variant::formatType(VARTYPE type)
@@ -283,7 +326,7 @@ tstring getValue(const Variant& value)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Helper function to get the variant value as a boolean.
+// Helper function to get the variant value as a boolean.
 
 template<>
 bool getValue(const Variant& value)
@@ -298,7 +341,7 @@ bool getValue(const Variant& value)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Helper function to get the variant value as a signed 32-bit integer.
+// Helper function to get the variant value as a signed 32-bit integer.
 
 template<>
 int32 getValue(const Variant& value)
@@ -313,7 +356,7 @@ int32 getValue(const Variant& value)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Helper function to get the variant value as an unsigned 32-bit integer.
+// Helper function to get the variant value as an unsigned 32-bit integer.
 
 template<>
 uint32 getValue(const Variant& value)
@@ -328,7 +371,7 @@ uint32 getValue(const Variant& value)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Helper function to get the variant value as a signed 32-bit integer.
+// Helper function to get the variant value as a signed 32-bit integer.
 
 template<>
 int64 getValue(const Variant& value)
@@ -362,7 +405,7 @@ int64 getValue(const Variant& value)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Helper function to get the variant value as an unsigned 32-bit integer.
+// Helper function to get the variant value as an unsigned 32-bit integer.
 
 template<>
 uint64 getValue(const Variant& value)
