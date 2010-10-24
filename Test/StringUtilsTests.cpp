@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestStringUtils.cpp
+//! \file   StringUtilsTests.cpp
 //! \brief  The unit tests for the string utility functions.
 //! \author Chris Oldwood
 

@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestSeTranslator.cpp
+//! \file   SeTranslatorTests.cpp
 //! \brief  The unit tests for the SeTranslator class.
 //! \author Chris Oldwood
 

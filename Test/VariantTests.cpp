@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestVariant.cpp
+//! \file   VariantTests.cpp
 //! \brief  The unit tests for the Variant class.
 //! \author Chris Oldwood
 
@@ -17,7 +17,7 @@ TEST_SET(Variant)
 	const int64		int64Max  = std::numeric_limits<int64>::max();
 	const uint64	uint64Max = std::numeric_limits<uint64>::max();
 
-TEST_CASE(Variant, defaultConstruction)
+TEST_CASE("defaultConstruction")
 {
 	WCL::Variant variant;
 
@@ -25,7 +25,7 @@ TEST_CASE(Variant, defaultConstruction)
 }
 TEST_CASE_END
 
-TEST_CASE(Variant, constructionFromBool)
+TEST_CASE("constructionFromBool")
 {
 	WCL::Variant variant1(true);
 
@@ -39,7 +39,7 @@ TEST_CASE(Variant, constructionFromBool)
 }
 TEST_CASE_END
 
-TEST_CASE(Variant, constructionFromInt32)
+TEST_CASE("constructionFromInt32")
 {
 	WCL::Variant variant(int32Max);
 
@@ -48,7 +48,7 @@ TEST_CASE(Variant, constructionFromInt32)
 }
 TEST_CASE_END
 
-TEST_CASE(Variant, constructionFromUint32)
+TEST_CASE("constructionFromUint32")
 {
 	WCL::Variant variant(uint32Max);
 
@@ -57,7 +57,7 @@ TEST_CASE(Variant, constructionFromUint32)
 }
 TEST_CASE_END
 
-TEST_CASE(Variant, constructionFromInt64)
+TEST_CASE("constructionFromInt64")
 {
 	WCL::Variant variant(int64Max);
 
@@ -66,7 +66,7 @@ TEST_CASE(Variant, constructionFromInt64)
 }
 TEST_CASE_END
 
-TEST_CASE(Variant, constructionFromUint64)
+TEST_CASE("constructionFromUint64")
 {
 	WCL::Variant variant(uint64Max);
 
@@ -75,7 +75,7 @@ TEST_CASE(Variant, constructionFromUint64)
 }
 TEST_CASE_END
 
-TEST_CASE(Variant, constructionFromWideString)
+TEST_CASE("constructionFromWideString")
 {
 	WCL::Variant variant(L"Unit Test");
 
@@ -84,7 +84,7 @@ TEST_CASE(Variant, constructionFromWideString)
 }
 TEST_CASE_END
 
-TEST_CASE(Variant, constructionFromBSTR)
+TEST_CASE("constructionFromBSTR")
 {
 	WCL::ComStr  bstr(TXT("Unit Test"));
 	WCL::Variant variant(bstr);
@@ -95,7 +95,7 @@ TEST_CASE(Variant, constructionFromBSTR)
 }
 TEST_CASE_END
 
-TEST_CASE(Variant, constructionByCoercion)
+TEST_CASE("constructionByCoercion")
 {
 	WCL::Variant longVariant;
 
@@ -109,7 +109,7 @@ TEST_CASE(Variant, constructionByCoercion)
 }
 TEST_CASE_END
 
-TEST_CASE(Variant, copyConstruction)
+TEST_CASE("copyConstruction")
 {
 	WCL::ComStr  bstr(TXT("Unit Test"));
 	WCL::Variant variant(bstr);
@@ -121,7 +121,7 @@ TEST_CASE(Variant, copyConstruction)
 }
 TEST_CASE_END
 
-TEST_CASE(Variant, assignment)
+TEST_CASE("assignment")
 {
 	WCL::ComStr  bstr(TXT("Unit Test"));
 	WCL::Variant variant(bstr);
@@ -138,7 +138,7 @@ TEST_CASE(Variant, assignment)
 }
 TEST_CASE_END
 
-TEST_CASE(Variant, type)
+TEST_CASE("type")
 {
 	WCL::Variant variant(L"Unit Test");
 
@@ -146,7 +146,7 @@ TEST_CASE(Variant, type)
 }
 TEST_CASE_END
 
-TEST_CASE(Variant, formatType)
+TEST_CASE("formatType")
 {
 	WCL::VariantVector<uint> safeArray(1, VT_UI4);
 
@@ -162,7 +162,7 @@ TEST_CASE(Variant, formatType)
 }
 TEST_CASE_END
 
-TEST_CASE(Variant, format)
+TEST_CASE("format")
 {
 	WCL::Variant variant1;
 
@@ -188,7 +188,7 @@ TEST_CASE(Variant, format)
 }
 TEST_CASE_END
 
-TEST_CASE(Variant, getValueAsTstring)
+TEST_CASE("getValueAsTstring")
 {
 	WCL::Variant variant(L"Unit Test");
 
@@ -204,7 +204,7 @@ TEST_CASE(Variant, getValueAsTstring)
 }
 TEST_CASE_END
 
-TEST_CASE(Variant, getValueAsBool)
+TEST_CASE("getValueAsBool")
 {
 	WCL::Variant variant(true);
 
@@ -212,7 +212,7 @@ TEST_CASE(Variant, getValueAsBool)
 }
 TEST_CASE_END
 
-TEST_CASE(Variant, getValueAsInteger)
+TEST_CASE("getValueAsInteger")
 {
 	WCL::Variant varInt32(int32Max);
 	WCL::Variant varUint32(uint32Max);

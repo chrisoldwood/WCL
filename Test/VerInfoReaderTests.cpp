@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestVerInfoReader.cpp
+//! \file   VerInfoReaderTests.cpp
 //! \brief  The unit tests for the VerInfoReader class.
 //! \author Chris Oldwood
 

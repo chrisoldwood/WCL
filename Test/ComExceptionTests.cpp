@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestComException.cpp
+//! \file   ComExceptionTests.cpp
 //! \brief  The unit tests for the ComException class.
 //! \author Chris Oldwood
 
@@ -56,7 +56,7 @@ class TestComClass : public IErrorLog,
 TEST_SET(ComException)
 {
 
-TEST_CASE(ComException, constructionFromCstring)
+TEST_CASE("constructionFromCstring")
 {
 	WCL::ComException e(E_FAIL, TXT("UnitTest"));
 
@@ -66,7 +66,7 @@ TEST_CASE(ComException, constructionFromCstring)
 }
 TEST_CASE_END
 
-TEST_CASE(ComException, constructionFromTstring)
+TEST_CASE("constructionFromTstring")
 {
 	WCL::ComException e(E_FAIL, tstring(TXT("UnitTest")));
 

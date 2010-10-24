@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestIniFileCfgProvider.cpp
+//! \file   IniFileCfgProviderTests.cpp
 //! \brief  The unit tests for the IniFileCfgProvider class.
 //! \author Chris Oldwood
 

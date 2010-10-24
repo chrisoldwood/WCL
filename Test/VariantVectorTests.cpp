@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestVariantVector.cpp
+//! \file   VariantVectorTests.cpp
 //! \brief  The unit tests for the VariantVector class.
 //! \author Chris Oldwood
 
@@ -11,7 +11,7 @@
 TEST_SET(VariantVector)
 {
 
-TEST_CASE(VariantVector, construction)
+TEST_CASE("construction")
 {
 	WCL::VariantVector<long> vector1(10, VT_I4);
 
@@ -27,7 +27,7 @@ TEST_CASE(VariantVector, construction)
 }
 TEST_CASE_END
 
-TEST_CASE(VariantVector, constIteration)
+TEST_CASE("constIteration")
 {
 	typedef WCL::VariantVector<long> LongVector;
 
@@ -42,7 +42,7 @@ TEST_CASE(VariantVector, constIteration)
 }
 TEST_CASE_END
 
-TEST_CASE(VariantVector, nonconstIteration)
+TEST_CASE("nonconstIteration")
 {
 	typedef WCL::VariantVector<long> LongVector;
 
@@ -57,7 +57,7 @@ TEST_CASE(VariantVector, nonconstIteration)
 }
 TEST_CASE_END
 
-TEST_CASE(VariantVector, indexingOperator)
+TEST_CASE("indexingOperator")
 {
 	typedef WCL::VariantVector<long> LongVector;
 

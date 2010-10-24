@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestPath.cpp
+//! \file   PathTests.cpp
 //! \brief  The unit tests for the CPath class.
 //! \author Chris Oldwood
 

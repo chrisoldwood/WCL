@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestComPtr.cpp
+//! \file   ComPtrTests.cpp
 //! \brief  The unit tests for the ComPtr class.
 //! \author Chris Oldwood
 

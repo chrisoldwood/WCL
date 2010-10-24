@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestIFacePtr.cpp
+//! \file   IFacePtrTests.cpp
 //! \brief  The unit tests for the IFacePtr class.
 //! \author Chris Oldwood
 

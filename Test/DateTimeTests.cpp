@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestDateTime.cpp
+//! \file   DateTimeTests.cpp
 //! \brief  The unit tests for the CDateTime class.
 //! \author Chris Oldwood
 

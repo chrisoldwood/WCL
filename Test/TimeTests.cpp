@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestTime.cpp
+//! \file   TimeTests.cpp
 //! \brief  The unit tests for the CTime class.
 //! \author Chris Oldwood
 

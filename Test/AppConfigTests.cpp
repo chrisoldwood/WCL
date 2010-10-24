@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestAppConfig.cpp
+//! \file   AppConfigTests.cpp
 //! \brief  The unit tests for the AppConfig class.
 //! \author Chris Oldwood
 

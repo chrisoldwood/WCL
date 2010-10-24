@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestRegistryCfgProvider.cpp
+//! \file   RegistryCfgProviderTests.cpp
 //! \brief  The unit tests for the RegistryCfgProvider class.
 //! \author Chris Oldwood
 

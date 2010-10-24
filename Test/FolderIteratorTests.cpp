@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestFolderIterator.cpp
+//! \file   FolderIteratorTests.cpp
 //! \brief  The unit tests for the FolderIterator class.
 //! \author Chris Oldwood
 

@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestDate.cpp
+//! \file   DateTests.cpp
 //! \brief  The unit tests for the CDate class.
 //! \author Chris Oldwood
 

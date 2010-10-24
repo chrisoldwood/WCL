@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestMisc.cpp
+//! \file   MiscTests.cpp
 //! \brief  The unit tests for the CRect class.
 //! \author Chris Oldwood
 

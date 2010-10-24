@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestIniFile.cpp
+//! \file   IniFileTests.cpp
 //! \brief  The unit tests for the IniFile class.
 //! \author Chris Oldwood
 

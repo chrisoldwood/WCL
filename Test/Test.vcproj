@@ -155,64 +155,64 @@
 				RelativePath=".\Test.cpp">
 			</File>
 			<File
-				RelativePath=".\TestAppConfig.cpp">
+				RelativePath=".\AppConfigTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestComException.cpp">
+				RelativePath=".\ComExceptionTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestComPtr.cpp">
+				RelativePath=".\ComPtrTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestComStr.cpp">
+				RelativePath=".\ComStrTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestDate.cpp">
+				RelativePath=".\DateTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestDateTime.cpp">
+				RelativePath=".\DateTimeTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestFolderIterator.cpp">
+				RelativePath=".\FolderIteratorTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestIFacePtr.cpp">
+				RelativePath=".\IFacePtrTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestIniFile.cpp">
+				RelativePath=".\IniFileTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestIniFileCfgProvider.cpp">
+				RelativePath=".\IniFileCfgProviderTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestPath.cpp">
+				RelativePath=".\PathTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestRect.cpp">
+				RelativePath=".\RectTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestRegistryCfgProvider.cpp">
+				RelativePath=".\RegistryCfgProviderTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestSeTranslator.cpp">
+				RelativePath=".\SeTranslatorTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestString.cpp">
+				RelativePath=".\StringTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestStringUtils.cpp">
+				RelativePath=".\StringUtilsTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestTime.cpp">
+				RelativePath=".\TimeTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestVariant.cpp">
+				RelativePath=".\VariantTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestVariantVector.cpp">
+				RelativePath=".\VariantVectorTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestVerInfoReader.cpp">
+				RelativePath=".\VerInfoReaderTests.cpp">
 			</File>
 		</Filter>
 		<Filter

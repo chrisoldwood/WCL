@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestString.cpp
+//! \file   StringTests.cpp
 //! \brief  The unit tests for the CString class.
 //! \author Chris Oldwood
 

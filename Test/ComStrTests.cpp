@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestComStr.cpp
+//! \file   ComStrTests.cpp
 //! \brief  The unit tests for the ComStr class.
 //! \author Chris Oldwood
 
