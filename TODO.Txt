@@ -42,6 +42,9 @@
 
 - CFile/IStreamBase needs a getStreamPos() style method to replace use of Seek(0, CURRENT).
 
+- Fix discrepency between type/valueType and format/formatFullType.
+
+- AttachTo should thrown if not null.
 
 UNICODE
 =======
