@@ -1,4 +1,4 @@
-- Find and fix any c-style casts, e.g. (DLGPROC) or (LPARAM).
+- Find and fix any c-style casts, e.g. (DLGPROC) or (LPARAM) - use GCC.
 
 - Change to use specific types (keycode_t etc) instead of WORD, LRESULT, etc.
 
@@ -45,6 +45,10 @@
 - Fix discrepency between type/valueType and format/formatFullType.
 
 - AttachTo should thrown if not null.
+
+- VariantVector<T> could infer VT_? from T.
+
+- Why does VariantVector<T> ctor need VT_TYPE when attaching an existing SAFEARRAY?
 
 UNICODE
 =======

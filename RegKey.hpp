@@ -72,6 +72,9 @@ public:
 	//! Query if the key exists.
 	static bool Exists(HKEY hParentKey, const tchar* pszSubKey);
 
+	//! Create a sub key.
+	static void CreateSubKey(HKEY hParentKey, const tchar* pszSubKey);
+
 	//! Delete the key.
 	static bool Delete(HKEY hParentKey, const tchar* pszSubKey);
 

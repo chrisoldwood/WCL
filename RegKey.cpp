@@ -200,6 +200,16 @@ bool RegKey::Exists(HKEY hParentKey, const tchar* pszSubKey)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Create a sub key.
+
+void RegKey::CreateSubKey(HKEY hParentKey, const tchar* pszSubKey)
+{
+	WCL::RegKey key;
+
+	key.Create(hParentKey, pszSubKey);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Delete the key. This only deletes the key and any named values, it does not
 //! recursively delete any subkeys.
 //! If the method fails the error code can be retrieved with GetLastError().
