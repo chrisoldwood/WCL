@@ -12,6 +12,8 @@ TEST_SET(IFacePtr)
 {
 	typedef WCL::IFacePtr<IPtrTest> ITestPtr;
 
+TEST_CASE("compilation should succeed")
+{
 	ITestPtr pITest1;
 //	ITestPtr pITest2 = new PtrTest;			// Shouldn't compile.
 	ITestPtr pITest3 = ITestPtr(new PtrTest);
@@ -23,29 +25,133 @@ TEST_SET(IFacePtr)
 	TEST_TRUE(pITest4.get() != nullptr);
 	TEST_TRUE(pITest5.get() != nullptr);
 
-	pITest1 = pITest3;
-	pITest1 = pITest1;
-//	IPtrTest* pIRaw = pITest1;				// Shouldn't compile.
+	TEST_PASSED("compilation succeeded");
+}
+TEST_CASE_END
 
-	TEST_TRUE(pITest1.get() == pITest3.get());
+TEST_CASE("initial state is a null pointer")
+{
+	ITestPtr test;
 
-	pITest1->Run();
-	(*pITest1).Run();
+	TEST_TRUE(test.get() == nullptr);
+}
+TEST_CASE_END
 
-//	TEST_FALSE((pITest1 == NULL) || (pITest1 != NULL));	// Shouldn't compile.
-	TEST_FALSE(!pITest1);
+TEST_CASE("construction with a pointer passes ownership")
+{
+	PtrTest* expected = new PtrTest;
+	ITestPtr  test(expected);
 
-	TEST_TRUE(pITest1 == pITest3);
-	TEST_TRUE(pITest1 != pITest4);
+	TEST_TRUE(test.get() == expected);
+}
+TEST_CASE_END
 
-	pITest1.Release();
+TEST_CASE("owned pointer can be accessed as a pointer or reference")
+{
+	PtrTest* expected = new PtrTest;
+	ITestPtr  test(expected);
 
-	TEST_TRUE(pITest1.get() == nullptr);
+	TEST_TRUE(test.get() == &test.getRef());
+}
+TEST_CASE_END
 
-	delete pITest4.Detach();
+TEST_CASE("retrieving reference when pointer is null throws an exception")
+{
+	ITestPtr test;
 
-	TEST_TRUE(pITest4.get() == nullptr);
+	TEST_THROWS(test.getRef());
+}
+TEST_CASE_END
 
-//	delete pTest1;	// Shouldn't compile.
+TEST_CASE("operator -> returns owned pointer")
+{
+	ITestPtr test(new PtrTest);
+
+	TEST_TRUE(test->Run());
+}
+TEST_CASE_END
+
+TEST_CASE("operator -> throws when the owned pointer is null")
+{
+	ITestPtr test;
+
+	TEST_THROWS(test->Run());
+}
+TEST_CASE_END
+
+TEST_CASE("operator * returns owned pointer as a reference")
+{
+	ITestPtr test(new PtrTest);
+
+	TEST_TRUE((*test).Run());
+}
+TEST_CASE_END
+
+TEST_CASE("operator * throws when the owned pointer is null")
+{
+	ITestPtr test;
+
+	TEST_THROWS((*test).Run());
+}
+TEST_CASE_END
+
+TEST_CASE("not operator returns if the contained pointer is null or not")
+{
+	ITestPtr hasNullPtr;
+	ITestPtr hasRealPtr(new PtrTest);
+
+	TEST_TRUE(!hasNullPtr);
+	TEST_FALSE(!hasRealPtr);
+}
+TEST_CASE_END
+
+TEST_CASE("[in]equivalence operator compares two pointers")
+{
+	ITestPtr hasNullPtr;
+	ITestPtr hasRealPtr(new PtrTest);
+
+	TEST_TRUE(hasNullPtr == hasNullPtr);
+	TEST_TRUE(hasNullPtr != hasRealPtr);
+	TEST_TRUE(hasRealPtr == hasRealPtr);
+}
+TEST_CASE_END
+
+TEST_CASE("reset empties the pointer when argument is null pointer")
+{
+	ITestPtr test(new PtrTest);
+
+	test.Release();
+
+	TEST_TRUE(test.get() == nullptr);
+}
+TEST_CASE_END
+
+TEST_CASE("detach releases ownership of the pointer")
+{
+	PtrTest  value;
+	PtrTest* expected = &value;
+
+	ITestPtr test(expected);
+
+	TEST_TRUE(test.get() == expected);
+
+	test.Detach();
+
+	TEST_TRUE(test.get() == nullptr);
+}
+TEST_CASE_END
+
+TEST_CASE("smart pointer unaware functions can attach a pointer to an empty instance")
+{
+	ITestPtr test;
+
+	PtrTest* expected = new PtrTest;
+
+	*AttachTo(test) = expected;
+
+	TEST_TRUE(test.get() == expected);
+}
+TEST_CASE_END
+
 }
 TEST_SET_END

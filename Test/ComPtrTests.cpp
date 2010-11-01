@@ -20,76 +20,153 @@ TEST_SET(ComPtr)
 
 	WCL::AutoCom oAutoCom(COINIT_APARTMENTTHREADED);
 
-	IMalloc* pMalloc1 = nullptr;
+TEST_CASE("initial state is a null pointer")
+{
+	IMallocPtr test;
 
-	::CoGetMalloc(1, &pMalloc1);
+	TEST_TRUE(test.get() == nullptr);
+}
+TEST_CASE_END
 
-	ASSERT(pMalloc1 != nullptr);
+TEST_CASE("releasing a null pointer is benign")
+{
+	IUnknownPtr test;
 
-	IMallocPtr pTest1;
+	test.Release();
 
-	TEST_TRUE(pTest1.get() == nullptr);
+	TEST_TRUE(test.get() == nullptr);
+}
+TEST_CASE_END
 
-	::CoGetMalloc(1, AttachTo(pTest1));
+TEST_CASE("smart pointer unaware functions can attach a pointer to an empty instance")
+{
+	IMallocPtr test;
 
-	TEST_TRUE(pTest1.get() != nullptr);
+	::CoGetMalloc(1, AttachTo(test));
 
-//	IMallocPtr pTest2 = pMalloc1;		// Shouldn't compile.
+	TEST_TRUE(test.get() != nullptr);
+}
+TEST_CASE_END
 
-	IMallocPtr pTest3(pMalloc1);
+TEST_CASE("construction with a pointer passes ownership")
+{
+	IMalloc* expected = nullptr;
 
-	TEST_TRUE(pTest3.get() == pMalloc1);
+	::CoGetMalloc(1, &expected);
 
-	pTest3 = pTest3;
+	IMallocPtr test(expected);
 
-	TEST_TRUE(pTest3.get() == pMalloc1);
+	TEST_TRUE(test.get() == expected);
+}
+TEST_CASE_END
 
-	IMallocPtr pTest4(pTest1);
+TEST_CASE("assigment shares ownership")
+{
+	IMalloc* expected = nullptr;
 
-	TEST_TRUE(pTest4.get() == pTest1.get());
+	::CoGetMalloc(1, &expected);
 
-	pTest4 = pTest1;
+	IMallocPtr original(expected), copy;
 
-	TEST_TRUE(pTest4.get() == pTest1.get());
+	TEST_TRUE(copy.get() == nullptr);
 
-	IFaceOnlyPtr pMalloc2;
+	copy = original;
 
-	::CoGetMalloc(1, AttachTo(pMalloc2));
+	TEST_TRUE(copy.get() == expected);
+}
+TEST_CASE_END
 
-	ASSERT(pMalloc2.get() != nullptr);
+TEST_CASE("construction is possible from an IFacePtr")
+{
+	IFaceOnlyPtr iface;
 
-	IMallocPtr pTest5(pMalloc2);
+	::CoGetMalloc(1, AttachTo(iface));
 
-	TEST_TRUE(pTest5.get() == pMalloc2.get());
+	IMallocPtr test(iface);
 
-	pTest5 = pMalloc2;
+	TEST_TRUE(test.get() == iface.get());
+}
+TEST_CASE_END
 
-	TEST_TRUE(pTest5.get() == pMalloc2.get());
+TEST_CASE("assignment is possible from an IFacePtr")
+{
+	IFaceOnlyPtr iface;
 
-	IUnknownPtr pUnknown(pMalloc2);
+	::CoGetMalloc(1, AttachTo(iface));
 
-	TEST_TRUE(pUnknown.get() != nullptr);
+	IMallocPtr copy;
 
-	pUnknown.QueryInterface(pMalloc2);
+	copy = iface;
 
-	TEST_TRUE(pUnknown.get() != nullptr);
+	TEST_TRUE(copy.get() == iface.get());
+}
+TEST_CASE_END
 
-	IClassFactoryPtr pFactory;
+TEST_CASE("construction from a different interface requires the object to support that interface")
+{
+	IFaceOnlyPtr iface;
 
-	TEST_THROWS(pFactory.QueryInterface(pMalloc2));
+	::CoGetMalloc(1, AttachTo(iface));
 
-	IUnknownPtr pShell(CLSID_ShellDesktop);
+	IUnknownPtr unknown(iface);
 
-	TEST_TRUE(pShell.get() != nullptr);
+	TEST_TRUE(unknown.get() != nullptr);
+}
+TEST_CASE_END
 
-	pShell.Release();
+TEST_CASE("a pointer can acquire its object by querying another object for a different interface")
+{
+	IFaceOnlyPtr iface;
 
-	TEST_TRUE(pShell.get() == nullptr);
+	::CoGetMalloc(1, AttachTo(iface));
 
-	pShell.CreateInstance(CLSID_ShellDesktop);
+	IUnknownPtr unknown;
 
-	TEST_TRUE(pShell.get() != nullptr);
+	unknown.QueryInterface(iface);
 
-	pShell.Release();
+	TEST_TRUE(unknown.get() != nullptr);
+}
+TEST_CASE_END
+
+TEST_CASE("acquiring an unsupported interface throws an exception")
+{
+	IFaceOnlyPtr iface;
+
+	::CoGetMalloc(1, AttachTo(iface));
+
+	IClassFactoryPtr factory;
+
+	TEST_THROWS(factory.QueryInterface(iface));
+}
+TEST_CASE_END
+
+TEST_CASE("a COM object can be created through construction via its CLSID")
+{
+	IUnknownPtr test(CLSID_ShellDesktop);
+
+	TEST_TRUE(test.get() != nullptr);
+}
+TEST_CASE_END
+
+TEST_CASE("a COM object can be explictly created via its CLSID")
+{
+	IUnknownPtr test;
+
+	test.CreateInstance(CLSID_ShellDesktop);
+
+	TEST_TRUE(test.get() != nullptr);
+}
+TEST_CASE_END
+
+TEST_CASE("explicitly releasing a pointer removes ownership")
+{
+	IUnknownPtr test(CLSID_ShellDesktop);
+
+	test.Release();
+
+	TEST_TRUE(test.get() == nullptr);
+}
+TEST_CASE_END
+
 }
 TEST_SET_END

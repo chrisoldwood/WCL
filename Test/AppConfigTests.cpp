@@ -11,46 +11,62 @@
 #include <WCL/IniFile.hpp>
 #include <WCL/File.hpp>
 
+static HKEY    s_rootKey     = HKEY_CURRENT_USER;
+static tstring s_publisher   = TXT("Chris Oldwood");
+static tstring s_pubPath     = Core::fmt(TXT("Software\\%s"), s_publisher.c_str());
+static tstring s_application = TXT("Unit Tests");
+static tstring s_appPath     = Core::fmt(TXT("Software\\%s\\%s"), s_publisher.c_str(), s_application.c_str());
+
 TEST_SET(AppConfig)
 {
-	HKEY    rootKey     = HKEY_CURRENT_USER;
-	tstring publisher   = TXT("Chris Oldwood");
-	tstring pubPath     = Core::fmt(TXT("Software\\%s"), publisher.c_str());
-	tstring application = TXT("Unit Tests");
-	tstring appPath     = Core::fmt(TXT("Software\\%s\\%s"), publisher.c_str(), application.c_str());
 
-	WCL::RegKey::DeleteTree(rootKey, appPath.c_str());
-	ASSERT(!WCL::RegKey::Exists(rootKey, appPath.c_str()));
+TEST_CASE_TEARDOWN()
+{
+	WCL::RegKey::DeleteTree(s_rootKey, s_appPath.c_str());
+	ASSERT(!WCL::RegKey::Exists(s_rootKey, s_appPath.c_str()));
 
 	CIniFile iniFile;
 	CFile::Delete(iniFile.m_strPath);
 	ASSERT(!iniFile.m_strPath.Exists());
+}
+TEST_CASE_TEARDOWN_END
+
+TEST_CASE("default configuration provider is the registry")
 {
-	WCL::AppConfig appConfig(publisher, application);
+
+{
+	WCL::AppConfig appConfig(s_publisher, s_application);
 
 	TEST_TRUE(appConfig.getStorageType() == WCL::AppConfig::REGISTRY);
 
 	appConfig.writeString(TXT("Section"), TXT("Key"), TXT("Value"));
 
-	TEST_TRUE(WCL::RegKey::ReadKeyStringValue(HKEY_CURRENT_USER, (appPath + TXT("\\Section")).c_str(), TXT("Key"), TXT("default")) == TXT("Value"));
+	TEST_TRUE(WCL::RegKey::ReadKeyStringValue(HKEY_CURRENT_USER, (s_appPath + TXT("\\Section")).c_str(), TXT("Key"), TXT("default")) == TXT("Value"));
 
 	appConfig.writeString(WCL::AppConfig::DEFAULT_SECTION, TXT("Key2"), TXT("Value2"));
 
-	TEST_TRUE(WCL::RegKey::ReadKeyStringValue(HKEY_CURRENT_USER, appPath.c_str(), TXT("Key2"), TXT("default")) == TXT("Value2"));
+	TEST_TRUE(WCL::RegKey::ReadKeyStringValue(HKEY_CURRENT_USER, s_appPath.c_str(), TXT("Key2"), TXT("default")) == TXT("Value2"));
 }
+
 {
-	WCL::AppConfig appConfig(publisher, application);
+	WCL::AppConfig appConfig(s_publisher, s_application);
 
 	TEST_TRUE(appConfig.getStorageType() == WCL::AppConfig::REGISTRY);
 
 	TEST_TRUE(appConfig.readString(TXT("Section"), TXT("Key"), TXT("default")) == TXT("Value"));
 }
+
+}
+TEST_CASE_END
+
+TEST_CASE("one alternate configuration provider is an .ini file")
 {
-	WCL::AppConfig appConfig(publisher, application);
+	CIniFile       iniFile;
+	WCL::AppConfig appConfig(s_publisher, s_application);
 
 	appConfig.setStorageType(WCL::AppConfig::INIFILE);
 
-	TEST_TRUE(WCL::RegKey::Exists(rootKey, pubPath.c_str()) && !WCL::RegKey::Exists(rootKey, appPath.c_str()));
+	TEST_TRUE(WCL::RegKey::Exists(s_rootKey, s_pubPath.c_str()) && !WCL::RegKey::Exists(s_rootKey, s_appPath.c_str()));
 
 	appConfig.writeString(TXT("Section"), TXT("Key"), TXT("Value"));
 
@@ -58,14 +74,17 @@ TEST_SET(AppConfig)
 
 	appConfig.writeString(WCL::AppConfig::DEFAULT_SECTION, TXT("Key2"), TXT("Value2"));
 
-	TEST_TRUE(iniFile.ReadString(application, TXT("Key2"), TXT("default")) == TXT("Value2"));
+	TEST_TRUE(iniFile.ReadString(s_application, TXT("Key2"), TXT("default")) == TXT("Value2"));
 
 	appConfig.setStorageType(WCL::AppConfig::REGISTRY);
 
 	TEST_TRUE(!iniFile.m_strPath.Exists());
 }
+TEST_CASE_END
+
+TEST_CASE("the default value is returned when no configuration value exists")
 {
-	WCL::AppConfig appConfig(publisher, application);
+	WCL::AppConfig appConfig(s_publisher, s_application);
 
 	const size_t value    = 1234;
 	const size_t defValue = 5678;
@@ -76,8 +95,11 @@ TEST_SET(AppConfig)
 
 	TEST_TRUE(appConfig.readValue<size_t>(TXT("Section"), TXT("Name"), defValue) == value);
 }
+TEST_CASE_END
+
+TEST_CASE("a list of strings can be written and read")
 {
-	WCL::AppConfig appConfig(publisher, application);
+	WCL::AppConfig appConfig(s_publisher, s_application);
 
 	WCL::AppConfig::StringArray list;
 
@@ -91,16 +113,23 @@ TEST_SET(AppConfig)
 	appConfig.readList(TXT("Section"), TXT("List"), TXT(""), result);
 
 	TEST_TRUE(result == list);
+}
+TEST_CASE_END
+
+TEST_CASE("a section can be deleted by name")
+{
+	WCL::AppConfig appConfig(s_publisher, s_application);
+
+	const size_t value    = 1234;
+	const size_t defValue = 5678;
+
+	appConfig.writeValue<size_t>(TXT("Section"), TXT("Name"), value);
 
 	appConfig.deleteSection(TXT("Section"));
 
-	TEST_TRUE(appConfig.readString(TXT("Section"), TXT("List"), TXT("")) == TXT(""));
+	TEST_TRUE(appConfig.readValue<size_t>(TXT("Section"), TXT("Name"), defValue) == defValue);
 }
+TEST_CASE_END
 
-	WCL::RegKey::DeleteTree(rootKey, appPath.c_str());
-	ASSERT(!WCL::RegKey::Exists(rootKey, appPath.c_str()));
-
-	CFile::Delete(iniFile.m_strPath);
-	ASSERT(!iniFile.m_strPath.Exists());
 }
 TEST_SET_END

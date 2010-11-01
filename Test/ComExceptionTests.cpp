@@ -56,36 +56,51 @@ class TestComClass : public IErrorLog,
 TEST_SET(ComException)
 {
 
-TEST_CASE("constructionFromCstring")
+TEST_CASE("construction is from a result code and c-style string")
 {
-	WCL::ComException e(E_FAIL, TXT("UnitTest"));
+	const HRESULT testCode = E_FAIL;
+	const tchar*  testMessage = TXT("UnitTest");
 
-	tstring str = e.twhat();
+	WCL::ComException e(testCode, testMessage);
 
-	TEST_TRUE(str.find(TXT("UnitTest")) != tstring::npos);
+	tstring message = e.twhat();
+
+	TEST_TRUE(e.m_result == testCode);
+	TEST_TRUE(message.find(testMessage) != tstring::npos);
 }
 TEST_CASE_END
 
-TEST_CASE("constructionFromTstring")
+TEST_CASE("construction is from a result code and a std::string")
 {
-	WCL::ComException e(E_FAIL, tstring(TXT("UnitTest")));
+	const HRESULT testCode = E_FAIL;
+	const tstring testMessage = TXT("UnitTest");
 
-	tstring str = e.twhat();
+	WCL::ComException e(testCode, testMessage);
 
-	TEST_TRUE(str.find(TXT("UnitTest")) != tstring::npos);
+	tstring message = e.twhat();
+
+	TEST_TRUE(e.m_result == testCode);
+	TEST_TRUE(message.find(testMessage) != tstring::npos);
 }
 TEST_CASE_END
 
 	WCL::AutoCom com(COINIT_APARTMENTTHREADED);
+
+TEST_CASE("message contains the numeric value of the result code")
 {
-	WCL::ComException e(E_FAIL, TXT("UnitTest"));
+	const HRESULT testCode = E_FAIL;
+	const tstring testCodeAsString = TXT("0x80004005");
+	const tstring testMessage = TXT("UnitTest");
 
-	tstring str = e.twhat();
+	WCL::ComException e(testCode, testMessage);
 
-	TEST_TRUE(e.m_result == E_FAIL);
-	TEST_TRUE(str.find(TXT("UnitTest")) != tstring::npos);
-	TEST_TRUE(str.find(TXT("0x80004005")) != tstring::npos);
+	tstring message = e.twhat();
+
+	TEST_TRUE(message.find(testCodeAsString) != tstring::npos);
 }
+TEST_CASE_END
+
+TEST_CASE("message contains some extra detail when constructed from an object supplying partial IErrorInfo details")
 {
 	typedef WCL::IFacePtr<IMalloc> IMallocPtr;
 
@@ -103,6 +118,9 @@ TEST_CASE_END
 	TEST_TRUE(e.m_result == E_FAIL);
 	TEST_TRUE(str.find(TXT('{')) == tstring::npos);
 }
+TEST_CASE_END
+
+TEST_CASE("message contains full details when constructed from a complete IErrorInfo object")
 {
 	typedef WCL::ComPtr<ICreateErrorInfo> ICreateErrorInfoPtr;
 	typedef WCL::ComPtr<IErrorInfo>       IErrorInfoPtr;
@@ -112,8 +130,8 @@ TEST_CASE_END
 
 	ASSERT(SUCCEEDED(hr));
 
-	pCreateErrorInfo->SetSource(const_cast<wchar_t*>(L"Source"));
-	pCreateErrorInfo->SetDescription(const_cast<wchar_t*>(L"Description"));
+	pCreateErrorInfo->SetSource(const_cast<wchar_t*>(L"TestSource"));
+	pCreateErrorInfo->SetDescription(const_cast<wchar_t*>(L"TestDescription"));
 
 	IErrorInfoPtr pErrorInfo;
 	hr = WCL::QueryInterface(pCreateErrorInfo, pErrorInfo);
@@ -133,8 +151,10 @@ TEST_CASE_END
 	tstring str = e.twhat();
 
 	TEST_TRUE(e.m_result == E_POINTER);
-	TEST_TRUE(str.find(TXT("Source")) != tstring::npos);
-	TEST_TRUE(str.find(TXT("Description")) != tstring::npos);
+	TEST_TRUE(str.find(TXT("TestSource")) != tstring::npos);
+	TEST_TRUE(str.find(TXT("TestDescription")) != tstring::npos);
 }
+TEST_CASE_END
+
 }
 TEST_SET_END

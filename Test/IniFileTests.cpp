@@ -9,10 +9,19 @@
 
 TEST_SET(IniFile)
 {
-	CPath strFileName(CPath::ApplicationDir(), TXT("test.INI"));
+
+TEST_CASE("default construction refers to a file with the name of the process and an .ini extension")
+{
+	const tchar* processName = TXT("test");
+	const CPath  folder = CPath::ApplicationDir();
+
+	tstring expected = Core::fmt(TXT("%s\\%s.ini"), folder.c_str(), processName);
 
 	CIniFile oIniFile;
 
-	TEST_TRUE(tstricmp(strFileName, oIniFile.m_strPath) == 0);
+	TEST_TRUE(tstricmp(expected.c_str(), oIniFile.m_strPath) == 0);
+}
+TEST_CASE_END
+
 }
 TEST_SET_END

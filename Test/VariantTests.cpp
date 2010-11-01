@@ -11,13 +11,12 @@
 
 TEST_SET(Variant)
 {
-
 	const int32		int32Max  = std::numeric_limits<int32>::max();
 	const uint32	uint32Max = std::numeric_limits<uint32>::max();
 	const int64		int64Max  = std::numeric_limits<int64>::max();
 	const uint64	uint64Max = std::numeric_limits<uint64>::max();
 
-TEST_CASE("defaultConstruction")
+TEST_CASE("initial state is empty")
 {
 	WCL::Variant variant;
 
@@ -25,7 +24,7 @@ TEST_CASE("defaultConstruction")
 }
 TEST_CASE_END
 
-TEST_CASE("constructionFromBool")
+TEST_CASE("construction from C++ bool converts to a variant bool")
 {
 	WCL::Variant variant1(true);
 
@@ -39,7 +38,7 @@ TEST_CASE("constructionFromBool")
 }
 TEST_CASE_END
 
-TEST_CASE("constructionFromInt32")
+TEST_CASE("can be constructed from a signed integer")
 {
 	WCL::Variant variant(int32Max);
 
@@ -48,7 +47,7 @@ TEST_CASE("constructionFromInt32")
 }
 TEST_CASE_END
 
-TEST_CASE("constructionFromUint32")
+TEST_CASE("can be constructed from an unsigned integer")
 {
 	WCL::Variant variant(uint32Max);
 
@@ -57,7 +56,7 @@ TEST_CASE("constructionFromUint32")
 }
 TEST_CASE_END
 
-TEST_CASE("constructionFromInt64")
+TEST_CASE("can be constructed from a 64-bit signed integer")
 {
 	WCL::Variant variant(int64Max);
 
@@ -66,7 +65,7 @@ TEST_CASE("constructionFromInt64")
 }
 TEST_CASE_END
 
-TEST_CASE("constructionFromUint64")
+TEST_CASE("can be constructed from a 64-but unsigned integer")
 {
 	WCL::Variant variant(uint64Max);
 
@@ -75,7 +74,7 @@ TEST_CASE("constructionFromUint64")
 }
 TEST_CASE_END
 
-TEST_CASE("constructionFromWideString")
+TEST_CASE("can be constructed from a Unicode string")
 {
 	WCL::Variant variant(L"Unit Test");
 
@@ -84,7 +83,7 @@ TEST_CASE("constructionFromWideString")
 }
 TEST_CASE_END
 
-TEST_CASE("constructionFromBSTR")
+TEST_CASE("can be constructed from a BSTR")
 {
 	WCL::ComStr  bstr(TXT("Unit Test"));
 	WCL::Variant variant(bstr);
@@ -95,7 +94,7 @@ TEST_CASE("constructionFromBSTR")
 }
 TEST_CASE_END
 
-TEST_CASE("constructionByCoercion")
+TEST_CASE("construction from another value and different type performs conversion of the value")
 {
 	WCL::Variant longVariant;
 
@@ -109,7 +108,18 @@ TEST_CASE("constructionByCoercion")
 }
 TEST_CASE_END
 
-TEST_CASE("copyConstruction")
+TEST_CASE("construction from a value and an incompatible type throws an exception")
+{
+	WCL::Variant longVariant;
+
+	V_VT(&longVariant)  = VT_I4;
+	V_INT(&longVariant) = 1234;
+
+	TEST_THROWS(WCL::Variant(longVariant, VT_I1));
+}
+TEST_CASE_END
+
+TEST_CASE("construction from another value creates a deep copy")
 {
 	WCL::ComStr  bstr(TXT("Unit Test"));
 	WCL::Variant variant(bstr);
@@ -118,10 +128,11 @@ TEST_CASE("copyConstruction")
 
 	TEST_TRUE(V_VT(&copy) == VT_BSTR);
 	TEST_TRUE(wcscmp(V_BSTR(&copy), L"Unit Test") == 0);
+	TEST_TRUE(V_BSTR(&copy) != V_BSTR(&variant));
 }
 TEST_CASE_END
 
-TEST_CASE("assignment")
+TEST_CASE("assignment replaces the value with another of a potentially different underlying type")
 {
 	WCL::ComStr  bstr(TXT("Unit Test"));
 	WCL::Variant variant(bstr);
@@ -138,7 +149,7 @@ TEST_CASE("assignment")
 }
 TEST_CASE_END
 
-TEST_CASE("type")
+TEST_CASE("the raw variant type can be queried")
 {
 	WCL::Variant variant(L"Unit Test");
 
@@ -146,7 +157,27 @@ TEST_CASE("type")
 }
 TEST_CASE_END
 
-TEST_CASE("formatType")
+TEST_CASE("the element data type of an array can queried")
+{
+	WCL::VariantVector<uint> safeArray(1, VT_UI4);
+
+	WCL::Variant variantArray;
+
+	V_VT(&variantArray)    = VT_ARRAY|VT_UI4;
+	V_ARRAY(&variantArray) = safeArray.Detach();
+
+	TEST_TRUE(variantArray.type() == (VT_ARRAY|VT_UI4));
+	TEST_TRUE(variantArray.valueType() == VT_UI4);
+}
+TEST_CASE_END
+
+TEST_CASE("formatting the variant type only includes the value type")
+{
+	TEST_TRUE(tstrcmp(WCL::Variant::formatType(VT_UI4), TXT("VT_UI4")) == 0);
+}
+TEST_CASE_END
+
+TEST_CASE("formatting the full variant type includes the value type and flags")
 {
 	WCL::VariantVector<uint> safeArray(1, VT_UI4);
 
@@ -157,54 +188,67 @@ TEST_CASE("formatType")
 	V_VT(&variantArray)    = VT_ARRAY|VT_UI4;
 	V_ARRAY(&variantArray) = safeArray.Detach();
 
-	TEST_TRUE(tstrcmp(WCL::Variant::formatType(V_VT(&variantArray)), TXT("VT_UI4")) == 0);
 	TEST_TRUE(WCL::Variant::formatFullType(variantArray) == TXT("VT_UI4|VT_ARRAY"));
 }
 TEST_CASE_END
 
-TEST_CASE("format")
+TEST_CASE("formatting a null or empty variant converts it to an empty string")
 {
-	WCL::Variant variant1;
+	WCL::Variant variant;
 
-	TEST_TRUE(variant1.format() == TXT(""));
+	TEST_TRUE(variant.format() == TXT(""));
 
-	WCL::Variant variant2(1234L);
+	V_VT(&variant) = VT_NULL;
 
-	TEST_TRUE(variant2.format() == TXT("1234"));
-
-	WCL::Variant variant3;
-
-	V_VT(&variant3) = VT_NULL;
-
-	TEST_TRUE(variant3.format() == TXT(""));
-
-	WCL::Variant variant4(true);
-
-	TEST_TRUE(variant4.format() == TXT("True"));
-
-	WCL::Variant variant5(false);
-
-	TEST_TRUE(variant5.format() == TXT("False"));
+	TEST_TRUE(variant.format() == TXT(""));
 }
 TEST_CASE_END
 
-TEST_CASE("getValueAsTstring")
+TEST_CASE("formatting a numeric variant converts it to a string")
+{
+	WCL::Variant variant(1234L);
+
+	TEST_TRUE(variant.format() == TXT("1234"));
+}
+TEST_CASE_END
+
+TEST_CASE("formatting a boolean variant converts it to a 'True' or 'False' string")
+{
+	WCL::Variant variantTrue(true);
+
+	TEST_TRUE(variantTrue.format() == TXT("True"));
+
+	WCL::Variant variantFalse(false);
+
+	TEST_TRUE(variantFalse.format() == TXT("False"));
+}
+TEST_CASE_END
+
+TEST_CASE("querying a string variant for it's string value returns the string")
 {
 	WCL::Variant variant(L"Unit Test");
 
 	TEST_TRUE(WCL::getValue<tstring>(variant) == TXT("Unit Test"));
+}
+TEST_CASE_END
 
+TEST_CASE("querying an empty variant for it's string value returns an empty string")
+{
 	WCL::Variant empty;
 
 	TEST_TRUE(WCL::getValue<tstring>(empty).empty());
+}
+TEST_CASE_END
 
+TEST_CASE("querying a non-string variant for it's string value throws an exception")
+{
 	WCL::Variant number(1234UL);
 
 	TEST_THROWS(WCL::getValue<tstring>(number));
 }
 TEST_CASE_END
 
-TEST_CASE("getValueAsBool")
+TEST_CASE("querying a boolean variant for it's boolean value returns a C++ boolean value")
 {
 	WCL::Variant variant(true);
 
@@ -212,7 +256,7 @@ TEST_CASE("getValueAsBool")
 }
 TEST_CASE_END
 
-TEST_CASE("getValueAsInteger")
+TEST_CASE("querying a numeric variant for it's numeric value returns the value")
 {
 	WCL::Variant varInt32(int32Max);
 	WCL::Variant varUint32(uint32Max);

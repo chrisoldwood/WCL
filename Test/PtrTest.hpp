@@ -11,7 +11,7 @@ class IPtrTest
 public:
 	virtual ulong AddRef() = 0;
 	virtual ulong Release() = 0;
-	virtual void  Run() = 0;
+	virtual bool  Run() = 0;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -36,8 +36,10 @@ public:
 		return m_nRefCount;
 	}
 
-	virtual void Run()
-	{ }
+	virtual bool Run()
+	{
+		return true;
+	}
 
 	ulong m_nRefCount;
 };

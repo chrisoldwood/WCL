@@ -8,26 +8,45 @@
 #include <WCL/VariantVector.hpp>
 #include <Core/Scoped.hpp>
 
+static void destroySafeArray(SAFEARRAY* safeArray)
+{
+	::SafeArrayDestroy(safeArray);
+}
+
 TEST_SET(VariantVector)
 {
+	typedef Core::Scoped<SAFEARRAY*> SafeArrayPtr;
 
-TEST_CASE("construction")
+TEST_CASE("construction from a size and type results in a vector of that size")
 {
-	WCL::VariantVector<long> vector1(10, VT_I4);
+	WCL::VariantVector<long> vector(10, VT_I4);
 
-	TEST_TRUE(vector1.Size() == 10);
-
-	SAFEARRAY* raw = vector1.Detach();
-
-	TEST_TRUE(raw != nullptr);
-
-	WCL::VariantVector<long> vector2(raw, VT_I4);
-
-	TEST_TRUE(vector2.Size() == 10);
+	TEST_TRUE(vector.Size() == 10);
 }
 TEST_CASE_END
 
-TEST_CASE("constIteration")
+TEST_CASE("detaching the underlying safe array resets the vector")
+{
+	WCL::VariantVector<long> vector(10, VT_I4);
+
+	SafeArrayPtr safeArray(destroySafeArray, vector.Detach());
+
+	TEST_TRUE(safeArray.get() != nullptr);
+	TEST_TRUE(vector.Size() == 0);
+}
+TEST_CASE_END
+
+TEST_CASE("construction from a safearray passes ownership")
+{
+	WCL::VariantVector<long> original(10, VT_I4);
+
+	WCL::VariantVector<long> newOwner(original.Detach(), VT_I4);
+
+	TEST_TRUE(newOwner.Size() == 10);
+}
+TEST_CASE_END
+
+TEST_CASE("a const instance returns const iterators")
 {
 	typedef WCL::VariantVector<long> LongVector;
 
@@ -37,12 +56,16 @@ TEST_CASE("constIteration")
 	LongVector::const_iterator end = vector.end();
 
 	TEST_TRUE(it != end);
+
 	++it;
+
+//	*it = 1234;		// Shouldn't compile.
+
 	TEST_TRUE(it == end);
 }
 TEST_CASE_END
 
-TEST_CASE("nonconstIteration")
+TEST_CASE("a non-const instance returns non-const iterators")
 {
 	typedef WCL::VariantVector<long> LongVector;
 
@@ -52,22 +75,36 @@ TEST_CASE("nonconstIteration")
 	LongVector::iterator end = vector.end();
 
 	TEST_TRUE(it != end);
+
 	++it;
+
+	*it = 1234;
+
 	TEST_TRUE(it == end);
 }
 TEST_CASE_END
 
-TEST_CASE("indexingOperator")
+TEST_CASE("the const indexing operator returns a const reference to the element")
 {
 	typedef WCL::VariantVector<long> LongVector;
 
-	LongVector vector1(1, VT_I4);
+	const LongVector vector(1, VT_I4);
 
-	vector1[0] = 1234;
+//	vector[0] = 1234;   // Shouldn't compile.
 
-	const LongVector vector2(vector1.Detach(), VT_I4);
+	TEST_TRUE(vector[0] == 0);
+}
+TEST_CASE_END
 
-	TEST_TRUE(vector2[0] == 1234);
+TEST_CASE("the non-const indexing operator returns a non-const reference to the element")
+{
+	typedef WCL::VariantVector<long> LongVector;
+
+	LongVector vector(1, VT_I4);
+
+	vector[0] = 1234;
+
+	TEST_TRUE(vector[0] == 1234);
 }
 TEST_CASE_END
 
