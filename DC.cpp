@@ -27,10 +27,18 @@
 */
 
 CDC::CDC()
+	: m_hDC(NULL)
+	, m_bRelease(false)
+	, m_iState(0)
+#ifdef _DEBUG
+	// To passify BoundsChecker.
+	, m_hOrgBitmap()
+	, m_hOrgBrush()
+	, m_hOrgFont()
+	, m_hOrgPalette()
+	, m_hOrgPen()
+#endif
 {
-	m_hDC      = NULL;
-	m_bRelease = false;
-	m_iState   = 0;
 }
 
 /******************************************************************************
@@ -208,7 +216,7 @@ CSize CDC::TextExtents(const tchar* pszText) const
 	CSize Size;
 
 	GetTextExtentPoint(m_hDC, pszText, lstrlen(pszText), &Size);
-	
+
 	return Size;
 }
 
@@ -264,7 +272,7 @@ void CDC::BitBlt(const CBitmap& rBitmap, const CRect& rcSrc, const CRect& rcDst,
 
 	// Select bitmap into source dc.
 	SrcDC.Select(rBitmap);
-	
+
 	// Blit it...
 	::StretchBlt(m_hDC, rcDst.left, rcDst.top, rcDst.Width(), rcDst.Height(),
 				SrcDC.Handle(), rcSrc.left, rcSrc.top, rcSrc.Width(), rcSrc.Height(),

@@ -11,6 +11,8 @@
 #pragma once
 #endif
 
+#include <Core/BadLogicException.hpp>
+
 namespace WCL
 {
 
@@ -22,7 +24,7 @@ BSTR* AttachTo(ComStr& bstr);
 ////////////////////////////////////////////////////////////////////////////////
 //! An RAII class for managing COM strings, aka a BSTR.
 
-class ComStr : private Core::NotCopyable
+class ComStr /*: private Core::NotCopyable*/
 {
 public:
 	//! Default constructor.
@@ -42,7 +44,7 @@ public:
 
 	//! Destructor.
 	~ComStr();
-	
+
 	//
 	// Methods.
 	//
@@ -50,9 +52,12 @@ public:
 	//! Access the underlying value.
 	BSTR Get() const;
 
+	//! Query if we own a string.
+	bool Empty() const;
+
 	//! Free the string.
 	void Release();
-	
+
 	//! Take ownership of an external string.
 	void Attach(BSTR bstr);
 
@@ -67,6 +72,10 @@ private:
 
 	//! Allow attachment via an output parameter.
 	friend BSTR* AttachTo(ComStr& bstr);
+
+	// NotCopyable.
+	ComStr(const ComStr&);
+	ComStr& operator=(const ComStr&);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -78,12 +87,21 @@ inline BSTR ComStr::Get() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Query if we own a string.
+
+inline bool ComStr::Empty() const
+{
+	return (m_bstr == nullptr);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Helper function to gain access to the internal member so that it can be
 //! passed as an output parameter, without overloading the & operator.
 
 inline BSTR* AttachTo(ComStr& bstr)
 {
-	ASSERT(bstr.m_bstr == nullptr);
+	if (!bstr.Empty())
+		throw Core::BadLogicException(TXT("Cannot attach to a non-empty smart pointer"));
 
 	return &bstr.m_bstr;
 }

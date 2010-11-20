@@ -21,7 +21,7 @@
 #include <sys/stat.h>
 
 /******************************************************************************
-** 
+**
 ** This class encapsulates I/O to a binary/ASCII file.
 **
 *******************************************************************************
@@ -35,7 +35,7 @@ public:
 	//
 	CFile();
 	~CFile();
-	
+
 	//
 	// Member access.
 	//
@@ -101,6 +101,11 @@ protected:
 	HANDLE			m_hFile;	// The files' handle.
 	CPath			m_Path;		// The files' path.
 	WCL::StreamPos	m_lEOF;		// Used to determine EOF.
+
+private:
+	// NotCopyable.
+	CFile(const CFile&);
+	CFile& operator=(const CFile&);
 };
 
 

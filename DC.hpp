@@ -27,14 +27,14 @@
 class CTransparentBmp;
 
 /******************************************************************************
-** 
+**
 ** This is an abstract base class from which all DCs are derived. All the
 ** methods are common to all forms of devices.
 **
 *******************************************************************************
 */
 
-class CDC
+class CDC /*: private NotCopyable*/
 {
 public:
 	//
@@ -42,7 +42,7 @@ public:
 	//
 	CDC();
 	virtual ~CDC();
-	
+
 	//
 	// Member access.
 	//
@@ -92,7 +92,7 @@ public:
 	void ViewportOrigin(const CPoint& rptOrigin);
 	void LPtoDP(CPoint* pPoints, int iNumPoints) const;
 	void DPtoLP(CPoint* pPoints, int iNumPoints) const;
-	
+
 	//
 	// Line drawing.
 	//
@@ -130,14 +130,14 @@ public:
 
 	//! Convert the point size to pixels.
 	long PointSizeToPixels(long nPointSize) const;
-	
+
 	//
 	// Bit blitting.
 	//
 	void BitBlt(const CBitmap& rBitmap, const CRect& rcSrc, const CRect& rcDst, DWORD dwRop = SRCCOPY);
 	void BitBlt(const CTransparentBmp& rBitmap, const CRect& rcSrc, const CRect& rcDst);
 	void PatBlt(const CRect& rcDst, DWORD dwRop = PATCOPY);
-	
+
 protected:
 	//
 	// Members.
@@ -158,6 +158,11 @@ protected:
 	//
 	// Internal methods.
 	//
+
+private:
+	// NotCopyable.
+	CDC(const CDC&);
+	CDC& operator=(const CDC&);
 };
 
 

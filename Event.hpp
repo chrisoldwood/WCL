@@ -17,13 +17,13 @@
 #endif
 
 /******************************************************************************
-** 
+**
 ** An Event thread lock.
 **
 *******************************************************************************
 */
 
-class CEvent
+class CEvent /*: private NotCopyable*/
 {
 public:
 	//
@@ -31,7 +31,7 @@ public:
 	//
 	CEvent(bool bManual, bool bSignaled);
 	~CEvent();
-	
+
 	//
 	// Accessors.
 	//
@@ -51,6 +51,11 @@ protected:
 	// Members.
 	//
 	HANDLE	m_hEvent;
+
+private:
+	// NotCopyable.
+	CEvent(const CEvent&);
+	CEvent& operator=(const CEvent&);
 };
 
 /******************************************************************************
@@ -61,6 +66,7 @@ protected:
 */
 
 inline CEvent::CEvent(bool bManual, bool bSignaled)
+	: m_hEvent()
 {
 	m_hEvent = ::CreateEvent(NULL, bManual, bSignaled, NULL);
 

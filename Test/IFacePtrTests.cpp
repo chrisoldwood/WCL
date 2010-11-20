@@ -153,5 +153,29 @@ TEST_CASE("smart pointer unaware functions can attach a pointer to an empty inst
 }
 TEST_CASE_END
 
+TEST_CASE("attaching a pointer to a non-empty smart pointer throws an exception")
+{
+	ITestPtr test(new PtrTest);
+
+	TEST_THROWS(AttachTo(test));
+}
+TEST_CASE_END
+
+TEST_CASE("the pointer is empty when it owns nothing")
+{
+	const ITestPtr test;
+
+	TEST_TRUE(test.empty());
+}
+TEST_CASE_END
+
+TEST_CASE("the pointer is not empty when it owns something")
+{
+	const ITestPtr test(new PtrTest);
+
+	TEST_FALSE(test.empty());
+}
+TEST_CASE_END
+
 }
 TEST_SET_END

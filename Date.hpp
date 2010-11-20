@@ -29,7 +29,7 @@ class IOutputStream;
 }
 
 /******************************************************************************
-** 
+**
 ** This class is used to represent a date. It is stored and manipulated as if
 ** it was a UTC time_t, with the time part set to midnight.
 **
@@ -51,8 +51,8 @@ public:
 	//
 	static CDate Min();
 	static CDate Max();
-	
-	//	
+
+	//
 	// Core accessors & mutators.
 	//
 	void Set();
@@ -158,21 +158,6 @@ protected:
 **
 *******************************************************************************
 */
-
-inline CDate::CDate()
-	: m_tDate(0)
-{
-}
-
-inline CDate::CDate(WCL::Seconds tDate)
-{
-	Set(tDate);
-}
-
-inline CDate::CDate(int iDay, int iMonth, int iYear)
-{
-	Set(iDay, iMonth, iYear);
-}
 
 inline CDate CDate::Min()
 {

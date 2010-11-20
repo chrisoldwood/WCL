@@ -24,6 +24,7 @@
 */
 
 CCriticalSection::CCriticalSection()
+	: m_oLock()
 {
 	::InitializeCriticalSection(&m_oLock);
 }

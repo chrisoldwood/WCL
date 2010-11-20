@@ -53,7 +53,7 @@ CPropertyPage::~CPropertyPage()
 ** Description:	This is the real dialog procedure used for all property pages.
 **				It gets the object associated with the handle and calls the
 **				real message processing method.
-**				
+**
 ** Parameters:	Standard window procedure parameters.
 **
 ** Returns:		TRUE or FALSE based on the message.
@@ -64,7 +64,7 @@ CPropertyPage::~CPropertyPage()
 WCL::DlgResult DIALOGPROC CPropertyPage::PropPageProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
 	CPropertyPage* pDialog;
-	
+
 	// Get the window object.
 	pDialog = static_cast<CPropertyPage*>(CWnd::s_WndMap.Find(hWnd));
 
@@ -105,7 +105,7 @@ WCL::DlgResult DIALOGPROC CPropertyPage::PropPageProc(HWND hWnd, UINT iMsg, WPAR
 			// Initialise child controls.
 			pDialog->InitControls();
 			pDialog->InitGravityTable();
-			
+
 			// Now call initialise method.
 			pDialog->OnCreate(pDialog->ClientRect());
 
@@ -188,6 +188,9 @@ LRESULT CPropertyPage::OnCtrlMsg(NMHDR& rMsgHdr)
 		case PSN_QUERYCANCEL:
 			OnCancel();
 			return 0;
+
+		default:
+			break;
 	}
 
 	// Pass to base class.

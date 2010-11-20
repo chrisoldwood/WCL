@@ -20,7 +20,7 @@
 #include "Size.hpp"
 
 /******************************************************************************
-** 
+**
 ** This is a class based version of the standard Windows RECT structure.
 **
 *******************************************************************************
@@ -38,7 +38,7 @@ public:
 	CRect(const CPoint& TopLeft, const CSize& Size);
 	CRect(LPCRECT lprcRect);
 	CRect(const RECT& rcRect);
-	
+
 	//
 	// Member access.
 	//
@@ -84,14 +84,14 @@ inline CRect::CRect(int iLeft, int iTop, int iRight, int iBottom)
 	Set(iLeft, iTop, iRight, iBottom);
 }
 
-inline CRect::CRect(const CPoint& TopLeft, const CPoint& BottomRight)
+inline CRect::CRect(const CPoint& topLeft, const CPoint& bottomRight)
 {
-	Set(TopLeft.x, TopLeft.y, BottomRight.x, BottomRight.y);
+	Set(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
 }
 
-inline CRect::CRect(const CPoint& TopLeft, const CSize& Size)
+inline CRect::CRect(const CPoint& topLeft, const CSize& size)
 {
-	Set(TopLeft.x, TopLeft.y, TopLeft.x + Size.cx, TopLeft.y + Size.cy);
+	Set(topLeft.x, topLeft.y, topLeft.x + size.cx, topLeft.y + size.cy);
 }
 
 inline CRect::CRect(LPCRECT lprcRect)

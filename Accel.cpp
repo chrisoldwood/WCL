@@ -25,8 +25,8 @@
 */
 
 CAccel::CAccel()
+	: m_hAccel(NULL)
 {
-	m_hAccel = NULL;
 }
 
 /******************************************************************************
@@ -85,6 +85,6 @@ bool CAccel::Translate(HWND hWnd, MSG& rMsg)
 	// Attempt to translate it.
 	if (m_hAccel)
 		return TranslateAccelerator(hWnd, m_hAccel, &rMsg);
-	
+
 	return false;
 }

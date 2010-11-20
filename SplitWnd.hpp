@@ -142,6 +142,11 @@ protected:
 
 	//! Clip the bar position.
 	static int ClipBarPos(int iBarPos, int iMin, int iMax);
+
+private:
+	// NotCopyable.
+	CSplitWnd(const CSplitWnd&);
+	CSplitWnd& operator=(const CSplitWnd&);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -29,6 +29,20 @@ CPen::CPen()
 {
 }
 
+CPen::CPen(int iID)
+	: m_hPen()
+	, m_bOwner()
+{
+	Create(iID);
+}
+
+CPen::CPen(int iStyle, int iWidth, COLORREF crClr)
+	: m_hPen()
+	, m_bOwner()
+{
+	Create(iStyle, iWidth, crClr);
+}
+
 /******************************************************************************
 ** Method:		Destructor.
 **
@@ -46,4 +60,20 @@ CPen::~CPen()
 	// Delete if valid and we own it.
 	if ( (m_hPen) && (m_bOwner) )
 		::DeleteObject(m_hPen);
+}
+
+void CPen::Create(int iID)
+{
+	m_hPen   = GetStockPen(iID);
+	m_bOwner = false;
+
+	ASSERT(m_hPen != NULL);
+}
+
+void CPen::Create(int iStyle, int iWidth, COLORREF crClr)
+{
+	m_hPen   = ::CreatePen(iStyle, iWidth, crClr);
+	m_bOwner = true;
+
+	ASSERT(m_hPen != NULL);
 }

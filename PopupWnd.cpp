@@ -17,6 +17,11 @@
 #include "FrameWnd.hpp"
 #include "CmdCtrl.hpp"
 
+#if __GNUC__
+// missing initializer for member 'X'
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 /******************************************************************************
 ** Method:		Default constructor.
 **
@@ -182,7 +187,7 @@ bool CPopupWnd::Create()
 		return false;
 
 	// Create the window.
-	WNDCREATE WndCreate;
+	WNDCREATE WndCreate = { 0 };
 
 	GetCreateParams(WndCreate);
 	return Create(WndCreate);

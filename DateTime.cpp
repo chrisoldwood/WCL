@@ -25,6 +25,40 @@
 const size_t ISO_FMT_MAX_LEN = 19;
 
 /******************************************************************************
+** Method:		Constructors
+**
+** Description:	.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+CDateTime::CDateTime()
+	: m_tDateTime(0)
+{
+}
+
+CDateTime::CDateTime(WCL::Seconds tDateTime)
+	: m_tDateTime()
+{
+	Set(tDateTime);
+}
+
+CDateTime::CDateTime(int iDay, int iMonth, int iYear, int iHours, int iMins, int iSecs)
+	: m_tDateTime()
+{
+	Set(iDay, iMonth, iYear, iHours, iMins, iSecs);
+}
+
+CDateTime::CDateTime(const CDate& rDate, const CTime& rTime)
+	: m_tDateTime(rDate.m_tDate + rTime.m_tTime)
+{
+}
+
+/******************************************************************************
 ** Method:		Current()
 **
 ** Description:	Get the current date & time.

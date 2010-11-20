@@ -31,7 +31,7 @@ typedef unsigned __int64 StreamPos;
 
 #ifdef _WIN64
 //! The ID of a timer.
-typedef UINT_PTR TimerID;	
+typedef UINT_PTR TimerID;
 #else
 //! The ID of a timer.
 typedef UINT TimerID;
@@ -90,8 +90,12 @@ const Seconds SECS_PER_DAY  = 60 * 60 * 24;
 //! Specifier used on Dialog callback functions.
 #define DIALOGPROC	CALLBACK
 
-//! Helper for specifying Read and Write access.
+//! Helpers for specifying Read and Write access.
+#define GENERIC_NONE		0
 #define GENERIC_READWRITE	(GENERIC_READ | GENERIC_WRITE)
+
+//! Helper for specifying a clipboard format.
+#define CF_NONE		0
 
 ////////////////////////////////////////////////////////////////////////////////
 // Text handling types and definitions.

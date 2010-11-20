@@ -175,8 +175,6 @@ void CStatusBarIcon::ClearIcon(bool bForcePaint)
 
 void CStatusBarIcon::SetIcon(const CTransparentBmp& oBitmap, uint nIndex, bool bForcePaint)
 {
-	ASSERT(nIndex >= 0);
-
 	// Ignore, if same image.
 	if ( (m_pBitmap == &oBitmap) && (m_nIndex == nIndex) )
 		return;

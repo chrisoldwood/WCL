@@ -32,6 +32,9 @@
 */
 
 CURLLabel::CURLLabel()
+	: m_strProtocol()
+	, m_oCursor()
+	, m_oFont()
 {
 }
 
@@ -55,7 +58,7 @@ CURLLabel::~CURLLabel()
 ** Method:		WndProc()
 **
 ** Description:	Catch messages required to implememt hyperlink behaviour.
-**				
+**
 ** Parameters:	Standard window procedure parameters.
 **
 ** Returns:		LRESULT based on the message.
@@ -159,9 +162,9 @@ HBRUSH CURLLabel::OnReflectedCtlClr(uint /*nCtlClrMsg*/, HDC hDC)
 	{
         CLogFont oLogFont(Font().Handle());
 
-        oLogFont.lfUnderline = TRUE; 
+        oLogFont.lfUnderline = TRUE;
 
-		m_oFont.Create(oLogFont); 
+		m_oFont.Create(oLogFont);
 	}
 
 	// Setup DC.

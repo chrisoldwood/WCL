@@ -20,13 +20,13 @@
 class CPopupMenu;
 
 /******************************************************************************
-** 
+**
 ** The base class for menus.
 **
 *******************************************************************************
 */
 
-class CMenu
+class CMenu /*: private NotCopyable*/
 {
 public:
 	//
@@ -35,7 +35,7 @@ public:
 	CMenu();
 	CMenu(HMENU	hMenu);
 	virtual ~CMenu();
-	
+
 	//
 	// Member access.
 	//
@@ -54,7 +54,7 @@ public:
 	void EnableCmd(uint iCmdID, bool bEnable = true);
 	void CheckCmd(uint iCmdID, bool bCheck = true);
 	void RemoveCmd(uint iCmdID);
-	
+
 	//
 	// Item by position methods.
 	//
@@ -70,6 +70,11 @@ protected:
 	// Members.
 	//
 	HMENU	m_hMenu;
+
+private:
+	// NotCopyable.
+	CMenu(const CMenu&);
+	CMenu& operator=(const CMenu&);
 };
 
 /******************************************************************************

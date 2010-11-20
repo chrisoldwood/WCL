@@ -22,6 +22,8 @@ CSplitWnd::CSplitWnd(Sizing eSizing)
 	: m_eSplit(VERTICAL)
 	, m_eSizing(eSizing)
 	, m_nBarPos(100)
+	, m_curArrow()
+	, m_curSizer()
 {
 	Initialise();
 }
@@ -33,6 +35,8 @@ CSplitWnd::CSplitWnd(Split eSplit, Sizing eSizing)
 	: m_eSplit(eSplit)
 	, m_eSizing(eSizing)
 	, m_nBarPos(100)
+	, m_curArrow()
+	, m_curSizer()
 {
 	Initialise();
 }

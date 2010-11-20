@@ -11,7 +11,7 @@
 //! Constructor.
 
 CStream::CStream()
-	: m_nMode(NULL)
+	: m_nMode(GENERIC_NONE)
 	, m_nFormat(0)
 	, m_nVersion(0)
 {

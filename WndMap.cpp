@@ -25,6 +25,7 @@
 */
 
 CWndMap::CWndMap()
+	: m_oMap()
 {
 }
 

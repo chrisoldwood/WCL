@@ -42,6 +42,10 @@ const int SIZE_GRIP_SIZE = 12;
 CDialog::CDialog(uint iRscID)
 	: CMsgWnd()
 	, m_iRscID(iRscID)
+	, m_bModal()
+	, m_vControls()
+	, m_vGravities()
+	, m_StartSize()
 	, m_pParentWnd(NULL)
 	, m_bNoSizeGrip(false)
 	, m_rcOldGrip(0, 0, 0, 0)
@@ -124,14 +128,14 @@ int CDialog::RunModal(CWnd& rParent)
 	ASSERT((rParent.Handle() != NULL) || (&rParent == &CWnd::g_oDesktop));
 	ASSERT(CModule::This().Handle());
 	ASSERT(m_iRscID);
-	
+
 	// Create it.
 	LRESULT iReturn = DialogBoxParam(CModule::This().Handle(), MAKEINTRESOURCE(m_iRscID),
 									rParent.Handle(), DlgProc, reinterpret_cast<LPARAM>(this));
 
 	ASSERT(iReturn != -1);
-    
-    // Return 
+
+    // Return
 	return static_cast<int>(iReturn);
 }
 
@@ -160,7 +164,7 @@ void CDialog::EndDialog(int nResult)
 ** Description:	This is the real dialog procedure used for all dialogs. It
 **				gets the object associated with the handle and calls the real
 **				message processing method.
-**				
+**
 ** Parameters:	Standard window procedure parameters.
 **
 ** Returns:		TRUE or FALSE based on the message.
@@ -177,7 +181,7 @@ WCL::DlgResult DIALOGPROC CDialog::DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, 
 	try
 	{
 		CDialog* pDialog;
-		
+
 		// Get the window object.
 		pDialog = static_cast<CDialog*>(CWnd::s_WndMap.Find(hWnd));
 
@@ -200,7 +204,7 @@ WCL::DlgResult DIALOGPROC CDialog::DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, 
 				// Push the existing messages' return values onto the stack.
 				BOOL*	 pbMsgHandled = pDialog->MsgHandledBuffer(&bMsgHandled);
 				LRESULT* plMsgResult  = pDialog->MsgResultBuffer (&lMsgResult);
-				
+
 				// Save handle/result.
 				pDialog->m_hWnd = hWnd;
 				pDialog->MsgHandled(true);
@@ -212,11 +216,11 @@ WCL::DlgResult DIALOGPROC CDialog::DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, 
 				// Centre only if modal.
 				if (pDialog->m_bModal)
 					pDialog->Centre();
-				
+
 				// Initialise child controls.
 				pDialog->InitControls();
 				pDialog->InitGravityTable();
-				
+
 				// Now call initialise method.
 				pDialog->OnCreate(pDialog->ClientRect());
 
@@ -277,7 +281,7 @@ WCL::DlgResult DIALOGPROC CDialog::DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, 
 ** Description:	This is the virtual dialog procedure that processes all the
 **				messages and calls the appropriate virtual function. It also
 **				does some default processing.
-**				
+**
 ** Parameters:	Standard window procedure parameters.
 **
 ** Returns:		LRESULT based on the message.
@@ -308,7 +312,7 @@ LRESULT CDialog::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				}
 			}
 			return CMsgWnd::WndProc(hWnd, iMsg, wParam, lParam);
-		
+
 		// Call the default handler.
 		default:
 			return CMsgWnd::WndProc(hWnd, iMsg, wParam, lParam);
@@ -325,7 +329,7 @@ LRESULT CDialog::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 **
 ** Description:	This is the handler for all non-handled messages. It calls
 **				DefWindowProc().
-**				
+**
 ** Parameters:	Standard window procedure parameters.
 **
 ** Returns:		LRESULT based on the message.

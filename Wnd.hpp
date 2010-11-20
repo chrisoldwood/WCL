@@ -23,7 +23,7 @@
 // Forward declarations.
 
 /******************************************************************************
-** 
+**
 ** This is the base class from which all window classes are derived. It
 ** encapsulates the window handles and provides all the standard methods that
 ** work on an HWND. It also provides static functions that map objects and
@@ -40,7 +40,10 @@ public:
 	//
 	CWnd();
 	CWnd(HWND hWnd);
+	CWnd(const CWnd& rhs);
 	virtual ~CWnd();
+
+	CWnd& operator=(const CWnd& rhs);
 
     //
     // Member access.
@@ -105,7 +108,7 @@ public:
     bool PostMessage(UINT iMsg, WPARAM wParam = 0, LPARAM lParam = 0L) const;
     bool PostCommand(uint iCmd) const;
     bool PostCtrlMsg(uint iMsg, uint iCtrlID, HWND hCtrl) const;
-	
+
     //
     // Timers.
     //
@@ -129,7 +132,7 @@ public:
 	int QueryMsg(const tchar* pszMsg, ...) const;
 	int NotifyMsg(const tchar* pszMsg, ...) const;
 	int FatalMsg(const tchar* pszMsg, ...) const;
-    
+
 	// Handle <-> Window map.
 	static CWndMap s_WndMap;
 
@@ -151,19 +154,30 @@ protected:
 */
 
 inline CWnd::CWnd()
+	: m_hWnd(NULL)
 {
-	m_hWnd = NULL;
 }
 
 inline CWnd::CWnd(HWND hWnd)
+	: m_hWnd(hWnd)
 {
-	ASSERT(hWnd != NULL);
-	
-	m_hWnd = hWnd;
+	ASSERT(m_hWnd != NULL);
+}
+
+inline CWnd::CWnd(const CWnd& rhs)
+	: m_hWnd(rhs.m_hWnd)
+{
 }
 
 inline CWnd::~CWnd()
 {
+}
+
+inline CWnd& CWnd::operator=(const CWnd& rhs)
+{
+	m_hWnd = rhs.m_hWnd;
+
+	return *this;
 }
 
 inline HWND CWnd::Handle() const

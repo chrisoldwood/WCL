@@ -19,13 +19,13 @@
 #include "Point.hpp"
 
 /******************************************************************************
-** 
+**
 ** This class wraps a standard GDI cursor.
 **
 *******************************************************************************
 */
 
-class CCursor
+class CCursor /*: private NotCopyable*/
 {
 public:
 	//
@@ -36,7 +36,7 @@ public:
 
 	void LoadRsc(uint nRscID);
 	void LoadRsc(const tchar* pszRsc);
-	
+
 	//
 	// Member access.
 	//
@@ -65,6 +65,11 @@ protected:
 	//
 	HCURSOR	m_hCursor;
 	bool	m_bOwner;
+
+private:
+	// NotCopyable.
+	CCursor(const CCursor&);
+	CCursor& operator=(const CCursor&);
 };
 
 /******************************************************************************

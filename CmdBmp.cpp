@@ -27,6 +27,9 @@
 */
 
 CCmdBitmap::CCmdBitmap()
+	: m_iCmdSize()
+	, m_EnabledBmp()
+	, m_DisabledBmp()
 {
 }
 
@@ -64,14 +67,14 @@ void CCmdBitmap::LoadRsc(uint iRscID)
 	CBitmap	bmpCmds;
 	CBitmap	bmpMask;
 	CBitmap	bmpMask2;
-	
+
     // Load the resource bitmap.
     bmpCmds.LoadRsc(iRscID);
 
 	// Get dimensions.
 	CSize BmpSize = bmpCmds.Size();
 	m_iCmdSize = BmpSize.cy;
-	
+
 	// Create brushes.
 	CBrush	FaceBrush(::GetSysColor(COLOR_BTNFACE));
 	CBrush	LightBrush(::GetSysColor(COLOR_BTNHIGHLIGHT));
@@ -92,7 +95,7 @@ void CCmdBitmap::LoadRsc(uint iRscID)
 	// Allocate the temp bitmaps.
 	bmpMask.Create(BmpSize);
 	bmpMask2.Create(BmpSize);
-	
+
 	// Select bitmaps into DCs.
 	ButtonsDC.Select(bmpCmds);
 	EnabledDC.Select(m_EnabledBmp);
@@ -106,7 +109,7 @@ void CCmdBitmap::LoadRsc(uint iRscID)
 
 	DisabledDC.Select(FaceBrush);
 	DisabledDC.PatBlt(CRect(CPoint(0,0), BmpSize));
-	
+
 	// Create general mask.
 	ButtonsDC.BkColour(RGB(192,192,192));
 
@@ -167,8 +170,6 @@ void CCmdBitmap::LoadRsc(uint iRscID)
 
 void CCmdBitmap::DrawCmd(uint iIndex, CDC& rDC, const CRect& rDst, bool bEnabled) const
 {
-	ASSERT(iIndex >= 0);
-
 	// Calculate source rectangle.
 	CRect	rcSrc(iIndex*m_iCmdSize, 0, (iIndex+1)*m_iCmdSize, m_iCmdSize);
 

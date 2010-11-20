@@ -22,7 +22,7 @@
 class CView;
 
 /******************************************************************************
-** 
+**
 ** This is the base class for documents used with a SDI app.
 **
 *******************************************************************************
@@ -36,7 +36,7 @@ public:
 	//
 	CSDIDoc();
 	virtual	~CSDIDoc();
-	
+
 	//
 	// Members.
 	//
@@ -46,6 +46,11 @@ protected:
 	//
 	// Members.
 	//
+
+private:
+	// NotCopyable.
+	CSDIDoc(const CSDIDoc&);
+	CSDIDoc& operator=(const CSDIDoc&);
 };
 
 //! The SDI document smart-pointer type.

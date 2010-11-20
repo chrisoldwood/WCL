@@ -19,7 +19,7 @@
 #include "LogFont.hpp"
 
 /******************************************************************************
-** 
+**
 ** This class wraps a standard GDI font.
 **
 *******************************************************************************
@@ -80,21 +80,6 @@ protected:
 inline HFONT CFont::Handle() const
 {
 	return m_hFont;
-}
-
-inline CFont::CFont(int iID)
-{
-	Create(iID);
-}
-
-inline CFont::CFont(const CLogFont& rLogFont)
-{
-	Create(rLogFont);
-}
-
-inline CFont::CFont(HFONT hFont, bool bOwn)
-{
-	Create(hFont, bOwn);
 }
 
 #endif //FONT_HPP

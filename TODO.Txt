@@ -50,6 +50,10 @@
 
 - Why does VariantVector<T> ctor need VT_TYPE when attaching an existing SAFEARRAY?
 
+- In Font, Pen, Brush etc make Create() a static helper that returns the handle. Fix-up ctors.
+
+- In Time, Date etc. make Set() a static helper that returns the value. Fix-up ctors.
+
 UNICODE
 =======
 

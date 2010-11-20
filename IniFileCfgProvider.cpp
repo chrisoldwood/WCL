@@ -16,6 +16,7 @@ namespace WCL
 IniFileCfgProvider::IniFileCfgProvider(const tstring& publisher, const tstring& application)
 	: m_publisher(publisher)
 	, m_application(application)
+	, m_iniFile()
 {
 }
 

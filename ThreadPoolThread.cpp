@@ -32,6 +32,7 @@ ThreadPoolThread::ThreadPoolThread(CThreadPool& oPool, size_t nPoolID)
 	, m_nPoolID(nPoolID)
 	, m_eStatus(STOPPED)
 	, m_oSyncEvent(true, false)
+	, m_pJob()
 {
 }
 
@@ -100,7 +101,7 @@ DWORD WINAPI ThreadPoolThread::ThreadFunction(LPVOID lpParam)
 
 	// Signal calling thread that we've stopped.
 	pThread->m_eStatus = STOPPED;
-	pThread->m_oSyncEvent.Signal();	
+	pThread->m_oSyncEvent.Signal();
 
 	return 0;
 }

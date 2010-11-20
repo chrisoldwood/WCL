@@ -27,6 +27,7 @@
 
 CStatusBarLabel::CStatusBarLabel(size_t nChars)
 	: m_nChars(nChars)
+	, m_strLabel()
 {
 }
 
@@ -87,7 +88,7 @@ void CStatusBarLabel::GetCreateParams(WNDCREATE& rParams)
 
     // Get the height of the default font.
     CScreenDC DC;
-    
+
     DC.Select(CApp::This().DefaultFont());
     CSize FontSize = DC.TextExtents(TXT("Ly"));
 

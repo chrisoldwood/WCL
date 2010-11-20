@@ -19,13 +19,13 @@
 #include <commctrl.h>
 
 /******************************************************************************
-** 
+**
 ** This class wraps the ImageList image collection.
 **
 *******************************************************************************
 */
 
-class CImageList
+class CImageList /*: private NotCopyable*/
 {
 public:
 	//
@@ -33,7 +33,7 @@ public:
 	//
 	CImageList();
 	~CImageList();
-	
+
 	void LoadRsc(uint nRscID, uint nImgWidth, COLORREF crMask, bool bOwner = false);
 
 	//
@@ -48,6 +48,11 @@ protected:
 	//
 	HIMAGELIST	m_hImageList;
 	bool		m_bOwner;
+
+private:
+	// NotCopyable.
+	CImageList(const CImageList&);
+	CImageList& operator=(const CImageList&);
 };
 
 /******************************************************************************

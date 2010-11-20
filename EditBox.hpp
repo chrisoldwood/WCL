@@ -19,7 +19,7 @@
 #include "StdWnd.hpp"
 
 /******************************************************************************
-** 
+**
 ** This is an editbox control.
 **
 *******************************************************************************
@@ -79,6 +79,11 @@ protected:
 	// Internal methods.
 	//
 	void AllocFilterMap();
+
+private:
+	// NotCopyable.
+	CEditBox(const CEditBox&);
+	CEditBox& operator=(const CEditBox&);
 };
 
 /******************************************************************************

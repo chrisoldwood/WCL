@@ -12,7 +12,7 @@
 #include "Font.hpp"
 
 /******************************************************************************
-** 
+**
 ** The mapping of font name to stock font object ID.
 **
 *******************************************************************************
@@ -32,7 +32,8 @@ static FontMapEntry g_aoFontMap[] = {
 { TXT("DEVICE_DEFAULT_FONT"),	14   },
 { TXT("SYSTEM_FIXED_FONT"),		16   },
 { TXT("DEFAULT_GUI_FONT"),		17   },
-{ NULL,							NULL } };
+{ NULL,							 0   },
+};
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -50,6 +51,27 @@ CFont::CFont()
 	: m_hFont(NULL)
 	, m_bOwner(false)
 {
+}
+
+CFont::CFont(int iID)
+	: m_hFont()
+	, m_bOwner()
+{
+	Create(iID);
+}
+
+CFont::CFont(const CLogFont& rLogFont)
+	: m_hFont()
+	, m_bOwner()
+{
+	Create(rLogFont);
+}
+
+CFont::CFont(HFONT hFont, bool bOwn)
+	: m_hFont()
+	, m_bOwner()
+{
+	Create(hFont, bOwn);
 }
 
 /******************************************************************************

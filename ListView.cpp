@@ -11,6 +11,11 @@
 #include "Common.hpp"
 #include "ListView.hpp"
 
+#if __GNUC__
+// missing initializer for member 'X'
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 /******************************************************************************
 ** Method:		Default constructor.
 **
@@ -73,7 +78,7 @@ size_t CListView::InsertItem(size_t nItem, const tchar* pszText, size_t nImage)
 	lvItem.iItem   = static_cast<int>(nItem);
 	lvItem.pszText = const_cast<tchar*>(pszText);
 	lvItem.iImage  = static_cast<int>(nImage);
-	lvItem.lParam  = NULL;
+	lvItem.lParam  = 0;
 
 	// Image specified?
 	if (nImage != Core::npos)

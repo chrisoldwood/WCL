@@ -19,21 +19,21 @@
 #include "CmdBmp.hpp"
 
 /******************************************************************************
-** 
+**
 ** The base class from which the application command controller is derived. It
 ** is used to execute commands and update the UI.
 **
 *******************************************************************************
 */
 
-class CCmdControl
+class CCmdControl /*: private NotCopyable*/
 {
 public:
 	//
 	// Constructors/Destructor.
 	//
 	CCmdControl();
-	~CCmdControl();
+	virtual ~CCmdControl();
 
 	//
 	// Member access.
@@ -74,7 +74,7 @@ protected:
 	typedef void (CCmdControl::*PFNCMDENTRYHANDLER)();
 	typedef void (CCmdControl::*PFNCMDRANGEHANDLER)(uint iCmdID);
 	typedef void (CCmdControl::*PFNUIHANDLER)();
-	
+
 	struct CMD
 	{
 		CmdType			m_eType;			// Comamnd handler type.
@@ -90,10 +90,15 @@ protected:
 	//
 	CMD*		m_pCmdTable;
 	CCmdBitmap	m_CmdBitmap;
+
+private:
+	// NotCopyable.
+	CCmdControl(const CCmdControl&);
+	CCmdControl& operator=(const CCmdControl&);
 };
 
 /******************************************************************************
-** 
+**
 ** Macros used to ease the definition of the command table.
 **
 *******************************************************************************

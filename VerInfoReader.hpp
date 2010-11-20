@@ -20,7 +20,7 @@ namespace WCL
 //! A reader for the Version Information embeded inside the resources of an .exe
 //! or .dll.
 
-class VerInfoReader
+class VerInfoReader /*: private NotCopyable*/
 {
 public:
 	////////////////////////////////////////////////////////////////////////////
@@ -40,7 +40,7 @@ public:
 
 	//! Destructor.
 	~VerInfoReader();
-	
+
 	//
 	// Properties.
 	//
@@ -114,6 +114,11 @@ private:
 	DWORD						m_dwBufSize;		//!< The size of the resource block.
 	Buffer						m_pBuffer;			//!< The resource block buffer.
 	mutable const Translation*	m_pDefTrans;		//!< The default translation.
+
+private:
+	// NotCopyable.
+	VerInfoReader(const VerInfoReader&);
+	VerInfoReader& operator=(const VerInfoReader&);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -48,6 +48,7 @@ CDll* CDll::g_pThis = NULL;
 */
 
 CDll::CDll()
+	: m_Module()
 {
 	ASSERT(g_pThis == NULL);
 

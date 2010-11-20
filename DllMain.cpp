@@ -54,6 +54,10 @@ BOOL WINAPI DllMain(HINSTANCE hInst, DWORD dwReason, LPVOID /*lpvReserved*/)
 		case DLL_PROCESS_DETACH:
 			oDll.Unload();
 			break;
+
+		default:
+			ASSERT_FALSE();
+			break;
 	}
 
 	return TRUE;

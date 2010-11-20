@@ -20,7 +20,7 @@
 #include "PopupMenu.hpp"
 
 /******************************************************************************
-** 
+**
 ** This is a menu derived class for frame window menus.
 **
 *******************************************************************************
@@ -36,11 +36,11 @@ public:
 	~CFrameMenu();
 
 	void LoadRsc(uint iRscID);
-	
+
 	//
 	// Methods.
 	//
-	CPopupMenu Popup(uint nPos);
+//	CPopupMenu Popup(uint nPos);
 
 protected:
 	//
@@ -54,10 +54,10 @@ protected:
 **
 *******************************************************************************
 */
-
+/*
 inline CPopupMenu CFrameMenu::Popup(uint nPos)
 {
 	return CPopupMenu(::GetSubMenu(m_hMenu, nPos));
 }
-
+*/
 #endif //FRAMEMENU_HPP

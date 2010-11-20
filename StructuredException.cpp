@@ -20,7 +20,7 @@ StructuredException::StructuredException(uint nCode, _EXCEPTION_POINTERS* /*pInf
 
 	if (pszCode != nullptr)
 		m_strDetails = Core::fmt(TXT("Structured Exception: %s"), pszCode);
-	else 
+	else
 		m_strDetails = Core::fmt(TXT("Unknown Structured Exception: 0x%08X"), nCode);
 }
 
@@ -61,9 +61,10 @@ const tchar* StructuredException::FormatCode(uint nCode)
 		case EXCEPTION_INVALID_DISPOSITION:			return TXT("EXCEPTION_INVALID_DISPOSITION");
 		case EXCEPTION_GUARD_PAGE:					return TXT("EXCEPTION_GUARD_PAGE");
 		case EXCEPTION_INVALID_HANDLE:				return TXT("EXCEPTION_INVALID_HANDLE");
+		default:									ASSERT_FALSE();
 	}
 
-	return nullptr;
+	return TXT("EXCEPTION_???");
 }
 
 //namespace WCL

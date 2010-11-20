@@ -80,11 +80,18 @@ protected:
 
 		// Constructors.
 		CTLGRAVITY()
-			: iID(0), hWnd(NULL), eLeft(LEFT_EDGE), eTop(TOP_EDGE)
-			, eRight(LEFT_EDGE), eBottom(TOP_EDGE) { }
+			: iID(0), hWnd(NULL)
+			, eLeft(LEFT_EDGE), eTop(TOP_EDGE), eRight(LEFT_EDGE), eBottom(TOP_EDGE)
+			, rcStart()
+		{
+		}
 
 		CTLGRAVITY(uint id, Gravity l, Gravity t, Gravity r, Gravity b)
-			: iID(id), hWnd(NULL), eLeft(l), eTop(t), eRight(r), eBottom(b) { }
+			: iID(id), hWnd(NULL)
+			, eLeft(l), eTop(t), eRight(r), eBottom(b)
+			, rcStart()
+		{
+		}
 	};
 
 	//! The collection of controls.
@@ -140,6 +147,11 @@ protected:
 	// Friends.
 	//
 	friend struct tagCTLGRAVITY;	// For access to Gravity enum.
+
+private:
+	// NotCopyable.
+	CDialog(const CDialog&);
+	CDialog& operator=(const CDialog&);
 };
 
 /******************************************************************************

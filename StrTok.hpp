@@ -17,14 +17,14 @@
 #endif
 
 /******************************************************************************
-** 
+**
 ** A string tokeniser.
 ** NB: This does not copy the string being tokenised.
 **
 *******************************************************************************
 */
 
-class CStrTok
+class CStrTok /*: private NotCopyable*/
 {
 public:
 	//
@@ -73,6 +73,11 @@ protected:
 	CString			m_strSeps;		// The list of separators.
 	uint			m_nFlags;		// The tokenising flags.
 	TokenType		m_eNextToken;	// The next token type expected.
+
+private:
+	// NotCopyable.
+	CStrTok(const CStrTok&);
+	CStrTok& operator=(const CStrTok&);
 };
 
 /******************************************************************************

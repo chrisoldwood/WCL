@@ -22,6 +22,11 @@
 #include <malloc.h>
 #include <Core/InvalidArgException.hpp>
 
+#if __GNUC__
+// missing initializer for member 'X'
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 /******************************************************************************
 **
 ** Constants.
@@ -50,6 +55,35 @@ static int DaysPerMonth[2][12] = {
 // Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
 {   31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
 {   31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 } };
+
+/******************************************************************************
+** Method:		Constructors
+**
+** Description:	.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+CDate::CDate()
+	: m_tDate(0)
+{
+}
+
+CDate::CDate(WCL::Seconds tDate)
+	: m_tDate()
+{
+	Set(tDate);
+}
+
+CDate::CDate(int iDay, int iMonth, int iYear)
+	: m_tDate()
+{
+	Set(iDay, iMonth, iYear);
+}
 
 /******************************************************************************
 ** Method:		Set()

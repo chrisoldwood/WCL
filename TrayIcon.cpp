@@ -12,6 +12,11 @@
 #include "TrayIcon.hpp"
 #include "Icon.hpp"
 
+#if __GNUC__
+// missing initializer for member 'X'
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 /******************************************************************************
 **
 ** Constants.
@@ -44,8 +49,8 @@ const size_t MAX_TIP_LEN = 128;
 
 CTrayIcon::CTrayIcon()
 	: m_hWnd(NULL)
-	, m_nTrayID(NULL)
-	, m_nMsgID(NULL)
+	, m_nTrayID(0)
+	, m_nMsgID(WM_NULL)
 {
 
 }
@@ -209,6 +214,6 @@ void CTrayIcon::Remove()
 
 	// Reset members.
 	m_hWnd    = NULL;
-	m_nTrayID = NULL;
-	m_nMsgID  = NULL;
+	m_nTrayID = 0;
+	m_nMsgID  = WM_NULL;
 }

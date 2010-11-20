@@ -25,6 +25,7 @@
 
 CLibrary::CLibrary()
 	: m_hInstance(NULL)
+	, m_strPath()
 {
 }
 
@@ -78,7 +79,7 @@ CLibrary::~CLibrary()
 bool CLibrary::Load()
 {
 	m_hInstance = ::LoadLibrary(m_strPath);
-	
+
 	return (m_hInstance != NULL);
 }
 

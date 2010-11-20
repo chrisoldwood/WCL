@@ -27,6 +27,7 @@
 
 CCmdControl::CCmdControl()
 	: m_pCmdTable(NULL)
+	, m_CmdBitmap()
 {
 }
 
@@ -61,7 +62,7 @@ CCmdControl::~CCmdControl()
 void CCmdControl::Execute(uint iCmdID)
 {
 	CMD* pCmd = m_pCmdTable;
-	
+
 	// Find command callback function.
 	while ( (pCmd != NULL) && (pCmd->m_eType != CmdNone)
 		 && ( (iCmdID < pCmd->m_iFirstID) || (iCmdID > pCmd->m_iLastID) ) )
@@ -101,7 +102,7 @@ void CCmdControl::Execute(uint iCmdID)
 void CCmdControl::UpdateUI()
 {
 	CMD* pCmd = m_pCmdTable;
-	
+
 	// Call all command UI handlers.
 	while( (pCmd != NULL) && (pCmd->m_eType != CmdNone) )
 	{
@@ -152,7 +153,7 @@ void CCmdControl::DrawCmd(uint iCmdID, CDC& rDC, const CRect& rDst, bool bEnable
 int CCmdControl::CmdBmpIndex(uint iCmdID) const
 {
 	CMD* pCmd = m_pCmdTable;
-	
+
 	// Find command.
 	while ( (pCmd != NULL) && (pCmd->m_eType != CmdNone)
 		 && ( (iCmdID < pCmd->m_iFirstID) || (iCmdID > pCmd->m_iLastID) ) )

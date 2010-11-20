@@ -101,15 +101,15 @@ Variant::Variant(ComStr& value)
 ////////////////////////////////////////////////////////////////////////////////
 // Construction by coercing another variant to a different type.
 
-Variant::Variant(const VARIANT& value, VARTYPE type)
+Variant::Variant(const VARIANT& value, VARTYPE newType)
 {
 	::VariantInit(this);
 
-	HRESULT hr = ::VariantChangeType(this, const_cast<VARIANT*>(&value), 0, type);
+	HRESULT hr = ::VariantChangeType(this, const_cast<VARIANT*>(&value), 0, newType);
 
 	if (FAILED(hr))
 		throw ComException(hr, Core::fmt(TXT("Failed to convert a variant from %s to %s"),
-				formatFullType(value).c_str(), formatType(type)).c_str());
+				formatFullType(value).c_str(), formatType(newType)).c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -153,20 +153,20 @@ Variant::~Variant()
 
 tstring Variant::format() const
 {
-	VARTYPE type = V_VT(this);
+	VARTYPE varType = V_VT(this);
 
 	// No type as such?
-	if ( (type == VT_EMPTY) || (type == VT_NULL) )
+	if ( (varType == VT_EMPTY) || (varType == VT_NULL) )
 	{
 		return TXT("");
 	}
 	// Already a string?
-	else if (type == VT_BSTR)
+	else if (varType == VT_BSTR)
 	{
 		return W2T(V_BSTR(this));
 	}
 	// Special handling for booleans.
-	else if (type == VT_BOOL)
+	else if (varType == VT_BOOL)
 	{
 		return (IsTrue(V_BOOL(this)) ? TXT("True") : TXT("False"));
 	}
@@ -182,24 +182,24 @@ tstring Variant::format() const
 
 bool Variant::tryFormat(tstring& result) const
 {
-	VARTYPE type = V_VT(this);
+	VARTYPE varType = V_VT(this);
 
 	// No type as such?
-	if ( (type == VT_EMPTY) || (type == VT_NULL) )
+	if ( (varType == VT_EMPTY) || (varType == VT_NULL) )
 	{
 		result = TXT("");
 		return true;
 	}
 
 	// Already a string?
-	if (type == VT_BSTR)
+	if (varType == VT_BSTR)
 	{
 		result = W2T(V_BSTR(this));
 		return true;
 	}
 
 	// Special handling for booleans.
-	if (type == VT_BOOL)
+	if (varType == VT_BOOL)
 	{
 		result = (IsTrue(V_BOOL(this)) ? TXT("True") : TXT("False"));
 		return true;
@@ -322,7 +322,7 @@ tstring getValue(const Variant& value)
 		throw ComException(DISP_E_TYPEMISMATCH, Core::fmt(TXT("Invalid variant type: %s, expected VT_BSTR or compatible type"),
 													Variant::formatFullType(value).c_str()));
 
-	return V_BSTR(&value);
+	return W2T(V_BSTR(&value));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

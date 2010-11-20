@@ -22,13 +22,13 @@
 class CDC;
 
 /******************************************************************************
-** 
+**
 ** This encapsulates a device dependant bitmap.
 **
 *******************************************************************************
 */
 
-class CBitmap
+class CBitmap /*: private NotCopyable*/
 {
 public:
 	//
@@ -41,19 +41,24 @@ public:
 	void Create(const CSize& rSize);
 	void Create(const CSize& rSize, const CDC& rDC);
 	void LoadRsc(uint iRscID);
-		
+
 	//
 	// Member access.
 	//
 	HBITMAP Handle() const;
 	CSize Size() const;
-	
+
 protected:
 	//
 	// Members.
 	//
 	HBITMAP	m_hBitmap;
 	CSize	m_Size;
+
+private:
+	// NotCopyable.
+	CBitmap(const CBitmap&);
+	CBitmap& operator=(const CBitmap&);
 };
 
 /******************************************************************************
@@ -71,7 +76,7 @@ inline HBITMAP CBitmap::Handle() const
 inline CSize CBitmap::Size() const
 {
 	ASSERT(m_hBitmap);
-	
+
 	return m_Size;
 }
 

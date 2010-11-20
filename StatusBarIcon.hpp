@@ -22,7 +22,7 @@
 class CTransparentBmp;
 
 /******************************************************************************
-** 
+**
 ** A status bar field which contains an icon.
 **
 *******************************************************************************
@@ -36,7 +36,7 @@ public:
 	//
 	CStatusBarIcon();
 	virtual	~CStatusBarIcon();
-	
+
 	//
 	// Methods.
 	//
@@ -60,6 +60,11 @@ protected:
 	// Message processors.
 	//
 	virtual void OnPaint(CDC& rDC);
+
+private:
+	// NotCopyable.
+	CStatusBarIcon(const CStatusBarIcon&);
+	CStatusBarIcon& operator=(const CStatusBarIcon&);
 };
 
 /******************************************************************************

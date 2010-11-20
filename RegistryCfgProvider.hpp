@@ -28,7 +28,7 @@ public:
 
 	//! Destructor.
 	virtual ~RegistryCfgProvider();
-	
+
 	//
 	// Methods.
 	//
@@ -60,6 +60,10 @@ private:
 	tstring	m_application;		//!< The application name.
 	HKEY    m_rootKey;			//!< The config root key.
 	tstring	m_keyPath;			//!< The config path.
+
+	// NotCopyable.
+	RegistryCfgProvider(const RegistryCfgProvider&);
+	RegistryCfgProvider& operator=(const RegistryCfgProvider&);
 };
 
 //namespace WCL

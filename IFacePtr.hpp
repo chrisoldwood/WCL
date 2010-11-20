@@ -13,6 +13,7 @@
 
 #include "IFaceTraits.hpp"
 #include <unknwn.h>
+#include <Core/BadLogicException.hpp>
 
 namespace WCL
 {
@@ -173,7 +174,8 @@ inline T** IFacePtr<T>::GetPtrMember()
 template <typename T>
 inline T** AttachTo(IFacePtr<T>& ptr)
 {
-	ASSERT(*ptr.GetPtrMember() == nullptr);
+	if (!ptr.empty())
+		throw Core::BadLogicException(TXT("Cannot attach to a non-empty smart pointer"));
 
 	return ptr.GetPtrMember();
 }

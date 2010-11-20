@@ -26,6 +26,7 @@
 CCtrlWnd::CCtrlWnd()
 	: m_iID(0)
 	, m_pParent(NULL)
+	, m_rcPos()
 {
 }
 

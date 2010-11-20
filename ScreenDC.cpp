@@ -25,12 +25,13 @@
 */
 
 CScreenDC::CScreenDC()
+	: m_hWnd()
 {
 	m_hWnd     = NULL;
 	m_hDC      = GetDC(m_hWnd);
 	m_iState   = SaveState();
 	m_bRelease = true;
-	
+
 	ASSERT(m_hDC);
 }
 
@@ -47,6 +48,7 @@ CScreenDC::CScreenDC()
 */
 
 CScreenDC::CScreenDC(const CWnd& rWnd)
+	: m_hWnd()
 {
 	m_hWnd     = rWnd.Handle();
 	m_hDC      = GetDC(m_hWnd);
@@ -72,6 +74,7 @@ CScreenDC::CScreenDC(const CWnd& rWnd)
 */
 
 CScreenDC::CScreenDC(PAINTSTRUCT& psPaint)
+	: m_hWnd()
 {
 	m_hWnd     = NULL;
 	m_hDC      = psPaint.hdc;
@@ -94,6 +97,7 @@ CScreenDC::CScreenDC(PAINTSTRUCT& psPaint)
 */
 
 CScreenDC::CScreenDC(HDC hDC)
+	: m_hWnd()
 {
 	m_hWnd     = NULL;
 	m_hDC      = hDC;
@@ -119,7 +123,7 @@ CScreenDC::~CScreenDC()
 {
 	// Restore DC to inital settings.
 	RestoreState(m_iState);
-	
+
 	// Free up DC.
 	if (m_bRelease)
 		::ReleaseDC(m_hWnd, m_hDC);

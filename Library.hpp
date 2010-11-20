@@ -19,13 +19,13 @@
 #include "Path.hpp"
 
 /******************************************************************************
-** 
+**
 ** A class to encapsulate a component such as a DLL.
 **
 *******************************************************************************
 */
 
-class CLibrary
+class CLibrary /*: private NotCopyable*/
 {
 public:
 	//
@@ -57,6 +57,11 @@ protected:
 	//
 	HINSTANCE	m_hInstance;
 	CPath		m_strPath;
+
+private:
+	// NotCopyable.
+	CLibrary(const CLibrary&);
+	CLibrary& operator=(const CLibrary&);
 };
 
 /******************************************************************************

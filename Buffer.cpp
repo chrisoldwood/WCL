@@ -82,6 +82,8 @@ CBuffer::CBuffer(const void* pData, size_t nSize)
 */
 
 CBuffer::CBuffer(HGLOBAL hGlobal)
+	: m_nSize()
+	, m_pBuffer()
 {
 	ASSERT(hGlobal != NULL);
 
@@ -227,12 +229,14 @@ void CBuffer::Set(const void* pData, size_t nSize, size_t nOffset)
 *******************************************************************************
 */
 
-void CBuffer::operator=(const CBuffer& oRHS)
+CBuffer& CBuffer::operator=(const CBuffer& oRHS)
 {
 	ASSERT(this != &oRHS);
 
 	Size(oRHS.m_nSize);
 	Set(oRHS.m_pBuffer, oRHS.m_nSize);
+
+	return *this;
 }
 
 /******************************************************************************

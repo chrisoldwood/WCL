@@ -17,7 +17,7 @@
 #endif
 
 /******************************************************************************
-** 
+**
 ** Class used to store a buffer of data.
 **
 *******************************************************************************
@@ -35,7 +35,7 @@ public:
 	explicit CBuffer(HGLOBAL hGlobal);
 	CBuffer(const CBuffer& oRHS);
 	~CBuffer();
-	
+
 	//
 	// Accessors.
 	//
@@ -53,7 +53,7 @@ public:
 	//
 	// Operators.
 	//
-	void operator=(const CBuffer& oRHS);
+	CBuffer& operator=(const CBuffer& oRHS);
 	bool operator==(const CBuffer& oRHS) const;
 	bool operator!=(const CBuffer& oRHS) const;
 

@@ -19,7 +19,7 @@
 #include <vector>
 
 /******************************************************************************
-** 
+**
 ** This is an array collection that stores strings.
 **
 ** NB: This class was originally based on a TPtrArray<CString>.
@@ -80,10 +80,12 @@ private:
 */
 
 inline CStrArray::CStrArray()
+	: m_vStrings()
 {
 }
 
 inline CStrArray::CStrArray(const CStrArray& oRHS)
+	: m_vStrings()
 {
 	for (CIter it = oRHS.m_vStrings.begin(); it != oRHS.m_vStrings.end(); ++it)
 		m_vStrings.push_back(new CString(*(*it)));

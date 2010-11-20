@@ -70,7 +70,7 @@ TEST_CASE("path can be implictly converted to various string types")
 	CString path_cstring = path;
 	TEST_TRUE(path_cstring == TXT("C:\\Temp"));
 
-	tstring path_tstring = path;
+	tstring path_tstring(path);
 	TEST_TRUE(path_tstring == TXT("C:\\Temp"));
 }
 TEST_CASE_END

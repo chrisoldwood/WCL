@@ -133,7 +133,7 @@ void CMemStream::Close()
 
 	// Reset members.
 	m_pBuffer = NULL;
-	m_nMode   = NULL;
+	m_nMode   = GENERIC_NONE;
 }
 
 /******************************************************************************
@@ -202,7 +202,7 @@ void CMemStream::Write(const void* pBuffer, size_t iNumBytes)
 		m_pBuffer = NULL;
 
 		m_oBuffer.Size(m_lAllocSize);
-		
+
 		m_pBuffer = static_cast<byte*>(m_oBuffer.Buffer());
 
 		ASSERT(m_pBuffer != NULL);
@@ -248,7 +248,7 @@ WCL::StreamPos CMemStream::Seek(WCL::StreamPos lPos, SeekPos eFrom)
 		case END:		m_lPos  = m_lEOF - static_cast<size_t>(lPos);	break;
 		default:		ASSERT_FALSE();									break;
 	}
-		   
+
 	// Seeked to invalid position?
 	if (m_lPos > m_lEOF)
 		throw CMemStreamException(CMemStreamException::E_SEEK_FAILED);

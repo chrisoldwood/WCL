@@ -39,7 +39,7 @@ CClipboard::FmtEntry CClipboard::s_oStdFormats[] =
 	{ CF_HDROP,			TXT("CF_HDROP")        },
 	{ CF_LOCALE,		TXT("CF_LOCALE")       },
 	{ CF_DIBV5,			TXT("CF_DIBV5")        },
-	{ 0,				NULL                   }
+	{ CF_NONE,			NULL                   }
 };
 
 /******************************************************************************
@@ -55,7 +55,9 @@ CClipboard::FmtEntry CClipboard::s_oStdFormats[] =
 */
 
 CClipboard::CClipboard()
-	: m_iFormat(0)
+	: m_pBuffer()
+	, m_pStream()
+	, m_iFormat(0)
 {
 }
 
@@ -174,7 +176,7 @@ void CClipboard::Close()
 	m_pStream.reset();
 
 	// Reset members.
-	m_nMode   = NULL;
+	m_nMode   = GENERIC_NONE;
 	m_iFormat = 0;
 }
 
@@ -395,7 +397,7 @@ CString CClipboard::FormatName(uint nFormat)
 **
 ** Parameters:	pszFormat	The format name.
 **
-** Returns:		The format handle or NULL.
+** Returns:		The format handle or CF_NONE.
 **
 *******************************************************************************
 */
@@ -405,11 +407,11 @@ uint CClipboard::FormatHandle(const tchar* pszFormat)
 	ASSERT(pszFormat != NULL);
 
 	// Search standard formats lookup table first.
-	for (FmtEntry* pEntry = s_oStdFormats; (pEntry->m_nFormat != 0); ++pEntry)
+	for (FmtEntry* pEntry = s_oStdFormats; (pEntry->m_nFormat != CF_NONE); ++pEntry)
 	{
 		if (tstricmp(pszFormat, pEntry->m_pszFormat) == 0)
 			return pEntry->m_nFormat;
 	}
 
-	return NULL;
+	return CF_NONE;
 }

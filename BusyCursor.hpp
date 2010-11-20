@@ -17,13 +17,13 @@
 #endif
 
 /******************************************************************************
-** 
+**
 ** Shows the hourglass cursor on construction and restores it on destruction.
 **
 *******************************************************************************
 */
 
-class CBusyCursor
+class CBusyCursor /*: private NotCopyable*/
 {
 public:
 	//
@@ -33,12 +33,17 @@ public:
 	~CBusyCursor();
 
 	void Restore();
-	
+
 protected:
 	//
 	// Members.
 	//
 	HCURSOR	m_hOldCursor;	// The old cursor.
+
+private:
+	// NotCopyable.
+	CBusyCursor(const CBusyCursor&);
+	CBusyCursor& operator=(const CBusyCursor&);
 };
 
 /******************************************************************************

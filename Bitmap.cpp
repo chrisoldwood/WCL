@@ -27,6 +27,7 @@
 
 CBitmap::CBitmap()
 	: m_hBitmap(NULL)
+	, m_Size()
 {
 }
 
@@ -44,6 +45,7 @@ CBitmap::CBitmap()
 
 CBitmap::CBitmap(uint iRscID)
 	: m_hBitmap(NULL)
+	, m_Size()
 {
 	LoadRsc(iRscID);
 }
@@ -85,7 +87,7 @@ void CBitmap::LoadRsc(uint iRscID)
 	// Load the resource.
 	m_hBitmap = ::LoadBitmap(CModule::This().Handle(), MAKEINTRESOURCE(iRscID));
 	ASSERT(m_hBitmap);
-	
+
 	// Get attributes.
 	BITMAP	bmBitmap;
 	GetObject(m_hBitmap, sizeof(BITMAP), &bmBitmap);
@@ -111,7 +113,7 @@ void CBitmap::Create(const CSize& rSize)
 {
 	m_hBitmap = CreateBitmap(rSize.cx, rSize.cy, 1, 1, NULL);
 	m_Size    = rSize;
-	
+
 	ASSERT(m_hBitmap);
 }
 
@@ -132,6 +134,6 @@ void CBitmap::Create(const CSize& rSize, const CDC& rDC)
 {
 	m_hBitmap = CreateCompatibleBitmap(rDC.Handle(), rSize.cx, rSize.cy);
 	m_Size    = rSize;
-	
+
 	ASSERT(m_hBitmap);
 }

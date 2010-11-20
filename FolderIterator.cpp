@@ -15,8 +15,11 @@ namespace WCL
 //! Default constructor. This creates an iterator that is the 'end' iterator.
 
 FolderIterator::FolderIterator()
-	: m_nFlags(NONE)
+	: m_strFolder()
+	, m_strMask()
+	, m_nFlags(NONE)
 	, m_hFindFile(INVALID_HANDLE_VALUE)
+	, m_oFindData()
 {
 #ifdef _DEBUG
 	memset(&m_oFindData, 0xCCCC, sizeof(m_oFindData));
@@ -31,6 +34,7 @@ FolderIterator::FolderIterator(const tstring& strFolder, const tstring& strMask,
 	, m_strMask(strMask)
 	, m_nFlags(nFlags)
 	, m_hFindFile(INVALID_HANDLE_VALUE)
+	, m_oFindData()
 {
 #ifdef _DEBUG
 	memset(&m_oFindData, 0xCCCC, sizeof(m_oFindData));
@@ -61,7 +65,7 @@ const tchar* FolderIterator::operator*() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Advance the iterator.
 
-void FolderIterator::operator++()
+FolderIterator& FolderIterator::operator++()
 {
 	if (!IsValid())
 		throw Core::BadLogicException(TXT("Attempt to advance an invalid iterator"));
@@ -75,6 +79,8 @@ void FolderIterator::operator++()
 	{
 		Next();
 	}
+
+	return *this;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

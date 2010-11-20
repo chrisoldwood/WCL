@@ -54,6 +54,7 @@ ComStr::ComStr(const wchar_t* psz)
 //! Construction from a std string.
 
 ComStr::ComStr(const tstring& str)
+	: m_bstr()
 {
 	m_bstr = ::SysAllocString(T2W(str.c_str()));
 

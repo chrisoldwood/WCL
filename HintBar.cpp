@@ -37,6 +37,7 @@ const int INNER_BORDER_SIZE = CStatusBarPanel::BORDER_SIZE;
 */
 
 CHintBar::CHintBar()
+	: m_strHint()
 {
 }
 
@@ -120,7 +121,7 @@ void CHintBar::Hint(const tchar* pszHint)
 	// Ignore, if same hint.
 	if (m_strHint == pszHint)
 		return;
-		
+
 	m_strHint = pszHint;
 
 	// Redraw.

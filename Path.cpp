@@ -30,6 +30,11 @@
 #pragma comment(lib, "comdlg32")
 #endif
 
+#if __GNUC__
+// missing initializer for member 'X'
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 /******************************************************************************
 ** Method:		Constructors
 **
@@ -502,19 +507,19 @@ bool CPath::Select(const CWnd& rParent, DlgMode eMode, const tchar* pszExts,
 	ofnFile.hInstance         = NULL;
 	ofnFile.lpstrFilter       = pszExts;
 	ofnFile.lpstrCustomFilter = NULL;
-	ofnFile.nMaxCustFilter    = NULL;
-	ofnFile.nFilterIndex      = NULL;
+	ofnFile.nMaxCustFilter    = 0;
+	ofnFile.nFilterIndex      = 0;
 	ofnFile.lpstrFile         = szFileName;
 	ofnFile.nMaxFile          = sizeof(szFileName);
 	ofnFile.lpstrFileTitle    = NULL;
-	ofnFile.nMaxFileTitle     = NULL;
+	ofnFile.nMaxFileTitle     = 0;
 	ofnFile.lpstrInitialDir   = pszDir;
 	ofnFile.lpstrTitle        = NULL;
 	ofnFile.Flags             = OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
-	ofnFile.nFileOffset       = NULL;
-	ofnFile.nFileExtension    = NULL;
+	ofnFile.nFileOffset       = 0;
+	ofnFile.nFileExtension    = 0;
 	ofnFile.lpstrDefExt       = pszDefExt;
-	ofnFile.lCustData         = NULL;
+	ofnFile.lCustData         = 0;
 	ofnFile.lpfnHook          = NULL;
 	ofnFile.lpTemplateName    = NULL;
 
@@ -631,6 +636,11 @@ int CALLBACK CPath::BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPAR
 
 			if (::SHGetPathFromIDList(reinterpret_cast<LPITEMIDLIST>(lParam), szDir))
 				::SendMessage(hWnd, BFFM_SETSTATUSTEXT, 0, reinterpret_cast<LPARAM>(szDir));
+		}
+		break;
+
+		default:
+		{
 		}
 		break;
 	}
@@ -760,7 +770,7 @@ bool CPath::SelectFiles(const CWnd& rParent, const tchar* pszExts, const tchar* 
 	return SelectFiles(rParent, pszExts, pszDefExt, NULL, astrFiles);
 }
 
-bool CPath::SelectFiles(const CWnd& rParent, const tchar* pszExts, const tchar* pszDefExt, const tchar* pszDir, CStrArray& astrFiles)
+bool CPath::SelectFiles(const CWnd& rParent, const tchar* pszExts, const tchar* pszDefExt, const tchar* pszFolder, CStrArray& astrFiles)
 {
 	OPENFILENAME ofnFile = { 0 };
 	tchar        szFileName[MAX_PATH*100] = { 0 };
@@ -771,19 +781,19 @@ bool CPath::SelectFiles(const CWnd& rParent, const tchar* pszExts, const tchar* 
 	ofnFile.hInstance         = NULL;
 	ofnFile.lpstrFilter       = pszExts;
 	ofnFile.lpstrCustomFilter = NULL;
-	ofnFile.nMaxCustFilter    = NULL;
-	ofnFile.nFilterIndex      = NULL;
+	ofnFile.nMaxCustFilter    = 0;
+	ofnFile.nFilterIndex      = 0;
 	ofnFile.lpstrFile         = szFileName;
 	ofnFile.nMaxFile          = sizeof(szFileName);
 	ofnFile.lpstrFileTitle    = NULL;
-	ofnFile.nMaxFileTitle     = NULL;
-	ofnFile.lpstrInitialDir   = pszDir;
+	ofnFile.nMaxFileTitle     = 0;
+	ofnFile.lpstrInitialDir   = pszFolder;
 	ofnFile.lpstrTitle        = TXT("Select");
 	ofnFile.Flags             = OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_ALLOWMULTISELECT;
-	ofnFile.nFileOffset       = NULL;
-	ofnFile.nFileExtension    = NULL;
+	ofnFile.nFileOffset       = 0;
+	ofnFile.nFileExtension    = 0;
 	ofnFile.lpstrDefExt       = pszDefExt;
-	ofnFile.lCustData         = NULL;
+	ofnFile.lCustData         = 0;
 	ofnFile.lpfnHook          = NULL;
 	ofnFile.lpTemplateName    = NULL;
 

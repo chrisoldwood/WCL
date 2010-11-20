@@ -13,6 +13,11 @@
 #include "PropertyPage.hpp"
 #include "Module.hpp"
 
+#if __GNUC__
+// missing initializer for member 'X'
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 /******************************************************************************
 ** Method:		Constructor.
 **
@@ -26,6 +31,9 @@
 */
 
 CPropertySheet::CPropertySheet()
+	: m_strTitle()
+	, m_vPages()
+	, m_vHandles()
 {
 }
 
@@ -139,8 +147,8 @@ int CPropertySheet::RunModal(CWnd& rParent)
 	WCL::DlgResult nResult = ::PropertySheet(&oHeader);
 
 	ASSERT(nResult != -1);
-    
-    // Return 
+
+    // Return
 	return static_cast<int>(nResult);
 }
 
@@ -176,7 +184,7 @@ void CPropertySheet::PageTable(PAGE_ENTRY* pPageTable)
 ** Function:	PropSheetProc()
 **
 ** Description:	This is the callback procedure for a property sheet.
-**				
+**
 ** Parameters:	Standard window procedure parameters.
 **
 ** Returns:		0.

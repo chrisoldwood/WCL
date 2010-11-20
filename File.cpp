@@ -31,6 +31,7 @@
 
 CFile::CFile()
 	: m_hFile(INVALID_HANDLE_VALUE)
+	, m_Path()
 	, m_lEOF(0)
 {
 }
@@ -81,7 +82,7 @@ void CFile::Create(const tchar* pszPath)
 		// File is read-only?
 		if (m_Path.ReadOnly())
 			throw CFileException(CFileException::E_READ_ONLY, m_Path, ERROR_ACCESS_DENIED);
-		
+
 		// Unknown reason.
 		throw CFileException(CFileException::E_CREATE_FAILED, m_Path, dwLastError);
 	}
@@ -107,7 +108,7 @@ void CFile::Open(const tchar* pszPath, uint nMode)
 	m_nMode = nMode;
 	m_Path  = pszPath;
 	m_hFile = ::CreateFile(m_Path, m_nMode, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	
+
 	// Error?
 	if (m_hFile == INVALID_HANDLE_VALUE)
 	{
@@ -120,7 +121,7 @@ void CFile::Open(const tchar* pszPath, uint nMode)
 		// Trying to write and file is read-only ?
 		if ( (nMode & GENERIC_WRITE) && (m_Path.ReadOnly()) )
 			throw CFileException(CFileException::E_READ_ONLY, m_Path, ERROR_ACCESS_DENIED);
-		
+
 		// Unknown reason.
 		throw CFileException(CFileException::E_OPEN_FAILED, m_Path, dwLastError);
 	}
@@ -149,7 +150,7 @@ void CFile::Close()
 
 	// Reset members.
 	m_hFile = INVALID_HANDLE_VALUE;
-	m_nMode = NULL;
+	m_nMode = GENERIC_NONE;
 	m_lEOF  = 0;
 }
 
@@ -465,7 +466,7 @@ bool CFile::CreateFolder(const tchar* pszPath, bool bCreatePath)
 		// Recursively create parent folders.
 		if (!CreateFolder(strParent, true))
 			return false;
-	
+
 		// Try and create it again.
 		if (::CreateDirectory(pszPath, NULL) != 0)
 			return true;
@@ -519,32 +520,32 @@ bool CFile::CreateShortcut(const tchar* pszLink, const tchar* pszTarget, const t
 	{
 		IShellLink* pIShellLink = NULL;
 
-		// Get a pointer to the IShellLink interface. 
+		// Get a pointer to the IShellLink interface.
 		hResult = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, IID_IShellLink, reinterpret_cast<LPVOID*>(&pIShellLink));
 
 		if (SUCCEEDED(hResult))
-		{ 
+		{
 			// Set the link properties.
 			pIShellLink->SetPath(pszTarget);
 			pIShellLink->SetWorkingDirectory(CPath(pszTarget).Directory());
 
 			if ((pszDesc != NULL) && (*pszDesc != TXT('\0')))
 				pIShellLink->SetDescription(pszDesc);
- 
+
 			IPersistFile* pIPersistFile = NULL;
 
-			// Query IShellLink for the IPersistFile interface for saving the shortcut. 
-			hResult = pIShellLink->QueryInterface(IID_IPersistFile, reinterpret_cast<LPVOID*>(&pIPersistFile)); 
+			// Query IShellLink for the IPersistFile interface for saving the shortcut.
+			hResult = pIShellLink->QueryInterface(IID_IPersistFile, reinterpret_cast<LPVOID*>(&pIPersistFile));
 
 			if (SUCCEEDED(hResult))
-			{ 
+			{
 				// Create the shortcut.
 				hResult = pIPersistFile->Save(T2W(pszLink), TRUE);
 
-				pIPersistFile->Release(); 
-			} 
+				pIPersistFile->Release();
+			}
 
-			pIShellLink->Release(); 
+			pIShellLink->Release();
 		}
 
 		::CoUninitialize();

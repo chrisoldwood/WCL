@@ -36,6 +36,7 @@ const size_t MAX_CHARS = 256;
 */
 
 CIniFile::CIniFile()
+	: m_strPath()
 {
 	tchar szPath[MAX_PATH+1] = { 0 };
 
@@ -132,20 +133,20 @@ CIniFile::~CIniFile()
 *******************************************************************************
 */
 
-CString CIniFile::ReadString(const tchar* pszSection, const tchar* pszEntry, 
+CString CIniFile::ReadString(const tchar* pszSection, const tchar* pszEntry,
 						const tchar* pszDefault) const
 {
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
 	ASSERT(pszDefault);
-	
+
 	tchar szBuffer[MAX_CHARS+1] = { 0 };
 
 	::GetPrivateProfileString(pszSection, pszEntry, pszDefault, szBuffer, MAX_CHARS, m_strPath);
 
 	return szBuffer;
 }
-						
+
 tstring CIniFile::ReadString(const tstring& strSection, const tstring& strEntry, const tstring& strDefault) const
 {
 	tchar szBuffer[MAX_CHARS+1] = { 0 };
@@ -160,10 +161,10 @@ void CIniFile::WriteString(const tchar* pszSection, const tchar* pszEntry, const
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
 	ASSERT(pszValue);
-	
+
 	::WritePrivateProfileString(pszSection, pszEntry, pszValue, m_strPath);
 }
-						
+
 void CIniFile::WriteString(const tstring& strSection, const tstring& strEntry, const tstring& strValue)
 {
 	::WritePrivateProfileString(strSection.c_str(), strEntry.c_str(), strValue.c_str(), m_strPath);
@@ -176,15 +177,15 @@ int CIniFile::ReadInt(const tchar* pszSection, const tchar* pszEntry, int nDefau
 
 	return ::GetPrivateProfileInt(pszSection, pszEntry, nDefault, m_strPath);
 }
-						
+
 void CIniFile::WriteInt(const tchar* pszSection, const tchar* pszEntry, int iValue)
 {
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
-	
+
 	::WritePrivateProfileString(pszSection, pszEntry, CStrCvt::FormatInt(iValue), m_strPath);
 }
-						
+
 uint CIniFile::ReadUInt(const tchar* pszSection, const tchar* pszEntry, uint nDefault) const
 {
 	ASSERT(pszSection);
@@ -194,15 +195,15 @@ uint CIniFile::ReadUInt(const tchar* pszSection, const tchar* pszEntry, uint nDe
 
 	// Read as a string.
 	::GetPrivateProfileString(pszSection, pszEntry, TXT(""), szValue, MAX_CHARS, m_strPath);
-	
+
 	// Read anything?
 	if (szValue[0] == TXT('\0'))
 		return nDefault;
-		
+
 	// Convert to value and return
 	return CStrCvt::ParseUInt(szValue);
 }
-						
+
 void CIniFile::WriteUInt(const tchar* pszSection, const tchar* pszEntry, uint nValue)
 {
 	ASSERT(pszSection);
@@ -210,7 +211,7 @@ void CIniFile::WriteUInt(const tchar* pszSection, const tchar* pszEntry, uint nV
 
 	::WritePrivateProfileString(pszSection, pszEntry, CStrCvt::FormatUInt(nValue), m_strPath);
 }
-						
+
 long CIniFile::ReadLong(const tchar* pszSection, const tchar* pszEntry, long lDefault) const
 {
 	ASSERT(pszSection);
@@ -220,15 +221,15 @@ long CIniFile::ReadLong(const tchar* pszSection, const tchar* pszEntry, long lDe
 
 	// Read as a string.
 	::GetPrivateProfileString(pszSection, pszEntry, TXT(""), szValue, MAX_CHARS, m_strPath);
-	
+
 	// Read anything?
 	if (szValue[0] == TXT('\0'))
 		return lDefault;
-		
+
 	// Convert to value and return
 	return CStrCvt::ParseLong(szValue);
 }
-						
+
 void CIniFile::WriteLong(const tchar* pszSection, const tchar* pszEntry, long lValue)
 {
 	ASSERT(pszSection);
@@ -236,7 +237,7 @@ void CIniFile::WriteLong(const tchar* pszSection, const tchar* pszEntry, long lV
 
 	::WritePrivateProfileString(pszSection, pszEntry, CStrCvt::FormatLong(lValue), m_strPath);
 }
-						
+
 bool CIniFile::ReadBool(const tchar* pszSection, const tchar* pszEntry, bool bDefault) const
 {
 	ASSERT(pszSection);
@@ -250,11 +251,11 @@ bool CIniFile::ReadBool(const tchar* pszSection, const tchar* pszEntry, bool bDe
 	// Read anything?
 	if (szValue[0] == TXT('\0'))
 		return bDefault;
-		
+
 	// Check first character.
 	return ( (szValue[0] == TXT('T')) || (szValue[0] == TXT('t')) );
 }
-						
+
 bool CIniFile::ReadBool(const tstring& strSection, const tstring& strEntry, bool bDefault) const
 {
 	return ReadBool(strSection.c_str(), strEntry.c_str(), bDefault);
@@ -293,7 +294,7 @@ void CIniFile::WriteRect(const tchar* pszSection, const tchar* pszEntry, const C
 {
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
-	
+
 	CString str;
 
 	str.Format(TXT("%d,%d,%d,%d"), rcValue.left, rcValue.top, rcValue.right, rcValue.bottom);

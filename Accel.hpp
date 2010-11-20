@@ -17,13 +17,13 @@
 #endif
 
 /******************************************************************************
-** 
+**
 ** This encapsulates a Windows accelerator table.
 **
 *******************************************************************************
 */
 
-class CAccel
+class CAccel /*: private NotCopyable*/
 {
 public:
 	//
@@ -31,7 +31,7 @@ public:
 	//
 	CAccel();
 	~CAccel();
-	
+
 	void LoadRsc(uint iRscID);
 
 	//
@@ -43,12 +43,17 @@ public:
 	// Message handling.
 	//
 	bool Translate(HWND hWnd, MSG& rMsg);
-	
+
 protected:
 	//
 	// Members.
 	//
 	HACCEL	m_hAccel;
+
+private:
+	// NotCopyable.
+	CAccel(const CAccel&);
+	CAccel& operator=(const CAccel&);
 };
 
 /******************************************************************************

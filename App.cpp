@@ -49,9 +49,18 @@ CApp* CApp::g_pThis = NULL;
 */
 
 CApp::CApp(CFrameWnd& rFrameWnd, CCmdControl& rCmdControl)
-	: m_rMainWnd(rFrameWnd)
+	: m_strTitle()
+	, m_rMainWnd(rFrameWnd)
 	, m_rCmdControl(rCmdControl)
+	, m_Module()
+	, m_MainThread()
+	, m_strCmdLine()
 	, m_iCmdShow(SW_SHOW)
+	, m_oComCtl32()
+	, m_DefaultFont()
+	, m_MidToneBrush()
+	, m_LightPen(), m_LightestPen()
+	, m_DarkPen(),  m_DarkestPen()
 {
 	ASSERT(g_pThis == NULL);
 

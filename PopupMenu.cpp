@@ -68,6 +68,25 @@ CPopupMenu::CPopupMenu(uint iRscID)
 }
 
 /******************************************************************************
+** Method:		Copy constructor
+**
+** Description:	.
+**
+** Parameters:	The object to copy.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+CPopupMenu::CPopupMenu(const CPopupMenu& rhs)
+	: CMenu(rhs.m_hMenu)
+	, m_hParent(rhs.m_hParent)
+{
+	ASSERT(m_hParent == NULL);
+}
+
+/******************************************************************************
 ** Method:		Destructor
 **
 ** Description:	.
@@ -128,6 +147,8 @@ void CPopupMenu::LoadRsc(uint iRscID)
 
 uint CPopupMenu::TrackMenu(CWnd& rParent, const CPoint& ptOrigin)
 {
+	const int RESERVED = 0;
+
 	return ::TrackPopupMenu(m_hMenu, TPM_LEFTALIGN | TPM_TOPALIGN | TPM_RETURNCMD | TPM_LEFTBUTTON,
-							ptOrigin.x, ptOrigin.y, NULL, rParent.Handle(), NULL);
+							ptOrigin.x, ptOrigin.y, RESERVED, rParent.Handle(), NULL);
 }

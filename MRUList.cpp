@@ -29,6 +29,7 @@
 
 CMRUList::CMRUList(size_t nMaxSize)
 	: m_nMaxSize(nMaxSize)
+	, m_Paths()
 {
 }
 

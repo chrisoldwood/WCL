@@ -23,7 +23,7 @@ class CPoint;
 class CDC;
 
 /******************************************************************************
-** 
+**
 ** This is a Wnd derived class that provides a base class for all message
 ** based windows. It provides the defualt handlers for all messages common to
 ** all windows.
@@ -31,7 +31,7 @@ class CDC;
 *******************************************************************************
 */
 
-class CMsgWnd : public CWnd
+class CMsgWnd : public CWnd /*, private NotCopyable*/
 {
 public:
 	//
@@ -48,7 +48,7 @@ public:
 	int VertScrollPos();
 	void HorzScrollRange(int iMin, int iMax, bool bRepaint = true);
 	void VertScrollRange(int iMin, int iMax, bool bRepaint = true);
-	
+
 protected:
 	/////////////////////////////////////////////////////////////////
 	// Structure to define an entry in the control msg table.
@@ -62,7 +62,7 @@ protected:
 
 	// Pointer to WM_NOTIFY style control message handler.
 	typedef LRESULT (CMsgWnd::*PFNNFYMSGHANDLER)(NMHDR& rMsgHdr);
-	
+
 	struct CTRLMSG
 	{
 		uint			m_iMsgType;			// WM_COMMAND or WM_NOTIFY.
@@ -70,12 +70,12 @@ protected:
 		uint			m_iMsgID;			// Event message ID.
 		PFNMSGHANDLER	m_pfnMsgHandler;	// Message handler method.
 	};
-	
+
 	//
 	// Members.
 	//
 	CTRLMSG*	m_pCtrlMsgTable;
-	
+
 	//
 	// General message handlers.
 	//
@@ -135,10 +135,14 @@ private:
 	//
 	BOOL*		m_pbMsgHandled;		// Was message handled?
 	LRESULT*	m_plMsgResult;		// Message result code.
+
+	// NotCopyable.
+	CMsgWnd(const CMsgWnd&);
+	CMsgWnd& operator=(const CMsgWnd&);
 };
 
 /******************************************************************************
-** 
+**
 ** Macros used to ease the definition of the control message table.
 **
 *******************************************************************************
@@ -210,7 +214,7 @@ inline void CMsgWnd::MsgResult(LRESULT lResult)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Set the result for the message. This method replaces the need to make two 
+//! Set the result for the message. This method replaces the need to make two
 //! calls - one to MsgHandled() and one to MsgResult() - with a single call.
 
 inline void CMsgWnd::SetMsgResult(BOOL bHandled, LRESULT lResult)

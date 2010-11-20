@@ -39,7 +39,9 @@ const tchar* VerInfoReader::SPECIAL_BUILD     = TXT("SpecialBuild");
 
 VerInfoReader::VerInfoReader()
 	: m_bOpen(false)
+	, m_strFileName()
 	, m_dwBufSize(0)
+	, m_pBuffer()
 	, m_pDefTrans(nullptr)
 {
 }

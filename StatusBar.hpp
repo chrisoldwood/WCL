@@ -23,7 +23,7 @@
 class CStatusBarPanel;
 
 /******************************************************************************
-** 
+**
 ** This is a child window that acts as a placeholder for other child windows
 ** that display information about the application.
 **
@@ -69,7 +69,7 @@ protected:
 	// Internal methods.
 	//
 	void ActivateWnd(CWnd* pWnd);
-	
+
 	//
 	// Window creation template methods.
 	//
@@ -83,6 +83,11 @@ protected:
 	virtual void OnPaint(CDC& rDC);
 	virtual void OnResize(int iFlag, const CSize& rNewSize);
 	virtual void OnHitTest(const CPoint& ptCursor);
+
+private:
+	// NotCopyable.
+	CStatusBar(const CStatusBar&);
+	CStatusBar& operator=(const CStatusBar&);
 };
 
 /******************************************************************************

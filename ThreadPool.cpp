@@ -30,6 +30,11 @@
 CThreadPool::CThreadPool(size_t nThreads)
 	: m_nThreads(nThreads)
 	, m_eStatus(STOPPED)
+	, m_oPool()
+	, m_oPendingQ()
+	, m_oRunningQ()
+	, m_oCompletedQ()
+	, m_oLock()
 {
 	ASSERT(m_nThreads > 0);
 }
@@ -319,7 +324,7 @@ void CThreadPool::OnJobCompleted(ThreadJobPtr& pJob)
 
 	// Move from running to completed queue.
 	CIter oIter = std::find(m_oRunningQ.begin(), m_oRunningQ.end(), pJob);
-	
+
 	ASSERT(oIter != m_oRunningQ.end());
 
 	m_oCompletedQ.push_back(pJob);

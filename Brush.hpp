@@ -17,13 +17,13 @@
 #endif
 
 /******************************************************************************
-** 
+**
 ** This class wraps a standard GDI brush.
 **
 *******************************************************************************
 */
 
-class CBrush
+class CBrush /*: private NotCopyable*/
 {
 public:
 	//
@@ -37,7 +37,7 @@ public:
 
 	void Create(int iID);
 	void Create(COLORREF crClr);
-	
+
 	//
 	// Member access.
 	//
@@ -49,6 +49,11 @@ protected:
 	//
 	HBRUSH	m_hBrush;
 	bool	m_bOwner;
+
+private:
+	// NotCopyable.
+	CBrush(const CBrush&);
+	CBrush& operator=(const CBrush&);
 };
 
 /******************************************************************************
@@ -57,40 +62,6 @@ protected:
 **
 *******************************************************************************
 */
-
-inline CBrush::CBrush(int iID)
-{
-	Create(iID);
-}
-
-inline CBrush::CBrush(COLORREF crClr)
-{
-	Create(crClr);
-}
-
-inline CBrush::CBrush(HBRUSH hBrush, bool bOwn)
-{
-	m_hBrush = hBrush;
-	m_bOwner = bOwn;
-
-	ASSERT(m_hBrush != NULL);
-}
-
-inline void CBrush::Create(int iID)
-{
-	m_hBrush = GetStockBrush(iID);
-	m_bOwner = false;
-
-	ASSERT(m_hBrush != NULL);
-}
-
-inline void CBrush::Create(COLORREF crClr)
-{
-	m_hBrush = ::CreateSolidBrush(crClr);
-	m_bOwner = true;
-
-	ASSERT(m_hBrush != NULL);
-}
 
 inline HBRUSH CBrush::Handle() const
 {

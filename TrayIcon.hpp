@@ -19,13 +19,13 @@
 #include "Wnd.hpp"
 
 /******************************************************************************
-** 
+**
 ** A class to encapsulate a system tray icon.
 **
 *******************************************************************************
 */
 
-class CTrayIcon
+class CTrayIcon /*: private NotCopyable*/
 {
 public:
 	//
@@ -55,6 +55,11 @@ protected:
 	HWND	m_hWnd;
 	uint	m_nTrayID;
 	uint	m_nMsgID;
+
+private:
+	// NotCopyable.
+	CTrayIcon(const CTrayIcon&);
+	CTrayIcon& operator=(const CTrayIcon&);
 };
 
 /******************************************************************************
@@ -71,12 +76,12 @@ inline bool CTrayIcon::IsVisible() const
 
 inline void CTrayIcon::ModifyIcon(uint nRscID)
 {
-	Modify(nRscID, NULL);
+	Modify(nRscID, nullptr);
 }
 
 inline void CTrayIcon::ModifyToolTip(const tchar* pszToolTip)
 {
-	Modify(NULL, pszToolTip);
+	Modify(0, pszToolTip);
 }
 
 #endif // TRAYICON_HPP

@@ -21,6 +21,11 @@
 #include <malloc.h>
 #include <Core/InvalidArgException.hpp>
 
+#if __GNUC__
+// missing initializer for member 'X'
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 /******************************************************************************
 **
 ** Constants.
@@ -32,6 +37,35 @@
 const size_t ISO_FMT_MIN_LEN = 5;
 // ISO Format string size in characters "dd:dd:dd".
 const size_t ISO_FMT_MAX_LEN = 8;
+
+/******************************************************************************
+** Method:		Constructors
+**
+** Description:	.
+**
+** Parameters:	None.
+**
+** Returns:		Nothing.
+**
+*******************************************************************************
+*/
+
+CTime::CTime()
+	: m_tTime(0)
+{
+}
+
+CTime::CTime(WCL::Seconds tTime)
+	: m_tTime()
+{
+	Set(tTime);
+}
+
+CTime::CTime(int iHours, int iMins, int iSecs)
+	: m_tTime()
+{
+	Set(iHours, iMins, iSecs);
+}
 
 /******************************************************************************
 ** Method:		Set()
@@ -234,10 +268,10 @@ bool CTime::FromString(const tchar* pszTime)
 		return false;
 
 	tchar szTime[ISO_FMT_MAX_LEN+1] = { 0 };
-	
+
 	// Copy to non-const buffer.
 	tstrncpy(szTime, pszTime, ISO_FMT_MAX_LEN);
-	
+
 	// Break up string into time components.
 	const tchar* pszHours = tstrtok(szTime, TXT(":"));
 	const tchar* pszMins  = tstrtok(NULL,   TXT(":"));

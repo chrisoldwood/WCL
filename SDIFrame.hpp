@@ -22,7 +22,7 @@
 class CView;
 
 /******************************************************************************
-** 
+**
 ** This is the base class for an SDI applications' main window.
 **
 *******************************************************************************
@@ -66,6 +66,11 @@ protected:
 
 	//! Query whether to close the window.
 	virtual bool OnQueryClose();
+
+private:
+	// NotCopyable.
+	CSDIFrame(const CSDIFrame&);
+	CSDIFrame& operator=(const CSDIFrame&);
 };
 
 /******************************************************************************

@@ -16,6 +16,10 @@
 class TestComClass : public IErrorLog,
 					 public ISupportErrorInfo
 {
+public:
+	virtual ~TestComClass()
+	{ }
+
 	virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID iid, void** object)
 	{
 		if (IsEqualIID(iid, IID_ISupportErrorInfo))
@@ -61,11 +65,11 @@ TEST_CASE("construction is from a result code and c-style string")
 	const HRESULT testCode = E_FAIL;
 	const tchar*  testMessage = TXT("UnitTest");
 
-	WCL::ComException e(testCode, testMessage);
+	WCL::ComException exception(testCode, testMessage);
 
-	tstring message = e.twhat();
+	tstring message = exception.twhat();
 
-	TEST_TRUE(e.m_result == testCode);
+	TEST_TRUE(exception.m_result == testCode);
 	TEST_TRUE(message.find(testMessage) != tstring::npos);
 }
 TEST_CASE_END
@@ -75,11 +79,11 @@ TEST_CASE("construction is from a result code and a std::string")
 	const HRESULT testCode = E_FAIL;
 	const tstring testMessage = TXT("UnitTest");
 
-	WCL::ComException e(testCode, testMessage);
+	WCL::ComException exception(testCode, testMessage);
 
-	tstring message = e.twhat();
+	tstring message = exception.twhat();
 
-	TEST_TRUE(e.m_result == testCode);
+	TEST_TRUE(exception.m_result == testCode);
 	TEST_TRUE(message.find(testMessage) != tstring::npos);
 }
 TEST_CASE_END
@@ -92,9 +96,9 @@ TEST_CASE("message contains the numeric value of the result code")
 	const tstring testCodeAsString = TXT("0x80004005");
 	const tstring testMessage = TXT("UnitTest");
 
-	WCL::ComException e(testCode, testMessage);
+	WCL::ComException exception(testCode, testMessage);
 
-	tstring message = e.twhat();
+	tstring message = exception.twhat();
 
 	TEST_TRUE(message.find(testCodeAsString) != tstring::npos);
 }
@@ -111,11 +115,11 @@ TEST_CASE("message contains some extra detail when constructed from an object su
 	ASSERT(hr == S_OK);
 	DEBUG_USE_ONLY(hr);
 
-	WCL::ComException e(E_FAIL, allocator, TXT("UnitTest"));
+	WCL::ComException exception(E_FAIL, allocator, TXT("UnitTest"));
 
-	tstring str = e.twhat();
+	tstring str = exception.twhat();
 
-	TEST_TRUE(e.m_result == E_FAIL);
+	TEST_TRUE(exception.m_result == E_FAIL);
 	TEST_TRUE(str.find(TXT('{')) == tstring::npos);
 }
 TEST_CASE_END
@@ -146,11 +150,11 @@ TEST_CASE("message contains full details when constructed from a complete IError
 
 	TestComClass		object;
 	IErrorLogPtr		iface(&object);
-	WCL::ComException	e(E_POINTER, iface, TXT("UnitTest"));
+	WCL::ComException	exception(E_POINTER, iface, TXT("UnitTest"));
 
-	tstring str = e.twhat();
+	tstring str = exception.twhat();
 
-	TEST_TRUE(e.m_result == E_POINTER);
+	TEST_TRUE(exception.m_result == E_POINTER);
 	TEST_TRUE(str.find(TXT("TestSource")) != tstring::npos);
 	TEST_TRUE(str.find(TXT("TestDescription")) != tstring::npos);
 }

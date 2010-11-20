@@ -16,6 +16,11 @@
 #include "StrTok.hpp"
 #include "StrCvtException.hpp"
 
+#if __GNUC__
+// missing initializer for member 'X'
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 /******************************************************************************
 ** Method:		Constructor.
 **
@@ -178,7 +183,7 @@ CString CLogFont::Format(FontFormat eFormat) const
 	{
 		strFont += CString::Fmt(TXT(",%d,%d,%d,%u,%u,%u,%u,%u"), lfWidth, lfEscapement, lfOrientation,
 								lfCharSet, lfOutPrecision, lfClipPrecision, lfQuality, lfPitchAndFamily);
-	}		
+	}
 
 	return strFont;
 }
@@ -240,7 +245,7 @@ bool CLogFont::Parse(const tchar* pszFont, CLogFont& oLogFont)
 			oLogFont.lfClipPrecision  = static_cast<BYTE>(CStrCvt::ParseUInt(astrFields[11]));
 			oLogFont.lfQuality        = static_cast<BYTE>(CStrCvt::ParseUInt(astrFields[12]));
 			oLogFont.lfPitchAndFamily = static_cast<BYTE>(CStrCvt::ParseUInt(astrFields[13]));
-		}		
+		}
 	}
 	catch (const CStrCvtException& e)
 	{

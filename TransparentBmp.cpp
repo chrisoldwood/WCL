@@ -26,7 +26,10 @@
 */
 
 CTransparentBmp::CTransparentBmp()
-	: m_clrTransparent(RGB(0,0,0))
+	: m_bmpMask()
+	, m_bmpImage()
+	, m_Size()
+	, m_clrTransparent(RGB(0,0,0))
 {
 }
 

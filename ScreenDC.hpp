@@ -22,7 +22,7 @@
 class CWnd;
 
 /******************************************************************************
-** 
+**
 ** This is a Device derived class that is appropriate for drawing to the
 ** display such as painting windows.
 **
@@ -40,15 +40,20 @@ public:
 	CScreenDC(PAINTSTRUCT& psPaint);
 	CScreenDC(HDC hDC);
 	virtual	~CScreenDC();
-	
+
 	// RTTI
 	virtual	Device Type() const;
-	
+
 protected:
 	//
 	// Members.
 	//
 	HWND	m_hWnd;		// Window handle of windows' device context.
+
+private:
+	// NotCopyable.
+	CScreenDC(const CScreenDC&);
+	CScreenDC& operator=(const CScreenDC&);
 };
 
 /******************************************************************************

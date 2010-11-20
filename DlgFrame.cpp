@@ -91,50 +91,50 @@ void CDlgFrame::GetCreateParams(WNDCREATE& rParams)
 
 void CDlgFrame::OnCreate(const CRect& /*rcClient*/)
 {
-	CSize ToolBar;
-	CSize StatusBar;
-	CSize Border;	
-	CSize Menu;
-	CSize Caption;
+	CSize toolBarSize;
+	CSize statusBarSize;
+	CSize borderSize;
+	CSize menuSize;
+	CSize captionSize;
 
 	// Get the current frame position.
 	CRect Pos = WindowRect();
-    
+
 	// Get the size of the dialog.
 	CSize DlgSize = m_rDialog.WindowRect().Size();
-	
+
 	// Get the tool bar dimensions, if one.
 	if (m_pToolBar)
-		ToolBar = m_pToolBar->ClientRect().Size();
-    
+		toolBarSize = m_pToolBar->ClientRect().Size();
+
 	// Get the status bar dimensions, if one.
 	if (m_pStatusBar)
-		StatusBar = m_pStatusBar->ClientRect().Size();
+		statusBarSize = m_pStatusBar->ClientRect().Size();
 
 	// Get the menu dimensions, if one.
 	if (m_pMenu)
-		Menu.cy = GetSystemMetrics(SM_CYMENU);
+		menuSize.cy = GetSystemMetrics(SM_CYMENU);
 
 	// Get frame border and caption dimensions.
-	Caption.cy = GetSystemMetrics(SM_CYCAPTION);
-	Border.cx  = GetSystemMetrics(m_bFixedSize ? SM_CXFIXEDFRAME : SM_CXSIZEFRAME);
-	Border.cy  = GetSystemMetrics(m_bFixedSize ? SM_CYFIXEDFRAME : SM_CYSIZEFRAME);
+	captionSize.cy = GetSystemMetrics(SM_CYCAPTION);
+	borderSize.cx  = GetSystemMetrics(m_bFixedSize ? SM_CXFIXEDFRAME : SM_CXSIZEFRAME);
+	borderSize.cy  = GetSystemMetrics(m_bFixedSize ? SM_CYFIXEDFRAME : SM_CYSIZEFRAME);
 
 	// Calculate the new frame dimensions.
 	CSize NewSize;
 
-	NewSize.cx = DlgSize.cx + (2 * Border.cx);
-	NewSize.cy = DlgSize.cy + ToolBar.cy + StatusBar.cy 
-				  + Caption.cy + Menu.cy + (2 * Border.cy);
+	NewSize.cx = DlgSize.cx + (2 * borderSize.cx);
+	NewSize.cy = DlgSize.cy + toolBarSize.cy + statusBarSize.cy
+				  + captionSize.cy + menuSize.cy + (2 * borderSize.cy);
 
 	// Resize the frame.
 	Move(CRect(Pos.TopLeft(), NewSize));
-	
+
 	// Toolbar?
 	if (m_pToolBar)
 	{
 		// Move dialog below toolbar.
-		m_rDialog.Move(CRect(CPoint(0, ToolBar.cy), DlgSize));
+		m_rDialog.Move(CRect(CPoint(0, toolBarSize.cy), DlgSize));
 	}
 }
 
@@ -185,7 +185,7 @@ void CDlgFrame::OnResize(int iFlag, const CSize& NewSize)
 ** Method:		OnFocus()
 **
 ** Description:	Divert the focus to the active view window.
-**				
+**
 ** Parameters:	None.
 **
 ** Returns:		Nothing.

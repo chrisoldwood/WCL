@@ -19,7 +19,7 @@
 #include "PopupWnd.hpp"
 
 /******************************************************************************
-** 
+**
 ** This is the base class for all window child controls.
 **
 *******************************************************************************
@@ -51,6 +51,11 @@ protected:
 	// Window creation template methods.
 	//
 	virtual void GetCreateParams(WNDCREATE& rParams);
+
+private:
+	// NotCopyable.
+	CCtrlWnd(const CCtrlWnd&);
+	CCtrlWnd& operator=(const CCtrlWnd&);
 };
 
 /******************************************************************************

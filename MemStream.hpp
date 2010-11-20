@@ -22,7 +22,7 @@
 class CBuffer;
 
 /******************************************************************************
-** 
+**
 ** This is memory based stream.
 **
 *******************************************************************************
@@ -36,7 +36,7 @@ public:
 	//
 	CMemStream(CBuffer& oBuffer);
 	virtual	~CMemStream();
-	
+
 	//
 	// Properties.
 	//
@@ -70,6 +70,11 @@ protected:
 
 	// Default allocation size in bytes (1K).
 	static const size_t ALLOC_SIZE = 1024;
+
+private:
+	// NotCopyable.
+	CMemStream(const CMemStream&);
+	CMemStream& operator=(const CMemStream&);
 };
 
 /******************************************************************************

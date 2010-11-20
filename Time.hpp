@@ -28,7 +28,7 @@ class IOutputStream;
 }
 
 /******************************************************************************
-** 
+**
 ** This class is used to represent a time. It is stored and manipulated as if
 ** it was a UTC time_t, with the date part set 01/01/1970.
 **
@@ -50,7 +50,7 @@ public:
 	//
 	static CTime Min();
 	static CTime Max();
-	
+
 	//
 	// Core accessors & mutators.
 	//
@@ -134,21 +134,6 @@ protected:
 **
 *******************************************************************************
 */
-
-inline CTime::CTime()
-	: m_tTime(0)
-{
-}
-
-inline CTime::CTime(WCL::Seconds tTime)
-{
-	Set(tTime);
-}
-
-inline CTime::CTime(int iHours, int iMins, int iSecs)
-{
-	Set(iHours, iMins, iSecs);
-}
 
 inline CTime CTime::Min()
 {

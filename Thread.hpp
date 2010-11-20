@@ -23,7 +23,7 @@
 *******************************************************************************
 */
 
-class CThread
+class CThread /*: private NotCopyable*/
 {
 public:
 	//
@@ -52,6 +52,11 @@ protected:
 
 	// The main thread function.
 	virtual void Run() = 0;
+
+private:
+	// NotCopyable.
+	CThread(const CThread&);
+	CThread& operator=(const CThread&);
 };
 
 /******************************************************************************

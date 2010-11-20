@@ -24,6 +24,7 @@
 */
 
 CMemDC::CMemDC(const CDC& rDC)
+	: m_devType()
 {
 	m_hDC     = CreateCompatibleDC(rDC.Handle());
 	m_iState  = SaveState();
@@ -57,7 +58,7 @@ CMemDC::~CMemDC()
 {
 	// Restore DC to inital settings.
 	RestoreState(m_iState);
-	
+
 #ifdef _DEBUG
 	// Passify BoundsChecker.
 	::SelectObject (m_hDC, m_hOrgBitmap );

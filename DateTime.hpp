@@ -29,7 +29,7 @@ class IOutputStream;
 }
 
 /******************************************************************************
-** 
+**
 ** This class is used to represent a date. It is stored and manipulated as if
 ** it was a UTC time_t. Consequenetly there is no notion of Daylight Saving or
 ** timezones, which makes date and time arithmetic easier.
@@ -53,7 +53,7 @@ public:
 	//
 	static CDateTime Min();
 	static CDateTime Max();
-	
+
 	//
 	// Core accessors & mutators.
 	//
@@ -95,7 +95,7 @@ public:
 	//
 	CDateTimeSpan operator  -(const CDateTime& rRHS) const;
 	void          operator -=(const CDateTimeSpan& rRHS);
-	
+
 protected:
 	//
 	// Members.
@@ -116,7 +116,7 @@ private:
 };
 
 /******************************************************************************
-** 
+**
 ** This class is used to represent a period between two date-times.
 **
 *******************************************************************************
@@ -131,7 +131,7 @@ public:
 	CDateTimeSpan();
 	CDateTimeSpan(WCL::Seconds tSecs);
 	CDateTimeSpan(const CDateTime& rDateTime);
-	
+
 	//
 	// Accessors.
 	//
@@ -158,26 +158,6 @@ protected:
 **
 *******************************************************************************
 */
-
-inline CDateTime::CDateTime()
-	: m_tDateTime(0)
-{
-}
-
-inline CDateTime::CDateTime(WCL::Seconds tDateTime)
-{
-	Set(tDateTime);
-}
-
-inline CDateTime::CDateTime(int iDay, int iMonth, int iYear, int iHours, int iMins, int iSecs)
-{
-	Set(iDay, iMonth, iYear, iHours, iMins, iSecs);
-}
-
-inline CDateTime::CDateTime(const CDate& rDate, const CTime& rTime)
-	: m_tDateTime(rDate.m_tDate + rTime.m_tTime)
-{
-}
 
 inline CDateTime CDateTime::Min()
 {
@@ -313,8 +293,8 @@ inline CDateTimeSpan::CDateTimeSpan(WCL::Seconds tSecs)
 }
 
 inline CDateTimeSpan::CDateTimeSpan(const CDateTime& rDateTime)
+	: m_tSpan(rDateTime.m_tDateTime)
 {
-	m_tSpan = rDateTime.m_tDateTime;
 }
 
 inline int CDateTimeSpan::Secs() const

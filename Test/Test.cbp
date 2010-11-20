@@ -9,71 +9,83 @@
 			<Target title="Debug Win32">
 				<Option output="Debug\Test" prefix_auto="1" extension_auto="1" />
 				<Option object_output="Debug" />
+				<Option external_deps="..\..\Core\Debug\libCore.a;..\..\WCL\Debug\libWCL.a;" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-DWIN32" />
 					<Add option="-D_DEBUG" />
-					<Add option="-D_CONSOLE" />
-					<Add directory="..\..\..\Lib" />
 				</Compiler>
-				<ResourceCompiler>
-					<Add directory="..\..\..\Lib" />
-				</ResourceCompiler>
 				<Linker>
-					<Add library="..\..\Core\Debug\lib.a" />
-					<Add library="..\Debug\lib.a" />
+					<Add library="..\..\Core\Debug\libCore.a" />
+					<Add library="..\Debug\libWCL.a" />
 				</Linker>
 			</Target>
 			<Target title="Release Win32">
 				<Option output="Release\Test" prefix_auto="1" extension_auto="1" />
 				<Option object_output="Release" />
+				<Option external_deps="..\..\Core\Release\libCore.a;..\..\WCL\Release\libWCL.a;" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-DWIN32" />
+					<Add option="-O" />
 					<Add option="-DNDEBUG" />
-					<Add option="-D_CONSOLE" />
-					<Add directory="..\..\..\Lib" />
 				</Compiler>
-				<ResourceCompiler>
-					<Add directory="..\..\..\Lib" />
-				</ResourceCompiler>
 				<Linker>
-					<Add library="..\..\Core\Release\lib.a" />
-					<Add library="..\Release\lib.a" />
+					<Add library="..\..\Core\Release\libCore.a" />
+					<Add library="..\Release\libWCL.a" />
 				</Linker>
 			</Target>
 		</Build>
+		<Compiler>
+			<Add option="-Wshadow" />
+			<Add option="-Winit-self" />
+			<Add option="-Wredundant-decls" />
+			<Add option="-Wcast-align" />
+			<Add option="-Wmissing-declarations" />
+			<Add option="-Wmissing-include-dirs" />
+			<Add option="-Wswitch-enum" />
+			<Add option="-Wswitch-default" />
+			<Add option="-Wextra" />
+			<Add option="-Wall" />
+			<Add option="-Werror" />
+			<Add option="-DWIN32" />
+			<Add option="-D_CONSOLE" />
+			<Add directory="..\..\..\Lib" />
+		</Compiler>
+		<ResourceCompiler>
+			<Add directory="..\..\..\Lib" />
+		</ResourceCompiler>
 		<Linker>
 			<Add library="ole32" />
 			<Add library="oleaut32" />
 			<Add library="uuid" />
-			<Add library="shlwapi" />
+			<Add library="comdlg32" />
 			<Add library="version" />
-			<Add library="shell32" />
+			<Add library="gdi32" />
+			<Add library="ntdll" />
+			<Add library="advapi32" />
+			<Add library="shlwapi" />
 		</Linker>
-		<Unit filename="PtrTest.hpp" />
-		<Unit filename="Test.cpp" />
-		<Unit filename="Test.rc">
-			<Option compilerVar="WINDRES" />
-		</Unit>
-		<Unit filename="Test.rcv" />
 		<Unit filename="AppConfigTests.cpp" />
 		<Unit filename="ComExceptionTests.cpp" />
 		<Unit filename="ComPtrTests.cpp" />
 		<Unit filename="DateTimeTests.cpp" />
 		<Unit filename="FolderIteratorTests.cpp" />
 		<Unit filename="IFacePtrTests.cpp" />
-		<Unit filename="TestIFaceTraits.hpp" />
-		<Unit filename="IniFileTests.cpp" />
 		<Unit filename="IniFileCfgProviderTests.cpp" />
-		<Unit filename="MiscTests.cpp" />
+		<Unit filename="IniFileTests.cpp" />
 		<Unit filename="PathTests.cpp" />
+		<Unit filename="PtrTest.hpp" />
 		<Unit filename="RectTests.cpp" />
 		<Unit filename="RegistryCfgProviderTests.cpp" />
 		<Unit filename="StringTests.cpp" />
 		<Unit filename="StringUtilsTests.cpp" />
+		<Unit filename="Test.cpp" />
+		<Unit filename="Test.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="Test.rcv" />
+		<Unit filename="TestIFaceTraits.hpp" />
 		<Unit filename="VerInfoReaderTests.cpp" />
 		<Unit filename="resource.h" />
 		<Unit filename="stdafx.cpp" />

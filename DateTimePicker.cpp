@@ -12,6 +12,11 @@
 #include "DateTimePicker.hpp"
 #include "DateTime.hpp"
 
+#if __GNUC__
+// missing initializer for member 'X'
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 /******************************************************************************
 ** Method:		Default constructor.
 **

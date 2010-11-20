@@ -17,13 +17,13 @@
 #endif
 
 /******************************************************************************
-** 
+**
 ** This class wraps a standard GDI icon.
 **
 *******************************************************************************
 */
 
-class CIcon
+class CIcon /*: private NotCopyable*/
 {
 public:
 	//
@@ -33,7 +33,7 @@ public:
 	CIcon(uint nRscID);
 	CIcon(uint nRscID, uint nWidth, uint nHeight);
 	~CIcon();
-	
+
 	void LoadRsc(uint nRscID);
 	void LoadRsc(uint nRscID, uint nWidth, uint nHeight);
 	void LoadRsc(const tchar* pszRsc);
@@ -49,6 +49,11 @@ protected:
 	//
 	HICON	m_hIcon;
 	bool	m_bOwner;
+
+private:
+	// NotCopyable.
+	CIcon(const CIcon&);
+	CIcon& operator=(const CIcon&);
 };
 
 /******************************************************************************

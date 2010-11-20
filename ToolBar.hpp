@@ -24,7 +24,7 @@
 #define IDC_SEPARATOR	(static_cast<uint>(-1))
 
 /******************************************************************************
-** 
+**
 ** A child window used as a container for buttons and other controls.
 **
 *******************************************************************************
@@ -79,10 +79,15 @@ protected:
 	// Tooltip/Hint support.
 	//
 	virtual void OnShowHint(const CWnd* pWnd) const;
+
+private:
+	// NotCopyable.
+	CToolBar(const CToolBar&);
+	CToolBar& operator=(const CToolBar&);
 };
 
 /******************************************************************************
-** 
+**
 ** Macros used to ease the definition of the control table.
 **
 *******************************************************************************

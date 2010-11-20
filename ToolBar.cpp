@@ -52,6 +52,7 @@ const int SEP_INDENT = 1;
 
 CToolBar::CToolBar()
 	: m_pCtrlTable(NULL)
+	, m_oToolTip()
 {
 	// Add to the main threads' msg filters.
 	CApp::This().m_MainThread.AddMsgFilter(this);
@@ -163,7 +164,7 @@ void CToolBar::OnCreate(const CRect& /*rcClient*/)
 			// Add to tooltip control.
 			m_oToolTip.AddTool(*this, *pCtrl->pWnd, LPSTR_TEXTCALLBACK);
 		}
-		
+
 		// Move to next.
 		++pCtrl;
 	}

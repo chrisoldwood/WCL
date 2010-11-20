@@ -26,7 +26,9 @@
 */
 
 CMsgThread::CMsgThread()
-	: m_nResult(THREAD_EXIT_FAILURE)
+	: m_oMsg()
+	, m_oMsgFilters()
+	, m_nResult(THREAD_EXIT_FAILURE)
 {
 #ifdef _DEBUG
 	memset(&m_oMsg, 0, sizeof(MSG));
@@ -135,10 +137,10 @@ void CMsgThread::RemoveMsgFilter(IMsgFilter* pFilter)
 bool CMsgThread::ProcessMsgQueue(bool bRepostQuitMsg)
 {
 	// Message waiting?
-	while (PeekMessage(&m_oMsg, NULL, NULL, NULL, PM_NOREMOVE))
+	while (PeekMessage(&m_oMsg, NULL, WM_NULL, WM_NULL, PM_NOREMOVE))
 	{
 		// Is WM_QUIT?
-		if (!GetMessage(&m_oMsg, NULL, NULL, NULL))
+		if (!GetMessage(&m_oMsg, NULL, WM_NULL, WM_NULL))
 		{
 			m_nResult = static_cast<int>(m_oMsg.wParam);
 
@@ -155,7 +157,7 @@ bool CMsgThread::ProcessMsgQueue(bool bRepostQuitMsg)
 			typedef CMsgFilters::const_iterator CIter;
 
 			bool bProcessed = false;
-			
+
 			// Give message filters first crack at message.
 			for (CIter oIter = m_oMsgFilters.begin(); ((oIter != m_oMsgFilters.end()) && (!bProcessed)); ++oIter)
 				bProcessed = (*oIter)->ProcessMsg(m_oMsg);

@@ -63,7 +63,9 @@ void RegKey::Open(HKEY hParentKey, const tchar* pszSubKey, REGSAM dwAccess)
 	ASSERT(hParentKey != NULL);
 	ASSERT(pszSubKey  != NULL);
 
-	LONG lResult = ::RegOpenKeyEx(hParentKey, pszSubKey, NULL, dwAccess, &m_hKey);
+	const DWORD RESERVED = 0;
+
+	LONG lResult = ::RegOpenKeyEx(hParentKey, pszSubKey, RESERVED, dwAccess, &m_hKey);
 
 	if (lResult != ERROR_SUCCESS)
 		throw RegistryException(lResult, TXT("Failed to open a registry key"));
@@ -89,7 +91,7 @@ void RegKey::Close()
 CString RegKey::ReadDefaultValue() const
 {
 	ASSERT(m_hKey != NULL);
-	
+
 	LONG lSize = 0;
 
 	// Get the data type and size in bytes.
@@ -123,7 +125,7 @@ CString RegKey::ReadStringValue(const tchar* pszName, const tchar* pszDefault) c
 	ASSERT(m_hKey     != NULL);
 	ASSERT(pszName    != NULL);
 	ASSERT(pszDefault != NULL);
-	
+
 	DWORD dwType = REG_NONE;
 	DWORD dwSize = 0;
 
@@ -188,10 +190,12 @@ bool RegKey::Exists(HKEY hParentKey, const tchar* pszSubKey)
 	ASSERT(hParentKey != NULL);
 	ASSERT(pszSubKey  != NULL);
 
+	const DWORD RESERVED = 0;
+
 	HKEY hKey = NULL;
 
 	// Try and open the key for reading.
-	LONG lResult = ::RegOpenKeyEx(hParentKey, pszSubKey, NULL, KEY_READ, &hKey);
+	LONG lResult = ::RegOpenKeyEx(hParentKey, pszSubKey, RESERVED, KEY_READ, &hKey);
 
 	if (hKey != NULL)
 		::RegCloseKey(hKey);
@@ -254,7 +258,7 @@ CString RegKey::ReadKeyDefaultValue(HKEY hParentKey, const tchar* pszSubKey)
 	RegKey oKey;
 
 	oKey.Open(hParentKey, pszSubKey, KEY_READ);
-	
+
 	return oKey.ReadDefaultValue();
 }
 

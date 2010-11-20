@@ -19,13 +19,13 @@
 #include "Path.hpp"
 
 /******************************************************************************
-** 
+**
 ** This class holds the instance handle of an EXE or DLL module.
 **
 *******************************************************************************
 */
 
-class CModule
+class CModule /*: private NotCopyable*/
 {
 public:
 	//
@@ -34,7 +34,7 @@ public:
 	CModule();
 	CModule(HINSTANCE hInstance);
 	~CModule();
-	
+
 	//
 	// Member access.
 	//
@@ -58,6 +58,11 @@ protected:
 
 	friend int  WINAPI WinMain(HINSTANCE hCurrInst, HINSTANCE hPrevInst, LPSTR lpszCmdLine, int iCmdShow);
 	friend BOOL WINAPI DllMain(HINSTANCE hInst, DWORD dwReason, LPVOID lpvReserved);
+
+private:
+	// NotCopyable.
+	CModule(const CModule&);
+	CModule& operator=(const CModule&);
 };
 
 /******************************************************************************

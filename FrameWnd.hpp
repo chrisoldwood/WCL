@@ -27,14 +27,14 @@ class CStatusBar;
 class CDialog;
 
 /******************************************************************************
-** 
+**
 ** This is the base class for the main application window. It contains the menu
 ** and caption etc. It can also support status and tool bars.
 **
 *******************************************************************************
 */
 
-class CFrameWnd : public CPopupWnd, public IMsgFilter
+class CFrameWnd : public CPopupWnd, public IMsgFilter /*: private NotCopyable*/
 {
 public:
 	//
@@ -86,7 +86,7 @@ protected:
 	CToolBar*	m_pToolBar;		// Toolbar, if one.
 	CStatusBar*	m_pStatusBar;	// Status Bar, if one.
 	CDialog*	m_pActiveDlg;	// The active modeless dialog, if one.
-	
+
 	//
 	// Constants.
 	//
@@ -114,6 +114,11 @@ protected:
 	virtual bool OnQueryClose();
 	virtual void OnClose();
 	virtual void OnDropFile(int nFile, const tchar* pszPath);
+
+private:
+	// NotCopyable.
+	CFrameWnd(const CFrameWnd&);
+	CFrameWnd& operator=(const CFrameWnd&);
 };
 
 /******************************************************************************

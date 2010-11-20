@@ -18,7 +18,7 @@ namespace WCL
 //! An iterator for enumerating the file and directory names in a filesystem
 //! folder.
 
-class FolderIterator : private Core::NotCopyable
+class FolderIterator /*: private Core::NotCopyable*/
 {
 public:
 	//! The search flags.
@@ -39,7 +39,7 @@ public:
 
 	//! Destructor.
 	~FolderIterator();
-	
+
 	//
 	// Properties.
 	//
@@ -58,7 +58,7 @@ public:
 	const tchar* operator*() const;
 
 	//! Advance the iterator.
-	void operator++();
+	FolderIterator& operator++();
 
 	//
 	// Methods.
@@ -92,6 +92,10 @@ private:
 
 	//! End the enumeration of the folder.
 	void Reset();
+
+	// NotCopyable.
+	FolderIterator(const FolderIterator&);
+	FolderIterator& operator=(const FolderIterator&);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

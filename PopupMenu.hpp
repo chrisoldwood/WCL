@@ -23,7 +23,7 @@ class CWnd;
 class CPoint;
 
 /******************************************************************************
-** 
+**
 ** This is a menu derived class for popup (context) menus.
 **
 *******************************************************************************
@@ -38,7 +38,8 @@ public:
 	CPopupMenu();
 	CPopupMenu(HMENU hMenu);
 	CPopupMenu(uint iRscID);
-	~CPopupMenu();
+	CPopupMenu(const CPopupMenu& rhs);
+	virtual ~CPopupMenu();
 
 	void LoadRsc(uint iRscID);
 
@@ -49,6 +50,10 @@ protected:
 	// Members.
 	//
 	HMENU	m_hParent;
+
+private:
+	// NotCopyable.
+	CPopupMenu& operator=(const CPopupMenu&);
 };
 
 /******************************************************************************

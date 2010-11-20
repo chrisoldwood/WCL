@@ -20,7 +20,7 @@
 class CWnd;
 
 /******************************************************************************
-** 
+**
 ** A path is a string derived class that is used to manipulate filenames and
 ** directory paths.
 **
@@ -67,7 +67,7 @@ public:
 		SaveFile,
 		SelectFile
 	};
-    
+
 	bool Select(const CWnd& rParent, DlgMode eMode, const tchar* pszExts, const tchar* pszDefExt, const tchar* pszDir = NULL);
 	bool SelectDir(const CWnd& rParent, const tchar* pszTitle, const tchar* pszDir = NULL);
 	bool SelectComputer(const CWnd& rParent, const tchar* pszTitle);
@@ -109,7 +109,7 @@ public:
 	CPath& operator=(const tchar* pszSrc);
 	CPath& operator=(const CString& strSrc);
 	CPath& operator=(const tstring& source);
-	
+
 	void operator/=(const tchar* pszPath);
 
 	operator const tchar*() const;
@@ -138,7 +138,7 @@ protected:
 
 inline tchar& CPath::operator[](size_t nChar)
 {
-	ASSERT( (nChar >=0) && (nChar < Length()) );
+	ASSERT(nChar < Length());
 
 	return m_pszData[nChar];
 }
@@ -146,7 +146,7 @@ inline tchar& CPath::operator[](size_t nChar)
 inline CPath::operator const tchar*() const
 {
 	ASSERT(m_pszData);
-	
+
 	return m_pszData;
 }
 
@@ -177,9 +177,9 @@ inline CPath& CPath::operator=(const tstring& source)
 }
 
 /******************************************************************************
-** 
+**
 ** Global CPath operators. The idea of using / as the concatenation operator
-** was shamelessly borrowed from Boost. 
+** was shamelessly borrowed from Boost.
 **
 *******************************************************************************
 */

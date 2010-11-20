@@ -24,6 +24,7 @@
 */
 
 CBusyCursor::CBusyCursor()
+	: m_hOldCursor()
 {
 	// Save old cursor.
 	m_hOldCursor = ::GetCursor();
