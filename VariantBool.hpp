@@ -27,4 +27,12 @@ inline bool IsTrue(VARIANT_BOOL bValue)
 	return (bValue == VARIANT_TRUE) ? true : false;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//! Query if a VARIANT_BOOL is equivalent to 'false'.
+
+inline bool IsFalse(VARIANT_BOOL bValue)
+{
+	return (bValue != VARIANT_TRUE) ? true : false;
+}
+
 #endif // WCL_VARIANTBOOL_HPP
