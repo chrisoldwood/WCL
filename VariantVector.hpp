@@ -122,7 +122,7 @@ inline VariantVector<T>::VariantVector(size_t nSize, VARTYPE eVarType)
 	, m_pData(nullptr)
 {
 	// Allocate the storage for the vector.
-	SafeArrayPtr safeArray(::SafeArrayCreateVector(eVarType, 0, nSize), DestroySafeArray);
+	SafeArrayPtr safeArray(::SafeArrayCreateVector(eVarType, 0, static_cast<ULONG>(nSize)), DestroySafeArray);
 
 	if (safeArray.get() == nullptr)
 		throw WCL::ComException(E_OUTOFMEMORY, TXT("Failed to allocate a SAFEARRAY"));
