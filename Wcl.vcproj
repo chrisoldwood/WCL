@@ -15,11 +15,9 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Release"
-			IntermediateDirectory=".\Release"
+			OutputDirectory="Release"
+			IntermediateDirectory="Release"
 			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
@@ -62,11 +60,9 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\Debug"
-			IntermediateDirectory=".\Debug"
+			OutputDirectory="Debug"
+			IntermediateDirectory="Debug"
 			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
