@@ -13,6 +13,7 @@
 
 #include <Core/CmdLineParser.hpp>
 #include "MainThread.hpp"
+#include <Core/tiosfwd.hpp>
 
 namespace WCL
 {
@@ -47,7 +48,7 @@ public:
 	static ConsoleApp& instance();
 
 	//! The application C++ entry point.
-	virtual int main(int argc, tchar* argv[]);
+	virtual int main(int argc, tchar* argv[], tistream& in, tostream& out, tostream& err);
 
 protected:
 	//
@@ -61,10 +62,10 @@ protected:
 	//
 
 	//! Run the application.
-	virtual int run(int nArgc, tchar* apszArgv[]) = 0;
+	virtual int run(int nArgc, tchar* apszArgv[], tistream& in, tostream& out, tostream& err) = 0;
 
 	//! Display the program options syntax.
-	virtual void showUsage() = 0;
+	virtual void showUsage(tostream& out) = 0;
 
 	//! The actual ctrl signal handler.
 	static BOOL WINAPI ctrlHandler(DWORD signal);

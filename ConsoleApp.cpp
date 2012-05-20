@@ -5,7 +5,6 @@
 
 #include "Common.hpp"
 #include "ConsoleApp.hpp"
-#include <Core/tiostream.hpp>
 #include <Core/CmdLineException.hpp>
 
 namespace WCL
@@ -61,35 +60,35 @@ ConsoleApp& ConsoleApp::instance()
 //! The application C++ entry point. This should be invoked by the C based entry
 //! point to run the application.
 
-int ConsoleApp::main(int argc, tchar* argv[])
+int ConsoleApp::main(int argc, tchar* argv[], tistream& in, tostream& out, tostream& err)
 {
 	int result = EXIT_FAILURE;
 
 	try
 	{
 		// Run the app.
-		result = run(argc, argv);
+		result = run(argc, argv, in, out, err);
 	}
 	catch (const Core::CmdLineException& e)
 	{
-		tcerr << TXT("ERROR: ") << e.twhat() << std::endl;
-		showUsage();
+		err << TXT("ERROR: ") << e.twhat() << std::endl;
+		showUsage(out);
 	}
 	catch (const Core::Exception& e)
 	{
-		tcerr << TXT("ERROR: ") << e.twhat() << std::endl;
+		err << TXT("ERROR: ") << e.twhat() << std::endl;
 	}
 	catch (const std::exception& e)
 	{
-		std::cerr << "ERROR: " << e.what() << std::endl;
+		err << "ERROR: " << e.what() << std::endl;
 	}
 	catch (...)
 	{
-		tcerr << TXT("ERROR: An unknown exception occured") << std::endl;
+		err << TXT("ERROR: An unknown exception occured") << std::endl;
 	}
 
-	tcout.flush();
-	tcerr.flush();
+	out.flush();
+	err.flush();
 
 	return result;
 }
