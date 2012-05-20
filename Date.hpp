@@ -49,6 +49,15 @@ public:
 	//
 	// Class limits.
 	//
+	static const int MIN_YEAR = 1901;
+	static const int MAX_YEAR = 2099;
+
+	static const int MIN_MONTH =  1;
+	static const int MAX_MONTH = 12;
+
+	static const int MIN_DAY =  1;
+	static const int MAX_DAY = 31;
+
 	static CDate Min();
 	static CDate Max();
 

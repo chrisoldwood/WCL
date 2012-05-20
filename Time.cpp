@@ -102,9 +102,9 @@ void CTime::Set()
 
 void CTime::Set(int iHours, int iMins, int iSecs)
 {
-	ASSERT( (iHours >= 0) && (iHours <= 23) );
-	ASSERT( (iMins  >= 0) && (iMins  <= 59) );
-	ASSERT( (iSecs  >= 0) && (iSecs  <= 59) );
+	ASSERT( (iHours >= MIN_HOURS) && (iHours <= MAX_HOURS) );
+	ASSERT( (iMins  >= MIN_MINS)  && (iMins  <= MAX_MINS) );
+	ASSERT( (iSecs  >= MIN_SECS)  && (iSecs  <= MAX_SECS) );
 
 	m_tTime = (iHours * WCL::SECS_PER_HOUR) + (iMins * WCL::SECS_PER_MIN) + iSecs;
 }

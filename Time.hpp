@@ -48,6 +48,15 @@ public:
 	//
 	// Class limits.
 	//
+	static const int MIN_HOURS =  0;
+	static const int MAX_HOURS = 23;
+
+	static const int MIN_MINS =  0;
+	static const int MAX_MINS = 59;
+
+	static const int MIN_SECS =  0;
+	static const int MAX_SECS = 59;
+
 	static CTime Min();
 	static CTime Max();
 

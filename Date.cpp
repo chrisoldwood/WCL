@@ -34,8 +34,6 @@
 *******************************************************************************
 */
 
-const int MIN_YEAR           = 1901;
-const int MAX_YEAR           = 2099;
 const int DAYS_PER_YEAR      = 365;
 const int DAYS_PER_LEAP_YEAR = 366;
 const int DAYS_PER_4_YEARS   = (DAYS_PER_YEAR * 3) + DAYS_PER_LEAP_YEAR;
@@ -120,9 +118,9 @@ void CDate::Set()
 
 void CDate::Set(int iDay, int iMonth, int  iYear)
 {
-	ASSERT( (iYear  >= MIN_YEAR) && (iYear  <= MAX_YEAR) );
-	ASSERT( (iMonth >= 1)        && (iMonth <= 12) );
-	ASSERT( (iDay   >= 1)        && (iDay   <= DaysInMonth(iMonth, iYear)) );
+	ASSERT( (iYear  >= MIN_YEAR)  && (iYear  <= MAX_YEAR) );
+	ASSERT( (iMonth >= MIN_MONTH) && (iMonth <= MAX_MONTH) );
+	ASSERT( (iDay   >= MIN_DAY)   && (iDay   <= DaysInMonth(iMonth, iYear)) );
 
 	tm oTM;
 
