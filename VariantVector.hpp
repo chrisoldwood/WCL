@@ -31,7 +31,7 @@ public:
 	explicit VariantVector(size_t nSize, VARTYPE eVarType = VT_VARIANT);
 
 	//! Take ownership of an existing SAFEARRAY.
-	explicit VariantVector(SAFEARRAY* pSafeArray, VARTYPE eVarType = VT_VARIANT);
+	explicit VariantVector(SAFEARRAY* pSafeArray, VARTYPE eVarType = VT_VARIANT, bool bOwner = true);
 
 	//! Destructor.
 	~VariantVector();
@@ -85,6 +85,7 @@ private:
 	//
 	size_t		m_nSize;		//!< The size of the vector.
 	SAFEARRAY*	m_pSafeArray;	//!< The underlying SAFEARRAY.
+	bool		m_bOwner;		//!< Flag to signal ownership of the underlying SAFEARRAY.
 	T*			m_pData;		//!< The SAFEARRAY underlying storage.
 
 	//
@@ -108,6 +109,7 @@ template <typename T>
 inline VariantVector<T>::VariantVector()
 	: m_nSize(0)
 	, m_pSafeArray(nullptr)
+	, m_bOwner(false)
 	, m_pData(nullptr)
 {
 }
@@ -119,6 +121,7 @@ template <typename T>
 inline VariantVector<T>::VariantVector(size_t nSize, VARTYPE eVarType)
 	: m_nSize(0)
 	, m_pSafeArray(nullptr)
+	, m_bOwner(false)
 	, m_pData(nullptr)
 {
 	// Allocate the storage for the vector.
@@ -138,6 +141,7 @@ inline VariantVector<T>::VariantVector(size_t nSize, VARTYPE eVarType)
 	// Update state.
 	m_nSize      = nSize;
 	m_pSafeArray = safeArray.detach();
+	m_bOwner     = true;
 	m_pData      = pData;
 }
 
@@ -145,18 +149,22 @@ inline VariantVector<T>::VariantVector(size_t nSize, VARTYPE eVarType)
 //! Take ownership of an existing SAFEARRAY.
 
 template <typename T>
-inline VariantVector<T>::VariantVector(SAFEARRAY* pSafeArray, VARTYPE eVarType)
+inline VariantVector<T>::VariantVector(SAFEARRAY* pSafeArray, VARTYPE eVarType, bool bOwner)
 	: m_nSize(0)
 	, m_pSafeArray(nullptr)
+	, m_bOwner(false)
 	, m_pData(nullptr)
 {
-	// Temporarily manage input SAFEARRAY.
-	SafeArrayPtr safeArray(pSafeArray, DestroySafeArray);
+	// Temporarily manage input SAFEARRAY, if the new owner.
+	SafeArrayPtr safeArray(DestroySafeArray);
+
+	if (bOwner)
+		safeArray.attach(pSafeArray);
 
 	VARTYPE eArrayType;
 
 	// Check the value type.
-	HRESULT hr = ::SafeArrayGetVartype(safeArray.get(), &eArrayType);
+	HRESULT hr = ::SafeArrayGetVartype(pSafeArray, &eArrayType);
 
 	if (FAILED(hr))
 		throw WCL::ComException(hr, TXT("Failed to get the SAFEARRAY value type"));
@@ -165,7 +173,7 @@ inline VariantVector<T>::VariantVector(SAFEARRAY* pSafeArray, VARTYPE eVarType)
 		throw WCL::ComException(E_INVALIDARG, TXT("The SAFEARRAY does not contain the correct value type"));
 
 	// Check the number of dimensions.
-	UINT nDims = ::SafeArrayGetDim(safeArray.get());
+	UINT nDims = ::SafeArrayGetDim(pSafeArray);
 
 	if (nDims != 1)
 		throw WCL::ComException(E_INVALIDARG, TXT("The SAFEARRAY does not contain a single dimension"));
@@ -174,12 +182,12 @@ inline VariantVector<T>::VariantVector(SAFEARRAY* pSafeArray, VARTYPE eVarType)
 	LONG lUpperBound;
 
 	// Get the lower and upper bounds.
-	hr = ::SafeArrayGetLBound(safeArray.get(), 1, &lLowerBound);
+	hr = ::SafeArrayGetLBound(pSafeArray, 1, &lLowerBound);
 
 	if (FAILED(hr))
 		throw WCL::ComException(hr, TXT("Failed to get the SAFEARRAY lower bound"));
 
-	hr = ::SafeArrayGetUBound(safeArray.get(), 1, &lUpperBound);
+	hr = ::SafeArrayGetUBound(pSafeArray, 1, &lUpperBound);
 
 	if (FAILED(hr))
 		throw WCL::ComException(hr, TXT("Failed to get the SAFEARRAY upper bound"));
@@ -187,14 +195,15 @@ inline VariantVector<T>::VariantVector(SAFEARRAY* pSafeArray, VARTYPE eVarType)
 	T* pData = nullptr;
 
 	// Lock the storage immediately for access.
-	hr = ::SafeArrayAccessData(safeArray.get(), reinterpret_cast<void**>(&pData));
+	hr = ::SafeArrayAccessData(pSafeArray, reinterpret_cast<void**>(&pData));
 
 	if (FAILED(hr))
 		throw WCL::ComException(hr, TXT("Failed to lock the SAFEARRAY for access"));
 
 	// Update state.
 	m_nSize      = lUpperBound - lLowerBound + 1;
-	m_pSafeArray = safeArray.detach();
+	m_pSafeArray = (bOwner) ? safeArray.detach() : pSafeArray;
+	m_bOwner     = bOwner;
 	m_pData      = pData;
 }
 
@@ -208,6 +217,7 @@ inline VariantVector<T>::~VariantVector()
 
 	ASSERT(m_nSize == 0);
 	ASSERT(m_pSafeArray == nullptr);
+	ASSERT(m_bOwner == false);
 	ASSERT(m_pData == nullptr);
 }
 
@@ -301,6 +311,7 @@ inline SAFEARRAY* VariantVector<T>::Detach()
 	// Reset members.
 	m_nSize      = 0;
 	m_pSafeArray = nullptr;
+	m_bOwner     = false;
 
 	return pSafeArray;
 }
@@ -334,10 +345,12 @@ inline void VariantVector<T>::Release()
 	// Free the storage.
 	if (m_pSafeArray != nullptr)
 	{
-		::SafeArrayDestroy(m_pSafeArray);
+		if (m_bOwner)
+			::SafeArrayDestroy(m_pSafeArray);
 
 		m_nSize      = 0;
 		m_pSafeArray = nullptr;
+		m_bOwner     = false;
 	}
 }
 

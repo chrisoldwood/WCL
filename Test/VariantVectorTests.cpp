@@ -36,13 +36,44 @@ TEST_CASE("detaching the underlying safe array resets the vector")
 }
 TEST_CASE_END
 
-TEST_CASE("construction from a safearray passes ownership")
+TEST_CASE("construction from a safearray transfers ownership by default")
 {
 	WCL::VariantVector<long> original(10, VT_I4);
 
-	WCL::VariantVector<long> newOwner(original.Detach(), VT_I4);
+	SAFEARRAY* array = original.Detach();
 
-	TEST_TRUE(newOwner.Size() == 10);
+	{
+		WCL::VariantVector<long> newOwner(array, VT_I4);
+
+		TEST_TRUE(newOwner.Size() == 10);
+	}
+
+	// Sniffing the destroyed array!
+	TEST_TRUE(array->cDims != 1); 
+	TEST_TRUE(array->cbElements != 4);
+}
+TEST_CASE_END
+
+TEST_CASE("construction from a safearray with ownership retained creates a view")
+{
+	WCL::VariantVector<long> original(10, VT_I4);
+
+	SAFEARRAY* array = original.Detach();
+
+	{
+		WCL::VariantVector<long> newOwner(array, VT_I4, false);
+
+		TEST_TRUE(newOwner.Size() == 10);
+	}
+
+	TEST_TRUE(array->cDims == 1); 
+	TEST_TRUE(array->cbElements == 4);
+
+	destroySafeArray(array);	
+
+	// Sniffing the destroyed array!
+	TEST_TRUE(array->cDims != 1); 
+	TEST_TRUE(array->cbElements != 4);
 }
 TEST_CASE_END
 
