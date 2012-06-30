@@ -13,6 +13,11 @@
 #endif
 #include "TestIFaceTraits.hpp"
 
+#if (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 2)) // GCC 4.2+
+// Caused by the DEBUG_USE_ONLY macro.
+#pragma GCC diagnostic ignored "-Wunused-value"
+#endif
+
 class TestComClass : public IErrorLog,
 					 public ISupportErrorInfo
 {

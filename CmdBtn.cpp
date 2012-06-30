@@ -14,6 +14,11 @@
 #include "CmdCtrl.hpp"
 #include "DC.hpp"
 
+#if (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 2)) // GCC 4.2+
+// Caused by the DEBUG_USE_ONLY macro.
+#pragma GCC diagnostic ignored "-Wunused-value"
+#endif
+
 /******************************************************************************
 **
 ** Constants.
@@ -77,7 +82,7 @@ void CCmdButton::GetCreateParams(WNDCREATE& rParams)
 ** Method:		WndProc()
 **
 ** Description:	Catch WM_MOUSEMOVE messages.
-**				
+**
 ** Parameters:	Standard window procedure parameters.
 **
 ** Returns:		LRESULT based on the message.
@@ -150,7 +155,7 @@ void CCmdButton::OnDrawItem(uint iID, uint iAction, uint iState, CDC& rDC,
 	if ( (iAction & ODA_DRAWENTIRE) || (iAction & ODA_SELECT) )
 	{
 		CPoint ptDst;
-		
+
 		// Button down?
 		if (iState & ODS_SELECTED)
 		{
@@ -250,7 +255,7 @@ void CCmdButton::OnTimer(WCL::TimerID iTimerID)
 	if (g_pActiveBtn != this)
 	{
 		StopTimer(TIMER_ID);
-	
+
 		m_bTimerOn = false;
 	}
 	else // (g_pActiveBtn == this)
@@ -263,7 +268,7 @@ void CCmdButton::OnTimer(WCL::TimerID iTimerID)
 		if ( (::GetCapture() != m_hWnd) && (::WindowFromPoint(ptCursor) != m_hWnd) )
 		{
 			StopTimer(TIMER_ID);
-		
+
 			m_bTimerOn = false;
 			g_pActiveBtn = NULL;
 
