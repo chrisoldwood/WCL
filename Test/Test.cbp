@@ -12,12 +12,13 @@
 				<Option external_deps="..\..\Core\Debug\libCore.a;..\..\WCL\Debug\libWCL.a;" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-D_DEBUG" />
 				</Compiler>
 				<Linker>
-					<Add library="..\..\Core\Debug\libCore.a" />
 					<Add library="..\Debug\libWCL.a" />
+					<Add library="..\..\Core\Debug\libCore.a" />
 				</Linker>
 			</Target>
 			<Target title="Release Win32">
@@ -26,13 +27,14 @@
 				<Option external_deps="..\..\Core\Release\libCore.a;..\..\WCL\Release\libWCL.a;" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-O" />
 					<Add option="-DNDEBUG" />
 				</Compiler>
 				<Linker>
-					<Add library="..\..\Core\Release\libCore.a" />
 					<Add library="..\Release\libWCL.a" />
+					<Add library="..\..\Core\Release\libCore.a" />
 				</Linker>
 			</Target>
 		</Build>
