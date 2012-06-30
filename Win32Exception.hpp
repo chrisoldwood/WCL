@@ -28,10 +28,10 @@ public:
 	//! Partial constructor.
 	Win32Exception(DWORD dwError);
 
-	//! Partial constructor that assumes ::GetLastError().
+	//! Partial constructor that uses GetLastError for the error code.
 	Win32Exception(const tchar* pszOperation);
 
-	//! Partial constructor that assumes ::GetLastError().
+	//! Partial constructor that uses GetLastError for the error code.
 	Win32Exception(const tstring& strOperation);
 
 	//! Full constructor.
@@ -66,7 +66,7 @@ inline Win32Exception::Win32Exception(DWORD dwError)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Partial constructor that assumes ::GetLastError().
+//! Partial constructor that uses GetLastError for the error code.
 
 inline Win32Exception::Win32Exception(const tchar* pszOperation)
 	: m_dwError(::GetLastError())
@@ -75,7 +75,7 @@ inline Win32Exception::Win32Exception(const tchar* pszOperation)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Partial constructor that assumes ::GetLastError().
+//! Partial constructor that uses GetLastError for the error code.
 
 inline Win32Exception::Win32Exception(const tstring& strOperation)
 	: m_dwError(::GetLastError())
