@@ -6,6 +6,7 @@
 #include "Common.hpp"
 #include "ConsoleApp.hpp"
 #include <Core/CmdLineException.hpp>
+#include <ostream>
 
 namespace WCL
 {
