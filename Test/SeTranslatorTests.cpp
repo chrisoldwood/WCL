@@ -11,6 +11,8 @@
 TEST_SET(SeTranslator)
 {
 
+#ifdef _MSC_VER
+
 TEST_CASE("dereferencing a null pointer causes an access violation exception to occur")
 {
 	WCL::SeTranslator oSeTranslator;
@@ -33,6 +35,8 @@ TEST_CASE("dereferencing a null pointer causes an access violation exception to 
 	}
 }
 TEST_CASE_END
+
+#endif
 
 }
 TEST_SET_END

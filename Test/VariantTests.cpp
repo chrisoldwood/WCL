@@ -98,8 +98,8 @@ TEST_CASE("construction from another value and different type performs conversio
 {
 	WCL::Variant longVariant;
 
-	V_VT(&longVariant)  = VT_I4;
-	V_INT(&longVariant) = 1234;
+	V_VT(&longVariant) = VT_I4;
+	V_I4(&longVariant) = 1234;
 
 	WCL::Variant bstrVariant(longVariant, VT_BSTR);
 
@@ -112,8 +112,8 @@ TEST_CASE("construction from a value and an incompatible type throws an exceptio
 {
 	WCL::Variant longVariant;
 
-	V_VT(&longVariant)  = VT_I4;
-	V_INT(&longVariant) = 1234;
+	V_VT(&longVariant) = VT_I4;
+	V_I4(&longVariant) = 1234;
 
 	TEST_THROWS(WCL::Variant(longVariant, VT_I1));
 }
@@ -139,8 +139,8 @@ TEST_CASE("assignment replaces the value with another of a potentially different
 
 	WCL::Variant copy;
 
-	V_VT(&copy)  = VT_I4;
-	V_INT(&copy) = 1234;
+	V_VT(&copy) = VT_I4;
+	V_I4(&copy) = 1234;
 
 	copy = variant;
 
