@@ -829,6 +829,9 @@
 				RelativePath="String.hpp">
 			</File>
 			<File
+				RelativePath=".\StringIO.hpp">
+			</File>
+			<File
 				RelativePath=".\StringUtils.hpp">
 			</File>
 			<File
