@@ -14,6 +14,9 @@
 #include "Buffer.hpp"
 #include <limits>
 
+// Default allocation size in bytes (1K).
+const size_t ALLOC_SIZE = 1024;
+
 /******************************************************************************
 ** Method:		Constructor.
 **

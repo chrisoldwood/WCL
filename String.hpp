@@ -26,7 +26,7 @@ class IOutputStream;
 }
 
 /******************************************************************************
-** 
+**
 ** This is a simple string container class.
 **
 *******************************************************************************
@@ -115,7 +115,7 @@ public:
 	const CString& operator=(const tstring& string);
 
 	operator const tchar*() const;
-	
+
 	//
 	// Comparison.
 	//
@@ -138,7 +138,7 @@ public:
 
 protected:
 	/******************************************************************************
-	** 
+	**
 	** This is the structure used to hold the actual string data.
 	**
 	*******************************************************************************
@@ -177,7 +177,6 @@ protected:
 	//
 	friend void operator >>(WCL::IInputStream&  rStream, CString& rString);
 	friend void operator <<(WCL::IOutputStream& rStream, const CString& rString);
-	friend tostream& operator<<(tostream& os, const CString& str);
 };
 
 /******************************************************************************
@@ -272,14 +271,14 @@ inline const CString& CString::operator=(const tstring& string)
 inline const tchar* CString::c_str() const
 {
 	ASSERT(m_pszData);
-	
+
 	return m_pszData;
 }
 
 inline tchar* CString::Buffer() const
 {
 	ASSERT(m_pszData);
-	
+
 	return m_pszData;
 }
 
@@ -295,35 +294,35 @@ inline size_t CString::Capacity() const
 inline CString::const_iterator CString::begin() const
 {
 	ASSERT(m_pszData != nullptr);
-	
+
 	return m_pszData;
 }
 
 inline CString::const_iterator CString::end() const
 {
 	ASSERT(m_pszData != nullptr);
-	
+
 	return (m_pszData + tstrlen(m_pszData));
 }
 
 inline CString::iterator CString::begin()
 {
 	ASSERT(m_pszData != nullptr);
-	
+
 	return m_pszData;
 }
 
 inline CString::iterator CString::end()
 {
 	ASSERT(m_pszData != nullptr);
-	
+
 	return (m_pszData + tstrlen(m_pszData));
 }
 
 inline CString::operator const tchar*() const
 {
 	ASSERT(m_pszData);
-	
+
 	return m_pszData;
 }
 
@@ -392,7 +391,7 @@ inline CString::StringData* CString::GetData() const
 }
 
 /******************************************************************************
-** 
+**
 ** Global string operators.
 **
 *******************************************************************************
@@ -426,15 +425,6 @@ inline CString operator+(const CString& strLHS, const CString& strRHS)
 	str += strRHS;
 
 	return str;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//! STL output stream inserter.
-
-inline tostream& operator<<(tostream& os, const CString& str)
-{
-	os << str.c_str();
-	return os;
 }
 
 #endif // WCL_STRING_HPP

@@ -68,9 +68,6 @@ protected:
 	size_t		m_lEOF;			// Current end of stream.
 	size_t		m_lPos;			// Current position in the stream.
 
-	// Default allocation size in bytes (1K).
-	static const size_t ALLOC_SIZE = 1024;
-
 private:
 	// NotCopyable.
 	CMemStream(const CMemStream&);
