@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_workspace_file>
-	<Workspace title="Workspace">
+	<Workspace title="WCL Tests">
 		<Project filename="../../Core/Core.cbp" />
 		<Project filename="../Wcl.cbp" />
 		<Project filename="Test.cbp" active="1">

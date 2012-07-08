@@ -14,6 +14,7 @@
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
+					<Add option="-g" />
 					<Add option="-D_DEBUG" />
 				</Compiler>
 				<Linker>
@@ -71,6 +72,8 @@
 		<Unit filename="AppConfigTests.cpp" />
 		<Unit filename="ComExceptionTests.cpp" />
 		<Unit filename="ComPtrTests.cpp" />
+		<Unit filename="ComStrTests.cpp" />
+		<Unit filename="DateTests.cpp" />
 		<Unit filename="DateTimeTests.cpp" />
 		<Unit filename="FolderIteratorTests.cpp" />
 		<Unit filename="IFacePtrTests.cpp" />
@@ -80,6 +83,7 @@
 		<Unit filename="PtrTest.hpp" />
 		<Unit filename="RectTests.cpp" />
 		<Unit filename="RegistryCfgProviderTests.cpp" />
+		<Unit filename="SeTranslatorTests.cpp" />
 		<Unit filename="StringTests.cpp" />
 		<Unit filename="StringUtilsTests.cpp" />
 		<Unit filename="Test.cpp" />
@@ -88,6 +92,9 @@
 		</Unit>
 		<Unit filename="Test.rcv" />
 		<Unit filename="TestIFaceTraits.hpp" />
+		<Unit filename="TimeTests.cpp" />
+		<Unit filename="VariantTests.cpp" />
+		<Unit filename="VariantVectorTests.cpp" />
 		<Unit filename="VerInfoReaderTests.cpp" />
 		<Unit filename="resource.h" />
 		<Unit filename="stdafx.cpp" />
