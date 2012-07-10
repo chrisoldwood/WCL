@@ -71,7 +71,7 @@ inline Win32Exception::Win32Exception(DWORD dwError)
 inline Win32Exception::Win32Exception(const tchar* pszOperation)
 	: m_dwError(::GetLastError())
 {
-	m_strDetails = Format(pszOperation, m_dwError);
+	m_details = Format(pszOperation, m_dwError);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ inline Win32Exception::Win32Exception(const tchar* pszOperation)
 inline Win32Exception::Win32Exception(const tstring& strOperation)
 	: m_dwError(::GetLastError())
 {
-	m_strDetails = Format(strOperation.c_str(), m_dwError);
+	m_details = Format(strOperation.c_str(), m_dwError);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -89,7 +89,7 @@ inline Win32Exception::Win32Exception(const tstring& strOperation)
 inline Win32Exception::Win32Exception(DWORD dwError, const tchar* pszOperation)
 	: m_dwError(dwError)
 {
-	m_strDetails = Format(pszOperation, m_dwError);
+	m_details = Format(pszOperation, m_dwError);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -98,7 +98,7 @@ inline Win32Exception::Win32Exception(DWORD dwError, const tchar* pszOperation)
 inline Win32Exception::Win32Exception(DWORD dwError, const tstring& strOperation)
 	: m_dwError(dwError)
 {
-	m_strDetails = Format(strOperation.c_str(), m_dwError);
+	m_details = Format(strOperation.c_str(), m_dwError);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

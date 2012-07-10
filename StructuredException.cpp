@@ -19,9 +19,9 @@ StructuredException::StructuredException(uint nCode, _EXCEPTION_POINTERS* /*pInf
 	const tchar* pszCode = FormatCode(m_nCode);
 
 	if (pszCode != nullptr)
-		m_strDetails = Core::fmt(TXT("Structured Exception: %s"), pszCode);
+		m_details = Core::fmt(TXT("Structured Exception: %s"), pszCode);
 	else
-		m_strDetails = Core::fmt(TXT("Unknown Structured Exception: 0x%08X"), nCode);
+		m_details = Core::fmt(TXT("Unknown Structured Exception: 0x%08X"), nCode);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -34,47 +34,47 @@ CFileException::CFileException(int eErrCode, const CPath& rPath, DWORD dwLastErr
 	switch(eErrCode)
 	{
 		case E_INVALID_FILE:
-			m_strDetails = Core::fmt(TXT("The file does not exist:\n\n%s"), rPath.c_str());
+			m_details = Core::fmt(TXT("The file does not exist:\n\n%s"), rPath.c_str());
 			break;
 
 		case E_INVALID_FOLDER:
-			m_strDetails = Core::fmt(TXT("The folder does not exist:\n\n%s"), rPath.c_str());
+			m_details = Core::fmt(TXT("The folder does not exist:\n\n%s"), rPath.c_str());
 			break;
 
 		case E_OPEN_FAILED:
-			m_strDetails = Core::fmt(TXT("Failed to open file:\n\n%s\n\n%s"), rPath.c_str(), strLastError.c_str());
+			m_details = Core::fmt(TXT("Failed to open file:\n\n%s\n\n%s"), rPath.c_str(), strLastError.c_str());
 			break;
 
 		case E_CREATE_FAILED:
-			m_strDetails = Core::fmt(TXT("Failed to create file:\n\n%s\n\n%s"), rPath.c_str(), strLastError.c_str());
+			m_details = Core::fmt(TXT("Failed to create file:\n\n%s\n\n%s"), rPath.c_str(), strLastError.c_str());
 			break;
 
 		case E_READ_ONLY:
-			m_strDetails = Core::fmt(TXT("Failed to open file:\n\n%s\n\nThe file is read-only"), rPath.c_str());
+			m_details = Core::fmt(TXT("Failed to open file:\n\n%s\n\nThe file is read-only"), rPath.c_str());
 			break;
 
 		case E_PATH_INVALID:
-			m_strDetails = Core::fmt(TXT("Failed to open file:\n\n%s\n\nThe file does not exist"), rPath.c_str());
+			m_details = Core::fmt(TXT("Failed to open file:\n\n%s\n\nThe file does not exist"), rPath.c_str());
 			break;
 
 		case E_FORMAT_INVALID:
-			m_strDetails = Core::fmt(TXT("The file format is incorrect for:\n\n%s"), rPath.c_str());
+			m_details = Core::fmt(TXT("The file format is incorrect for:\n\n%s"), rPath.c_str());
 			break;
 
 		case E_VERSION_INVALID:
-			m_strDetails = Core::fmt(TXT("The file version is unsupported for:\n\n%s"), rPath.c_str());
+			m_details = Core::fmt(TXT("The file version is unsupported for:\n\n%s"), rPath.c_str());
 			break;
 
 		case E_READ_FAILED:
-			m_strDetails = Core::fmt(TXT("An error occured reading from:\n\n%s\n\n%s"), rPath.c_str(), strLastError.c_str());
+			m_details = Core::fmt(TXT("An error occured reading from:\n\n%s\n\n%s"), rPath.c_str(), strLastError.c_str());
 			break;
 
 		case E_WRITE_FAILED:
-			m_strDetails = Core::fmt(TXT("An error occured writing to:\n\n%s\n\n%s"), rPath.c_str(), strLastError.c_str());
+			m_details = Core::fmt(TXT("An error occured writing to:\n\n%s\n\n%s"), rPath.c_str(), strLastError.c_str());
 			break;
 
 		case E_SEEK_FAILED:
-			m_strDetails = Core::fmt(TXT("An error occured seeking in:\n\n%s\n\n%s"), rPath.c_str(), strLastError.c_str());
+			m_details = Core::fmt(TXT("An error occured seeking in:\n\n%s\n\n%s"), rPath.c_str(), strLastError.c_str());
 			break;
 
 		// Shouldn't happen!

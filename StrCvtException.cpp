@@ -30,11 +30,11 @@ CStrCvtException::CStrCvtException(int eErrCode)
 	switch(eErrCode)
 	{
 		case E_INVALID_FORMAT:
-			m_strDetails = TXT("Invalid format");
+			m_details = TXT("Invalid format");
 			break;
 
 		case E_INVALID_RANGE:
-			m_strDetails = TXT("Number out of range");
+			m_details = TXT("Number out of range");
 			break;
 
 		// Shouldn't happen!

@@ -166,7 +166,7 @@ inline void ComPtr<T>::CreateInstance(const CLSID& rCLSID)
 	const IID& oIID = IFaceTraits<T>::uuidof();
 
 	// Create the object.
-	HRESULT hr = ::CoCreateInstance(rCLSID, nullptr, CLSCTX_ALL, oIID, reinterpret_cast<LPVOID*>(&this->m_pPointer));
+	HRESULT hr = ::CoCreateInstance(rCLSID, nullptr, CLSCTX_ALL, oIID, reinterpret_cast<LPVOID*>(&this->m_ptr));
 
 	if (FAILED(hr))
 	{
@@ -199,7 +199,7 @@ inline void ComPtr<T>::QueryInterface(const IFacePtr<U>& rhs)
 
 	const IID& oIID = IFaceTraits<T>::uuidof();
 
-	HRESULT hr = rhs.get()->QueryInterface(oIID, reinterpret_cast<LPVOID*>(&this->m_pPointer));
+	HRESULT hr = rhs.get()->QueryInterface(oIID, reinterpret_cast<LPVOID*>(&this->m_ptr));
 
 	if (FAILED(hr))
 	{

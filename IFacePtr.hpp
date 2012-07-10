@@ -86,8 +86,8 @@ template <typename T>
 inline IFacePtr<T>::IFacePtr(T* pInterface, bool bAddRef)
 	: Core::SmartPtr<T>(pInterface)
 {
-	if ((this->m_pPointer != nullptr) && bAddRef)
-		this->m_pPointer->AddRef();
+	if ((this->m_ptr != nullptr) && bAddRef)
+		this->m_ptr->AddRef();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -95,10 +95,10 @@ inline IFacePtr<T>::IFacePtr(T* pInterface, bool bAddRef)
 
 template <typename T>
 inline IFacePtr<T>::IFacePtr(const IFacePtr& oPtr)
-	: Core::SmartPtr<T>(oPtr.m_pPointer)
+	: Core::SmartPtr<T>(oPtr.m_ptr)
 {
-	if (this->m_pPointer != nullptr)
-		this->m_pPointer->AddRef();
+	if (this->m_ptr != nullptr)
+		this->m_ptr->AddRef();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -117,14 +117,14 @@ template <typename T>
 inline IFacePtr<T>& IFacePtr<T>::operator=(const IFacePtr& oPtr)
 {
 	// Check for self-assignment.
-	if ( (this != &oPtr) && (this->m_pPointer != oPtr.m_pPointer) )
+	if ( (this != &oPtr) && (this->m_ptr != oPtr.m_ptr) )
 	{
 		Release();
 
-		this->m_pPointer = oPtr.m_pPointer;
+		this->m_ptr = oPtr.m_ptr;
 
-		if (this->m_pPointer != nullptr)
-			this->m_pPointer->AddRef();
+		if (this->m_ptr != nullptr)
+			this->m_ptr->AddRef();
 	}
 
 	return *this;
@@ -136,10 +136,10 @@ inline IFacePtr<T>& IFacePtr<T>::operator=(const IFacePtr& oPtr)
 template <typename T>
 inline void IFacePtr<T>::Release()
 {
-	if (this->m_pPointer != nullptr)
+	if (this->m_ptr != nullptr)
 	{
-		this->m_pPointer->Release();
-		this->m_pPointer = nullptr;
+		this->m_ptr->Release();
+		this->m_ptr = nullptr;
 	}
 }
 
@@ -149,11 +149,11 @@ inline void IFacePtr<T>::Release()
 template <typename T>
 inline T* IFacePtr<T>::Detach()
 {
-	T* pPointer = this->m_pPointer;
+	T* ptr = this->m_ptr;
 
-	this->m_pPointer = nullptr;
+	this->m_ptr = nullptr;
 
-	return pPointer;
+	return ptr;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -163,7 +163,7 @@ inline T* IFacePtr<T>::Detach()
 template <typename T>
 inline T** IFacePtr<T>::GetPtrMember()
 {
-	return &this->m_pPointer;
+	return &this->m_ptr;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
