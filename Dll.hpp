@@ -17,6 +17,7 @@
 #endif
 
 #include "Module.hpp"
+#include "DllMain.hpp"
 
 /******************************************************************************
 ** 
@@ -69,7 +70,7 @@ private:
 	void ThreadAttached();
 	void ThreadDetached();	
 
-	friend BOOL WINAPI DllMain(HINSTANCE hInst, DWORD dwReason, LPVOID lpvReserved);
+	friend BOOL WCL::dllMain(HINSTANCE hInst, DWORD dwReason);
 
 	//
 	// Class members.

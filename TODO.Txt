@@ -54,6 +54,8 @@
 
 - In Time, Date etc. make Set() a static helper that returns the value. Fix-up ctors.
 
+- Sort out friendship of WinMain/DllMain to CModule/CApp etc - overly restrictive?
+
 UNICODE
 =======
 

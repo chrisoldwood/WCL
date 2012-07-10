@@ -595,6 +595,9 @@
 				RelativePath="Dll.hpp">
 			</File>
 			<File
+				RelativePath=".\DllMain.hpp">
+			</File>
+			<File
 				RelativePath="Doc.hpp">
 			</File>
 			<File
@@ -911,6 +914,9 @@
 			</File>
 			<File
 				RelativePath=".\Win32Exception.hpp">
+			</File>
+			<File
+				RelativePath=".\WinMain.hpp">
 			</File>
 			<File
 				RelativePath="Wnd.hpp">

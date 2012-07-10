@@ -125,7 +125,7 @@ private:
 	//
 	// Friends.
 	//
-	friend int WINAPI WinMain(HINSTANCE hCurrInst, HINSTANCE hPrevInst, LPSTR lpszCmdLine, int iCmdShow);
+	friend int WCL::winMain(HINSTANCE hInstance, LPSTR lpszCmdLine, int nCmdShow);
 	friend class CMainThread;
 
 	//

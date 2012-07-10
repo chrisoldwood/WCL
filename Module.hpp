@@ -17,6 +17,8 @@
 #endif
 
 #include "Path.hpp"
+#include "WinMain.hpp"
+#include "DllMain.hpp"
 
 /******************************************************************************
 **
@@ -56,8 +58,8 @@ protected:
 	//
 	HINSTANCE	m_hInstance;
 
-	friend int  WINAPI WinMain(HINSTANCE hCurrInst, HINSTANCE hPrevInst, LPSTR lpszCmdLine, int iCmdShow);
-	friend BOOL WINAPI DllMain(HINSTANCE hInst, DWORD dwReason, LPVOID lpvReserved);
+	friend int WCL::winMain(HINSTANCE hInstance, LPSTR lpszCmdLine, int nCmdShow);
+	friend BOOL WCL::dllMain(HINSTANCE hInst, DWORD dwReason);
 
 private:
 	// NotCopyable.

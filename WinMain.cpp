@@ -1,12 +1,7 @@
-/******************************************************************************
-** (C) Chris Oldwood
-**
-** MODULE:		WINMAIN.CPP
-** COMPONENT:	Windows C++ Library.
-** DESCRIPTION:	Application entry point.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! \file   WinMain.cpp
+//! \brief  Application entry point.
+//! \author Chris Oldwood
 
 #include "Common.hpp"
 #include <stdio.h>
@@ -19,27 +14,15 @@
 #include <Core/AnsiWide.hpp>
 #include <tchar.h>
 
-// Using declarations.
-using namespace WCL;
+namespace WCL
+{
 
-/******************************************************************************
-** Function: 	WinMain()
-**
-** Description:	This is the entry point to the Windows app.
-**
-** Parameters:	hCurrInst	The current instance.
-**				hPrevInst	The previous instance (NULL if none).
-**				lpszCmdLine	The command line.
-**				iCmdShow	The initial state of the window.
-**
-** Returns:		TRUE		For a premature exit.
-**				FALSE		For a normal exit.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! The logical (WCL) entry point for a Windows application.
 
-extern "C" int WINAPI WinMain(HINSTANCE hCurrInst, HINSTANCE /*hPrevInst*/, 
-								LPSTR lpszCmdLine, int iCmdShow)
+int winMain(HINSTANCE hInstance,
+			LPSTR     lpszCmdLine,
+			int       nCmdShow)
 {
 	int nResult = CMsgThread::THREAD_EXIT_FAILURE;
 
@@ -60,9 +43,9 @@ extern "C" int WINAPI WinMain(HINSTANCE hCurrInst, HINSTANCE /*hPrevInst*/,
 		CApp& oApp = CApp::This();
 
 		// Initialise members.
-		oApp.m_Module.m_hInstance = hCurrInst;
-		oApp.m_strCmdLine         = A2T(lpszCmdLine);	
-		oApp.m_iCmdShow           = iCmdShow;
+		oApp.m_Module.m_hInstance = hInstance;
+		oApp.m_strCmdLine         = A2T(lpszCmdLine);
+		oApp.m_iCmdShow           = nCmdShow;
 
 		// Open, run and close the app...
 		if (oApp.Open())
@@ -89,3 +72,25 @@ extern "C" int WINAPI WinMain(HINSTANCE hCurrInst, HINSTANCE /*hPrevInst*/,
 
 	return nResult;
 }
+
+//namespace WCL
+}
+
+#ifndef __GNUG__
+
+////////////////////////////////////////////////////////////////////////////////
+//! This is the real (C SDK) entry point for a Windows application.
+//!
+//! \note This entry point is linked via a weak reference, which Visual C++
+//! happily finds, but GCC doesn't seem to. One workaround is to copy this stub
+//! to the application codebase where GCC will find it too.
+
+extern "C" int WINAPI WinMain(HINSTANCE hInstance,
+							  HINSTANCE /*hPrevInstance*/,
+							  LPSTR     lpszCmdLine,
+							  int       nCmdShow)
+{
+	return WCL::winMain(hInstance, lpszCmdLine, nCmdShow);
+}
+
+#endif //__GNUG__
