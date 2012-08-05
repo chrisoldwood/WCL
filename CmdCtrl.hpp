@@ -16,6 +16,7 @@
 #pragma once
 #endif
 
+#include "ICmdController.hpp"
 #include "CmdBmp.hpp"
 
 /******************************************************************************
@@ -26,34 +27,39 @@
 *******************************************************************************
 */
 
-class CCmdControl /*: private NotCopyable*/
+class CCmdControl : public WCL::ICmdController /*, private NotCopyable*/
 {
 public:
 	//
 	// Constructors/Destructor.
 	//
 	CCmdControl();
+
+	//! Construction with the commands bitmap resource ID.
+	CCmdControl(uint bitmapId);
+
 	virtual ~CCmdControl();
 
-	//
-	// Member access.
-	//
-	CCmdBitmap& CmdBitmap();
+	//! Initialise the UI.
+	void InitialiseUI();
 
 	//
-	// Command methods.
+	// ICmdController methods.
 	//
+
+	//! Execute a command.
 	virtual void Execute(uint iCmdID);
+
+	//! Refresh the entire UI.
 	virtual void UpdateUI();
+
+	//! Draw the icon for a command.
 	virtual void DrawCmd(uint iCmdID, CDC& rDC, const CRect& rDst, bool bEnabled) const;
 
-	//
-	// Command property methods.
-	//
-	virtual int CmdBmpIndex(uint iCmdID) const;
-	virtual int CmdHintID(uint iCmdID) const;
-	virtual int CmdToolTipID(uint iCmdID) const;
+	//! Get the hint string for a command.
 	virtual CString CmdHintStr(uint iCmdID) const;
+
+	//! Get the tool tip for a command.
 	virtual CString CmdToolTipStr(uint iCmdID) const;
 
 protected:
@@ -89,7 +95,15 @@ protected:
 	// Members.
 	//
 	CMD*		m_pCmdTable;
+	uint		m_bitmapId;		//!< The resource ID of the commands bitmap.
 	CCmdBitmap	m_CmdBitmap;
+
+	//
+	// Command property methods.
+	//
+	virtual int CmdBmpIndex(uint iCmdID) const;
+	virtual int CmdHintID(uint iCmdID) const;
+	virtual int CmdToolTipID(uint iCmdID) const;
 
 private:
 	// NotCopyable.
@@ -113,17 +127,5 @@ private:
 
 #define END_CMD_TABLE						CmdNone,     0,      0,    (PFNCMDHANDLER)   0,     (PFNUIHANDLER)   0,      -1 }; \
 											m_pCmdTable = Cmds;
-
-/******************************************************************************
-**
-** Implementation of inline functions.
-**
-*******************************************************************************
-*/
-
-inline CCmdBitmap& CCmdControl::CmdBitmap()
-{
-	return m_CmdBitmap;
-}
 
 #endif //CMDCTRL_HPP

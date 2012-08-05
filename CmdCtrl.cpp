@@ -27,6 +27,17 @@
 
 CCmdControl::CCmdControl()
 	: m_pCmdTable(NULL)
+	, m_bitmapId(0)
+	, m_CmdBitmap()
+{
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Construction with the commands bitmap resource ID.
+
+CCmdControl::CCmdControl(uint bitmapId)
+	: m_pCmdTable(NULL)
+	, m_bitmapId(bitmapId)
 	, m_CmdBitmap()
 {
 }
@@ -45,6 +56,18 @@ CCmdControl::CCmdControl()
 
 CCmdControl::~CCmdControl()
 {
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Initialise the UI. Load the commands bitmap, if required and then force an
+//! update of all commands.
+
+void CCmdControl::InitialiseUI()
+{
+	if (m_bitmapId != 0)
+		m_CmdBitmap.LoadRsc(m_bitmapId);
+
+	UpdateUI();
 }
 
 /******************************************************************************
