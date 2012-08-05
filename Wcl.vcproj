@@ -634,6 +634,9 @@
 				RelativePath="HintBar.hpp">
 			</File>
 			<File
+				RelativePath=".\ICmdController.hpp">
+			</File>
+			<File
 				RelativePath="Icon.hpp">
 			</File>
 			<File
@@ -656,6 +659,9 @@
 			</File>
 			<File
 				RelativePath=".\IMsgFilter.hpp">
+			</File>
+			<File
+				RelativePath=".\IMsgThread.hpp">
 			</File>
 			<File
 				RelativePath="IniFile.hpp">
