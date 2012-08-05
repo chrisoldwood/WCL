@@ -412,7 +412,7 @@ void CMsgWnd::OnVertScroll(WCL::ScrollbarFlags /*iCode*/, uint /*iPos*/)
 void CMsgWnd::OnCmdMsg(uint iID)
 {
 	// Forward msg to cmd controller.
-	CApp::This().m_rCmdControl.Execute(iID);
+	CApp::This().m_controller.Execute(iID);
 }
 
 /******************************************************************************
