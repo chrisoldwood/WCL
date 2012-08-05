@@ -15,6 +15,7 @@
 #include "CmdCtrl.hpp"
 #include "StatusBar.hpp"
 #include "FrameWnd.hpp"
+#include "ICmdController.hpp"
 
 /******************************************************************************
 **
@@ -50,12 +51,14 @@ const int SEP_INDENT = 1;
 *******************************************************************************
 */
 
-CToolBar::CToolBar()
+CToolBar::CToolBar(WCL::IMsgThread& thread, WCL::ICmdController& controller)
 	: m_pCtrlTable(NULL)
 	, m_oToolTip()
+	, m_thread(thread)
+	, m_controller(controller)
 {
 	// Add to the main threads' msg filters.
-	CApp::This().m_MainThread.AddMsgFilter(this);
+	m_thread.AddMsgFilter(this);
 }
 
 /******************************************************************************
@@ -73,7 +76,7 @@ CToolBar::CToolBar()
 CToolBar::~CToolBar()
 {
 	// Remove from the main threads' msg filters.
-	CApp::This().m_MainThread.RemoveMsgFilter(this);
+	m_thread.RemoveMsgFilter(this);
 }
 
 /******************************************************************************
@@ -257,7 +260,7 @@ LRESULT CToolBar::OnCtrlMsg(NMHDR& rMsgHdr)
 		int nCtlID = ::GetDlgCtrlID(reinterpret_cast<HWND>(rMsgHdr.idFrom));
 
 		// Return it.
-		tstrcpy(oInfo.szText, CApp::This().m_rCmdControl.CmdToolTipStr(nCtlID));
+		tstrcpy(oInfo.szText, m_controller.CmdToolTipStr(nCtlID));
 		return 0;
 	}
 
@@ -322,17 +325,14 @@ bool CToolBar::ProcessMsg(MSG& rMsg)
 
 void CToolBar::OnShowHint(const CWnd* pWnd) const
 {
-	// Get application object.
-	CApp& oApp = CApp::This();
-
 	// Get the status bar.
-	CStatusBar*	pStatusBar = oApp.m_rMainWnd.StatusBar();
+	CStatusBar*	pStatusBar = CApp::This().m_rMainWnd.StatusBar();
 	if (pStatusBar == NULL)
 		return;
 
 	// Show a hint?
 	if (pWnd != NULL)
-		pStatusBar->Hint(oApp.m_rCmdControl.CmdHintStr(::GetDlgCtrlID(pWnd->Handle())));
+		pStatusBar->Hint(m_controller.CmdHintStr(::GetDlgCtrlID(pWnd->Handle())));
 	else
 		pStatusBar->Hint(TXT(""));
 }

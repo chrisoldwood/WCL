@@ -20,6 +20,13 @@
 #include "IMsgFilter.hpp"
 #include "ToolTip.hpp"
 
+// Forward declarations.
+namespace WCL
+{
+class IMsgThread;
+class ICmdController;
+}
+
 // A space between controls.
 #define IDC_SEPARATOR	(static_cast<uint>(-1))
 
@@ -36,7 +43,7 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CToolBar();
+	CToolBar(WCL::IMsgThread& thread, WCL::ICmdController& controller);
 	virtual	~CToolBar();
 
 	//
@@ -60,6 +67,8 @@ protected:
 	//
 	CTRL*		m_pCtrlTable;		// Table of controls.
 	CToolTip	m_oToolTip;			// Tool tips control.
+	WCL::IMsgThread&		m_thread;		//!< The toolbar thread.
+	WCL::ICmdController&	m_controller;	//!< Command controller.
 
 	//
 	// Window creation template methods.
