@@ -170,6 +170,9 @@ void CCmdBitmap::LoadRsc(uint iRscID)
 
 void CCmdBitmap::DrawCmd(uint iIndex, CDC& rDC, const CRect& rDst, bool bEnabled) const
 {
+	ASSERT(m_EnabledBmp.Handle()  != NULL);
+	ASSERT(m_DisabledBmp.Handle() != NULL);
+
 	// Calculate source rectangle.
 	CRect	rcSrc(iIndex*m_iCmdSize, 0, (iIndex+1)*m_iCmdSize, m_iCmdSize);
 

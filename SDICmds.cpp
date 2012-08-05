@@ -32,6 +32,14 @@ CSDICmds::CSDICmds()
 {
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//! Construction with the commands bitmap resource ID.
+
+CSDICmds::CSDICmds(uint bitmapId)
+	: CCmdControl(bitmapId)
+{
+}
+
 /******************************************************************************
 ** Method:		Destructor.
 **
@@ -80,7 +88,7 @@ bool CSDICmds::NewFile()
 	OnFileCreated(*oApp.m_pDoc);
 
 	// Update the UI.
-	oApp.m_rCmdControl.UpdateUI();
+	UpdateUI();
 	oApp.FrameWnd().UpdateTitle();
 
 	return true;
@@ -186,7 +194,7 @@ bool CSDICmds::OpenFile(const CPath& strPath)
 	OnFileOpened(*oApp.m_pDoc);
 
 	// Update the UI.
-	oApp.m_rCmdControl.UpdateUI();
+	UpdateUI();
 	oApp.FrameWnd().UpdateTitle();
 
 	return true;
@@ -225,7 +233,7 @@ bool CSDICmds::SaveFile()
 	OnFileSaved(*oApp.m_pDoc);
 
 	// Update the UI.
-	oApp.m_rCmdControl.UpdateUI();
+	UpdateUI();
 	oApp.FrameWnd().UpdateTitle();
 
 	return true;
@@ -278,7 +286,7 @@ bool CSDICmds::SaveFileAs()
 	OnFileSaved(*oApp.m_pDoc);
 
 	// Update the UI.
-	oApp.m_rCmdControl.UpdateUI();
+	UpdateUI();
 	oApp.FrameWnd().UpdateTitle();
 
 	return true;
@@ -336,7 +344,7 @@ bool CSDICmds::CloseFile()
 	oApp.m_pDoc = NULL;
 
 	// Update the UI.
-	oApp.m_rCmdControl.UpdateUI();
+	UpdateUI();
 	oApp.FrameWnd().UpdateTitle();
 
 	return true;

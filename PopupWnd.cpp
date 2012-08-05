@@ -629,7 +629,7 @@ void CPopupWnd::OnShowMenuItemHint(uint iItemID)
 
 	// Display hint from command controller.
 	if (pStatusBar)
-		pStatusBar->Hint(CApp::This().m_rCmdControl.CmdHintStr(iItemID));
+		pStatusBar->Hint(CApp::This().m_controller.CmdHintStr(iItemID));
 }
 
 /******************************************************************************

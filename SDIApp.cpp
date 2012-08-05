@@ -79,7 +79,7 @@ bool CSDIApp::OnOpen()
 		if ( (nLength > 0) && (strPath[nLength-1] == TXT('"')) )
 			strPath.Delete(nLength-1);
 
-		static_cast<CSDICmds&>(m_rCmdControl).OpenFile(strPath);
+		static_cast<CSDICmds&>(m_controller).OpenFile(strPath);
 	}
 
 	return true;

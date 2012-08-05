@@ -74,7 +74,7 @@ void CSDIFrame::OnCreate(const CRect& rcClient)
 bool CSDIFrame::OnQueryClose()
 {
 	// Close the app if the file was closed.
-	return static_cast<CSDICmds&>(CSDIApp::This().m_rCmdControl).CloseFile();
+	return static_cast<CSDICmds&>(CSDIApp::This().m_controller).CloseFile();
 }
 
 /******************************************************************************
@@ -205,6 +205,6 @@ void CSDIFrame::OnDropFile(int nFile, const tchar* pszPath)
 	if (nFile == 0)
 	{
 		// Call cmd controller to open file.
-		static_cast<CSDICmds&>(CSDIApp::This().m_rCmdControl).OpenFile(pszPath);
+		static_cast<CSDICmds&>(CSDIApp::This().m_controller).OpenFile(pszPath);
 	}
 }

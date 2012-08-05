@@ -176,9 +176,9 @@ void CCmdButton::OnDrawItem(uint iID, uint iAction, uint iState, CDC& rDC,
 
 		// Draw button face.
 		if (iState & ODS_DISABLED)
-			oApp.m_rCmdControl.DrawCmd(iID, rDC, rcDst, false);
+			oApp.m_controller.DrawCmd(iID, rDC, rcDst, false);
 		else
-			oApp.m_rCmdControl.DrawCmd(iID, rDC, rcDst, true);
+			oApp.m_controller.DrawCmd(iID, rDC, rcDst, true);
 
 		// Draw button border, if non-toolbar style OR is 'active' toolbar button.
 		if ( (!m_bOnToolbar) || ((iState & ODS_SELECTED) || (::GetCapture() == m_hWnd) || (g_pActiveBtn == this)) )

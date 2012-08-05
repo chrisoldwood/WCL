@@ -36,6 +36,10 @@ public:
 	// Constructors/Destructor.
 	//
 	CSDICmds();
+
+	//! Construction with the commands bitmap resource ID.
+	CSDICmds(uint bitmapId);
+
 	virtual	~CSDICmds();
 	
 	//
