@@ -44,6 +44,13 @@ public:
 	virtual	~CFrameWnd();
 
 	//
+	// Properties.
+	//
+
+	//! Get the final placement of the window.
+	const CRect& FinalPlacement() const;
+
+	//
 	// Frame components.
 	//
 	void Accel(CAccel* pAccel);
@@ -60,6 +67,16 @@ public:
 
 	void ActiveDlg(CDialog* pDialog);
 	CDialog* ActiveDlg() const;
+
+	//
+	// Methods.
+	//
+
+	//! Open the window using the style specified.
+	bool Open(int showStyle);
+
+	//! Open the window and optionally set the position.
+	bool Open(int showStyle, bool setPosition, const CRect& position);
 
     //
     // State.
@@ -86,6 +103,7 @@ protected:
 	CToolBar*	m_pToolBar;		// Toolbar, if one.
 	CStatusBar*	m_pStatusBar;	// Status Bar, if one.
 	CDialog*	m_pActiveDlg;	// The active modeless dialog, if one.
+	CRect		m_finalPlacement;	//!< Final placement of the window.
 
 	//
 	// Constants.
@@ -127,6 +145,17 @@ private:
 **
 *******************************************************************************
 */
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the final placement of the window. This can only be called once the
+//! window has been closed.
+
+inline const CRect& CFrameWnd::FinalPlacement() const
+{
+	ASSERT(m_hWnd == NULL);
+
+	return m_finalPlacement;
+}
 
 inline CAccel* CFrameWnd::Accel() const
 {

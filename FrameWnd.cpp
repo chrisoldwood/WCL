@@ -48,6 +48,7 @@ CFrameWnd::CFrameWnd(uint iIconID)
 	, m_pToolBar(NULL)
 	, m_pStatusBar(NULL)
 	, m_pActiveDlg(NULL)
+	, m_finalPlacement()
 {
 	// Add to the main threads' msg filters.
 	CApp::This().m_MainThread.AddMsgFilter(this);
@@ -379,6 +380,7 @@ bool CFrameWnd::OnQueryClose()
 
 void CFrameWnd::OnClose()
 {
+	m_finalPlacement = Placement();
 }
 
 /******************************************************************************
@@ -422,6 +424,30 @@ CRect CFrameWnd::ClientRect() const
 	}
 	
 	return rcClient;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Open the window using the style specified.
+
+bool CFrameWnd::Open(int showStyle)
+{
+	return Open(showStyle, false, CRect());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Open the window and optionally set the position.
+
+bool CFrameWnd::Open(int showStyle, bool setPosition, const CRect& position)
+{
+	if (!Create())
+		return false;
+
+	if (setPosition && !position.Empty())
+		Move(position);
+
+	Show(showStyle);
+
+	return true;
 }
 
 /******************************************************************************
