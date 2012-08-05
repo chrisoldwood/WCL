@@ -16,11 +16,9 @@
 #pragma once
 #endif
 
+#include "IMsgThread.hpp"
 #include "Thread.hpp"
 #include <list>
-
-// Forward declarations.
-class IMsgFilter;
 
 /******************************************************************************
 **
@@ -29,7 +27,7 @@ class IMsgFilter;
 *******************************************************************************
 */
 
-class CMsgThread : public CThread
+class CMsgThread : public WCL::IMsgThread, public CThread
 {
 public:
 	//
@@ -48,8 +46,8 @@ public:
 	//
 	// Message filtering.
 	//
-	void AddMsgFilter(IMsgFilter* pFilter);
-	void RemoveMsgFilter(IMsgFilter* pFilter);
+	virtual void AddMsgFilter(IMsgFilter* pFilter);
+	virtual void RemoveMsgFilter(IMsgFilter* pFilter);
 
 	//
 	// Message processing.
