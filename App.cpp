@@ -48,10 +48,10 @@ CApp* CApp::g_pThis = NULL;
 *******************************************************************************
 */
 
-CApp::CApp(CFrameWnd& rFrameWnd, CCmdControl& rCmdControl)
+CApp::CApp(CFrameWnd& rFrameWnd, WCL::ICmdController& controller)
 	: m_strTitle()
 	, m_rMainWnd(rFrameWnd)
-	, m_rCmdControl(rCmdControl)
+	, m_controller(controller)
 	, m_Module()
 	, m_MainThread()
 	, m_strCmdLine()
@@ -130,8 +130,9 @@ CApp& CApp::This()
 
 bool CApp::Open()
 {
-	// Default title to app filename.ext.
-	m_strTitle = CPath::Application().FileName().ToUpper();
+	// If not set yet, default title to application filename.
+	if (m_strTitle.Empty())
+		m_strTitle = CPath::Application().FileName().ToUpper();
 
 	const DWORD dwMinMajor = 4;
 	const DWORD dwMinMinor = 71;
@@ -200,10 +201,6 @@ void CApp::Run()
 void CApp::Close()
 {
 	OnClose();
-
-	// Free strings.
-	m_strTitle   = TXT("");
-	m_strCmdLine = TXT("");
 }
 
 /******************************************************************************

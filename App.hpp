@@ -25,7 +25,11 @@
 
 // Forward declarations.
 class CFrameWnd;
-class CCmdControl;
+
+namespace WCL
+{
+class ICmdController;
+}
 
 /******************************************************************************
 ** 
@@ -40,7 +44,7 @@ public:
 	//
 	// Constructors/Destructor.
 	//
-	CApp(CFrameWnd& rFrameWnd, CCmdControl& rCmdControl);
+	CApp(CFrameWnd& rFrameWnd, WCL::ICmdController& controller);
 	virtual ~CApp();
 
 	//
@@ -84,7 +88,7 @@ public:
 	//
 	CString			m_strTitle;			// Application title.
 	CFrameWnd&		m_rMainWnd;			// Main window.
-	CCmdControl&	m_rCmdControl;		// Command controller.
+	WCL::ICmdController&	m_controller;		//!< Command controller.
 	CModule			m_Module;			// Application module.
 	CMainThread		m_MainThread;		// Main application thread.
 	CString			m_strCmdLine;		// Command line.
