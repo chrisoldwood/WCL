@@ -1,0 +1,67 @@
+////////////////////////////////////////////////////////////////////////////////
+//! \file   UiCommandBase.cpp
+//! \brief  The UiCommandBase class definition.
+//! \author Chris Oldwood
+
+#include "Common.hpp"
+#include "UiCommandBase.hpp"
+#include "ExternalCmdController.hpp"
+
+namespace WCL
+{
+
+////////////////////////////////////////////////////////////////////////////////
+//! Construction from the ID.
+
+UiCommandBase::UiCommandBase(uint id)
+	: m_id(id)
+{
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the unique ID of the command.
+
+uint UiCommandBase::id() const
+{
+	return m_id;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the hint for the command.
+
+tstring UiCommandBase::hint() const
+{
+	return ExternalCmdController::defaultHint(m_id);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the tool tip for the command.
+
+tstring UiCommandBase::toolTip() const
+{
+	return ExternalCmdController::defaultToolTip(m_id);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Execute the command.
+
+void UiCommandBase::execute()
+{
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Refresh the UI for the command.
+
+void UiCommandBase::updateUi()
+{
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Draw the icon for a command.
+
+void UiCommandBase::drawIcon(CDC& /*dc*/, const CRect& /*rect*/, bool /*enabled*/) const
+{
+}
+
+//namespace WCL
+}
