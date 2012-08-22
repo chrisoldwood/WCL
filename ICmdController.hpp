@@ -25,19 +25,19 @@ class ICmdController
 {
 public:
 	//! Execute a command.
-	virtual void Execute(uint iCmdID) = 0;
+	virtual void Execute(uint command) = 0;
 
 	//! Refresh the entire UI.
 	virtual void UpdateUI() = 0;
 
 	//! Draw the icon for a command.
-	virtual void DrawCmd(uint iCmdID, CDC& rDC, const CRect& rDst, bool bEnabled) const = 0;
+	virtual void DrawCmd(uint command, CDC& dc, const CRect& rect, bool enabled) const = 0;
 
 	//! Get the hint string for a command.
-	virtual CString CmdHintStr(uint iCmdID) const = 0;
+	virtual CString CmdHintStr(uint command) const = 0;
 
 	//! Get the tool tip for a command.
-	virtual CString CmdToolTipStr(uint iCmdID) const = 0;
+	virtual CString CmdToolTipStr(uint command) const = 0;
 	
 protected:
 	//! Protected destructor.
