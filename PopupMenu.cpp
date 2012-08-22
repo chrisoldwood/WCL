@@ -145,7 +145,7 @@ void CPopupMenu::LoadRsc(uint iRscID)
 *******************************************************************************
 */
 
-uint CPopupMenu::TrackMenu(CWnd& rParent, const CPoint& ptOrigin)
+uint CPopupMenu::TrackMenu(const CWnd& rParent, const CPoint& ptOrigin) const
 {
 	const int RESERVED = 0;
 

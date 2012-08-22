@@ -43,7 +43,7 @@ public:
 
 	void LoadRsc(uint iRscID);
 
-	uint TrackMenu(CWnd& rParent, const CPoint& ptOrigin);
+	uint TrackMenu(const CWnd& rParent, const CPoint& ptOrigin) const;
 
 protected:
 	//
