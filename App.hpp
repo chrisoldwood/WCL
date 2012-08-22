@@ -75,7 +75,6 @@ public:
 	//
 	// Other methods.
 	//
-	bool ShowNormal() const;
 
 	//! Check if the app singleton is valid.
 	static bool IsValid();
@@ -218,12 +217,6 @@ inline WCL::TimerID CApp::StartTimer(uint nFrequency)
 inline void CApp::StopTimer(WCL::TimerID nTimerID)
 {
 	::KillTimer(NULL, nTimerID);
-}
-
-inline bool CApp::ShowNormal() const
-{
-	return ( (m_iCmdShow == SW_SHOWNORMAL) || (m_iCmdShow == SW_SHOWNOACTIVATE)
-		  || (m_iCmdShow == SW_SHOW)       || (m_iCmdShow == SW_SHOWNA) );
 }
 
 #endif // WCL_APP_HPP
