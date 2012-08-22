@@ -10,51 +10,27 @@
 
 #include "Common.hpp"
 #include "CmdCtrl.hpp"
-#include "App.hpp"
-#include "FrameWnd.hpp"
+#include "ICommandWnd.hpp"
 
-/******************************************************************************
-** Method:		Constructor.
-**
-** Description:	.
-**
-** Parameters:	None.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! Construction with the main command window.
 
-CCmdControl::CCmdControl()
+CCmdControl::CCmdControl(WCL::ICommandWnd& commandWnd)
 	: m_pCmdTable(NULL)
 	, m_bitmapId(0)
 	, m_CmdBitmap()
+	, m_commandWnd(commandWnd)
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Construction with the commands bitmap resource ID.
+//! Construction with the main command window and bitmap resource ID.
 
-CCmdControl::CCmdControl(uint bitmapId)
+CCmdControl::CCmdControl(WCL::ICommandWnd& commandWnd, uint bitmapId)
 	: m_pCmdTable(NULL)
 	, m_bitmapId(bitmapId)
 	, m_CmdBitmap()
-{
-}
-
-/******************************************************************************
-** Method:		Destructor.
-**
-** Description:	.
-**
-** Parameters:	None.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
-
-CCmdControl::~CCmdControl()
+	, m_commandWnd(commandWnd)
 {
 }
 
@@ -135,8 +111,7 @@ void CCmdControl::UpdateUI()
 	    ++pCmd;
 	}
 
-	// Force a redraw of the menu bar.
-	CApp::This().m_rMainWnd.DrawMenuBar();
+	m_commandWnd.OnCommandsUpdated();
 }
 
 /******************************************************************************

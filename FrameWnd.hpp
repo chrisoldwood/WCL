@@ -18,6 +18,7 @@
 
 #include "PopupWnd.hpp"
 #include "IMsgFilter.hpp"
+#include "ICommandWnd.hpp"
 
 // Forward declaratons.
 class CAccel;
@@ -34,7 +35,7 @@ class CDialog;
 *******************************************************************************
 */
 
-class CFrameWnd : public CPopupWnd, public IMsgFilter /*: private NotCopyable*/
+class CFrameWnd : public CPopupWnd, public IMsgFilter, public WCL::ICommandWnd /*: private NotCopyable*/
 {
 public:
 	//
@@ -75,8 +76,8 @@ public:
 	//! Open the window using the style specified.
 	bool Open(int showStyle);
 
-	//! Open the window and optionally set the position.
-	bool Open(int showStyle, bool setPosition, const CRect& position);
+	//! Open the window and restore its position.
+	bool Open(int showStyle, const CRect& position);
 
     //
     // State.
@@ -92,6 +93,13 @@ public:
 	// Message filtering.
 	//
 	virtual bool ProcessMsg(MSG& rMsg);
+
+	//
+	// ICommandWnd methods.
+	//
+
+	//! Handle updates to any command states.
+	virtual void OnCommandsUpdated();
 
 protected:
 	//

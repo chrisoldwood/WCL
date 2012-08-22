@@ -32,13 +32,11 @@ class CPath;
 class CSDICmds : public CCmdControl
 {
 public:
-	//
-	// Constructors/Destructor.
-	//
-	CSDICmds();
+	//! Construction with the main command window.
+	CSDICmds(WCL::ICommandWnd& commandWnd);
 
-	//! Construction with the commands bitmap resource ID.
-	CSDICmds(uint bitmapId);
+	//! Construction with the main command window and bitmap resource ID.
+	CSDICmds(WCL::ICommandWnd& commandWnd, uint bitmapId);
 
 	virtual	~CSDICmds();
 	

@@ -16,27 +16,19 @@
 #include <Core/UniquePtr.hpp>
 #include "BusyCursor.hpp"
 
-/******************************************************************************
-** Method:		Constructor.
-**
-** Description:	.
-**
-** Parameters:	None.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! Construction with the main command window.
 
-CSDICmds::CSDICmds()
+CSDICmds::CSDICmds(WCL::ICommandWnd& commandWnd)
+	: CCmdControl(commandWnd)
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Construction with the commands bitmap resource ID.
+//! Construction with the main command window and bitmap resource ID.
 
-CSDICmds::CSDICmds(uint bitmapId)
-	: CCmdControl(bitmapId)
+CSDICmds::CSDICmds(WCL::ICommandWnd& commandWnd, uint bitmapId)
+	: CCmdControl(commandWnd, bitmapId)
 {
 }
 

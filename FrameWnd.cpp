@@ -431,18 +431,20 @@ CRect CFrameWnd::ClientRect() const
 
 bool CFrameWnd::Open(int showStyle)
 {
-	return Open(showStyle, false, CRect());
+	const CRect empty;
+
+	return Open(showStyle, empty);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Open the window and optionally set the position.
+//! Open the window and restore its position.
 
-bool CFrameWnd::Open(int showStyle, bool setPosition, const CRect& position)
+bool CFrameWnd::Open(int showStyle, const CRect& position)
 {
 	if (!Create())
 		return false;
 
-	if (setPosition && !position.Empty())
+	if (!position.Empty())
 		Move(position);
 
 	Show(showStyle);
@@ -507,6 +509,14 @@ bool CFrameWnd::ProcessMsg(MSG& rMsg)
 		return true;
 
 	return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Handle updates to any command states.
+
+void CFrameWnd::OnCommandsUpdated()
+{
+	DrawMenuBar();
 }
 
 /******************************************************************************

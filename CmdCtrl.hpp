@@ -19,26 +19,29 @@
 #include "ICmdController.hpp"
 #include "CmdBmp.hpp"
 
-/******************************************************************************
-**
-** The base class from which the application command controller is derived. It
-** is used to execute commands and update the UI.
-**
-*******************************************************************************
-*/
+// Forward declarations.
+namespace WCL
+{
+class ICommandWnd;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! The base class from which the application command controller is derived. It
+//! is used to execute commands and update the UI.
+//!
+//! \note This is the original controller that requires derivation because of
+//! the way that the command table is defined and the way the class member
+//! functions are downcast (pre-template era VC++). As a consequence the derived
+//! class needs to ensure that its member layout matches this base class.
 
 class CCmdControl : public WCL::ICmdController /*, private NotCopyable*/
 {
 public:
-	//
-	// Constructors/Destructor.
-	//
-	CCmdControl();
+	//! Construction with the main command window.
+	CCmdControl(WCL::ICommandWnd& commandWnd);
 
-	//! Construction with the commands bitmap resource ID.
-	CCmdControl(uint bitmapId);
-
-	virtual ~CCmdControl();
+	//! Construction with the main command window and bitmap resource ID.
+	CCmdControl(WCL::ICommandWnd& commandWnd, uint bitmapId);
 
 	//! Initialise the UI.
 	void InitialiseUI();
@@ -63,6 +66,9 @@ public:
 	virtual CString CmdToolTipStr(uint iCmdID) const;
 
 protected:
+	//! Make abstract.
+	virtual ~CCmdControl() = 0 {}; 
+
 	///////////////////////////////////////////////////////
 	// Structure to define an entry in the command table.
 	///////////////////////////////////////////////////////
@@ -97,6 +103,7 @@ protected:
 	CMD*		m_pCmdTable;
 	uint		m_bitmapId;		//!< The resource ID of the commands bitmap.
 	CCmdBitmap	m_CmdBitmap;
+	WCL::ICommandWnd&	m_commandWnd;	//!< The application command window.
 
 	//
 	// Command property methods.
