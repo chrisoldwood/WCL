@@ -140,6 +140,9 @@
 				RelativePath=".\AppConfigTests.cpp">
 			</File>
 			<File
+				RelativePath=".\CmdControlTests.cpp">
+			</File>
+			<File
 				RelativePath=".\ComExceptionTests.cpp">
 			</File>
 			<File
@@ -155,6 +158,9 @@
 				RelativePath=".\DateTimeTests.cpp">
 			</File>
 			<File
+				RelativePath=".\ExternalCmdControllerTests.cpp">
+			</File>
+			<File
 				RelativePath=".\FolderIteratorTests.cpp">
 			</File>
 			<File
@@ -167,6 +173,9 @@
 				RelativePath=".\IniFileTests.cpp">
 			</File>
 			<File
+				RelativePath=".\NullCmdControllerTests.cpp">
+			</File>
+			<File
 				RelativePath=".\PathTests.cpp">
 			</File>
 			<File
@@ -174,6 +183,9 @@
 			</File>
 			<File
 				RelativePath=".\RegistryCfgProviderTests.cpp">
+			</File>
+			<File
+				RelativePath=".\ResourceStringTests.cpp">
 			</File>
 			<File
 				RelativePath=".\SeTranslatorTests.cpp">
@@ -204,6 +216,9 @@
 			</File>
 			<File
 				RelativePath=".\TimeTests.cpp">
+			</File>
+			<File
+				RelativePath=".\UiCommandBaseTests.cpp">
 			</File>
 			<File
 				RelativePath=".\VariantTests.cpp">
