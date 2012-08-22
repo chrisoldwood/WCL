@@ -1,6 +1,12 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
 // Used by Test.rc
+//
+#define ID_TEST_COMMAND                 100
+#define ID_HINT_NO_TOOLTIP              101
+#define ID_EMPTY_HINT                   102
+#define ID_HINT_TIP_SEP_ONLY            103
+#define ID_TEST_STRING                  200
 
 // Next default values for new objects
 // 
