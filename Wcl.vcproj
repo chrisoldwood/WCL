@@ -171,6 +171,9 @@
 				RelativePath=".\ConsoleApp.cpp">
 			</File>
 			<File
+				RelativePath=".\ContextMenu.cpp">
+			</File>
+			<File
 				RelativePath="CriticalSection.cpp">
 			</File>
 			<File
@@ -214,6 +217,9 @@
 			</File>
 			<File
 				RelativePath=".\Exception.cpp">
+			</File>
+			<File
+				RelativePath=".\ExternalCmdController.cpp">
 			</File>
 			<File
 				RelativePath="File.cpp">
@@ -354,6 +360,9 @@
 				RelativePath="RegKey.cpp">
 			</File>
 			<File
+				RelativePath=".\ResourceString.cpp">
+			</File>
+			<File
 				RelativePath="ScreenDC.cpp">
 			</File>
 			<File
@@ -451,6 +460,9 @@
 			</File>
 			<File
 				RelativePath=".\TreeView.cpp">
+			</File>
+			<File
+				RelativePath=".\UiCommandBase.cpp">
 			</File>
 			<File
 				RelativePath="UpDownBtns.cpp">
@@ -559,6 +571,9 @@
 				RelativePath=".\ConsoleApp.hpp">
 			</File>
 			<File
+				RelativePath=".\ContextMenu.hpp">
+			</File>
+			<File
 				RelativePath="CriticalSection.hpp">
 			</File>
 			<File
@@ -610,6 +625,9 @@
 				RelativePath="Exception.hpp">
 			</File>
 			<File
+				RelativePath=".\ExternalCmdController.hpp">
+			</File>
+			<File
 				RelativePath="File.hpp">
 			</File>
 			<File
@@ -635,6 +653,9 @@
 			</File>
 			<File
 				RelativePath=".\ICmdController.hpp">
+			</File>
+			<File
+				RelativePath=".\ICommandWnd.hpp">
 			</File>
 			<File
 				RelativePath="Icon.hpp">
@@ -677,6 +698,9 @@
 			</File>
 			<File
 				RelativePath="IThreadLock.hpp">
+			</File>
+			<File
+				RelativePath=".\IUiCommand.hpp">
 			</File>
 			<File
 				RelativePath="Label.hpp">
@@ -725,6 +749,9 @@
 			</File>
 			<File
 				RelativePath="NetFinder.hpp">
+			</File>
+			<File
+				RelativePath=".\NullCmdController.hpp">
 			</File>
 			<File
 				RelativePath="Path.hpp">
@@ -776,6 +803,9 @@
 			</File>
 			<File
 				RelativePath="RegKey.hpp">
+			</File>
+			<File
+				RelativePath=".\ResourceString.hpp">
 			</File>
 			<File
 				RelativePath="ScreenDC.hpp">
@@ -893,6 +923,9 @@
 			</File>
 			<File
 				RelativePath=".\TreeView.hpp">
+			</File>
+			<File
+				RelativePath=".\UiCommandBase.hpp">
 			</File>
 			<File
 				RelativePath="UpDownBtns.hpp">
