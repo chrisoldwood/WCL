@@ -46,6 +46,7 @@ public:
 	//
 	void InsertCmd(uint nPos, uint iCmdID, const tchar* pszText);
 	void AppendCmd(uint iCmdID, const tchar* pszText);
+	void AppendCmd(uint commandId, const tstring& text);
 
 	//
 	// Item by command methods.
@@ -97,6 +98,11 @@ inline void CMenu::InsertCmd(uint nPos, uint iCmdID, const tchar* pszText)
 inline void CMenu::AppendCmd(uint iCmdID, const tchar* pszText)
 {
 	::AppendMenu(m_hMenu, MF_STRING, iCmdID, pszText);
+}
+
+inline void CMenu::AppendCmd(uint commandId, const tstring& text)
+{
+	::AppendMenu(m_hMenu, MF_STRING, commandId, text.c_str());
 }
 
 inline void CMenu::SetCmdText(uint iCmdID, const tchar* pszText)
