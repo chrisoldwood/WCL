@@ -64,10 +64,11 @@ public:
 	//
 	void Reserve(size_t nItems);
 	size_t AppendItem(const tchar* pszText, size_t nImage = Core::npos);
+	size_t AppendItem(const tstring& text, size_t image = Core::npos);
 	size_t InsertItem(size_t nItem, const tchar* pszText, size_t nImage = -1);
 	size_t InsertItem(size_t item, const tstring& text, size_t icon = -1);
 
-	void DeleteItem(size_t nItem);
+	void DeleteItem(size_t item, bool selectNextItem = false);
 	void DeleteAllItems();
 
 	void ItemText(size_t nItem, size_t nSubItem, const tchar* pszText);
@@ -87,6 +88,7 @@ public:
 	bool    IsChecked(size_t nItem);
 
 	void Select(size_t nItem, bool bSelect = true);
+	void SelectFirstItem();
 	bool IsSelection() const;
 	size_t Selection() const;
 	size_t Selections(Items& vItems) const;
@@ -179,17 +181,17 @@ inline size_t CListView::AppendItem(const tchar* pszText, size_t nImage)
 	return InsertItem(ItemCount(), pszText, nImage);
 }
 
+inline size_t CListView::AppendItem(const tstring& text, size_t image)
+{
+	return InsertItem(ItemCount(), text.c_str(), image);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //! Insert a new item into the control.
 
 inline size_t CListView::InsertItem(size_t item, const tstring& text, size_t icon)
 {
 	return InsertItem(item, text.c_str(), icon);
-}
-
-inline void CListView::DeleteItem(size_t nItem)
-{
-	ListView_DeleteItem(m_hWnd, nItem);
 }
 
 inline void CListView::DeleteAllItems()
@@ -245,6 +247,12 @@ inline void CListView::Select(size_t nItem, bool bSelect)
 	uint nState = (bSelect) ? (LVIS_SELECTED | LVIS_FOCUSED) : 0;
 
 	ItemState(nItem, nState, 0x000F);
+}
+
+inline void CListView::SelectFirstItem()
+{
+	if (ItemCount() != 0)
+		Select(0);
 }
 
 inline bool CListView::IsSelection() const

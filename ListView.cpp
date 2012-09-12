@@ -87,6 +87,27 @@ size_t CListView::InsertItem(size_t nItem, const tchar* pszText, size_t nImage)
 	return ListView_InsertItem(m_hWnd, &lvItem);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//! Delete an item from view. If specified maintain a selected item by selecting
+//! the next available one.
+
+void CListView::DeleteItem(size_t item, bool selectNextItem)
+{
+	ListView_DeleteItem(m_hWnd, item);
+
+	if (selectNextItem)
+	{
+		const size_t count = ItemCount();
+
+		if (count != 0)
+		{
+			const nextItem = std::min(item, count-1);
+
+			Select(nextItem);
+		}
+	}
+}
+
 /******************************************************************************
 ** Method:		ItemImage()
 **
