@@ -17,6 +17,45 @@ static tstring s_pubPath     = Core::fmt(TXT("Software\\%s"), s_publisher.c_str(
 static tstring s_application = TXT("Unit Tests");
 static tstring s_appPath     = Core::fmt(TXT("Software\\%s\\%s"), s_publisher.c_str(), s_application.c_str());
 
+namespace
+{
+
+class FakeAppConfigReader : public WCL::IAppConfigReader
+{
+public:
+	virtual tstring readString(const tstring& /*sectionName*/, const tstring& /*keyName*/, const tstring& /*defaultValue*/) const
+	{
+		return m_value;
+	}
+
+	virtual void readList(const tstring& /*sectionName*/, const tstring& /*keyName*/, const tstring& /*defaultValue*/, StringArray& /*list*/) const
+	{
+	}
+
+	tstring	m_value;
+};
+
+class FakeAppConfigWriter : public WCL::IAppConfigWriter
+{
+public:
+	virtual void writeString(const tstring& /*sectionName*/, const tstring& /*keyName*/, const tstring& value)
+	{
+		m_value = value;
+	}
+
+	virtual void writeList(const tstring& /*sectionName*/, const tstring& /*keyName*/, const StringArray& /*list*/)
+	{
+	}
+
+	virtual void deleteSection(const tstring& /*sectionName*/)
+	{
+	}
+
+	tstring	m_value;
+};
+
+}
+
 TEST_SET(AppConfig)
 {
 
@@ -128,6 +167,40 @@ TEST_CASE("a section can be deleted by name")
 	appConfig.deleteSection(TXT("Section"));
 
 	TEST_TRUE(appConfig.readValue<size_t>(TXT("Section"), TXT("Name"), defValue) == defValue);
+}
+TEST_CASE_END
+
+TEST_CASE("The app config reader interface can be mocked")
+{
+	const tstring expectedString = TXT("unit test");
+	const size_t  expectedValue = 12345;
+
+	FakeAppConfigReader fake;
+
+	fake.m_value = expectedString;
+
+	TEST_TRUE(fake.readString(TXT("any"), TXT("any"), TXT("default")) == expectedString);
+
+	fake.m_value = Core::fmt(TXT("%u"), expectedValue);
+
+	TEST_TRUE(fake.readValue<size_t>(TXT("any"), TXT("any"), 0u) == expectedValue);
+}
+TEST_CASE_END
+
+TEST_CASE("The app config writer interface can be mocked")
+{
+	const tstring expectedString = TXT("unit test");
+	const size_t  expectedValue = 12345;
+
+	FakeAppConfigWriter fake;
+
+	fake.writeString(TXT("any"), TXT("any"), expectedString);
+
+	TEST_TRUE(fake.m_value == expectedString);
+
+	fake.writeValue<size_t>(TXT("any"), TXT("any"), expectedValue);
+
+	TEST_TRUE(fake.m_value == Core::fmt(TXT("%u"), expectedValue));
 }
 TEST_CASE_END
 

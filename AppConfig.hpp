@@ -11,8 +11,9 @@
 #pragma once
 #endif
 
+#include "IAppConfigReader.hpp"
+#include "IAppConfigWriter.hpp"
 #include "IConfigProvider.hpp"
-#include <Core/StringUtils.hpp>
 #include <vector>
 
 namespace WCL
@@ -24,7 +25,7 @@ namespace WCL
 //! Registry, an .ini file etc. However, it is possible to explicitly set the
 //! storage type as some users may want to do this.
 
-class AppConfig
+class AppConfig : public IAppConfigReader, public IAppConfigWriter
 {
 public:
 	//
@@ -51,7 +52,7 @@ public:
 	AppConfig(const tstring& publisher, const tstring& application);
 
 	//! Destructor.
-	~AppConfig();
+	virtual ~AppConfig();
 
 	//
 	// Properties.
@@ -64,31 +65,27 @@ public:
 	void setStorageType(Storage storage);
 
 	//
-	// Methods.
+	// IAppConfigReader methods.
 	//
 
 	//! Read a string value.
-	tstring readString(const tstring& sectionName, const tstring& keyName, const tstring& defaultValue) const;
-
-	//! Read a value.
-	template<typename T>
-	T readValue(const tstring& sectionName, const tstring& keyName, const T& defaultValue) const;
+	virtual tstring readString(const tstring& sectionName, const tstring& keyName, const tstring& defaultValue) const;
 
 	//! Read a list of values.
-	void readList(const tstring& sectionName, const tstring& keyName, const tstring& defaultValue, StringArray& list) const;
+	virtual void readList(const tstring& sectionName, const tstring& keyName, const tstring& defaultValue, StringArray& list) const;
+
+	//
+	// IAppConfigWriter methods.
+	//
 
 	//! Write a string value.
-	void writeString(const tstring& sectionName, const tstring& keyName, const tstring& value);
-
-	//! Write a value.
-	template<typename T>
-	void writeValue(const tstring& sectionName, const tstring& keyName, const T& value);
+	virtual void writeString(const tstring& sectionName, const tstring& keyName, const tstring& value);
 
 	//! Write a list of values.
-	void writeList(const tstring& sectionName, const tstring& keyName, const StringArray& list);
+	virtual void writeList(const tstring& sectionName, const tstring& keyName, const StringArray& list);
 
 	//! Delete the entire section.
-	void deleteSection(const tstring& sectionName);
+	virtual void deleteSection(const tstring& sectionName);
 
 private:
 	//
@@ -109,31 +106,6 @@ private:
 	//! Get the provider.
 	IConfigProviderPtr getProvider() const;
 };
-
-////////////////////////////////////////////////////////////////////////////////
-//! Read a value.
-
-template<typename T>
-inline T AppConfig::readValue(const tstring& sectionName, const tstring& keyName, const T& defaultValue) const
-{
-	tstring value = readString(sectionName, keyName, tstring());
-
-	if (value.empty())
-		return defaultValue;
-
-	return Core::parse<T>(value);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//! Write a value.
-
-template<typename T>
-inline void AppConfig::writeValue(const tstring& sectionName, const tstring& keyName, const T& value)
-{
-	tstring buffer = Core::format<T>(value);
-
-	writeString(sectionName, keyName, buffer);
-}
 
 //namespace WCL
 }
