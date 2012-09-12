@@ -40,12 +40,15 @@ public:
 	size_t Count() const;
 	void TextLimit(size_t nLimit) const;
 	size_t Add(const tchar* pszText) const;
+	size_t Add(const tstring& text) const;
 	size_t Add(const tchar* pszText, LPARAM lData) const;
 	size_t Add(const tchar* pszText, void*  pData) const;
 	size_t Insert(const tchar* pszText, size_t nItem) const;
 	size_t Delete(size_t nItem) const;
 	size_t Find(const tchar* pszText, size_t nFirst = Core::npos) const;
 	size_t FindExact(const tchar* pszText, size_t nFirst = Core::npos) const;
+	size_t FindExact(const tstring& text, size_t first = Core::npos) const;
+	bool Exists(const tstring& text) const;
 	void ItemData(size_t nItem, LPARAM lData) const;
 	void ItemPtr(size_t nItem, void* pData) const;
 	LPARAM ItemData(size_t nItem) const;
@@ -55,6 +58,7 @@ public:
 	void RemoveSelection();
 	size_t CurSel(const tchar* pszText, size_t iFirst = Core::npos) const;
 	size_t Select(const tchar* pszText, size_t iFirst = Core::npos) const;
+	size_t Select(const tstring& text, size_t first = Core::npos) const;
 	size_t TextLength(size_t nItem) const;
 	size_t TextLength() const;
 	CString Text(size_t nItem) const;
@@ -107,6 +111,11 @@ inline size_t CComboBox::Add(const tchar* pszText) const
 	return lResult;
 }
 
+inline size_t CComboBox::Add(const tstring& text) const
+{
+	return Add(text.c_str());
+}
+
 inline size_t CComboBox::Add(const tchar* pszText, LPARAM lData) const
 {
 	size_t nItem = Add(pszText);
@@ -151,6 +160,16 @@ inline size_t CComboBox::Find(const tchar* pszText, size_t nFirst) const
 inline size_t CComboBox::FindExact(const tchar* pszText, size_t nFirst) const
 {
 	return SendMessage(CB_FINDSTRINGEXACT, nFirst, reinterpret_cast<LPARAM>(pszText));
+}
+
+inline size_t CComboBox::FindExact(const tstring& text, size_t first) const
+{
+	return FindExact(text.c_str(), first);
+}
+
+inline bool CComboBox::Exists(const tstring& text) const
+{
+	return (FindExact(text) != Core::npos);
 }
 
 inline void CComboBox::ItemData(size_t nItem, LPARAM lData) const
@@ -200,6 +219,11 @@ inline size_t CComboBox::Select(const tchar* pszText, size_t nFirst) const
 	CurSel(nItem);
 
 	return nItem;
+}
+
+inline size_t CComboBox::Select(const tstring& text, size_t first) const
+{
+	return Select(text.c_str(), first);
 }
 
 inline size_t CComboBox::TextLength(size_t nItem) const
