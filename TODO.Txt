@@ -56,6 +56,10 @@
 
 - Sort out friendship of WinMain/DllMain to CModule/CApp etc - overly restrictive?
 
+- 2 digit vs 4 digit years - match with a regex or force format in setup?
+TEST_TRUE(testDate.ToString(CDate::FMT_WIN_SHORT) == TXT("01/02/2003"));
+TEST_TRUE(testDate.ToString(CDate::FMT_WIN_SHORT) == TXT("01/02/2003"));
+
 UNICODE
 =======
 
