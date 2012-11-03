@@ -101,7 +101,7 @@ void CListView::DeleteItem(size_t item, bool selectNextItem)
 
 		if (count != 0)
 		{
-			const nextItem = std::min(item, count-1);
+			const size_t nextItem = std::min(item, count-1);
 
 			Select(nextItem);
 		}
