@@ -67,7 +67,7 @@ public:
 
 protected:
 	//! Make abstract.
-	virtual ~CCmdControl() = 0 {}; 
+	virtual ~CCmdControl() {};
 
 	///////////////////////////////////////////////////////
 	// Structure to define an entry in the command table.

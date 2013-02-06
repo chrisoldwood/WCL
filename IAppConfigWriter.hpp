@@ -30,8 +30,8 @@ public:
 	typedef std::vector<tstring> StringArray;
 
 public:
-	//! Abstract destructor.
-	virtual ~IAppConfigWriter() = 0 {}; 
+	// Make abstract.
+	virtual ~IAppConfigWriter() {};
 
 	//
 	// Methods.

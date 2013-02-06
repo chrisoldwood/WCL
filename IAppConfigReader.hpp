@@ -12,6 +12,7 @@
 #endif
 
 #include <Core/StringUtils.hpp>
+#include <vector>
 
 namespace WCL
 {
@@ -30,8 +31,8 @@ public:
 	typedef std::vector<tstring> StringArray;
 
 public:
-	//! Abstract destructor.
-	virtual ~IAppConfigReader() = 0 {};
+	// Make abstract.
+	virtual ~IAppConfigReader() {};
 
 	//
 	// Methods.

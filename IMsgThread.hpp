@@ -29,10 +29,10 @@ public:
 
 	//! Detach a message queue filter.
 	virtual void RemoveMsgFilter(IMsgFilter* pFilter) = 0;
-	
+
 protected:
-	//! Protected destructor.
-	virtual ~IMsgThread() = 0 {}; 
+	// Make abstract.
+	virtual ~IMsgThread() {};
 };
 
 //namespace WCL

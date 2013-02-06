@@ -152,7 +152,7 @@ bool CSDICmds::OpenMRUFile(size_t nIndex)
 
 bool CSDICmds::OpenFile(const CPath& strPath)
 {
-	typedef Core::UniquePtr<CSDIDoc> SDIDocPtr;
+	typedef Core::UniquePtr<CSDIDoc> NewDocPtr;
 
 	// Get application object.
 	CSDIApp& oApp = CSDIApp::This();
@@ -164,7 +164,7 @@ bool CSDICmds::OpenFile(const CPath& strPath)
 	CBusyCursor oBusyCursor;
 
 	// Create a new doc and set the path.
-	SDIDocPtr pDoc(oApp.CreateDoc());
+	NewDocPtr pDoc(oApp.CreateDoc());
 
 	pDoc->Path(strPath);
 

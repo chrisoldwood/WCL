@@ -38,10 +38,10 @@ public:
 
 	//! Get the tool tip for a command.
 	virtual CString CmdToolTipStr(uint command) const = 0;
-	
+
 protected:
-	//! Protected destructor.
-	virtual ~ICmdController() = 0 {}; 
+	// Make abstract.
+	virtual ~ICmdController() {};
 };
 
 //namespace WCL

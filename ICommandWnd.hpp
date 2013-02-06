@@ -23,10 +23,10 @@ class ICommandWnd
 public:
 	//! Handle updates to any command states.
 	virtual void OnCommandsUpdated() = 0;
-	
+
 protected:
-	//! Protected destructor.
-	virtual ~ICommandWnd() = 0 {}; 
+	// Make abstract.
+	virtual ~ICommandWnd() {};
 };
 
 //namespace WCL
