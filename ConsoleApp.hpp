@@ -14,6 +14,7 @@
 #include <Core/CmdLineParser.hpp>
 #include "MainThread.hpp"
 #include <Core/tiosfwd.hpp>
+#include <WCL/Event.hpp>
 
 namespace WCL
 {
@@ -37,8 +38,11 @@ public:
 	//! Get the main thread.
 	CMainThread& mainThread();
 
-	//! Get if the app should terminate.
-	bool abort() const;
+	//! Get the abort event.
+	CEvent& getAbortEvent();
+
+	//! Query if the app should terminate.
+	bool isAbortSignalled() const;
 
 	//
 	// Methods.
@@ -55,7 +59,7 @@ protected:
 	// Members.
 	//
 	CMainThread		m_mainThread;	//!< The main application thread.
-	volatile bool	m_abort;		//!< The flag to signal aborting of the app.
+	CEvent			m_abortEvent;	//!< The event used to signal aborting of the app.
 
 	//
 	// Internal Methods.
@@ -64,8 +68,17 @@ protected:
 	//! Run the application.
 	virtual int run(int nArgc, tchar* apszArgv[], tistream& in, tostream& out, tostream& err) = 0;
 
+	//! Get the name of the application.
+	virtual tstring applicationName() const = 0;
+
 	//! Display the program options syntax.
-	virtual void showUsage(tostream& out) = 0;
+	virtual void showUsage(tostream& out) const = 0;
+
+	//! Display the program version.
+	virtual void showVersion(tostream& out) const;
+
+	//! Display the manual.
+	virtual void showManual(tostream& err) const;
 
 	//! The actual ctrl signal handler.
 	static BOOL WINAPI ctrlHandler(DWORD signal);
@@ -73,22 +86,6 @@ protected:
 	//! The ctrl signal handler.
 	virtual BOOL onCtrlSignal(DWORD signal);
 };
-
-////////////////////////////////////////////////////////////////////////////////
-//! Get the main thread.
-
-inline CMainThread& ConsoleApp::mainThread()
-{
-	return m_mainThread;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//! Get if the app should terminate.
-
-inline bool ConsoleApp::abort() const
-{
-	return m_abort;
-}
 
 //namespace WCL
 }

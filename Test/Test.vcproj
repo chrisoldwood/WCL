@@ -152,6 +152,9 @@
 				RelativePath=".\ComStrTests.cpp">
 			</File>
 			<File
+				RelativePath=".\ConsoleCmdTests.cpp">
+			</File>
+			<File
 				RelativePath=".\DateTests.cpp">
 			</File>
 			<File

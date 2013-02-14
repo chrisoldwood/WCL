@@ -171,6 +171,9 @@
 				RelativePath=".\ConsoleApp.cpp">
 			</File>
 			<File
+				RelativePath=".\ConsoleCmd.cpp">
+			</File>
+			<File
 				RelativePath=".\ContextMenu.cpp">
 			</File>
 			<File
@@ -569,6 +572,9 @@
 			</File>
 			<File
 				RelativePath=".\ConsoleApp.hpp">
+			</File>
+			<File
+				RelativePath=".\ConsoleCmd.hpp">
 			</File>
 			<File
 				RelativePath=".\ContextMenu.hpp">

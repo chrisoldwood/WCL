@@ -92,6 +92,8 @@
 		<Unit filename="CommonUI.hpp" />
 		<Unit filename="ConsoleApp.cpp" />
 		<Unit filename="ConsoleApp.hpp" />
+		<Unit filename="ConsoleCmd.cpp" />
+		<Unit filename="ConsoleCmd.hpp" />
 		<Unit filename="CriticalSection.cpp" />
 		<Unit filename="CriticalSection.hpp" />
 		<Unit filename="CtrlWnd.cpp" />

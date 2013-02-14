@@ -1,11 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   Command.hpp
-//! \brief  The Command class declaration.
+//! \file   ConsoleCmd.hpp
+//! \brief  The ConsoleCmd class declaration.
 //! \author Chris Oldwood
 
 // Check for previous inclusion
-#ifndef APP_COMMAND_HPP
-#define APP_COMMAND_HPP
+#ifndef WCL_CONSOLECMD_HPP
+#define WCL_CONSOLECMD_HPP
 
 #if _MSC_VER > 1000
 #pragma once
@@ -14,14 +14,17 @@
 #include <Core/CmdLineParser.hpp>
 #include <Core/tiosfwd.hpp>
 
+namespace WCL
+{
+
 ////////////////////////////////////////////////////////////////////////////////
 //! The base class for all commands.
 
-class Command
+class ConsoleCmd
 {
 public:
 	//! Destructor.
-	virtual ~Command();
+	virtual ~ConsoleCmd();
 
 	//
 	// Methods.
@@ -35,7 +38,7 @@ protected:
 	typedef Core::CmdLineParser::SwitchCIter SwitchCIter;
 
 	//! Default constructor.
-	Command(SwitchCIter itFirstSwitch, SwitchCIter itLastSwitch, int argc, tchar* argv[]);
+	ConsoleCmd(SwitchCIter itFirstSwitch, SwitchCIter itLastSwitch, int argc, tchar* argv[], int usageId);
 
 	//
 	// Members.
@@ -43,6 +46,7 @@ protected:
 	int					m_argc;		//!< The number of command line arguments.
 	tchar**				m_argv;		//!< The array of command line arguments
 	Core::CmdLineParser m_parser;	//!< The command specifc command line parser.
+	int					m_usageId;	//!< The ID of the usage switch.
 
 	//
 	// Callback methods.
@@ -62,7 +66,10 @@ private:
 	void showUsage(tostream& out);
 };
 
-//! The default Command smart-pointer type.
-typedef Core::SharedPtr<Command> CommandPtr;
+//! The default ConsoleCmd smart-pointer type.
+typedef Core::SharedPtr<ConsoleCmd> ConsoleCmdPtr;
 
-#endif // APP_COMMAND_HPP
+//namespace WCL
+}
+
+#endif // WCL_CONSOLECMD_HPP

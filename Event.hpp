@@ -26,6 +26,16 @@
 class CEvent /*: private NotCopyable*/
 {
 public:
+	//! Create manual event.
+	const static bool MANUAL = true;
+	//! Create auto-reset event.
+	const static bool AUTO_RESET = false;
+	
+	//! Create in signalled state.
+	const static bool SIGNALLED = true;
+	//! Create in non-signalled state.
+	const static bool NOT_SIGNALLED = false;
+
 	//
 	// Constructors/Destructor.
 	//
@@ -44,7 +54,11 @@ public:
 	void Reset();
 	void Pulse();
 
-	bool Wait(DWORD dwWaitTime = INFINITE);
+	//! Wait for the event to become signalled.
+	bool Wait(DWORD dwWaitTime = INFINITE) const;
+
+	//! Query if the event is already signalled.
+	bool IsSignalled() const;
 
 protected:
 	//
@@ -104,7 +118,10 @@ inline void CEvent::Pulse()
 	::PulseEvent(m_hEvent);
 }
 
-inline bool CEvent::Wait(DWORD dwWaitTime)
+////////////////////////////////////////////////////////////////////////////////
+//! Wait for the event to become signalled.
+
+inline bool CEvent::Wait(DWORD dwWaitTime) const
 {
 	ASSERT(m_hEvent != NULL);
 
@@ -113,6 +130,14 @@ inline bool CEvent::Wait(DWORD dwWaitTime)
 	ASSERT((dwResult == WAIT_OBJECT_0) || (dwResult == WAIT_TIMEOUT) );
 
 	return (dwResult == WAIT_OBJECT_0);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Query if the event is already signalled.
+
+inline bool CEvent::IsSignalled() const
+{
+	return Wait(0);
 }
 
 #endif // EVENT_HPP

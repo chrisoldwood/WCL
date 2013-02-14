@@ -1,11 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   CommandTests.cpp
-//! \brief  The unit tests for the Command class.
+//! \file   ConsoleCmdTests.cpp
+//! \brief  The unit tests for the ConsoleCmd class.
 //! \author Chris Oldwood
 
-#include "Common.hpp"
+#include "stdafx.h"
 #include <Core/UnitTest.hpp>
-#include "Command.hpp"
+#include <WCL/ConsoleCmd.hpp>
 #include <Core/CmdLineException.hpp>
 #include <sstream>
 
@@ -15,11 +15,11 @@ static Core::CmdLineSwitch s_switches[] =
 };
 static size_t s_switchCount = ARRAY_SIZE(s_switches);
 
-class TestCmd : public Command
+class TestCmd : public WCL::ConsoleCmd
 {
 public:
 	TestCmd(int argc, tchar* argv[])
-		: Command(s_switches, s_switches+s_switchCount, argc, argv)
+		: ConsoleCmd(s_switches, s_switches+s_switchCount, argc, argv, -1)
 		, m_description(TXT(""))
 		, m_usage(TXT(""))
 		, m_returnCode(-1)
@@ -52,7 +52,7 @@ private:
 	}
 };
 
-TEST_SET(Command)
+TEST_SET(ConsoleCmd)
 {
 
 TEST_CASE("execute should return result code from doExecute")
