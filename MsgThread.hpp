@@ -56,6 +56,9 @@ public:
 
 	const MSG& CurrentMsg() const;
 
+	//! Wait for message or handle to be signalled.
+	bool WaitForMessageOrSignal(HANDLE handle) const;
+
 	//
 	// Constants.
 	//

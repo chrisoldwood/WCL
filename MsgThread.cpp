@@ -12,6 +12,8 @@
 #include "MsgThread.hpp"
 #include <algorithm>
 #include "IMsgFilter.hpp"
+#include "Win32Exception.hpp"
+#include <Core/RuntimeException.hpp>
 
 /******************************************************************************
 ** Method:		Constructor.
@@ -177,6 +179,27 @@ bool CMsgThread::ProcessMsgQueue(bool bRepostQuitMsg)
 	}
 
 	return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Wait for message or handle to be signalled. The return value indicates if
+//! it was the handle that was signalled.
+
+bool CMsgThread::WaitForMessageOrSignal(HANDLE handle) const
+{
+	const DWORD count = 1;
+
+	DWORD result = ::MsgWaitForMultipleObjects(count, &handle, FALSE, INFINITE, QS_ALLEVENTS);
+
+	ASSERT(result != WAIT_TIMEOUT);
+
+	if (result == WAIT_FAILED)
+		throw WCL::Win32Exception(TXT("Failed to wait for message or signal"));
+
+	if ( (result >= WAIT_ABANDONED_0) && (result <= WAIT_ABANDONED_0+count-1) )
+		throw Core::RuntimeException(TXT("Failed to wait for message or signal - handle abandoned"));
+
+	return (result == WAIT_OBJECT_0);
 }
 
 /******************************************************************************
