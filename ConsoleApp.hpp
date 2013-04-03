@@ -25,9 +25,6 @@ namespace WCL
 class ConsoleApp
 {
 public:
-	//! Default constructor.
-	ConsoleApp();
-
 	//! Destructor.
 	virtual ~ConsoleApp();
 
@@ -64,6 +61,9 @@ protected:
 	//
 	// Internal Methods.
 	//
+
+	//! Default constructor.
+	ConsoleApp();
 
 	//! Run the application.
 	virtual int run(int nArgc, tchar* apszArgv[], tistream& in, tostream& out, tostream& err) = 0;
