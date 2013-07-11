@@ -169,6 +169,7 @@ void ConsoleApp::showManual(tostream& err) const
 	if (fullpath_mht.Exists())
 	{
 		::ShellExecute(NULL, NULL, fullpath_mht.c_str(), NULL, NULL, SW_SHOW);
+		return;
 	}
 
 	// Fall back to .html based helpfile.
@@ -178,6 +179,7 @@ void ConsoleApp::showManual(tostream& err) const
 	if (fullpath_html.Exists())
 	{
 		::ShellExecute(NULL, NULL, fullpath_html, NULL, NULL, SW_SHOW);
+		return;
 	}
 
 	err << TXT("ERROR: Manual missing - '") << fullpath_html.c_str() << TXT("'") << std::endl;
