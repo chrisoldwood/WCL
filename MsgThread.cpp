@@ -189,7 +189,7 @@ bool CMsgThread::WaitForMessageOrSignal(HANDLE handle) const
 {
 	const DWORD count = 1;
 
-	DWORD result = ::MsgWaitForMultipleObjects(count, &handle, FALSE, INFINITE, QS_ALLEVENTS);
+	DWORD result = ::MsgWaitForMultipleObjects(count, &handle, FALSE, INFINITE, QS_ALLINPUT);
 
 	ASSERT(result != WAIT_TIMEOUT);
 
