@@ -24,6 +24,9 @@ namespace WCL
 class ICmdController
 {
 public:
+	//! Destructor.
+	virtual ~ICmdController() {};
+
 	//! Execute a command.
 	virtual void Execute(uint command) = 0;
 
@@ -38,10 +41,6 @@ public:
 
 	//! Get the tool tip for a command.
 	virtual CString CmdToolTipStr(uint command) const = 0;
-
-protected:
-	// Make abstract.
-	virtual ~ICmdController() {};
 };
 
 //namespace WCL
