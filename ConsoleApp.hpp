@@ -45,11 +45,17 @@ public:
 	// Methods.
 	//
 
+	//! Check if the app singleton is valid.
+	static bool isValid();
+	
 	//! Get the singleton object.
 	static ConsoleApp& instance();
 
 	//! The application C++ entry point.
 	virtual int main(int argc, tchar* argv[], tistream& in, tostream& out, tostream& err);
+
+	//! Report a fatal error that has occurred.
+	void reportFatalError(const tchar* message);
 
 protected:
 	//
@@ -57,6 +63,9 @@ protected:
 	//
 	CMainThread		m_mainThread;	//!< The main application thread.
 	CEvent			m_abortEvent;	//!< The event used to signal aborting of the app.
+	tistream*		m_in;			//!< The standard input stream.
+	tostream*		m_out;			//!< The standard output stream.
+	tostream*		m_err;			//!< The standard error stream.
 
 	//
 	// Internal Methods.

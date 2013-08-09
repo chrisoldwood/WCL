@@ -25,6 +25,9 @@ static ConsoleApp* g_this = NULL;
 
 ConsoleApp::ConsoleApp()
 	: m_abortEvent(CEvent::MANUAL, CEvent::NOT_SIGNALLED)
+	, m_in(nullptr)
+	, m_out(nullptr)
+	, m_err(nullptr)
 {
 	ASSERT(g_this == nullptr);
 
@@ -58,6 +61,14 @@ ConsoleApp::~ConsoleApp()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Check if the app singleton is valid.
+
+bool ConsoleApp::isValid()
+{
+	return (g_this != nullptr);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Get the singleton object.
 
 ConsoleApp& ConsoleApp::instance()
@@ -77,7 +88,10 @@ int ConsoleApp::main(int argc, tchar* argv[], tistream& in, tostream& out, tostr
 
 	try
 	{
-		// Run the app.
+		m_in = &in;
+		m_out = &out;
+		m_err = &err;
+
 		result = run(argc, argv, in, out, err);
 	}
 	catch (const Core::CmdLineException& e)
@@ -201,6 +215,17 @@ BOOL ConsoleApp::onCtrlSignal(DWORD /*signal*/)
 	m_abortEvent.Signal();
 
 	return TRUE;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Report a fatal error that has occurred.
+
+void ConsoleApp::reportFatalError(const tchar* message)
+{
+	ASSERT(m_out != nullptr);
+
+	(*m_out) << message << std::endl;
+	(*m_out).flush();
 }
 
 //namespace WCL

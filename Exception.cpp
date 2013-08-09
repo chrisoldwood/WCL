@@ -6,6 +6,7 @@
 #include "Common.hpp"
 #include "Exception.hpp"
 #include "App.hpp"
+#include "ConsoleApp.hpp"
 
 namespace WCL
 {
@@ -29,6 +30,10 @@ void ReportUnhandledException(const tchar* pszMsg, ...)
 	if (CApp::IsValid())
 	{
 		CApp::This().FatalMsg(strMsg);
+	}
+	else if (ConsoleApp::isValid())
+	{
+		ConsoleApp::instance().reportFatalError(strMsg);
 	}
 	// Otherwise send to debugger.
 	else
