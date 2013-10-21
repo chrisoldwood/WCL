@@ -63,6 +63,7 @@ public:
 	// Helper methods.
 	//
 	static bool CopyText(HWND hOwner, const tchar* pszText);
+	static bool CopyText(HWND owner, const tstring& text);
 
 	static bool IsEmpty();
 	static bool IsFormatAvail(uint nFormat);

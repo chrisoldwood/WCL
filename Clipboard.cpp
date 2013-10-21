@@ -236,6 +236,14 @@ bool CClipboard::CopyText(HWND hOwner, const tchar* pszText)
 	return bCopied;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//! Copy the text to the clipboard.
+
+bool CClipboard::CopyText(HWND owner, const tstring& text)
+{
+	return CopyText(owner, text.c_str());
+}
+
 /******************************************************************************
 ** Method:		IsEmpty()
 **
