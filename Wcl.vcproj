@@ -4,10 +4,7 @@
 	Version="7.10"
 	Name="Wcl"
 	ProjectGUID="{9B0335B6-93BE-4604-8497-27431874D758}"
-	SccProjectName="SAK"
-	SccAuxPath="SAK"
-	SccLocalPath="SAK"
-	SccProvider="SAK">
+	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
 			Name="Win32"/>
