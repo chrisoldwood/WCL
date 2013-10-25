@@ -1,13 +1,28 @@
-WCL - Windows C++ Library
+WCL (Windows C++) Library
 =========================
 
-This is the core class library used by all my applications.
+Introduction
+------------
 
+This C++ class library provides the core support for the Windows platform.
+Historically it also used to be the base class library too, but I've tried to
+push as much of the platform agnostic code down into the Core library.
 
-EMail: gort@cix.co.uk
-Web:   http://www.cix.co.uk/~gort
+Documentation
+-------------
 
+See http://www.chrisoldwood.com/win32/dox/wcl/index.html.
 
-Chris Oldwood 
+Development
+-----------
 
-12th April 2005
+See DevNotes.txt
+
+Contact Details
+---------------
+
+Email: gort@cix.co.uk
+Web:   http://www.chrisoldwood.com
+
+Chris Oldwood
+22nd October 2013
