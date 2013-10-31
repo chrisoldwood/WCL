@@ -71,8 +71,8 @@ public:
 	//! Read a string value.
 	virtual tstring readString(const tstring& sectionName, const tstring& keyName, const tstring& defaultValue) const;
 
-	//! Read a list of values.
-	virtual void readList(const tstring& sectionName, const tstring& keyName, const tstring& defaultValue, StringArray& list) const;
+	//! Read a list of string values.
+	virtual void readStringList(const tstring& sectionName, const tstring& keyName, const tstring& defaultValue, StringArray& list) const;
 
 	//
 	// IAppConfigWriter methods.
@@ -81,8 +81,8 @@ public:
 	//! Write a string value.
 	virtual void writeString(const tstring& sectionName, const tstring& keyName, const tstring& value);
 
-	//! Write a list of values.
-	virtual void writeList(const tstring& sectionName, const tstring& keyName, const StringArray& list);
+	//! Write a list of string values.
+	virtual void writeStringList(const tstring& sectionName, const tstring& keyName, const StringArray& list);
 
 	//! Delete the entire section.
 	virtual void deleteSection(const tstring& sectionName);

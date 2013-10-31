@@ -44,8 +44,12 @@ public:
 	template<typename T>
 	void writeValue(const tstring& sectionName, const tstring& keyName, const T& value);
 
-	//! Write a list of values.
-	virtual void writeList(const tstring& sectionName, const tstring& keyName, const StringArray& list) = 0;
+	//! Write a list of string values.
+	virtual void writeStringList(const tstring& sectionName, const tstring& keyName, const StringArray& list) = 0;
+
+	//! Write a value.
+	template<typename T>
+	void writeList(const tstring& sectionName, const tstring& keyName, const std::vector<T>& list);
 
 	//! Delete the entire section.
 	virtual void deleteSection(const tstring& sectionName) = 0;
@@ -60,6 +64,20 @@ inline void IAppConfigWriter::writeValue(const tstring& sectionName, const tstri
 	tstring buffer = Core::format<T>(value);
 
 	writeString(sectionName, keyName, buffer);
+}
+
+//! Write a value.
+template<typename T>
+inline void IAppConfigWriter::writeList(const tstring& sectionName, const tstring& keyName, const std::vector<T>& list)
+{
+	typedef std::vector<T>::const_iterator ConstIter;
+
+	StringArray stringValues;
+
+	for (ConstIter it = list.begin(); it != list.end(); ++it)
+		stringValues.push_back(Core::format<T>(*it));
+
+	writeStringList(sectionName, keyName, stringValues);
 }
 
 //namespace WCL

@@ -45,8 +45,12 @@ public:
 	template<typename T>
 	T readValue(const tstring& sectionName, const tstring& keyName, const T& defaultValue) const;
 
+	//! Read a list of string values.
+	virtual void readStringList(const tstring& sectionName, const tstring& keyName, const tstring& defaultValue, StringArray& list) const = 0;
+
 	//! Read a list of values.
-	virtual void readList(const tstring& sectionName, const tstring& keyName, const tstring& defaultValue, StringArray& list) const = 0;
+	template<typename T>
+	void readList(const tstring& sectionName, const tstring& keyName, const std::vector<T>& defaultList, std::vector<T>& list) const;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -61,6 +65,30 @@ inline T IAppConfigReader::readValue(const tstring& sectionName, const tstring& 
 		return defaultValue;
 
 	return Core::parse<T>(value);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+//! Read a list of values.
+
+template<typename T>
+inline void IAppConfigReader::readList(const tstring& sectionName, const tstring& keyName, const std::vector<T>& defaultList, std::vector<T>& list) const
+{
+	typedef StringArray::const_iterator ConstIter;
+
+	StringArray stringValues;
+
+	readStringList(sectionName, keyName, tstring(), stringValues);
+
+	if (stringValues.empty())
+	{
+		list = defaultList;
+	}
+	else
+	{
+		for (ConstIter it = stringValues.begin(); it != stringValues.end(); ++it)
+			list.push_back(Core::parse<T>(*it));
+	}
 }
 
 //namespace WCL

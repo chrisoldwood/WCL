@@ -20,7 +20,9 @@ static tstring s_appPath     = Core::fmt(TXT("Software\\%s\\%s"), s_publisher.c_
 namespace
 {
 
-class FakeAppConfigReader : public WCL::IAppConfigReader
+class FakeAppConfig : public WCL::IAppConfigReader,
+					  public WCL::IAppConfigWriter
+
 {
 public:
 	virtual tstring readString(const tstring& /*sectionName*/, const tstring& /*keyName*/, const tstring& /*defaultValue*/) const
@@ -28,22 +30,16 @@ public:
 		return m_value;
 	}
 
-	virtual void readList(const tstring& /*sectionName*/, const tstring& /*keyName*/, const tstring& /*defaultValue*/, StringArray& /*list*/) const
+	virtual void readStringList(const tstring& /*sectionName*/, const tstring& /*keyName*/, const tstring& /*defaultValue*/, WCL::IAppConfigReader::StringArray& /*list*/) const
 	{
 	}
 
-	tstring	m_value;
-};
-
-class FakeAppConfigWriter : public WCL::IAppConfigWriter
-{
-public:
 	virtual void writeString(const tstring& /*sectionName*/, const tstring& /*keyName*/, const tstring& value)
 	{
 		m_value = value;
 	}
 
-	virtual void writeList(const tstring& /*sectionName*/, const tstring& /*keyName*/, const StringArray& /*list*/)
+	virtual void writeStringList(const tstring& /*sectionName*/, const tstring& /*keyName*/, const WCL::IAppConfigWriter::StringArray& /*list*/)
 	{
 	}
 
@@ -145,11 +141,11 @@ TEST_CASE("a list of strings can be written and read")
 	list.push_back(TXT("1234"));
 	list.push_back(TXT("5678"));
 
-	appConfig.writeList(TXT("Section"), TXT("List"), list);
+	appConfig.writeStringList(TXT("Section"), TXT("List"), list);
 
 	WCL::AppConfig::StringArray result;
 
-	appConfig.readList(TXT("Section"), TXT("List"), TXT(""), result);
+	appConfig.readStringList(TXT("Section"), TXT("List"), TXT(""), result);
 
 	TEST_TRUE(result == list);
 }
@@ -175,15 +171,16 @@ TEST_CASE("The app config reader interface can be mocked")
 	const tstring expectedString = TXT("unit test");
 	const size_t  expectedValue = 12345;
 
-	FakeAppConfigReader fake;
+	FakeAppConfig          fake;
+	WCL::IAppConfigReader* reader = &fake;
 
 	fake.m_value = expectedString;
 
-	TEST_TRUE(fake.readString(TXT("any"), TXT("any"), TXT("default")) == expectedString);
+	TEST_TRUE(reader->readString(TXT("any"), TXT("any"), TXT("default")) == expectedString);
 
 	fake.m_value = Core::fmt(TXT("%u"), expectedValue);
 
-	TEST_TRUE(fake.readValue<size_t>(TXT("any"), TXT("any"), 0u) == expectedValue);
+	TEST_TRUE(reader->readValue<size_t>(TXT("any"), TXT("any"), 0u) == expectedValue);
 }
 TEST_CASE_END
 
@@ -192,15 +189,54 @@ TEST_CASE("The app config writer interface can be mocked")
 	const tstring expectedString = TXT("unit test");
 	const size_t  expectedValue = 12345;
 
-	FakeAppConfigWriter fake;
+	FakeAppConfig          fake;
+	WCL::IAppConfigWriter* writer = &fake;
 
-	fake.writeString(TXT("any"), TXT("any"), expectedString);
+	writer->writeString(TXT("any"), TXT("any"), expectedString);
 
 	TEST_TRUE(fake.m_value == expectedString);
 
-	fake.writeValue<size_t>(TXT("any"), TXT("any"), expectedValue);
+	writer->writeValue<size_t>(TXT("any"), TXT("any"), expectedValue);
 
 	TEST_TRUE(fake.m_value == Core::fmt(TXT("%u"), expectedValue));
+}
+TEST_CASE_END
+
+TEST_CASE("a list of non-string values can be written and read")
+{
+	WCL::AppConfig appConfig(s_publisher, s_application);
+
+	std::vector<size_t> list;
+
+	list.push_back(1234u);
+	list.push_back(5678u);
+
+	appConfig.writeList(TXT("Section"), TXT("List"), list);
+
+	std::vector<size_t> result;
+
+	appConfig.readList(TXT("Section"), TXT("List"), std::vector<size_t>(), result);
+
+	TEST_TRUE(result == list);
+}
+TEST_CASE_END
+
+TEST_CASE("the default list is returned when a list of non-string values is empty")
+{
+	WCL::AppConfig appConfig(s_publisher, s_application);
+
+	appConfig.deleteSection(TXT("Section"));
+
+	std::vector<size_t> defaultList;
+
+	defaultList.push_back(1234u);
+	defaultList.push_back(5678u);
+
+	std::vector<size_t> result;
+
+	appConfig.readList(TXT("Section"), TXT("List"), defaultList, result);
+
+	TEST_TRUE(result == defaultList);
 }
 TEST_CASE_END
 

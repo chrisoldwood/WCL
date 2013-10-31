@@ -79,9 +79,9 @@ tstring AppConfig::readString(const tstring& sectionName, const tstring& keyName
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Read a list of values.
+//! Read a list of string values.
 
-void AppConfig::readList(const tstring& sectionName, const tstring& keyName, const tstring& defaultValue, StringArray& list) const
+void AppConfig::readStringList(const tstring& sectionName, const tstring& keyName, const tstring& defaultValue, StringArray& list) const
 {
 	tstring value = readString(sectionName, keyName, defaultValue);
 
@@ -97,9 +97,9 @@ void AppConfig::writeString(const tstring& sectionName, const tstring& keyName, 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Write a list of values.
+//! Write a list of string values.
 
-void AppConfig::writeList(const tstring& sectionName, const tstring& keyName, const StringArray& list)
+void AppConfig::writeStringList(const tstring& sectionName, const tstring& keyName, const StringArray& list)
 {
 	tstring value;
 
