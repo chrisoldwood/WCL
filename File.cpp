@@ -583,6 +583,16 @@ size_t CFile::ReadFile(const tchar* pszPath, std::vector<byte>& vBuffer)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Read the entire contents of a text file.
+
+size_t CFile::ReadTextFile(const tchar* pszPath, CString& strContents)
+{
+	TextFormat format;
+
+	return ReadTextFile(pszPath, strContents, format);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Read the entire contents of a text file. It returns the number of characters
 //! read.
 

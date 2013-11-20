@@ -83,6 +83,9 @@ public:
 	static size_t ReadFile(const tchar* pszPath, std::vector<byte>& vBuffer);
 
 	//! Read the entire contents of a text file.
+	static size_t ReadTextFile(const tchar* pszPath, CString& strContents);
+
+	//! Read the entire contents of a text file.
 	static size_t ReadTextFile(const tchar* pszPath, CString& strContents, TextFormat& eFormat);
 
 	//! Read the entire contents of a text file.
