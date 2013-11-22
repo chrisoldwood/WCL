@@ -47,7 +47,7 @@ public:
 	//! Write a list of string values.
 	virtual void writeStringList(const tstring& sectionName, const tstring& keyName, const StringArray& list) = 0;
 
-	//! Write a value.
+	//! Write a list of values.
 	template<typename T>
 	void writeList(const tstring& sectionName, const tstring& keyName, const std::vector<T>& list);
 
@@ -66,11 +66,13 @@ inline void IAppConfigWriter::writeValue(const tstring& sectionName, const tstri
 	writeString(sectionName, keyName, buffer);
 }
 
-//! Write a value.
+////////////////////////////////////////////////////////////////////////////////
+//! Write a list of values.
+
 template<typename T>
 inline void IAppConfigWriter::writeList(const tstring& sectionName, const tstring& keyName, const std::vector<T>& list)
 {
-	typedef std::vector<T>::const_iterator ConstIter;
+	typedef typename std::vector<T>::const_iterator ConstIter;
 
 	StringArray stringValues;
 
