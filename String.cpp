@@ -268,14 +268,14 @@ void CString::operator +=(tchar cChar)
 
 void operator >>(WCL::IInputStream& rStream, CString& rString)
 {
-	uint32 iSize = 0;
+	uint32 numChars = 0;
 
-	rStream >> iSize;
+	rStream >> numChars;
 
-	if (iSize)
+	if (numChars != 0)
 	{
-		rString.BufferSize(iSize);
-		rStream.Read(rString.m_pszData, iSize);
+		rString.BufferSize(numChars);
+		rStream.Read(rString.m_pszData, Core::numBytes<tchar>(numChars));
 	}
 }
 
@@ -294,12 +294,14 @@ void operator >>(WCL::IInputStream& rStream, CString& rString)
 
 void operator <<(WCL::IOutputStream& rStream, const CString& rString)
 {
-	CString::StringData* pData = rString.GetData();
+	uint32 numChars = rString.GetData()->m_nAllocSize;
 
-	rStream << static_cast<uint32>(pData->m_nAllocSize);
+	rStream << numChars;
 
-	if (pData->m_nAllocSize)
-		rStream.Write(rString.m_pszData, pData->m_nAllocSize);
+	if (numChars != 0)
+	{
+		rStream.Write(rString.m_pszData, Core::numBytes<tchar>(numChars));
+	}
 }
 
 /******************************************************************************

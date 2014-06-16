@@ -172,6 +172,12 @@
 				RelativePath=".\IniFileTests.cpp">
 			</File>
 			<File
+				RelativePath=".\InputOutputStreamTests.cpp">
+			</File>
+			<File
+				RelativePath=".\MemStreamTests.cpp">
+			</File>
+			<File
 				RelativePath=".\NullCmdControllerTests.cpp">
 			</File>
 			<File

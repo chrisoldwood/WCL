@@ -8,6 +8,8 @@
 #include <Core/tiosfwd.hpp>
 #include <sstream>
 #include <WCL/StringIO.hpp>
+#include <WCL/MemStream.hpp>
+#include <WCL/Buffer.hpp>
 
 TEST_SET(String)
 {
@@ -41,6 +43,59 @@ TEST_CASE("stream inserter writes character sequence")
 	out << value;
 
 	TEST_TRUE(tstrstr(out.str().c_str(), value.c_str()) != nullptr);
+}
+TEST_CASE_END
+
+TEST_CASE("an empty string can be inserted and extracted from a stream")
+{
+	const CString emptyValue(TXT(""));
+
+	CBuffer	   buffer;
+	CMemStream stream(buffer);
+
+	stream.Create();
+
+	WCL::IOutputStream& out = stream;
+
+	out << emptyValue;
+
+	stream.Close();
+	stream.Open();
+
+	WCL::IInputStream& in = stream;
+
+	CString value;
+
+	in >> value;
+
+	TEST_TRUE(value.Length() == 0);
+}
+TEST_CASE_END
+
+TEST_CASE("a non-empty string can be inserted and extracted from a stream")
+{
+	const CString testValue(TXT("unit test"));
+
+	CBuffer	   buffer;
+	CMemStream stream(buffer);
+
+	stream.Create();
+
+	WCL::IOutputStream& out = stream;
+
+	out << testValue;
+
+	stream.Close();
+	stream.Open();
+
+	WCL::IInputStream& in = stream;
+
+	CString value;
+
+	in >> value;
+
+	TEST_TRUE(value.Length() == testValue.Length());
+	TEST_TRUE(value == testValue);
 }
 TEST_CASE_END
 
