@@ -75,5 +75,17 @@ TEST_CASE("path can be implictly converted to various string types")
 }
 TEST_CASE_END
 
+TEST_CASE("the entire path without the file extension can be retrieved")
+{
+	CPath fullPathWithExtension(TXT("C:\\Folder\\File.Ext"));
+
+	TEST_TRUE(fullPathWithExtension.PathWithoutExt() == TXT("C:\\Folder\\File"));
+
+	CPath filenameWithNoExtension(TXT("File"));
+
+	TEST_TRUE(filenameWithNoExtension.PathWithoutExt() == TXT("File"));
+}
+TEST_CASE_END
+
 }
 TEST_SET_END

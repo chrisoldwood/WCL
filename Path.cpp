@@ -477,6 +477,14 @@ CString CPath::FileExt() const
 	return CString(szExt);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//! Retrieve the full path less the file extension.
+
+CPath CPath::PathWithoutExt() const
+{
+	return Directory() / FileTitle();
+}
+
 /******************************************************************************
 ** Method:		Select()
 **

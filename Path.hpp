@@ -58,6 +58,9 @@ public:
 	CString FileTitle() const;
 	CString FileExt() const;
 
+	//! Retrieve the full path less the file extension.
+	CPath PathWithoutExt() const;
+
 	//
 	// File Open dialog.
 	//
