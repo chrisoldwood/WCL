@@ -317,6 +317,25 @@ void CListView::InsertColumns(const LVColumn* pColumns, size_t nColumns)
 		InsertColumn(i, pColumns[i].pszName, pColumns[i].nWidth, pColumns[i].nFormat);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//! Get the name of the column at the index specified.
+
+tstring CListView::ColumnName(size_t nColumn)
+{
+	tchar    name[256] = { 0 };
+	LVCOLUMN column = { 0 };
+
+	column.mask |= LVCF_TEXT;
+	column.pszText = name;
+	column.cchTextMax = ARRAY_SIZE(name);
+
+	BOOL result = ListView_GetColumn(m_hWnd, nColumn, &column);
+
+	ASSERT(result);
+
+	return name;
+}
+
 /******************************************************************************
 ** Method:		ImageList()
 **

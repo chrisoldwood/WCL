@@ -104,12 +104,14 @@ public:
 	//
 	size_t NumColumns() const;
 	void InsertColumn(size_t nColumn, const tchar* pszName, size_t nWidth, uint nFormat = LVCFMT_LEFT);
+	void InsertColumn(size_t column, const tstring& name, size_t width, uint format = LVCFMT_LEFT);
 	void InsertColumns(const LVColumn* pColumns, size_t nColumns);
 	void DeleteColumn(size_t nColumn);
 	void DeleteAllColumns();
 	size_t ColumnWidth(size_t nColumn) const;
 	void ColumnWidth(size_t nColumn, uint nWidth);
 	void ColumnWidthAuto(size_t nColumn, bool bFitHeader = false);
+	tstring ColumnName(size_t nColumn);
 
 	//
 	// Search methods.
@@ -283,6 +285,11 @@ inline void CListView::MakeItemVisible(size_t nItem)
 inline size_t CListView::NumColumns() const
 {
 	return Header_GetItemCount(ListView_GetHeader(m_hWnd));
+}
+
+inline void CListView::InsertColumn(size_t column, const tstring& name, size_t width, uint format)
+{
+	InsertColumn(column, name.c_str(), width, format);
 }
 
 inline void CListView::DeleteColumn(size_t nColumn)
