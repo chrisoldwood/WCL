@@ -332,6 +332,7 @@ tstring CListView::ColumnName(size_t nColumn)
 	BOOL result = ListView_GetColumn(m_hWnd, nColumn, &column);
 
 	ASSERT(result);
+	DEBUG_USE_ONLY(result);
 
 	return name;
 }

@@ -60,6 +60,8 @@
 TEST_TRUE(testDate.ToString(CDate::FMT_WIN_SHORT) == TXT("01/02/2003"));
 TEST_TRUE(testDate.ToString(CDate::FMT_WIN_SHORT) == TXT("01/02/2003"));
 
+- Add coercion to simplfiy WCL::getValue<uint32>(WCL::Variant(returnValue, VT_UI4));
+
 UNICODE
 =======
 
