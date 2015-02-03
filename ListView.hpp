@@ -131,6 +131,9 @@ public:
 	size_t StringWidth(size_t nChars) const;
 	int  Sort(PFNLVCOMPARE pfnCompare, LPARAM lParamSort);
 
+	//! Calculate the mouse co-ordinates for the message, relative to the window.
+	CPoint calcMsgMousePos(const NMITEMACTIVATE& message) const;
+
 protected:
 	//
 	// Members.

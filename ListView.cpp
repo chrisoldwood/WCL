@@ -504,3 +504,15 @@ void CListView::RestoreSel(size_t nItem)
 
 	Select(nItem);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+//! Calculate the mouse co-ordinates for the message, relative to the window.
+
+CPoint CListView::calcMsgMousePos(const NMITEMACTIVATE& message) const
+{
+	CPoint position = message.ptAction;
+
+	::ClientToScreen(m_hWnd, &position);
+
+	return position;
+}
