@@ -129,15 +129,35 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
-			<File
-				RelativePath=".\AppConfigTests.cpp">
-			</File>
-			<File
-				RelativePath=".\CmdControlTests.cpp">
-			</File>
+			Name="App"
+			Filter="">
+			<Filter
+				Name="Console"
+				Filter="">
+				<File
+					RelativePath=".\ConsoleCmdTests.cpp">
+				</File>
+			</Filter>
+			<Filter
+				Name="GUI"
+				Filter="">
+				<File
+					RelativePath=".\CmdControlTests.cpp">
+				</File>
+				<File
+					RelativePath=".\ExternalCmdControllerTests.cpp">
+				</File>
+				<File
+					RelativePath=".\NullCmdControllerTests.cpp">
+				</File>
+				<File
+					RelativePath=".\UiCommandBaseTests.cpp">
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="COM"
+			Filter="">
 			<File
 				RelativePath=".\ComExceptionTests.cpp">
 			</File>
@@ -148,22 +168,26 @@
 				RelativePath=".\ComStrTests.cpp">
 			</File>
 			<File
-				RelativePath=".\ConsoleCmdTests.cpp">
-			</File>
-			<File
-				RelativePath=".\DateTests.cpp">
-			</File>
-			<File
-				RelativePath=".\DateTimeTests.cpp">
-			</File>
-			<File
-				RelativePath=".\ExternalCmdControllerTests.cpp">
-			</File>
-			<File
-				RelativePath=".\FolderIteratorTests.cpp">
-			</File>
-			<File
 				RelativePath=".\IFacePtrTests.cpp">
+			</File>
+			<File
+				RelativePath=".\PtrTest.hpp">
+			</File>
+			<File
+				RelativePath=".\TestIFaceTraits.hpp">
+			</File>
+			<File
+				RelativePath=".\VariantTests.cpp">
+			</File>
+			<File
+				RelativePath=".\VariantVectorTests.cpp">
+			</File>
+		</Filter>
+		<Filter
+			Name="Configuration"
+			Filter="">
+			<File
+				RelativePath=".\AppConfigTests.cpp">
 			</File>
 			<File
 				RelativePath=".\IniFileCfgProviderTests.cpp">
@@ -172,81 +196,37 @@
 				RelativePath=".\IniFileTests.cpp">
 			</File>
 			<File
+				RelativePath=".\RegistryCfgProviderTests.cpp">
+			</File>
+		</Filter>
+		<Filter
+			Name="Exception"
+			Filter="">
+			<File
+				RelativePath=".\SeTranslatorTests.cpp">
+			</File>
+		</Filter>
+		<Filter
+			Name="IO"
+			Filter="">
+			<File
+				RelativePath=".\FolderIteratorTests.cpp">
+			</File>
+			<File
 				RelativePath=".\InputOutputStreamTests.cpp">
 			</File>
 			<File
 				RelativePath=".\MemStreamTests.cpp">
 			</File>
 			<File
-				RelativePath=".\NullCmdControllerTests.cpp">
-			</File>
-			<File
 				RelativePath=".\PathTests.cpp">
-			</File>
-			<File
-				RelativePath=".\RectTests.cpp">
-			</File>
-			<File
-				RelativePath=".\RegistryCfgProviderTests.cpp">
-			</File>
-			<File
-				RelativePath=".\ResourceStringTests.cpp">
-			</File>
-			<File
-				RelativePath=".\SeTranslatorTests.cpp">
-			</File>
-			<File
-				RelativePath=".\stdafx.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\StringTests.cpp">
-			</File>
-			<File
-				RelativePath=".\StringUtilsTests.cpp">
-			</File>
-			<File
-				RelativePath=".\Test.cpp">
-			</File>
-			<File
-				RelativePath=".\TimeTests.cpp">
-			</File>
-			<File
-				RelativePath=".\UiCommandBaseTests.cpp">
-			</File>
-			<File
-				RelativePath=".\VariantTests.cpp">
-			</File>
-			<File
-				RelativePath=".\VariantVectorTests.cpp">
-			</File>
-			<File
-				RelativePath=".\VerInfoReaderTests.cpp">
 			</File>
 		</Filter>
 		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			Name="Process"
+			Filter="">
 			<File
-				RelativePath=".\PtrTest.hpp">
-			</File>
-			<File
-				RelativePath=".\stdafx.h">
-			</File>
-			<File
-				RelativePath=".\TestIFaceTraits.hpp">
+				RelativePath=".\VerInfoReaderTests.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -263,6 +243,56 @@
 				RelativePath=".\Test.rcv">
 			</File>
 		</Filter>
+		<Filter
+			Name="Text"
+			Filter="">
+			<File
+				RelativePath=".\ResourceStringTests.cpp">
+			</File>
+			<File
+				RelativePath=".\StringTests.cpp">
+			</File>
+			<File
+				RelativePath=".\StringUtilsTests.cpp">
+			</File>
+		</Filter>
+		<Filter
+			Name="Type"
+			Filter="">
+			<File
+				RelativePath=".\DateTests.cpp">
+			</File>
+			<File
+				RelativePath=".\DateTimeTests.cpp">
+			</File>
+			<File
+				RelativePath=".\RectTests.cpp">
+			</File>
+			<File
+				RelativePath=".\TimeTests.cpp">
+			</File>
+		</Filter>
+		<File
+			RelativePath=".\stdafx.cpp">
+			<FileConfiguration
+				Name="Debug|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath=".\stdafx.h">
+		</File>
+		<File
+			RelativePath=".\Test.cpp">
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
