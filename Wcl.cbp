@@ -43,6 +43,8 @@
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
 			<Add option="-Werror" />
+			<Add option="-Winvalid-pch" />
+			<Add option='-include &quot;Common.hpp&quot;' />
 			<Add option="-DWIN32" />
 			<Add option="-D_LIB" />
 			<Add directory="..\..\Lib" />
@@ -87,7 +89,10 @@
 		<Unit filename="ComStr.hpp" />
 		<Unit filename="ComboBox.cpp" />
 		<Unit filename="ComboBox.hpp" />
-		<Unit filename="Common.hpp" />
+		<Unit filename="Common.hpp">
+			<Option compile="1" />
+			<Option weight="0" />
+		</Unit>
 		<Unit filename="CommonRsc.h" />
 		<Unit filename="CommonUI.hpp" />
 		<Unit filename="ConsoleApp.cpp" />

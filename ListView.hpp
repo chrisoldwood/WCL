@@ -19,6 +19,7 @@
 #include "StdWnd.hpp"
 #include "ImageList.hpp"
 #include <vector>
+#include <commctrl.h>
 
 /******************************************************************************
 **
