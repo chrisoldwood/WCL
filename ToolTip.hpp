@@ -20,7 +20,7 @@
 #include <commctrl.h>
 
 /******************************************************************************
-** 
+**
 ** This is a tooltip control.
 **
 *******************************************************************************
@@ -34,7 +34,7 @@ public:
 	//
 	CToolTip();
 	virtual	~CToolTip();
-	
+
 	//
 	// Methods.
 	//
@@ -70,7 +70,7 @@ protected:
 
 inline void CToolTip::AddTool(CWnd& oParent, CWnd& oTool, const tchar* pszText)
 {
-	AddTool(TTF_IDISHWND | TTF_SUBCLASS, oParent, reinterpret_cast<uint>(oTool.Handle()), NULL, pszText);
+	AddTool(TTF_IDISHWND | TTF_SUBCLASS, oParent, reinterpret_cast<UINT_PTR>(oTool.Handle()), NULL, pszText);
 }
 
 #endif //TOOLTIP_HPP

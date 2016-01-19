@@ -102,7 +102,7 @@ CPopupMenu CMenu::GetItemPopup(int nPos)
 
 void CMenu::SetItemPopup(int nPos, const CPopupMenu& rMenu, const tchar* pszText)
 {
-	::ModifyMenu(m_hMenu, nPos, MF_BYPOSITION | MF_POPUP | MF_STRING, reinterpret_cast<uint>(rMenu.Handle()), pszText);
+	::ModifyMenu(m_hMenu, nPos, MF_BYPOSITION | MF_POPUP | MF_STRING, reinterpret_cast<UINT_PTR>(rMenu.Handle()), pszText);
 }
 
 /******************************************************************************

@@ -158,7 +158,7 @@ inline void CListView::CheckBoxes(bool bOn)
 	DWORD dwMask  = LVS_EX_CHECKBOXES;
 	DWORD dwStyle = (bOn) ? dwMask : 0;
 
-	ListView_SetExtendedListViewStyleEx(m_hWnd, dwMask, dwStyle);
+	(void)ListView_SetExtendedListViewStyleEx(m_hWnd, dwMask, dwStyle);
 }
 
 inline void CListView::FullRowSelect(bool bOn)
@@ -166,7 +166,7 @@ inline void CListView::FullRowSelect(bool bOn)
 	DWORD dwMask  = LVS_EX_FULLROWSELECT;
 	DWORD dwStyle = (bOn) ? dwMask : 0;
 
-	ListView_SetExtendedListViewStyleEx(m_hWnd, dwMask, dwStyle);
+	(void)ListView_SetExtendedListViewStyleEx(m_hWnd, dwMask, dwStyle);
 }
 
 inline void CListView::GridLines(bool bOn)
@@ -174,7 +174,7 @@ inline void CListView::GridLines(bool bOn)
 	DWORD dwMask  = LVS_EX_GRIDLINES;
 	DWORD dwStyle = (bOn) ? dwMask : 0;
 
-	ListView_SetExtendedListViewStyleEx(m_hWnd, dwMask, dwStyle);
+	(void)ListView_SetExtendedListViewStyleEx(m_hWnd, dwMask, dwStyle);
 }
 
 inline void CListView::Reserve(size_t nItems)
@@ -202,7 +202,7 @@ inline size_t CListView::InsertItem(size_t item, const tstring& text, size_t ico
 
 inline void CListView::DeleteAllItems()
 {
-	ListView_DeleteAllItems(m_hWnd);
+	(void)ListView_DeleteAllItems(m_hWnd);
 }
 
 inline void CListView::ItemText(size_t nItem, size_t nSubItem, const tchar* pszText)
@@ -283,7 +283,7 @@ inline size_t CListView::ItemCount() const
 
 inline void CListView::MakeItemVisible(size_t nItem)
 {
-	ListView_EnsureVisible(m_hWnd, nItem, FALSE);
+	(void)ListView_EnsureVisible(m_hWnd, nItem, FALSE);
 }
 
 inline size_t CListView::NumColumns() const
@@ -298,7 +298,7 @@ inline void CListView::InsertColumn(size_t column, const tstring& name, size_t w
 
 inline void CListView::DeleteColumn(size_t nColumn)
 {
-	ListView_DeleteColumn(m_hWnd, nColumn);
+	(void)ListView_DeleteColumn(m_hWnd, nColumn);
 }
 
 inline void CListView::DeleteAllColumns()
@@ -306,7 +306,7 @@ inline void CListView::DeleteAllColumns()
 	size_t nColumns = NumColumns();
 
 	while (nColumns-- > 0)
-		ListView_DeleteColumn(m_hWnd, 0);
+		(void)ListView_DeleteColumn(m_hWnd, 0);
 }
 
 inline size_t CListView::ColumnWidth(size_t nColumn) const
@@ -316,17 +316,17 @@ inline size_t CListView::ColumnWidth(size_t nColumn) const
 
 inline void CListView::ColumnWidth(size_t nColumn, uint nWidth)
 {
-	ListView_SetColumnWidth(m_hWnd, nColumn, nWidth);
+	(void)ListView_SetColumnWidth(m_hWnd, nColumn, nWidth);
 }
 
 inline void CListView::ColumnWidthAuto(size_t nColumn, bool bFitHeader)
 {
-	ListView_SetColumnWidth(m_hWnd, nColumn, (bFitHeader) ? LVSCW_AUTOSIZE_USEHEADER : LVSCW_AUTOSIZE);
+	(void)ListView_SetColumnWidth(m_hWnd, nColumn, (bFitHeader) ? LVSCW_AUTOSIZE_USEHEADER : LVSCW_AUTOSIZE);
 }
 
 inline void CListView::IconSpacing(uint iHorzSpacing, uint iVertSpacing)
 {
-	ListView_SetIconSpacing(m_hWnd, iHorzSpacing, iVertSpacing);
+	(void)ListView_SetIconSpacing(m_hWnd, iHorzSpacing, iVertSpacing);
 }
 
 inline size_t CListView::StringWidth(const tchar* pszString) const

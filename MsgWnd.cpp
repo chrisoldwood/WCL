@@ -638,7 +638,7 @@ void CMsgWnd::OnCtlColour(uint nCtlClrMsg, HDC hDC, HWND hCtlWnd)
 
 	if (hBrush != NULL)
 	{
-		MsgHandled(reinterpret_cast<BOOL>(hBrush));
+		MsgHandled(reinterpret_cast<INT_PTR>(hBrush));
 		MsgResult (0);
 	}
 	// If still not handled, call DefWindowProc.

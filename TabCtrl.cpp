@@ -91,7 +91,7 @@ size_t CTabCtrl::AddTab(const tchar* pszName, LPARAM lData)
 	tcItem.pszText = const_cast<tchar*>(pszName);
 	tcItem.lParam  = lData;
 
-	TabCtrl_InsertItem(m_hWnd, n, &tcItem);
+	(void)TabCtrl_InsertItem(m_hWnd, n, &tcItem);
 
 	return n;
 }
@@ -116,7 +116,7 @@ LPARAM CTabCtrl::ItemData(int nTab) const
 	memset(&tcItem, 0, sizeof(tcItem));
 	tcItem.mask = TCIF_PARAM;
 
-	TabCtrl_GetItem(m_hWnd, nTab, &tcItem);
+	(void)TabCtrl_GetItem(m_hWnd, nTab, &tcItem);
 
 	return tcItem.lParam;
 }
@@ -139,7 +139,7 @@ CRect CTabCtrl::DisplayRect() const
 	CRect rcClient = m_pParent->ChildRect(*this);
 
 	// Adjust rectangle.
-	TabCtrl_AdjustRect(m_hWnd, FALSE, &rcClient);
+	(void)TabCtrl_AdjustRect(m_hWnd, FALSE, &rcClient);
 
 	return rcClient;
 }

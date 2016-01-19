@@ -112,7 +112,7 @@ void TreeView::UpdateItem(HTREEITEM hItem, const tstring& strText, bool bHasChil
 	oItem.iImage         = nImage;
 	oItem.iSelectedImage = nImage;
 
-	TreeView_SetItem(m_hWnd, &oItem);
+	(void)TreeView_SetItem(m_hWnd, &oItem);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -123,7 +123,7 @@ void TreeView::Select(HTREEITEM hItem)
 	ASSERT(m_hWnd != NULL);
 	ASSERT(hItem != NULL);
 
-	TreeView_SelectItem(m_hWnd, hItem);
+	(void)TreeView_SelectItem(m_hWnd, hItem);
 }
 
 //namespace WCL

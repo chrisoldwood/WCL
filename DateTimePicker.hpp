@@ -21,7 +21,7 @@
 #include <commctrl.h>
 
 /******************************************************************************
-** 
+**
 ** This is a date-time picker control.
 **
 *******************************************************************************
@@ -62,7 +62,7 @@ protected:
 	//
 	// Members.
 	//
-	
+
 	//
 	// Window creation template methods.
 	//
@@ -83,7 +83,7 @@ protected:
 
 inline void CDateTimePicker::Format(const tchar* pszFormat)
 {
-	DateTime_SetFormat(m_hWnd, pszFormat);
+	(void)DateTime_SetFormat(m_hWnd, pszFormat);
 }
 
 #endif //DATETIMEPICKER_HPP

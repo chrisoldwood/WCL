@@ -28,7 +28,7 @@ public:
 
 	//! Destructor.
 	virtual	~TreeView();
-	
+
 	//
 	// Properties.
 	//
@@ -100,7 +100,7 @@ inline void TreeView::Clear()
 {
 	ASSERT(m_hWnd != NULL);
 
-	TreeView_DeleteAllItems(m_hWnd);
+	(void)TreeView_DeleteAllItems(m_hWnd);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

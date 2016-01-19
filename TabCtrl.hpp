@@ -20,7 +20,7 @@
 #include <commctrl.h>
 
 /******************************************************************************
-** 
+**
 ** This is a Tab Control.
 **
 *******************************************************************************
@@ -34,7 +34,7 @@ public:
 	//
 	CTabCtrl();
 	virtual	~CTabCtrl();
-	
+
 	//
 	// Methods.
 	//
@@ -93,7 +93,7 @@ inline int CTabCtrl::CurSel() const
 
 inline void CTabCtrl::CurSel(int nTab)
 {
-	TabCtrl_SetCurSel(m_hWnd, nTab);
+	(void)TabCtrl_SetCurSel(m_hWnd, nTab);
 }
 
 inline void* CTabCtrl::ItemPtr(int nTab) const

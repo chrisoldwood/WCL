@@ -106,7 +106,7 @@ void CDateTimePicker::SetDate(const CDate& rDate)
 	SysTime.wMilliseconds = 0;
 
 	// Set the date in the control.
-	DateTime_SetSystemtime(m_hWnd, GDT_VALID, &SysTime);
+	(void)DateTime_SetSystemtime(m_hWnd, GDT_VALID, &SysTime);
 }
 
 CDate CDateTimePicker::GetDate()
@@ -114,7 +114,7 @@ CDate CDateTimePicker::GetDate()
 	SYSTEMTIME	SysTime;
 
 	// Get the date from the control.
-	DateTime_GetSystemtime(m_hWnd, &SysTime);
+	(void)DateTime_GetSystemtime(m_hWnd, &SysTime);
 
 	return CDate(SysTime.wDay, SysTime.wMonth, SysTime.wYear);
 }
@@ -163,7 +163,7 @@ void CDateTimePicker::SetDateRange(const CDate& rMin, const CDate& rMax)
 	SysTime[1].wDayOfWeek = 0;
 
 	// Set the date range in the control.
-	DateTime_SetRange(m_hWnd, GDTR_MIN | GDTR_MAX, SysTime);
+	(void)DateTime_SetRange(m_hWnd, GDTR_MIN | GDTR_MAX, SysTime);
 }
 
 void CDateTimePicker::GetDateRange(CDate& rMin, CDate& rMax)
@@ -171,7 +171,7 @@ void CDateTimePicker::GetDateRange(CDate& rMin, CDate& rMax)
 	SYSTEMTIME	SysTime[2] = { { 0 }, { 0 } };
 
 	// Get the date range from the control.
-	DateTime_GetRange(m_hWnd, SysTime);
+	(void)DateTime_GetRange(m_hWnd, SysTime);
 
 	// Fill in return parameters.
 	rMin.Set(SysTime[0].wDay, SysTime[0].wMonth, SysTime[0].wYear);
@@ -212,7 +212,7 @@ void CDateTimePicker::SetTime(const CTime& rTime)
 	SysTime.wMilliseconds = 0;
 
 	// Set the time in the control.
-	DateTime_SetSystemtime(m_hWnd, GDT_VALID, &SysTime);
+	(void)DateTime_SetSystemtime(m_hWnd, GDT_VALID, &SysTime);
 }
 
 CTime CDateTimePicker::GetTime()
@@ -220,7 +220,7 @@ CTime CDateTimePicker::GetTime()
 	SYSTEMTIME	SysTime;
 
 	// Get the time from the control.
-	DateTime_GetSystemtime(m_hWnd, &SysTime);
+	(void)DateTime_GetSystemtime(m_hWnd, &SysTime);
 
 	return CTime(SysTime.wHour, SysTime.wMinute, SysTime.wSecond);
 }
@@ -269,7 +269,7 @@ void CDateTimePicker::SetTimeRange(const CTime& rMin, const CTime& rMax)
 	SysTime[1].wMilliseconds = 0;
 
 	// Set the time range in the control.
-	DateTime_SetRange(m_hWnd, GDTR_MIN | GDTR_MAX, SysTime);
+	(void)DateTime_SetRange(m_hWnd, GDTR_MIN | GDTR_MAX, SysTime);
 }
 
 void CDateTimePicker::GetTimeRange(CTime& rMin, CTime& rMax)
@@ -277,7 +277,7 @@ void CDateTimePicker::GetTimeRange(CTime& rMin, CTime& rMax)
 	SYSTEMTIME	SysTime[2] = { { 0 }, { 0 } };
 
 	// Get the time range from the control.
-	DateTime_GetRange(m_hWnd, SysTime);
+	(void)DateTime_GetRange(m_hWnd, SysTime);
 
 	// Fill in return parameters.
 	rMin.Set(SysTime[0].wHour, SysTime[0].wMinute, SysTime[0].wSecond);
@@ -317,7 +317,7 @@ void CDateTimePicker::SetDateTime(const CDateTime& rDateTime)
 	SysTime.wMilliseconds = 0;
 
 	// Set the time in the control.
-	DateTime_SetSystemtime(m_hWnd, GDT_VALID, &SysTime);
+	(void)DateTime_SetSystemtime(m_hWnd, GDT_VALID, &SysTime);
 }
 
 CDateTime CDateTimePicker::GetDateTime()
@@ -325,7 +325,7 @@ CDateTime CDateTimePicker::GetDateTime()
 	SYSTEMTIME	SysTime;
 
 	// Get the datetime from the control.
-	DateTime_GetSystemtime(m_hWnd, &SysTime);
+	(void)DateTime_GetSystemtime(m_hWnd, &SysTime);
 
 	return CDateTime(SysTime.wDay, SysTime.wMonth, SysTime.wYear, SysTime.wHour, SysTime.wMinute, SysTime.wSecond);
 }
@@ -377,7 +377,7 @@ void CDateTimePicker::SetDateTimeRange(const CDateTime& rMin, const CDateTime& r
 	SysTime[1].wMilliseconds = 0;
 
 	// Set the time range in the control.
-	DateTime_SetRange(m_hWnd, GDTR_MIN | GDTR_MAX, SysTime);
+	(void)DateTime_SetRange(m_hWnd, GDTR_MIN | GDTR_MAX, SysTime);
 }
 
 void CDateTimePicker::GetDateTimeRange(CDateTime& rMin, CDateTime& rMax)
@@ -385,7 +385,7 @@ void CDateTimePicker::GetDateTimeRange(CDateTime& rMin, CDateTime& rMax)
 	SYSTEMTIME	SysTime[2] = { { 0 }, { 0 } };
 
 	// Get the time range from the control.
-	DateTime_GetRange(m_hWnd, SysTime);
+	(void)DateTime_GetRange(m_hWnd, SysTime);
 
 	// Fill in return parameters.
 	rMin.Set(SysTime[0].wDay, SysTime[0].wMonth, SysTime[0].wYear, SysTime[0].wHour, SysTime[0].wMinute, SysTime[0].wSecond);

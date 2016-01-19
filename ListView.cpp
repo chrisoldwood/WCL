@@ -93,7 +93,7 @@ size_t CListView::InsertItem(size_t nItem, const tchar* pszText, size_t nImage)
 
 void CListView::DeleteItem(size_t item, bool selectNextItem)
 {
-	ListView_DeleteItem(m_hWnd, item);
+	(void)ListView_DeleteItem(m_hWnd, item);
 
 	if (selectNextItem)
 	{
@@ -130,7 +130,7 @@ void CListView::ItemImage(size_t nItem, size_t nImage)
 	lvItem.iItem  = static_cast<int>(nItem);
 	lvItem.iImage = static_cast<int>(nImage);
 
-	ListView_SetItem(m_hWnd, &lvItem);
+	(void)ListView_SetItem(m_hWnd, &lvItem);
 }
 
 /******************************************************************************
@@ -155,7 +155,7 @@ void CListView::ItemData(size_t nItem, LPARAM lParam)
 	lvItem.iItem  = static_cast<int>(nItem);
 	lvItem.lParam = lParam;
 
-	ListView_SetItem(m_hWnd, &lvItem);
+	(void)ListView_SetItem(m_hWnd, &lvItem);
 }
 
 /******************************************************************************
@@ -212,7 +212,7 @@ size_t CListView::ItemImage(size_t nItem) const
 	lvItem.mask  = LVIF_IMAGE;
 	lvItem.iItem = static_cast<int>(nItem);
 
-	ListView_GetItem(m_hWnd, &lvItem);
+	(void)ListView_GetItem(m_hWnd, &lvItem);
 
 	return lvItem.iImage;
 }
@@ -237,7 +237,7 @@ LPARAM CListView::ItemData(size_t nItem) const
 	lvItem.mask  = LVIF_PARAM;
 	lvItem.iItem = static_cast<int>(nItem);
 
-	ListView_GetItem(m_hWnd, &lvItem);
+	(void)ListView_GetItem(m_hWnd, &lvItem);
 
 	return lvItem.lParam;
 }
@@ -295,7 +295,7 @@ void CListView::InsertColumn(size_t nColumn, const tchar* pszName, size_t iWidth
     lvColumn.pszText  = const_cast<tchar*>(pszName);
     lvColumn.iSubItem = static_cast<int>(nColumn);
 
-	ListView_InsertColumn(m_hWnd, nColumn, &lvColumn);
+	(void)ListView_InsertColumn(m_hWnd, nColumn, &lvColumn);
 }
 
 /******************************************************************************
