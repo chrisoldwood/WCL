@@ -14,6 +14,7 @@
 #include "ICmdController.hpp"
 #include "IUiCommand.hpp"
 #include <map>
+#include <vector>
 
 namespace WCL
 {
@@ -33,7 +34,7 @@ public:
 
 	//! Destructor.
 	virtual ~ExternalCmdController();
-	
+
 	//
 	// Methods.
 	//

@@ -9,7 +9,12 @@
 #include <Core/CmdLineException.hpp>
 #include <sstream>
 
-static Core::CmdLineSwitch s_switches[] = 
+#ifdef __GNUG__
+// deprecated conversion from string constant to 'tchar*'
+#pragma GCC diagnostic ignored "-Wwrite-strings"
+#endif
+
+static Core::CmdLineSwitch s_switches[] =
 {
 	{ 1, TXT("?"), NULL, Core::CmdLineSwitch::ONCE, Core::CmdLineSwitch::NONE, NULL, TXT("Test") },
 };

@@ -49,13 +49,13 @@ public:
 
 	//! Refresh the UI for the command.
 	virtual void updateUi() = 0;
-	
+
 	//! Draw the icon for a command.
 	virtual void drawIcon(CDC& dc, const CRect& rect, bool enabled) const = 0;
 
 public:
 	//! Make abstract.
-	virtual ~IUiCommand() = 0 {};
+	virtual ~IUiCommand() /*= 0*/ {};
 };
 
 //! The default smart-pointer type.

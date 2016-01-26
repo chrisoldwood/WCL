@@ -47,13 +47,13 @@ public:
 
 	//! Refresh the UI for the command.
 	virtual void updateUi();
-	
+
 	//! Draw the icon for a command.
 	virtual void drawIcon(CDC& dc, const CRect& rect, bool enabled) const;
 
 public:
 	//! Make abstract.
-	virtual ~UiCommandBase() = 0 {};
+	virtual ~UiCommandBase() /*= 0*/ {};
 
 private:
 	//
