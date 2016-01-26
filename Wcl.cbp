@@ -99,6 +99,8 @@
 		<Unit filename="ConsoleApp.hpp" />
 		<Unit filename="ConsoleCmd.cpp" />
 		<Unit filename="ConsoleCmd.hpp" />
+		<Unit filename="ContextMenu.cpp" />
+		<Unit filename="ContextMenu.hpp" />
 		<Unit filename="CriticalSection.cpp" />
 		<Unit filename="CriticalSection.hpp" />
 		<Unit filename="CtrlWnd.cpp" />
@@ -116,6 +118,7 @@
 		<Unit filename="DateTimePicker.hpp" />
 		<Unit filename="DecimalBox.cpp" />
 		<Unit filename="DecimalBox.hpp" />
+		<Unit filename="DevNotes.txt" />
 		<Unit filename="Dialog.cpp" />
 		<Unit filename="Dialog.hpp" />
 		<Unit filename="DlgFrame.cpp" />
@@ -123,6 +126,7 @@
 		<Unit filename="Dll.cpp" />
 		<Unit filename="Dll.hpp" />
 		<Unit filename="DllMain.cpp" />
+		<Unit filename="DllMain.hpp" />
 		<Unit filename="Doc.cpp" />
 		<Unit filename="Doc.hpp" />
 		<Unit filename="Doxygen.cfg" />
@@ -131,6 +135,8 @@
 		<Unit filename="Event.hpp" />
 		<Unit filename="Exception.cpp" />
 		<Unit filename="Exception.hpp" />
+		<Unit filename="ExternalCmdController.cpp" />
+		<Unit filename="ExternalCmdController.hpp" />
 		<Unit filename="File.cpp" />
 		<Unit filename="File.hpp" />
 		<Unit filename="FileException.cpp" />
@@ -146,14 +152,20 @@
 		<Unit filename="HelpFile.hpp" />
 		<Unit filename="HintBar.cpp" />
 		<Unit filename="HintBar.hpp" />
+		<Unit filename="IAppConfigReader.hpp" />
+		<Unit filename="IAppConfigWriter.hpp" />
+		<Unit filename="ICmdController.hpp" />
+		<Unit filename="ICommandWnd.hpp" />
 		<Unit filename="IConfigProvider.hpp" />
 		<Unit filename="IFacePtr.hpp" />
 		<Unit filename="IFaceTraits.hpp" />
 		<Unit filename="IInputStream.hpp" />
 		<Unit filename="IMsgFilter.hpp" />
+		<Unit filename="IMsgThread.hpp" />
 		<Unit filename="IOutputStream.hpp" />
 		<Unit filename="IStreamBase.hpp" />
 		<Unit filename="IThreadLock.hpp" />
+		<Unit filename="IUiCommand.hpp" />
 		<Unit filename="Icon.cpp" />
 		<Unit filename="Icon.hpp" />
 		<Unit filename="IconCtrl.cpp" />
@@ -196,6 +208,7 @@
 		<Unit filename="MsgWnd.hpp" />
 		<Unit filename="NetFinder.cpp" />
 		<Unit filename="NetFinder.hpp" />
+		<Unit filename="NullCmdController.hpp" />
 		<Unit filename="Path.cpp" />
 		<Unit filename="Path.hpp" />
 		<Unit filename="PathEditBox.cpp" />
@@ -227,6 +240,8 @@
 		<Unit filename="RegistryCfgProvider.cpp" />
 		<Unit filename="RegistryCfgProvider.hpp" />
 		<Unit filename="RegistryException.hpp" />
+		<Unit filename="ResourceString.cpp" />
+		<Unit filename="ResourceString.hpp" />
 		<Unit filename="SDIApp.cpp" />
 		<Unit filename="SDIApp.hpp" />
 		<Unit filename="SDICmds.cpp" />
@@ -266,6 +281,7 @@
 		<Unit filename="StreamException.hpp" />
 		<Unit filename="String.cpp" />
 		<Unit filename="String.hpp" />
+		<Unit filename="StringIO.hpp" />
 		<Unit filename="StringUtils.cpp" />
 		<Unit filename="StringUtils.hpp" />
 		<Unit filename="StructuredException.cpp" />
@@ -301,6 +317,8 @@
 		<Unit filename="TreeView.hpp" />
 		<Unit filename="URLLabel.cpp" />
 		<Unit filename="URLLabel.hpp" />
+		<Unit filename="UiCommandBase.cpp" />
+		<Unit filename="UiCommandBase.hpp" />
 		<Unit filename="UpDownBtns.cpp" />
 		<Unit filename="UpDownBtns.hpp" />
 		<Unit filename="Variant.cpp" />
@@ -314,6 +332,7 @@
 		<Unit filename="WclTypes.hpp" />
 		<Unit filename="Win32Exception.hpp" />
 		<Unit filename="WinMain.cpp" />
+		<Unit filename="WinMain.hpp" />
 		<Unit filename="Wnd.cpp" />
 		<Unit filename="Wnd.hpp" />
 		<Unit filename="WndMap.cpp" />

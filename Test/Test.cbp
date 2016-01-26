@@ -70,19 +70,26 @@
 			<Add library="shlwapi" />
 		</Linker>
 		<Unit filename="AppConfigTests.cpp" />
+		<Unit filename="CmdControlTests.cpp" />
 		<Unit filename="ComExceptionTests.cpp" />
 		<Unit filename="ComPtrTests.cpp" />
 		<Unit filename="ComStrTests.cpp" />
+		<Unit filename="ConsoleCmdTests.cpp" />
 		<Unit filename="DateTests.cpp" />
 		<Unit filename="DateTimeTests.cpp" />
+		<Unit filename="ExternalCmdControllerTests.cpp" />
 		<Unit filename="FolderIteratorTests.cpp" />
 		<Unit filename="IFacePtrTests.cpp" />
 		<Unit filename="IniFileCfgProviderTests.cpp" />
 		<Unit filename="IniFileTests.cpp" />
+		<Unit filename="InputOutputStreamTests.cpp" />
+		<Unit filename="MemStreamTests.cpp" />
+		<Unit filename="NullCmdControllerTests.cpp" />
 		<Unit filename="PathTests.cpp" />
 		<Unit filename="PtrTest.hpp" />
 		<Unit filename="RectTests.cpp" />
 		<Unit filename="RegistryCfgProviderTests.cpp" />
+		<Unit filename="ResourceStringTests.cpp" />
 		<Unit filename="SeTranslatorTests.cpp" />
 		<Unit filename="StringTests.cpp" />
 		<Unit filename="StringUtilsTests.cpp" />
@@ -93,6 +100,7 @@
 		<Unit filename="Test.rcv" />
 		<Unit filename="TestIFaceTraits.hpp" />
 		<Unit filename="TimeTests.cpp" />
+		<Unit filename="UiCommandBaseTests.cpp" />
 		<Unit filename="VariantTests.cpp" />
 		<Unit filename="VariantVectorTests.cpp" />
 		<Unit filename="VerInfoReaderTests.cpp" />
