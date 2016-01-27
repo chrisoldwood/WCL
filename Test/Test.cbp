@@ -51,6 +51,7 @@
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
 			<Add option="-Werror" />
+			<Add option='-include &quot;stdafx.h&quot;' />
 			<Add option="-DWIN32" />
 			<Add option="-D_CONSOLE" />
 			<Add directory="../../../Lib" />
@@ -106,7 +107,10 @@
 		<Unit filename="VerInfoReaderTests.cpp" />
 		<Unit filename="resource.h" />
 		<Unit filename="stdafx.cpp" />
-		<Unit filename="stdafx.h" />
+		<Unit filename="stdafx.h">
+			<Option compile="1" />
+			<Option weight="0" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<debugger />
