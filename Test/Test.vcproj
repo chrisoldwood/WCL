@@ -1,297 +1,401 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="9.00"
 	Name="Test"
 	ProjectGUID="{2DF1265B-A30F-477C-B18B-5A569C36A6A7}"
-	Keyword="Win32Proj">
+	Keyword="Win32Proj"
+	TargetFrameworkVersion="131072"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
 			ConfigurationType="1"
-			CharacterSet="1">
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/EHa"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../Lib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
-				MinimalRebuild="TRUE"
-				ExceptionHandling="FALSE"
+				MinimalRebuild="true"
+				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
-				SmallerTypeCheck="TRUE"
+				SmallerTypeCheck="true"
 				RuntimeLibrary="1"
-				TreatWChar_tAsBuiltInType="TRUE"
-				ForceConformanceInForLoopScope="TRUE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
+				TreatWChar_tAsBuiltInType="true"
+				ForceConformanceInForLoopScope="true"
+				RuntimeTypeInfo="true"
+				UsePrecompiledHeader="2"
 				WarningLevel="4"
-				WarnAsError="TRUE"
-				DebugInformationFormat="3"/>
+				WarnAsError="true"
+				DebugInformationFormat="3"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				GenerateDebugInformation="TRUE"
-				SubSystem="1"
-				TargetMachine="1"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				AdditionalIncludeDirectories="../../../Lib"/>
+				AdditionalIncludeDirectories="../../../Lib"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCLinkerTool"
+				GenerateDebugInformation="true"
+				SubSystem="1"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="1"
-			CharacterSet="1">
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/EHa"
 				AdditionalIncludeDirectories="../../../Lib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
-				StringPooling="TRUE"
-				ExceptionHandling="FALSE"
+				StringPooling="true"
+				ExceptionHandling="0"
 				RuntimeLibrary="0"
-				TreatWChar_tAsBuiltInType="TRUE"
-				ForceConformanceInForLoopScope="TRUE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
+				TreatWChar_tAsBuiltInType="true"
+				ForceConformanceInForLoopScope="true"
+				RuntimeTypeInfo="true"
+				UsePrecompiledHeader="2"
 				WarningLevel="4"
-				WarnAsError="TRUE"
-				DebugInformationFormat="3"/>
+				WarnAsError="true"
+				DebugInformationFormat="3"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				AdditionalIncludeDirectories="../../../Lib"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				TargetMachine="1"/>
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				AdditionalIncludeDirectories="../../../Lib"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
 		<ProjectReference
 			ReferencedProjectIdentifier="{790BC113-52FB-4565-8968-79B8B011C520}"
-			Name="Core"/>
+		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{AED77F84-49CF-4B84-B319-2D07025ECA06}"
-			Name="Legacy"/>
+		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{9B0335B6-93BE-4604-8497-27431874D758}"
-			Name="Wcl"/>
+		/>
 	</References>
 	<Files>
 		<Filter
 			Name="App"
-			Filter="">
+			>
 			<Filter
 				Name="Console"
-				Filter="">
+				>
 				<File
-					RelativePath=".\ConsoleCmdTests.cpp">
+					RelativePath=".\ConsoleCmdTests.cpp"
+					>
 				</File>
 			</Filter>
 			<Filter
 				Name="GUI"
-				Filter="">
+				>
 				<File
-					RelativePath=".\CmdControlTests.cpp">
+					RelativePath=".\CmdControlTests.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\ExternalCmdControllerTests.cpp">
+					RelativePath=".\ExternalCmdControllerTests.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\NullCmdControllerTests.cpp">
+					RelativePath=".\NullCmdControllerTests.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\UiCommandBaseTests.cpp">
+					RelativePath=".\UiCommandBaseTests.cpp"
+					>
 				</File>
 			</Filter>
 		</Filter>
 		<Filter
 			Name="COM"
-			Filter="">
+			>
 			<File
-				RelativePath=".\ComExceptionTests.cpp">
+				RelativePath=".\ComExceptionTests.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ComPtrTests.cpp">
+				RelativePath=".\ComPtrTests.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ComStrTests.cpp">
+				RelativePath=".\ComStrTests.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\IFacePtrTests.cpp">
+				RelativePath=".\IFacePtrTests.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\PtrTest.hpp">
+				RelativePath=".\PtrTest.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\TestIFaceTraits.hpp">
+				RelativePath=".\TestIFaceTraits.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\VariantTests.cpp">
+				RelativePath=".\VariantTests.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\VariantVectorTests.cpp">
+				RelativePath=".\VariantVectorTests.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Configuration"
-			Filter="">
+			>
 			<File
-				RelativePath=".\AppConfigTests.cpp">
+				RelativePath=".\AppConfigTests.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\IniFileCfgProviderTests.cpp">
+				RelativePath=".\IniFileCfgProviderTests.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\IniFileTests.cpp">
+				RelativePath=".\IniFileTests.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\RegistryCfgProviderTests.cpp">
+				RelativePath=".\RegistryCfgProviderTests.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Exception"
-			Filter="">
+			>
 			<File
-				RelativePath=".\SeTranslatorTests.cpp">
+				RelativePath=".\SeTranslatorTests.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="IO"
-			Filter="">
+			>
 			<File
-				RelativePath=".\FolderIteratorTests.cpp">
+				RelativePath=".\FolderIteratorTests.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\InputOutputStreamTests.cpp">
+				RelativePath=".\InputOutputStreamTests.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\MemStreamTests.cpp">
+				RelativePath=".\MemStreamTests.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\PathTests.cpp">
+				RelativePath=".\PathTests.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Process"
-			Filter="">
+			>
 			<File
-				RelativePath=".\VerInfoReaderTests.cpp">
+				RelativePath=".\VerInfoReaderTests.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			>
 			<File
-				RelativePath=".\resource.h">
+				RelativePath=".\resource.h"
+				>
 			</File>
 			<File
-				RelativePath=".\Test.rc">
+				RelativePath=".\Test.rc"
+				>
 			</File>
 			<File
-				RelativePath=".\Test.rcv">
+				RelativePath=".\Test.rcv"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Text"
-			Filter="">
+			>
 			<File
-				RelativePath=".\ResourceStringTests.cpp">
+				RelativePath=".\ResourceStringTests.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\StringTests.cpp">
+				RelativePath=".\StringTests.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\StringUtilsTests.cpp">
+				RelativePath=".\StringUtilsTests.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Type"
-			Filter="">
+			>
 			<File
-				RelativePath=".\DateTests.cpp">
+				RelativePath=".\DateTests.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\DateTimeTests.cpp">
+				RelativePath=".\DateTimeTests.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\RectTests.cpp">
+				RelativePath=".\RectTests.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\TimeTests.cpp">
+				RelativePath=".\TimeTests.cpp"
+				>
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\stdafx.cpp">
+			RelativePath=".\stdafx.cpp"
+			>
 			<FileConfiguration
-				Name="Debug|Win32">
+				Name="Debug|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
-					UsePrecompiledHeader="1"/>
+					UsePrecompiledHeader="1"
+				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Win32">
+				Name="Release|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
-					UsePrecompiledHeader="1"/>
+					UsePrecompiledHeader="1"
+				/>
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath=".\stdafx.h">
+			RelativePath=".\stdafx.h"
+			>
 		</File>
 		<File
-			RelativePath=".\Test.cpp">
+			RelativePath=".\Test.cpp"
+			>
 		</File>
 	</Files>
 	<Globals>

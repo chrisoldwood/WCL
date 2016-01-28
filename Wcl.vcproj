@@ -1,107 +1,158 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="9.00"
 	Name="Wcl"
 	ProjectGUID="{9B0335B6-93BE-4604-8497-27431874D758}"
-	Keyword="Win32Proj">
+	Keyword="Win32Proj"
+	TargetFrameworkVersion="131072"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="4"
-			CharacterSet="1">
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/EHa"
 				AdditionalIncludeDirectories="../../Lib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
-				StringPooling="TRUE"
-				ExceptionHandling="FALSE"
+				StringPooling="true"
+				ExceptionHandling="0"
 				RuntimeLibrary="0"
-				TreatWChar_tAsBuiltInType="TRUE"
-				ForceConformanceInForLoopScope="TRUE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
+				TreatWChar_tAsBuiltInType="true"
+				ForceConformanceInForLoopScope="true"
+				RuntimeTypeInfo="true"
+				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="Common.hpp"
 				WarningLevel="4"
-				WarnAsError="TRUE"
-				DebugInformationFormat="3"/>
+				WarnAsError="true"
+				DebugInformationFormat="3"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
-				Name="VCLibrarianTool"/>
+				Name="VCResourceCompilerTool"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCLibrarianTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
 			ConfigurationType="4"
-			CharacterSet="1">
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/EHa"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../Lib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
-				MinimalRebuild="TRUE"
-				ExceptionHandling="FALSE"
+				MinimalRebuild="true"
+				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
-				SmallerTypeCheck="TRUE"
+				SmallerTypeCheck="true"
 				RuntimeLibrary="1"
-				TreatWChar_tAsBuiltInType="TRUE"
-				ForceConformanceInForLoopScope="TRUE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
+				TreatWChar_tAsBuiltInType="true"
+				ForceConformanceInForLoopScope="true"
+				RuntimeTypeInfo="true"
+				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="Common.hpp"
 				WarningLevel="4"
-				WarnAsError="TRUE"
-				DebugInformationFormat="3"/>
+				WarnAsError="true"
+				DebugInformationFormat="3"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
-				Name="VCLibrarianTool"/>
+				Name="VCResourceCompilerTool"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCLibrarianTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -109,937 +160,1227 @@
 	<Files>
 		<Filter
 			Name="App"
-			Filter="">
+			>
 			<Filter
 				Name="Console"
-				Filter="">
+				>
 				<File
-					RelativePath=".\ConsoleApp.cpp">
+					RelativePath=".\ConsoleApp.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\ConsoleApp.hpp">
+					RelativePath=".\ConsoleApp.hpp"
+					>
 				</File>
 				<File
-					RelativePath=".\ConsoleCmd.cpp">
+					RelativePath=".\ConsoleCmd.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\ConsoleCmd.hpp">
+					RelativePath=".\ConsoleCmd.hpp"
+					>
 				</File>
 			</Filter>
 			<Filter
 				Name="GUI"
-				Filter="">
+				>
 				<File
-					RelativePath="App.cpp">
+					RelativePath="App.cpp"
+					>
 				</File>
 				<File
-					RelativePath="App.hpp">
+					RelativePath="App.hpp"
+					>
 				</File>
 				<File
-					RelativePath="CmdCtrl.cpp">
+					RelativePath="CmdCtrl.cpp"
+					>
 				</File>
 				<File
-					RelativePath="CmdCtrl.hpp">
+					RelativePath="CmdCtrl.hpp"
+					>
 				</File>
 				<File
-					RelativePath="Doc.cpp">
+					RelativePath="Doc.cpp"
+					>
 				</File>
 				<File
-					RelativePath="Doc.hpp">
+					RelativePath="Doc.hpp"
+					>
 				</File>
 				<File
-					RelativePath=".\ExternalCmdController.cpp">
+					RelativePath=".\ExternalCmdController.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\ExternalCmdController.hpp">
+					RelativePath=".\ExternalCmdController.hpp"
+					>
 				</File>
 				<File
-					RelativePath="HelpFile.hpp">
+					RelativePath="HelpFile.hpp"
+					>
 				</File>
 				<File
-					RelativePath=".\ICmdController.hpp">
+					RelativePath=".\ICmdController.hpp"
+					>
 				</File>
 				<File
-					RelativePath=".\ICommandWnd.hpp">
+					RelativePath=".\ICommandWnd.hpp"
+					>
 				</File>
 				<File
-					RelativePath=".\IUiCommand.hpp">
+					RelativePath=".\IUiCommand.hpp"
+					>
 				</File>
 				<File
-					RelativePath="MRUList.cpp">
+					RelativePath="MRUList.cpp"
+					>
 				</File>
 				<File
-					RelativePath="MRUList.hpp">
+					RelativePath="MRUList.hpp"
+					>
 				</File>
 				<File
-					RelativePath=".\NullCmdController.hpp">
+					RelativePath=".\NullCmdController.hpp"
+					>
 				</File>
 				<File
-					RelativePath="SDIApp.cpp">
+					RelativePath="SDIApp.cpp"
+					>
 				</File>
 				<File
-					RelativePath="SDIApp.hpp">
+					RelativePath="SDIApp.hpp"
+					>
 				</File>
 				<File
-					RelativePath="SDICmds.cpp">
+					RelativePath="SDICmds.cpp"
+					>
 				</File>
 				<File
-					RelativePath="SDICmds.hpp">
+					RelativePath="SDICmds.hpp"
+					>
 				</File>
 				<File
-					RelativePath="SDIDoc.cpp">
+					RelativePath="SDIDoc.cpp"
+					>
 				</File>
 				<File
-					RelativePath="SDIDoc.hpp">
+					RelativePath="SDIDoc.hpp"
+					>
 				</File>
 				<File
-					RelativePath="SDIFrame.cpp">
+					RelativePath="SDIFrame.cpp"
+					>
 				</File>
 				<File
-					RelativePath="SDIFrame.hpp">
+					RelativePath="SDIFrame.hpp"
+					>
 				</File>
 				<File
-					RelativePath=".\UiCommandBase.cpp">
+					RelativePath=".\UiCommandBase.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\UiCommandBase.hpp">
+					RelativePath=".\UiCommandBase.hpp"
+					>
 				</File>
 				<File
-					RelativePath="View.cpp">
+					RelativePath="View.cpp"
+					>
 				</File>
 				<File
-					RelativePath="View.hpp">
+					RelativePath="View.hpp"
+					>
 				</File>
 			</Filter>
 		</Filter>
 		<Filter
 			Name="Build"
-			Filter="">
+			>
 			<File
-				RelativePath=".\Common.hpp">
+				RelativePath=".\Common.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\CommonRsc.h">
+				RelativePath=".\CommonRsc.h"
+				>
 			</File>
 			<File
-				RelativePath=".\pch.cpp">
+				RelativePath=".\pch.cpp"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
+						UsePrecompiledHeader="1"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
+						UsePrecompiledHeader="1"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="Pragmas.hpp">
+				RelativePath="Pragmas.hpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="COM"
-			Filter="">
+			>
 			<File
-				RelativePath=".\AutoCom.hpp">
+				RelativePath=".\AutoCom.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ComException.cpp">
+				RelativePath=".\ComException.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ComException.hpp">
+				RelativePath=".\ComException.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ComPtr.hpp">
+				RelativePath=".\ComPtr.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ComStr.cpp">
+				RelativePath=".\ComStr.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ComStr.hpp">
+				RelativePath=".\ComStr.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\IFacePtr.hpp">
+				RelativePath=".\IFacePtr.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\IFaceTraits.hpp">
+				RelativePath=".\IFaceTraits.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\Variant.cpp">
+				RelativePath=".\Variant.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\Variant.hpp">
+				RelativePath=".\Variant.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\VariantBool.hpp">
+				RelativePath=".\VariantBool.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\VariantVector.hpp">
+				RelativePath=".\VariantVector.hpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Configuration"
-			Filter="">
+			>
 			<File
-				RelativePath=".\AppConfig.cpp">
+				RelativePath=".\AppConfig.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\AppConfig.hpp">
+				RelativePath=".\AppConfig.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\IAppConfigReader.hpp">
+				RelativePath=".\IAppConfigReader.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\IAppConfigWriter.hpp">
+				RelativePath=".\IAppConfigWriter.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\IConfigProvider.hpp">
+				RelativePath=".\IConfigProvider.hpp"
+				>
 			</File>
 			<File
-				RelativePath="IniFile.cpp">
+				RelativePath="IniFile.cpp"
+				>
 			</File>
 			<File
-				RelativePath="IniFile.hpp">
+				RelativePath="IniFile.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\IniFileCfgProvider.cpp">
+				RelativePath=".\IniFileCfgProvider.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\IniFileCfgProvider.hpp">
+				RelativePath=".\IniFileCfgProvider.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\RegistryCfgProvider.cpp">
+				RelativePath=".\RegistryCfgProvider.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\RegistryCfgProvider.hpp">
+				RelativePath=".\RegistryCfgProvider.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\RegistryException.hpp">
+				RelativePath=".\RegistryException.hpp"
+				>
 			</File>
 			<File
-				RelativePath="RegKey.cpp">
+				RelativePath="RegKey.cpp"
+				>
 			</File>
 			<File
-				RelativePath="RegKey.hpp">
+				RelativePath="RegKey.hpp"
+				>
 			</File>
 			<File
-				RelativePath="SysInfo.cpp">
+				RelativePath="SysInfo.cpp"
+				>
 			</File>
 			<File
-				RelativePath="SysInfo.hpp">
+				RelativePath="SysInfo.hpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Exception"
-			Filter="">
+			>
 			<File
-				RelativePath=".\Exception.cpp">
+				RelativePath=".\Exception.cpp"
+				>
 			</File>
 			<File
-				RelativePath="Exception.hpp">
+				RelativePath="Exception.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\SeTranslator.cpp">
+				RelativePath=".\SeTranslator.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\SeTranslator.hpp">
+				RelativePath=".\SeTranslator.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\StructuredException.cpp">
+				RelativePath=".\StructuredException.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\StructuredException.hpp">
+				RelativePath=".\StructuredException.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\Win32Exception.hpp">
+				RelativePath=".\Win32Exception.hpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="IO"
-			Filter="">
+			>
 			<File
-				RelativePath="Buffer.cpp">
+				RelativePath="Buffer.cpp"
+				>
 			</File>
 			<File
-				RelativePath="Buffer.hpp">
+				RelativePath="Buffer.hpp"
+				>
 			</File>
 			<File
-				RelativePath="Clipboard.cpp">
+				RelativePath="Clipboard.cpp"
+				>
 			</File>
 			<File
-				RelativePath="Clipboard.hpp">
+				RelativePath="Clipboard.hpp"
+				>
 			</File>
 			<File
-				RelativePath="File.cpp">
+				RelativePath="File.cpp"
+				>
 			</File>
 			<File
-				RelativePath="File.hpp">
+				RelativePath="File.hpp"
+				>
 			</File>
 			<File
-				RelativePath="FileException.cpp">
+				RelativePath="FileException.cpp"
+				>
 			</File>
 			<File
-				RelativePath="FileException.hpp">
+				RelativePath="FileException.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\FolderIterator.cpp">
+				RelativePath=".\FolderIterator.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\FolderIterator.hpp">
+				RelativePath=".\FolderIterator.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\IInputStream.hpp">
+				RelativePath=".\IInputStream.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\IOutputStream.hpp">
+				RelativePath=".\IOutputStream.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\IStreamBase.hpp">
+				RelativePath=".\IStreamBase.hpp"
+				>
 			</File>
 			<File
-				RelativePath="MemStream.cpp">
+				RelativePath="MemStream.cpp"
+				>
 			</File>
 			<File
-				RelativePath="MemStream.hpp">
+				RelativePath="MemStream.hpp"
+				>
 			</File>
 			<File
-				RelativePath="MemStreamException.cpp">
+				RelativePath="MemStreamException.cpp"
+				>
 			</File>
 			<File
-				RelativePath="MemStreamException.hpp">
+				RelativePath="MemStreamException.hpp"
+				>
 			</File>
 			<File
-				RelativePath="NetFinder.cpp">
+				RelativePath="NetFinder.cpp"
+				>
 			</File>
 			<File
-				RelativePath="NetFinder.hpp">
+				RelativePath="NetFinder.hpp"
+				>
 			</File>
 			<File
-				RelativePath="Path.cpp">
+				RelativePath="Path.cpp"
+				>
 			</File>
 			<File
-				RelativePath="Path.hpp">
+				RelativePath="Path.hpp"
+				>
 			</File>
 			<File
-				RelativePath="Stream.cpp">
+				RelativePath="Stream.cpp"
+				>
 			</File>
 			<File
-				RelativePath="Stream.hpp">
+				RelativePath="Stream.hpp"
+				>
 			</File>
 			<File
-				RelativePath="StreamException.hpp">
+				RelativePath="StreamException.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\StringIO.hpp">
+				RelativePath=".\StringIO.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\TraceLogger.cpp">
+				RelativePath=".\TraceLogger.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\TraceLogger.hpp">
+				RelativePath=".\TraceLogger.hpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Process"
-			Filter="">
+			>
 			<File
-				RelativePath="ComCtl32.cpp">
+				RelativePath="ComCtl32.cpp"
+				>
 			</File>
 			<File
-				RelativePath="ComCtl32.hpp">
+				RelativePath="ComCtl32.hpp"
+				>
 			</File>
 			<File
-				RelativePath="Dll.cpp">
+				RelativePath="Dll.cpp"
+				>
 			</File>
 			<File
-				RelativePath="Dll.hpp">
+				RelativePath="Dll.hpp"
+				>
 			</File>
 			<File
-				RelativePath="DllMain.cpp">
+				RelativePath="DllMain.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\DllMain.hpp">
+				RelativePath=".\DllMain.hpp"
+				>
 			</File>
 			<File
-				RelativePath="Library.cpp">
+				RelativePath="Library.cpp"
+				>
 			</File>
 			<File
-				RelativePath="Library.hpp">
+				RelativePath="Library.hpp"
+				>
 			</File>
 			<File
-				RelativePath="Module.cpp">
+				RelativePath="Module.cpp"
+				>
 			</File>
 			<File
-				RelativePath="Module.hpp">
+				RelativePath="Module.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\VerInfoReader.cpp">
+				RelativePath=".\VerInfoReader.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\VerInfoReader.hpp">
+				RelativePath=".\VerInfoReader.hpp"
+				>
 			</File>
 			<File
-				RelativePath="WinMain.cpp">
+				RelativePath="WinMain.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\WinMain.hpp">
+				RelativePath=".\WinMain.hpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Text"
-			Filter="">
+			>
 			<File
-				RelativePath=".\ResourceString.cpp">
+				RelativePath=".\ResourceString.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ResourceString.hpp">
+				RelativePath=".\ResourceString.hpp"
+				>
 			</File>
 			<File
-				RelativePath="StrArray.hpp">
+				RelativePath="StrArray.hpp"
+				>
 			</File>
 			<File
-				RelativePath="StrCvt.cpp">
+				RelativePath="StrCvt.cpp"
+				>
 			</File>
 			<File
-				RelativePath="StrCvt.hpp">
+				RelativePath="StrCvt.hpp"
+				>
 			</File>
 			<File
-				RelativePath="StrCvtException.cpp">
+				RelativePath="StrCvtException.cpp"
+				>
 			</File>
 			<File
-				RelativePath="StrCvtException.hpp">
+				RelativePath="StrCvtException.hpp"
+				>
 			</File>
 			<File
-				RelativePath="String.cpp">
+				RelativePath="String.cpp"
+				>
 			</File>
 			<File
-				RelativePath="String.hpp">
+				RelativePath="String.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\StringUtils.cpp">
+				RelativePath=".\StringUtils.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\StringUtils.hpp">
+				RelativePath=".\StringUtils.hpp"
+				>
 			</File>
 			<File
-				RelativePath="StrTok.cpp">
+				RelativePath="StrTok.cpp"
+				>
 			</File>
 			<File
-				RelativePath="StrTok.hpp">
+				RelativePath="StrTok.hpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Thread"
-			Filter="">
+			>
 			<File
-				RelativePath="AutoThreadLock.hpp">
+				RelativePath="AutoThreadLock.hpp"
+				>
 			</File>
 			<File
-				RelativePath="CriticalSection.cpp">
+				RelativePath="CriticalSection.cpp"
+				>
 			</File>
 			<File
-				RelativePath="CriticalSection.hpp">
+				RelativePath="CriticalSection.hpp"
+				>
 			</File>
 			<File
-				RelativePath="Event.hpp">
+				RelativePath="Event.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\IMsgFilter.hpp">
+				RelativePath=".\IMsgFilter.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\IMsgThread.hpp">
+				RelativePath=".\IMsgThread.hpp"
+				>
 			</File>
 			<File
-				RelativePath="IThreadLock.hpp">
+				RelativePath="IThreadLock.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\MainThread.cpp">
+				RelativePath=".\MainThread.cpp"
+				>
 			</File>
 			<File
-				RelativePath="MainThread.hpp">
+				RelativePath="MainThread.hpp"
+				>
 			</File>
 			<File
-				RelativePath="MsgThread.cpp">
+				RelativePath="MsgThread.cpp"
+				>
 			</File>
 			<File
-				RelativePath="MsgThread.hpp">
+				RelativePath="MsgThread.hpp"
+				>
 			</File>
 			<File
-				RelativePath="Thread.hpp">
+				RelativePath="Thread.hpp"
+				>
 			</File>
 			<File
-				RelativePath="ThreadJob.cpp">
+				RelativePath="ThreadJob.cpp"
+				>
 			</File>
 			<File
-				RelativePath="ThreadJob.hpp">
+				RelativePath="ThreadJob.hpp"
+				>
 			</File>
 			<File
-				RelativePath="ThreadPool.cpp">
+				RelativePath="ThreadPool.cpp"
+				>
 			</File>
 			<File
-				RelativePath="ThreadPool.hpp">
+				RelativePath="ThreadPool.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ThreadPoolThread.cpp">
+				RelativePath=".\ThreadPoolThread.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ThreadPoolThread.hpp">
+				RelativePath=".\ThreadPoolThread.hpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Type"
-			Filter="">
+			>
 			<File
-				RelativePath=".\AutoBool.hpp">
+				RelativePath=".\AutoBool.hpp"
+				>
 			</File>
 			<File
-				RelativePath="Date.cpp">
+				RelativePath="Date.cpp"
+				>
 			</File>
 			<File
-				RelativePath="Date.hpp">
+				RelativePath="Date.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\DateSpan.hpp">
+				RelativePath=".\DateSpan.hpp"
+				>
 			</File>
 			<File
-				RelativePath="DateTime.cpp">
+				RelativePath="DateTime.cpp"
+				>
 			</File>
 			<File
-				RelativePath="DateTime.hpp">
+				RelativePath="DateTime.hpp"
+				>
 			</File>
 			<File
-				RelativePath="Point.hpp">
+				RelativePath="Point.hpp"
+				>
 			</File>
 			<File
-				RelativePath="Rect.hpp">
+				RelativePath="Rect.hpp"
+				>
 			</File>
 			<File
-				RelativePath="Size.hpp">
+				RelativePath="Size.hpp"
+				>
 			</File>
 			<File
-				RelativePath="Time.cpp">
+				RelativePath="Time.cpp"
+				>
 			</File>
 			<File
-				RelativePath="Time.hpp">
+				RelativePath="Time.hpp"
+				>
 			</File>
 			<File
-				RelativePath=".\TimeSpan.hpp">
+				RelativePath=".\TimeSpan.hpp"
+				>
 			</File>
 			<File
-				RelativePath="WclTypes.hpp">
+				RelativePath="WclTypes.hpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="UI"
-			Filter="">
+			>
 			<Filter
 				Name="Control"
-				Filter="">
+				>
 				<File
-					RelativePath="Button.cpp">
+					RelativePath="Button.cpp"
+					>
 				</File>
 				<File
-					RelativePath="Button.hpp">
+					RelativePath="Button.hpp"
+					>
 				</File>
 				<File
-					RelativePath="CheckBox.cpp">
+					RelativePath="CheckBox.cpp"
+					>
 				</File>
 				<File
-					RelativePath="CheckBox.hpp">
+					RelativePath="CheckBox.hpp"
+					>
 				</File>
 				<File
-					RelativePath="CheckBoxList.cpp">
+					RelativePath="CheckBoxList.cpp"
+					>
 				</File>
 				<File
-					RelativePath="CheckBoxList.hpp">
+					RelativePath="CheckBoxList.hpp"
+					>
 				</File>
 				<File
-					RelativePath="CmdBmp.cpp">
+					RelativePath="CmdBmp.cpp"
+					>
 				</File>
 				<File
-					RelativePath="CmdBmp.hpp">
+					RelativePath="CmdBmp.hpp"
+					>
 				</File>
 				<File
-					RelativePath="CmdBtn.cpp">
+					RelativePath="CmdBtn.cpp"
+					>
 				</File>
 				<File
-					RelativePath="CmdBtn.hpp">
+					RelativePath="CmdBtn.hpp"
+					>
 				</File>
 				<File
-					RelativePath="ComboBox.cpp">
+					RelativePath="ComboBox.cpp"
+					>
 				</File>
 				<File
-					RelativePath="ComboBox.hpp">
+					RelativePath="ComboBox.hpp"
+					>
 				</File>
 				<File
-					RelativePath="DateTimePicker.cpp">
+					RelativePath="DateTimePicker.cpp"
+					>
 				</File>
 				<File
-					RelativePath="DateTimePicker.hpp">
+					RelativePath="DateTimePicker.hpp"
+					>
 				</File>
 				<File
-					RelativePath="DecimalBox.cpp">
+					RelativePath="DecimalBox.cpp"
+					>
 				</File>
 				<File
-					RelativePath="DecimalBox.hpp">
+					RelativePath="DecimalBox.hpp"
+					>
 				</File>
 				<File
-					RelativePath="EditBox.cpp">
+					RelativePath="EditBox.cpp"
+					>
 				</File>
 				<File
-					RelativePath="EditBox.hpp">
+					RelativePath="EditBox.hpp"
+					>
 				</File>
 				<File
-					RelativePath="IconCtrl.cpp">
+					RelativePath="IconCtrl.cpp"
+					>
 				</File>
 				<File
-					RelativePath="IconCtrl.hpp">
+					RelativePath="IconCtrl.hpp"
+					>
 				</File>
 				<File
-					RelativePath="Label.cpp">
+					RelativePath="Label.cpp"
+					>
 				</File>
 				<File
-					RelativePath="Label.hpp">
+					RelativePath="Label.hpp"
+					>
 				</File>
 				<File
-					RelativePath="ListBox.cpp">
+					RelativePath="ListBox.cpp"
+					>
 				</File>
 				<File
-					RelativePath="ListBox.hpp">
+					RelativePath="ListBox.hpp"
+					>
 				</File>
 				<File
-					RelativePath="ListView.cpp">
+					RelativePath="ListView.cpp"
+					>
 				</File>
 				<File
-					RelativePath="ListView.hpp">
+					RelativePath="ListView.hpp"
+					>
 				</File>
 				<File
-					RelativePath="PathEditBox.cpp">
+					RelativePath="PathEditBox.cpp"
+					>
 				</File>
 				<File
-					RelativePath="PathEditBox.hpp">
+					RelativePath="PathEditBox.hpp"
+					>
 				</File>
 				<File
-					RelativePath="ProgressBar.cpp">
+					RelativePath="ProgressBar.cpp"
+					>
 				</File>
 				<File
-					RelativePath="ProgressBar.hpp">
+					RelativePath="ProgressBar.hpp"
+					>
 				</File>
 				<File
-					RelativePath="RadioBtn.cpp">
+					RelativePath="RadioBtn.cpp"
+					>
 				</File>
 				<File
-					RelativePath="RadioBtn.hpp">
+					RelativePath="RadioBtn.hpp"
+					>
 				</File>
 				<File
-					RelativePath="StaticCtrl.cpp">
+					RelativePath="StaticCtrl.cpp"
+					>
 				</File>
 				<File
-					RelativePath="StaticCtrl.hpp">
+					RelativePath="StaticCtrl.hpp"
+					>
 				</File>
 				<File
-					RelativePath="StdWnd.cpp">
+					RelativePath="StdWnd.cpp"
+					>
 				</File>
 				<File
-					RelativePath="StdWnd.hpp">
+					RelativePath="StdWnd.hpp"
+					>
 				</File>
 				<File
-					RelativePath="TabCtrl.cpp">
+					RelativePath="TabCtrl.cpp"
+					>
 				</File>
 				<File
-					RelativePath="TabCtrl.hpp">
+					RelativePath="TabCtrl.hpp"
+					>
 				</File>
 				<File
-					RelativePath=".\TreeView.cpp">
+					RelativePath=".\TreeView.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\TreeView.hpp">
+					RelativePath=".\TreeView.hpp"
+					>
 				</File>
 				<File
-					RelativePath="UpDownBtns.cpp">
+					RelativePath="UpDownBtns.cpp"
+					>
 				</File>
 				<File
-					RelativePath="UpDownBtns.hpp">
+					RelativePath="UpDownBtns.hpp"
+					>
 				</File>
 				<File
-					RelativePath="URLLabel.cpp">
+					RelativePath="URLLabel.cpp"
+					>
 				</File>
 				<File
-					RelativePath="URLLabel.hpp">
+					RelativePath="URLLabel.hpp"
+					>
 				</File>
 			</Filter>
 			<Filter
 				Name="Display"
-				Filter="">
+				>
 				<File
-					RelativePath="Bitmap.cpp">
+					RelativePath="Bitmap.cpp"
+					>
 				</File>
 				<File
-					RelativePath="Bitmap.hpp">
+					RelativePath="Bitmap.hpp"
+					>
 				</File>
 				<File
-					RelativePath="Brush.cpp">
+					RelativePath="Brush.cpp"
+					>
 				</File>
 				<File
-					RelativePath="Brush.hpp">
+					RelativePath="Brush.hpp"
+					>
 				</File>
 				<File
-					RelativePath="Cursor.cpp">
+					RelativePath="Cursor.cpp"
+					>
 				</File>
 				<File
-					RelativePath="Cursor.hpp">
+					RelativePath="Cursor.hpp"
+					>
 				</File>
 				<File
-					RelativePath="DC.cpp">
+					RelativePath="DC.cpp"
+					>
 				</File>
 				<File
-					RelativePath="DC.hpp">
+					RelativePath="DC.hpp"
+					>
 				</File>
 				<File
-					RelativePath="Font.cpp">
+					RelativePath="Font.cpp"
+					>
 				</File>
 				<File
-					RelativePath="Font.hpp">
+					RelativePath="Font.hpp"
+					>
 				</File>
 				<File
-					RelativePath="Icon.cpp">
+					RelativePath="Icon.cpp"
+					>
 				</File>
 				<File
-					RelativePath="Icon.hpp">
+					RelativePath="Icon.hpp"
+					>
 				</File>
 				<File
-					RelativePath="ImageList.cpp">
+					RelativePath="ImageList.cpp"
+					>
 				</File>
 				<File
-					RelativePath="ImageList.hpp">
+					RelativePath="ImageList.hpp"
+					>
 				</File>
 				<File
-					RelativePath="MemDC.cpp">
+					RelativePath="MemDC.cpp"
+					>
 				</File>
 				<File
-					RelativePath="MemDC.hpp">
+					RelativePath="MemDC.hpp"
+					>
 				</File>
 				<File
-					RelativePath="Pen.cpp">
+					RelativePath="Pen.cpp"
+					>
 				</File>
 				<File
-					RelativePath="Pen.hpp">
+					RelativePath="Pen.hpp"
+					>
 				</File>
 				<File
-					RelativePath="Printer.cpp">
+					RelativePath="Printer.cpp"
+					>
 				</File>
 				<File
-					RelativePath="Printer.hpp">
+					RelativePath="Printer.hpp"
+					>
 				</File>
 				<File
-					RelativePath="PrinterDC.cpp">
+					RelativePath="PrinterDC.cpp"
+					>
 				</File>
 				<File
-					RelativePath="PrinterDC.hpp">
+					RelativePath="PrinterDC.hpp"
+					>
 				</File>
 				<File
-					RelativePath="ScreenDC.cpp">
+					RelativePath="ScreenDC.cpp"
+					>
 				</File>
 				<File
-					RelativePath="ScreenDC.hpp">
+					RelativePath="ScreenDC.hpp"
+					>
 				</File>
 				<File
-					RelativePath="TransparentBmp.cpp">
+					RelativePath="TransparentBmp.cpp"
+					>
 				</File>
 				<File
-					RelativePath="TransparentBmp.hpp">
+					RelativePath="TransparentBmp.hpp"
+					>
 				</File>
 			</Filter>
 			<Filter
 				Name="Frame"
-				Filter="">
+				>
 				<File
-					RelativePath="Accel.cpp">
+					RelativePath="Accel.cpp"
+					>
 				</File>
 				<File
-					RelativePath="Accel.hpp">
+					RelativePath="Accel.hpp"
+					>
 				</File>
 				<File
-					RelativePath="BusyCursor.cpp">
+					RelativePath="BusyCursor.cpp"
+					>
 				</File>
 				<File
-					RelativePath="BusyCursor.hpp">
+					RelativePath="BusyCursor.hpp"
+					>
 				</File>
 				<File
-					RelativePath=".\CommonUI.hpp">
+					RelativePath=".\CommonUI.hpp"
+					>
 				</File>
 				<File
-					RelativePath=".\ContextMenu.cpp">
+					RelativePath=".\ContextMenu.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\ContextMenu.hpp">
+					RelativePath=".\ContextMenu.hpp"
+					>
 				</File>
 				<File
-					RelativePath="CtrlWnd.cpp">
+					RelativePath="CtrlWnd.cpp"
+					>
 				</File>
 				<File
-					RelativePath="CtrlWnd.hpp">
+					RelativePath="CtrlWnd.hpp"
+					>
 				</File>
 				<File
-					RelativePath="Dialog.cpp">
+					RelativePath="Dialog.cpp"
+					>
 				</File>
 				<File
-					RelativePath="Dialog.hpp">
+					RelativePath="Dialog.hpp"
+					>
 				</File>
 				<File
-					RelativePath="DlgFrame.cpp">
+					RelativePath="DlgFrame.cpp"
+					>
 				</File>
 				<File
-					RelativePath="DlgFrame.hpp">
+					RelativePath="DlgFrame.hpp"
+					>
 				</File>
 				<File
-					RelativePath="FrameMenu.cpp">
+					RelativePath="FrameMenu.cpp"
+					>
 				</File>
 				<File
-					RelativePath="FrameMenu.hpp">
+					RelativePath="FrameMenu.hpp"
+					>
 				</File>
 				<File
-					RelativePath="FrameWnd.cpp">
+					RelativePath="FrameWnd.cpp"
+					>
 				</File>
 				<File
-					RelativePath="FrameWnd.hpp">
+					RelativePath="FrameWnd.hpp"
+					>
 				</File>
 				<File
-					RelativePath="HintBar.cpp">
+					RelativePath="HintBar.cpp"
+					>
 				</File>
 				<File
-					RelativePath="HintBar.hpp">
+					RelativePath="HintBar.hpp"
+					>
 				</File>
 				<File
-					RelativePath="LogFont.cpp">
+					RelativePath="LogFont.cpp"
+					>
 				</File>
 				<File
-					RelativePath="LogFont.hpp">
+					RelativePath="LogFont.hpp"
+					>
 				</File>
 				<File
-					RelativePath="MainDlg.cpp">
+					RelativePath="MainDlg.cpp"
+					>
 				</File>
 				<File
-					RelativePath="MainDlg.hpp">
+					RelativePath="MainDlg.hpp"
+					>
 				</File>
 				<File
-					RelativePath="Menu.cpp">
+					RelativePath="Menu.cpp"
+					>
 				</File>
 				<File
-					RelativePath="Menu.hpp">
+					RelativePath="Menu.hpp"
+					>
 				</File>
 				<File
-					RelativePath="MsgWnd.cpp">
+					RelativePath="MsgWnd.cpp"
+					>
 				</File>
 				<File
-					RelativePath="MsgWnd.hpp">
+					RelativePath="MsgWnd.hpp"
+					>
 				</File>
 				<File
-					RelativePath="PopupMenu.cpp">
+					RelativePath="PopupMenu.cpp"
+					>
 				</File>
 				<File
-					RelativePath="PopupMenu.hpp">
+					RelativePath="PopupMenu.hpp"
+					>
 				</File>
 				<File
-					RelativePath="PopupWnd.cpp">
+					RelativePath="PopupWnd.cpp"
+					>
 				</File>
 				<File
-					RelativePath="PopupWnd.hpp">
+					RelativePath="PopupWnd.hpp"
+					>
 				</File>
 				<File
-					RelativePath="PropertyPage.cpp">
+					RelativePath="PropertyPage.cpp"
+					>
 				</File>
 				<File
-					RelativePath="PropertyPage.hpp">
+					RelativePath="PropertyPage.hpp"
+					>
 				</File>
 				<File
-					RelativePath="PropertySheet.cpp">
+					RelativePath="PropertySheet.cpp"
+					>
 				</File>
 				<File
-					RelativePath="PropertySheet.hpp">
+					RelativePath="PropertySheet.hpp"
+					>
 				</File>
 				<File
-					RelativePath="SplitWnd.cpp">
+					RelativePath="SplitWnd.cpp"
+					>
 				</File>
 				<File
-					RelativePath="SplitWnd.hpp">
+					RelativePath="SplitWnd.hpp"
+					>
 				</File>
 				<File
-					RelativePath="StatusBar.cpp">
+					RelativePath="StatusBar.cpp"
+					>
 				</File>
 				<File
-					RelativePath="StatusBar.hpp">
+					RelativePath="StatusBar.hpp"
+					>
 				</File>
 				<File
-					RelativePath=".\StatusBarIcon.cpp">
+					RelativePath=".\StatusBarIcon.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\StatusBarIcon.hpp">
+					RelativePath=".\StatusBarIcon.hpp"
+					>
 				</File>
 				<File
-					RelativePath=".\StatusBarLabel.cpp">
+					RelativePath=".\StatusBarLabel.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\StatusBarLabel.hpp">
+					RelativePath=".\StatusBarLabel.hpp"
+					>
 				</File>
 				<File
-					RelativePath=".\StatusBarPanel.cpp">
+					RelativePath=".\StatusBarPanel.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\StatusBarPanel.hpp">
+					RelativePath=".\StatusBarPanel.hpp"
+					>
 				</File>
 				<File
-					RelativePath="TabWndHost.cpp">
+					RelativePath="TabWndHost.cpp"
+					>
 				</File>
 				<File
-					RelativePath="TabWndHost.hpp">
+					RelativePath="TabWndHost.hpp"
+					>
 				</File>
 				<File
-					RelativePath="ToolBar.cpp">
+					RelativePath="ToolBar.cpp"
+					>
 				</File>
 				<File
-					RelativePath="ToolBar.hpp">
+					RelativePath="ToolBar.hpp"
+					>
 				</File>
 				<File
-					RelativePath="ToolTip.cpp">
+					RelativePath="ToolTip.cpp"
+					>
 				</File>
 				<File
-					RelativePath="ToolTip.hpp">
+					RelativePath="ToolTip.hpp"
+					>
 				</File>
 				<File
-					RelativePath="TrayIcon.cpp">
+					RelativePath="TrayIcon.cpp"
+					>
 				</File>
 				<File
-					RelativePath="TrayIcon.hpp">
+					RelativePath="TrayIcon.hpp"
+					>
 				</File>
 				<File
-					RelativePath="Wnd.cpp">
+					RelativePath="Wnd.cpp"
+					>
 				</File>
 				<File
-					RelativePath="Wnd.hpp">
+					RelativePath="Wnd.hpp"
+					>
 				</File>
 				<File
-					RelativePath="WndMap.cpp">
+					RelativePath="WndMap.cpp"
+					>
 				</File>
 				<File
-					RelativePath="WndMap.hpp">
+					RelativePath="WndMap.hpp"
+					>
 				</File>
 			</Filter>
 		</Filter>
 		<File
-			RelativePath=".\DevNotes.txt">
+			RelativePath=".\DevNotes.txt"
+			>
 		</File>
 		<File
-			RelativePath=".\Doxygen.cfg">
+			RelativePath=".\Doxygen.cfg"
+			>
 		</File>
 		<File
-			RelativePath="ReadMe.txt">
+			RelativePath="ReadMe.txt"
+			>
 		</File>
 		<File
-			RelativePath="TODO.Txt">
+			RelativePath="TODO.Txt"
+			>
 		</File>
 	</Files>
 	<Globals>
