@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="Test"
 	ProjectGUID="{2DF1265B-A30F-477C-B18B-5A569C36A6A7}"
+	RootNamespace="Test"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -182,12 +183,11 @@
 	<References>
 		<ProjectReference
 			ReferencedProjectIdentifier="{790BC113-52FB-4565-8968-79B8B011C520}"
-		/>
-		<ProjectReference
-			ReferencedProjectIdentifier="{AED77F84-49CF-4B84-B319-2D07025ECA06}"
+			RelativePathToProject="..\..\Core\Core.vcproj"
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{9B0335B6-93BE-4604-8497-27431874D758}"
+			RelativePathToProject="..\Wcl.vcproj"
 		/>
 	</References>
 	<Files>
