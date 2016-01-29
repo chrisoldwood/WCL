@@ -75,6 +75,26 @@ TEST_CASE("path can be implictly converted to various string types")
 }
 TEST_CASE_END
 
+TEST_CASE("the parent of a path is the containing folder")
+{
+	CPath filePath(TXT("C:\\Parent\\File.Ext"));
+
+	TEST_TRUE(filePath.Parent() == TXT("C:\\Parent"));
+
+	CPath folderPath(TXT("C:\\Parent\\Child"));
+
+	TEST_TRUE(filePath.Parent() == TXT("C:\\Parent"));
+}
+TEST_CASE_END
+
+TEST_CASE("the parent of a path to a file is the same as the directory containing the file")
+{
+	CPath filePath(TXT("C:\\Parent\\File.Ext"));
+
+	TEST_TRUE(filePath.Parent() == filePath.Directory());
+}
+TEST_CASE_END
+
 TEST_CASE("the entire path without the file extension can be retrieved")
 {
 	CPath fullPathWithExtension(TXT("C:\\Folder\\File.Ext"));

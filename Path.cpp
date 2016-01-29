@@ -478,6 +478,14 @@ CString CPath::FileExt() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Retrieve the path of the parent folder.
+
+CPath CPath::Parent() const
+{
+	return Directory();
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Retrieve the full path less the file extension.
 
 CPath CPath::PathWithoutExt() const
