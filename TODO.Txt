@@ -64,6 +64,8 @@ TEST_TRUE(testDate.ToString(CDate::FMT_WIN_SHORT) == TXT("01/02/2003"));
 
 - Add T2B(STR) style helper to simplify use of temporary tchar -> BSTR conversions.
 
+- ctor overloads on RegKey to open on construction (e.g. COM registration).
+
 UNICODE
 =======
 
