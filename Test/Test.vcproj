@@ -54,6 +54,7 @@
 				ForceConformanceInForLoopScope="true"
 				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="Common.hpp"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -133,6 +134,7 @@
 				ForceConformanceInForLoopScope="true"
 				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="Common.hpp"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -370,7 +372,11 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\stdafx.cpp"
+			RelativePath=".\Common.hpp"
+			>
+		</File>
+		<File
+			RelativePath=".\pch.cpp"
 			>
 			<FileConfiguration
 				Name="Debug|Win32"
@@ -388,10 +394,6 @@
 					UsePrecompiledHeader="1"
 				/>
 			</FileConfiguration>
-		</File>
-		<File
-			RelativePath=".\stdafx.h"
-			>
 		</File>
 		<File
 			RelativePath=".\Test.cpp"

@@ -3,7 +3,7 @@
 //! \brief  The unit tests for the ConsoleCmd class.
 //! \author Chris Oldwood
 
-#include "stdafx.h"
+#include "Common.hpp"
 #include <Core/UnitTest.hpp>
 #include <WCL/ConsoleCmd.hpp>
 #include <Core/CmdLineException.hpp>

@@ -3,7 +3,7 @@
 //! \brief  The unit tests for the MemStream class.
 //! \author Chris Oldwood
 
-#include "stdafx.h"
+#include "Common.hpp"
 #include <Core/UnitTest.hpp>
 #include <WCL/MemStream.hpp>
 #include <WCL/Buffer.hpp>
