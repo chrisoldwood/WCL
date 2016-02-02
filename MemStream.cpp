@@ -13,6 +13,7 @@
 #include "MemStreamException.hpp"
 #include "Buffer.hpp"
 #include <limits>
+#include <algorithm>
 
 // Default allocation size in bytes (1K).
 const size_t ALLOC_SIZE = 1024;

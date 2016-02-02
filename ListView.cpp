@@ -10,6 +10,7 @@
 
 #include "Common.hpp"
 #include "ListView.hpp"
+#include <algorithm>
 
 #if __GNUC__
 // missing initializer for member 'X'

@@ -66,6 +66,8 @@ TEST_TRUE(testDate.ToString(CDate::FMT_WIN_SHORT) == TXT("01/02/2003"));
 
 - ctor overloads on RegKey to open on construction (e.g. COM registration).
 
+- Unwind _CRT_NON_CONFORMING_WCSTOK hack and use conformant strtok (or strtok_s for compatability). 
+
 UNICODE
 =======
 

@@ -172,7 +172,7 @@ inline T** IFacePtr<T>::GetPtrMember()
 //! e.g. LoadTypeLib(..., AttachTo(p)).
 
 template <typename T>
-inline T** AttachTo(IFacePtr<T>& ptr)
+T** AttachTo(IFacePtr<T>& ptr)
 {
 	if (!ptr.empty())
 		throw Core::BadLogicException(TXT("Cannot attach to a non-empty smart pointer"));
