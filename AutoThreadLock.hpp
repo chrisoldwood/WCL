@@ -17,8 +17,8 @@
 #endif
 
 /******************************************************************************
-** 
-** Helper class to automatically aquire and release a thread lock.
+**
+** Helper class to automatically acquire and release a thread lock.
 **
 *******************************************************************************
 */
@@ -31,7 +31,7 @@ public:
 	//
 	CAutoThreadLock(IThreadLock& oLock);
 	~CAutoThreadLock();
-	
+
 protected:
 	//
 	// Members.

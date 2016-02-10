@@ -127,7 +127,7 @@ protected:
 	//! Handle a mouse click over the sizing bar.
 	virtual void OnLeftButtonUp(const CPoint& ptCursor, uint nKeyFlags);
 
-	//! Handle resizng of the panes.
+	//! Handle resizing of the panes.
 	virtual void OnMouseMove(const CPoint& ptCursor, uint nKeyFlags);
 
 	//

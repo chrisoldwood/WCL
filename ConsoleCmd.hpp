@@ -45,7 +45,7 @@ protected:
 	//
 	int					m_argc;		//!< The number of command line arguments.
 	tchar**				m_argv;		//!< The array of command line arguments
-	Core::CmdLineParser m_parser;	//!< The command specifc command line parser.
+	Core::CmdLineParser m_parser;	//!< The command specific command line parser.
 	int					m_usageId;	//!< The ID of the usage switch.
 
 	//

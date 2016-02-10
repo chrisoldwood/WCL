@@ -60,7 +60,7 @@ TEST_CASE("construction with a pointer passes ownership")
 }
 TEST_CASE_END
 
-TEST_CASE("assigment shares ownership")
+TEST_CASE("assignment shares ownership")
 {
 	IMalloc* expected = nullptr;
 
@@ -148,7 +148,7 @@ TEST_CASE("a COM object can be created through construction via its CLSID")
 }
 TEST_CASE_END
 
-TEST_CASE("a COM object can be explictly created via its CLSID")
+TEST_CASE("a COM object can be explicitly created via its CLSID")
 {
 	IUnknownPtr test;
 

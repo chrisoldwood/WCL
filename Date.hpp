@@ -155,7 +155,7 @@ protected:
 	friend class CDateTime;
 
 	//
-	// Persistance.
+	// Persistence.
 	//
 	friend void operator >>(WCL::IInputStream&  rStream, CDate& rDate);
 	friend void operator <<(WCL::IOutputStream& rStream, const CDate& rDate);

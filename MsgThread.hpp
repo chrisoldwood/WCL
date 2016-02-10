@@ -63,14 +63,14 @@ public:
 	// Constants.
 	//
 
-	//! The thread result code for succeess.
+	//! The thread result code for success.
 	static const int THREAD_EXIT_SUCCESS = EXIT_SUCCESS;
 
 	//! The thread result code for failure.
 	static const int THREAD_EXIT_FAILURE = EXIT_FAILURE;
 
 protected:
-	// Template shorthands.
+	// Template short-hands.
 	typedef std::list<IMsgFilter*> CMsgFilters;
 
 	//

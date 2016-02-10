@@ -19,8 +19,8 @@
 #include "MsgWnd.hpp"
 
 /******************************************************************************
-** 
-** This is a CMsgWnd derived class that provides defualt handlers for all
+**
+** This is a CMsgWnd derived class that provides default handlers for all
 ** messages common to overlapped and child windows. It is used for all
 ** non-dialog based windows.
 **

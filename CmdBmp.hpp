@@ -23,9 +23,9 @@ class CRect;
 class CDC;
 
 /******************************************************************************
-** 
+**
 ** The class used to store the visual representation (enabled and disabled) of
-** all commands. It is used by the toolbar buttons and menu to draw the command
+** all commands. It is used by the tool bar buttons and menu to draw the command
 ** icons.
 **
 *******************************************************************************

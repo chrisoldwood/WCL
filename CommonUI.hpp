@@ -20,7 +20,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Library headers.
 
-// Conrainer windows.
+// Container windows.
 #include <WCL/Dialog.hpp>
 #include <WCL/PropertyPage.hpp>
 

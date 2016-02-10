@@ -47,9 +47,9 @@ CCriticalSection::~CCriticalSection()
 }
 
 /******************************************************************************
-** Method:		Aquire()
+** Method:		Acquire()
 **
-** Description:	Attempt to aquire the critical section.
+** Description:	Attempt to acquire the critical section.
 **
 ** Parameters:	None.
 **

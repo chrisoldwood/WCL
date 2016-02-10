@@ -24,8 +24,8 @@ class CCtrlWnd;
 
 /******************************************************************************
 **
-** This is the base class from which all modal and modeless	dialogs are
-** derived. The diaog can be run modal or modeless depending on the method
+** This is the base class from which all modal and mode-less dialogs are
+** derived. The dialog can be run modal or mode-less depending on the method
 ** used.
 **
 *******************************************************************************

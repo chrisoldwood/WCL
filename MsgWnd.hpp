@@ -25,7 +25,7 @@ class CDC;
 /******************************************************************************
 **
 ** This is a Wnd derived class that provides a base class for all message
-** based windows. It provides the defualt handlers for all messages common to
+** based windows. It provides the default handlers for all messages common to
 ** all windows.
 **
 *******************************************************************************
@@ -51,7 +51,7 @@ public:
 
 protected:
 	/////////////////////////////////////////////////////////////////
-	// Structure to define an entry in the control msg table.
+	// Structure to define an entry in the control message table.
 	/////////////////////////////////////////////////////////////////
 
 	// Pointer to generic message handler.

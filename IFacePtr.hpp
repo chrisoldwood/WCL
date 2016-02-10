@@ -28,7 +28,7 @@ T** AttachTo(IFacePtr<T>& ptr);
 ////////////////////////////////////////////////////////////////////////////////
 //! A smart-pointer type for use with COM interfaces. This class can only be
 //! used to manage the lifetime of COM interfaces, to create COM objects and
-//! aquire other interfaces use the ComPtr<T> class.
+//! acquire other interfaces use the ComPtr<T> class.
 
 template <typename T>
 class IFacePtr : public Core::SmartPtr<T>

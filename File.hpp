@@ -50,7 +50,7 @@ public:
 	void Close();
 
 	//
-	// Overriden generic operations.
+	// Overridden generic operations.
 	//
 	virtual void  Read(void* pBuffer, size_t iNumBytes);
 	virtual void  Write(const void* pBuffer, size_t iNumBytes);

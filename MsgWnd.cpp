@@ -37,10 +37,10 @@ CMsgWnd::CMsgWnd()
 ** Method:		WndProc()
 **
 ** Description:	This is the base implementation of a CMsgWnd window message
-**				handler. It handles all messages common to all popup windows.
-**				This is a virtual function and is overriden by derived clases
+**				handler. It handles all messages common to all pop-up windows.
+**				This is a virtual function and is overridden by derived classes
 **				to farm out more specific messages, but should always be called
-**				by derived clases to get the default processing.
+**				by derived classes to get the default processing.
 **
 ** Parameters:	Standard window procedure parameters.
 **
@@ -509,7 +509,7 @@ LRESULT CMsgWnd::OnCtrlMsg(NMHDR& rMsgHdr)
 **
 ** Description:	A message from this child (usually a built-in Windows control)
 **				has been sent to the parent and reflected back here to the
-**				control. This method is usually overriden in a derived class.
+**				control. This method is usually overridden in a derived class.
 **				NB: This is for WM_COMMAND style events.
 **
 ** Parameters:	iMsg		Control message.
@@ -528,7 +528,7 @@ void CMsgWnd::OnReflectedCtrlMsg(uint /*iMsg*/)
 **
 ** Description:	A message from this child (usually a built-in Windows control)
 **				has been sent to the parent and reflected back here to the
-**				control. This method is usually overriden in a derived class.
+**				control. This method is usually overridden in a derived class.
 **				NB: This is for WM_NOTIFY style events.
 **
 ** Parameters:	rMsgHdr		The message.

@@ -52,7 +52,7 @@ CCursor::~CCursor()
 
 void CCursor::Release()
 {
-	// Aquired AND we own it?
+	// Acquired AND we own it?
 	if ( (m_hCursor != NULL) && m_bOwner )
 		::DestroyCursor(m_hCursor);
 

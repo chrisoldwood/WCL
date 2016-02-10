@@ -19,8 +19,8 @@
 #include "Library.hpp"
 
 /******************************************************************************
-** 
-** Helper class used to interogate and initialise COMCTL32.DLL.
+**
+** Helper class used to interrogate and initialise COMCTL32.DLL.
 **
 *******************************************************************************
 */
@@ -33,7 +33,7 @@ public:
 	//
 	CComCtl32();
 	~CComCtl32();
-	
+
 	//
 	// Methods.
 	//

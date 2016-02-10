@@ -17,7 +17,7 @@ namespace WCL
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-//! A reader for the Version Information embeded inside the resources of an .exe
+//! A reader for the Version Information embedded inside the resources of an .exe
 //! or .dll.
 
 class VerInfoReader /*: private NotCopyable*/
@@ -28,7 +28,7 @@ public:
 
 	struct Translation
 	{
-		WORD	m_wLanguage;	//!< The langauge ID.
+		WORD	m_wLanguage;	//!< The language ID.
 		WORD	m_wCodePage;	//!< The Code Page.
 	};
 

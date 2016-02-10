@@ -300,10 +300,10 @@ LRESULT WINDOWPROC CPopupWnd::PopupWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, 
 ** Method:		WndProc()
 **
 ** Description:	This is the base implementation of a CPopupWnd window message
-**				handler. It handles all messages common to all popup windows.
-**				This is a virtual function and is overriden by derived clases
+**				handler. It handles all messages common to all pop-up windows.
+**				This is a virtual function and is overridden by derived classes
 **				to farm out more specific messages, but should always be called
-**				by derived clases to get the default processing.
+**				by derived classes to get the default processing.
 **
 ** Parameters:	Standard window procedure parameters.
 **
@@ -613,7 +613,7 @@ void CPopupWnd::OnSelectMenu(uint iFlags, uint iItemID, HMENU hMenu)
 ** Method:		OnShowMenuItemHint()
 **
 ** Description:	Display a hint for the selected menu item. This method is
-**				virtual and can be overriden.
+**				virtual and can be overridden.
 **
 ** Parameters:	iItemID		The menu ID.
 **
@@ -635,10 +635,10 @@ void CPopupWnd::OnShowMenuItemHint(uint iItemID)
 /******************************************************************************
 ** Method:		OnShowMenuPopupHint()
 **
-** Description:	Display a hint for the selected popup menu. This method is
-**				virtual and can be overriden, by defualt it loads the hint from
+** Description:	Display a hint for the selected pop-up menu. This method is
+**				virtual and can be overridden, by default it loads the hint from
 **				resource file and displays it. It looks at the first item in
-**				the submenu and uses modulo 10 to find the hint for it.
+**				the sub-menu and uses modulo 10 to find the hint for it.
 **
 ** Parameters:	hMenu		The menu handle
 **

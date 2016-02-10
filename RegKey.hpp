@@ -15,7 +15,7 @@ namespace WCL
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-//! The class used to read and write from the loca Registry.
+//! The class used to read and write from the local Registry.
 
 class RegKey
 {
@@ -25,7 +25,7 @@ public:
 
 	//! Destructor.
 	~RegKey();
-	
+
 	//
 	// Properties.
 	//

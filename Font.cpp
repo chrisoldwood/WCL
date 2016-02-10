@@ -156,7 +156,7 @@ bool CFont::Create(int iID)
 {
 	Release();
 
-	// Aquire font.
+	// Acquire font.
 	m_hFont  = GetStockFont(iID);
 	m_bOwner = false;
 

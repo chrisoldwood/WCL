@@ -21,10 +21,10 @@
 /* WINVER >= 0x0500 */
 #ifndef CF_DIBV5
 #define CF_DIBV5	17
-#endif 
+#endif
 
 /******************************************************************************
-** 
+**
 ** This is a CStream derived class used to access the clipboard.
 **
 *******************************************************************************
@@ -38,7 +38,7 @@ public:
 	//
 	CClipboard();
 	~CClipboard();
-	
+
 	//
 	// Properties.
 	//
@@ -51,7 +51,7 @@ public:
 	void Close();
 
 	//
-	// Overriden generic operations.
+	// Overridden generic operations.
 	//
 	virtual void  Read(void* pBuffer, size_t nNumBytes);
 	virtual void  Write(const void* pBuffer, size_t nNumBytes);

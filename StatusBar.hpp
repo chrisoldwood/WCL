@@ -24,7 +24,7 @@ class CStatusBarPanel;
 
 /******************************************************************************
 **
-** This is a child window that acts as a placeholder for other child windows
+** This is a child window that acts as a place-holder for other child windows
 ** that display information about the application.
 **
 *******************************************************************************
@@ -57,10 +57,10 @@ protected:
 	//
 	// Members.
 	//
-	bool			m_bSizeGrip;	// Dar a sizing grip?
+	bool			m_bSizeGrip;	// Draw a sizing grip?
 	CWnd*			m_pActive;		// Active window to left of status bar.
 	CPanels			m_apPanels;		// Status bar panels on right-hand side.
-	CHintBar		m_oHintBar;		// The menu/toolbar hint windnow.
+	CHintBar		m_oHintBar;		// The menu/toolbar hint window.
 
 	// Child window IDs.
 	static const uint IDC_HINT_BAR = 100;

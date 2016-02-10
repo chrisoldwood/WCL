@@ -23,7 +23,7 @@
 #include "Font.hpp"
 #include "Bitmap.hpp"
 
-// Forward declaraations.
+// Forward declarations.
 class CTransparentBmp;
 
 /******************************************************************************

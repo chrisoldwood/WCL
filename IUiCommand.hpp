@@ -22,7 +22,7 @@ namespace WCL
 
 ////////////////////////////////////////////////////////////////////////////////
 //! A user interface command. These commands are usually exposed as menu items
-//! and toolbar buttons and dispatched by implementations of ICmdController.
+//! and tool bar buttons and dispatched by implementations of ICmdController.
 
 class IUiCommand
 {

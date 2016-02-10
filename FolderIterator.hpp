@@ -15,7 +15,7 @@ namespace WCL
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-//! An iterator for enumerating the file and directory names in a filesystem
+//! An iterator for enumerating the file and directory names in a file-system
 //! folder.
 
 class FolderIterator /*: private Core::NotCopyable*/

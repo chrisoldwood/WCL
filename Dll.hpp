@@ -20,7 +20,7 @@
 #include "DllMain.hpp"
 
 /******************************************************************************
-** 
+**
 ** This is base class from which the dll component class is derived.
 **
 *******************************************************************************
@@ -34,10 +34,10 @@ public:
 	//
 	CDll();
 	virtual ~CDll();
-	
+
 	//! Check if the dll singleton is valid.
 	static bool IsValid();
-	
+
 	//! Global access to the dll singleton.
 	static CDll& This();
 
@@ -53,22 +53,22 @@ protected:
 
 	//
 	// DllMain template methods.
-	// (Overriden in the derived class).
+	// (Overridden in the derived class).
 	//
 	virtual	void OnLoad();
 	virtual	void OnUnload();
 	virtual	void OnThreadAttached();
-	virtual	void OnThreadDetached();	
+	virtual	void OnThreadDetached();
 
 private:
 	//
-	// Startup and shutdown methods.
+	// Start-up and shut-down methods.
 	// (Called from DllMain).
 	//
 	void Load();
 	void Unload();
 	void ThreadAttached();
-	void ThreadDetached();	
+	void ThreadDetached();
 
 	friend BOOL WCL::dllMain(HINSTANCE hInst, DWORD dwReason);
 

@@ -24,7 +24,7 @@ class CPoint;
 
 /******************************************************************************
 **
-** This is a menu derived class for popup (context) menus.
+** This is a menu derived class for pop-up (context) menus.
 **
 *******************************************************************************
 */

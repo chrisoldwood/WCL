@@ -19,8 +19,8 @@
 #include "StdWnd.hpp"
 
 /******************************************************************************
-** 
-** This is a combobox control.
+**
+** This is a combo-box control.
 **
 *******************************************************************************
 */
@@ -68,7 +68,7 @@ protected:
 	//
 	// Members.
 	//
-	
+
 	//
 	// Window creation template methods.
 	//

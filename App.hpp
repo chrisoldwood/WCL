@@ -32,7 +32,7 @@ class ICmdController;
 }
 
 /******************************************************************************
-** 
+**
 ** This is base class from which the application class is derived.
 **
 *******************************************************************************
@@ -78,10 +78,10 @@ public:
 
 	//! Check if the app singleton is valid.
 	static bool IsValid();
-	
+
 	//! Global access to the app singleton.
 	static CApp& This();
-	
+
 	//
 	// Members.
 	//
@@ -104,8 +104,8 @@ protected:
 	CPen	m_DarkPen,  m_DarkestPen;
 
 	//
-	// Startup and Shutdown template methods.
-	// (Overriden in the derived class).
+	// Start-up and Shut-down template methods.
+	// (Overridden in the derived class).
 	//
 	virtual	bool OnOpen();
 	virtual	bool OnClose();
@@ -118,7 +118,7 @@ protected:
 
 private:
 	//
-	// Startup and shutdown methods.
+	// Start-up and shut-down methods.
 	// (Called from WinMain).
 	//
 	bool Open();

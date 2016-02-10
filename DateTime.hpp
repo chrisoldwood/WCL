@@ -31,8 +31,8 @@ class IOutputStream;
 /******************************************************************************
 **
 ** This class is used to represent a date. It is stored and manipulated as if
-** it was a UTC time_t. Consequenetly there is no notion of Daylight Saving or
-** timezones, which makes date and time arithmetic easier.
+** it was a UTC time_t. Consequently there is no notion of Daylight Saving or
+** time-zones, which makes date and time arithmetic easier.
 **
 *******************************************************************************
 */
@@ -109,7 +109,7 @@ protected:
 
 private:
 	//
-	// Persistance.
+	// Persistence.
 	//
 	friend void operator >>(WCL::IInputStream& , CDateTime& rDateTime);
 	friend void operator <<(WCL::IOutputStream&, const CDateTime& rDateTime);

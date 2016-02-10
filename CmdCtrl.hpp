@@ -89,7 +89,7 @@ protected:
 
 	struct CMD
 	{
-		CmdType			m_eType;			// Comamnd handler type.
+		CmdType			m_eType;			// Command handler type.
 		uint			m_iFirstID;			// First command in range.
 		uint			m_iLastID;			// Last command in range.
 		PFNCMDHANDLER	m_lpfnCmdHandler;	// The exec command handler.

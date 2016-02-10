@@ -24,7 +24,7 @@
 class CPropertyPage;
 
 /******************************************************************************
-** 
+**
 ** This is the base class for all property style dialogs.
 **
 *******************************************************************************
@@ -38,9 +38,9 @@ public:
 	//
 	CPropertySheet();
 	virtual	~CPropertySheet();
-	
+
 	//
-	// Creation methods (Overriden from CDialog).
+	// Creation methods (Overridden from CDialog).
 	//
 	virtual bool RunModeless(CWnd& rParent);
 	virtual int  RunModal(CWnd& rParent);
@@ -85,7 +85,7 @@ protected:
 };
 
 /******************************************************************************
-** 
+**
 ** Macros used to ease the definition of the control table.
 **
 *******************************************************************************

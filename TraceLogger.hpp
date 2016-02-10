@@ -25,7 +25,7 @@ public:
 	//! Install the logger..
 	static void Install();
 
-	//! Set the logfile.
+	//! Set the log file.
 	static void SetLogFile(const tchar* pszLogFile);
 
 	//! Set whether to display ASSERTs.

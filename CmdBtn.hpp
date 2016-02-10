@@ -20,8 +20,8 @@
 #include "WclTypes.hpp"
 
 /******************************************************************************
-** 
-** This is a bitmap based button control used on a toolbar.
+**
+** This is a bitmap based button control used on a tool bar.
 **
 *******************************************************************************
 */

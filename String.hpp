@@ -172,8 +172,8 @@ protected:
 	static tchar*     pszNULL;
 
 	//
-	// Persistance.
-	// NB: We only define an ostream inserter for backwards compatability.
+	// Persistence.
+	// NB: We only define an ostream inserter for backwards compatibility.
 	//
 	friend void operator >>(WCL::IInputStream&  rStream, CString& rString);
 	friend void operator <<(WCL::IOutputStream& rStream, const CString& rString);

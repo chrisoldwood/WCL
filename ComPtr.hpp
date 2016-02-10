@@ -41,7 +41,7 @@ public:
 	//! Copy constructor.
 	ComPtr(const ComPtr& rhs);
 
-	//! Aquire a different interface for another COM object.
+	//! Acquire a different interface for another COM object.
 	template <typename U>
 	explicit ComPtr(const IFacePtr<U>& rhs); // throw(ComException)
 
@@ -55,7 +55,7 @@ public:
 	//! Assignment operator.
 	ComPtr& operator=(const ComPtr& rhs);
 
-	//! Aquire a different interface for another COM object.
+	//! Acquire a different interface for another COM object.
 	template <typename U>
 	ComPtr& operator=(const IFacePtr<U>& rhs);
 
@@ -66,7 +66,7 @@ public:
 	//! Create an instance of the object.
 	void CreateInstance(const CLSID& rCLSID); // throw(ComException)
 
-	//! Aquire a different interface for another COM object.
+	//! Acquire a different interface for another COM object.
 	template <typename U>
 	void QueryInterface(const IFacePtr<U>& rhs); // throw(ComException)
 
@@ -116,7 +116,7 @@ inline ComPtr<T>::ComPtr(const ComPtr& rhs)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Aquire a different interface for another COM object.
+//! Acquire a different interface for another COM object.
 
 template <typename T> template <typename U>
 inline ComPtr<T>::ComPtr(const IFacePtr<U>& rhs)
@@ -144,7 +144,7 @@ inline ComPtr<T>& ComPtr<T>::operator=(const ComPtr& rhs)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Aquire a different interface for another COM object.
+//! Acquire a different interface for another COM object.
 
 template <typename T> template <typename U>
 inline ComPtr<T>& ComPtr<T>::operator=(const IFacePtr<U>& rhs)
@@ -189,7 +189,7 @@ inline void ComPtr<T>::CreateInstance(const CLSID& rCLSID)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Aquire a different interface for another COM object.
+//! Acquire a different interface for another COM object.
 
 template <typename T> template <typename U>
 inline void ComPtr<T>::QueryInterface(const IFacePtr<U>& rhs)

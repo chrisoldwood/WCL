@@ -20,8 +20,8 @@
 #include "Cursor.hpp"
 
 /******************************************************************************
-** 
-** A STATIC based control with the ability to behave like a hyperlink.
+**
+** A STATIC based control with the ability to behave like a hyper-link.
 **
 *******************************************************************************
 */
@@ -39,7 +39,7 @@ public:
 	// Methods.
 	//
 	void Protocol(const tchar* pszProtocol);
-	
+
 protected:
 	//
 	// Members.

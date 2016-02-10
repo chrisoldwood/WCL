@@ -19,7 +19,7 @@
 #include "Path.hpp"
 
 /******************************************************************************
-** 
+**
 ** This is the base class for all documents.
 **
 *******************************************************************************
@@ -33,7 +33,7 @@ public:
 	//
 	CDoc();
 	virtual ~CDoc();
-	
+
 	//
 	// Attributes.
 	//
@@ -56,7 +56,7 @@ protected:
 	CPath	m_Path;
 
 	//
-	// Persistance methods.
+	// Persistence methods.
 	//
 	virtual void Read (WCL::IInputStream&  rStream);
 	virtual void Write(WCL::IOutputStream& rStream);

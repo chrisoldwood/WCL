@@ -53,10 +53,10 @@ public:
 	// Class methods.
 	//
 
-	//! Get the current cursor postion in screen co-ordinates.
+	//! Get the current cursor position in screen co-ordinates.
 	static CPoint CurrentPos();
 
-	//! Get the current cursor postion in window co-ordinates.
+	//! Get the current cursor position in window co-ordinates.
 	static CPoint CurrentPos(HWND hWnd);
 
 protected:

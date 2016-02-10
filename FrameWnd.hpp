@@ -20,7 +20,7 @@
 #include "IMsgFilter.hpp"
 #include "ICommandWnd.hpp"
 
-// Forward declaratons.
+// Forward declarations.
 class CAccel;
 class CFrameMenu;
 class CToolBar;
@@ -110,7 +110,7 @@ protected:
 	CFrameMenu*	m_pMenu;		// Main menu.
 	CToolBar*	m_pToolBar;		// Toolbar, if one.
 	CStatusBar*	m_pStatusBar;	// Status Bar, if one.
-	CDialog*	m_pActiveDlg;	// The active modeless dialog, if one.
+	CDialog*	m_pActiveDlg;	// The active mode-less dialog, if one.
 	CRect		m_finalPlacement;	//!< Final placement of the window.
 
 	//
@@ -127,7 +127,7 @@ protected:
 	virtual void GetCreateParams(WNDCREATE& rParams);
 
 	//
-	// Message processors (Overriden from the base class).
+	// Message processors (Overridden from the base class).
 	//
 	virtual	LRESULT	WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
 	virtual	void OnPaint(CDC& rDC);

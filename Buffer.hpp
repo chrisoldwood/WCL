@@ -76,7 +76,7 @@ protected:
 	void*	m_pBuffer;
 
 	//
-	// Persistance.
+	// Persistence.
 	//
 	friend void operator >>(WCL::IInputStream&  rStream, CBuffer& rBuffer);
 	friend void operator <<(WCL::IOutputStream& rStream, const CBuffer& rBuffer);

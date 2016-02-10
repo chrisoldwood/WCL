@@ -27,7 +27,7 @@ class AppConfig;
 }
 
 /******************************************************************************
-** 
+**
 ** This class manages the list of Most Recently Used files for an App.
 **
 *******************************************************************************
@@ -41,7 +41,7 @@ public:
 	//
 	CMRUList(size_t nMaxSize);
 	~CMRUList();
-	
+
 	//
 	// Accessors & mutators.
 	//
@@ -55,7 +55,7 @@ public:
 	void UpdateMenu(CMenu& rMenu, uint iCmdBase);
 
 	//
-	// Persistance methods.
+	// Persistence methods.
 	//
 	void Load(CIniFile& rCfgFile, const tchar* pszSection = TXT("MRU"));
 	void Save(CIniFile& rCfgFile, const tchar* pszSection = TXT("MRU"));

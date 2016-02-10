@@ -20,7 +20,7 @@
 class CWnd;
 
 /******************************************************************************
-** 
+**
 ** A thin wrapper around the LOGFONT structure.
 **
 *******************************************************************************
@@ -38,7 +38,7 @@ public:
 
 	//! Construction from a face name and height in pixels.
 	CLogFont(const tchar* pszFace, long nHeight);
-	
+
 	//
 	// Methods.
 	//
@@ -49,7 +49,7 @@ public:
 	//
 	enum FontFormat
 	{
-		FMT_MINIMAL	= 2,	// Facename + Height.
+		FMT_MINIMAL	= 2,	// Face name + Height.
 		FMT_SHORT	= 6,	// + Weight + Italic + Underline + Strikeout
 		FMT_FULL	= 14	// All fields.
 	};

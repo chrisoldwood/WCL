@@ -47,7 +47,7 @@ public:
 
 	//! Manually uninitialise COM.
 	void Uninitialise();
-	
+
 private:
 	//
 	// Members.

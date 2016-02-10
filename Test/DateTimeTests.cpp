@@ -17,7 +17,7 @@ TEST_CASE("using ISO format outputs an ISO date and time separated by a 'T'")
 }
 TEST_CASE_END
 
-TEST_CASE("using Windows short format ouputs a short date and time separated by a space")
+TEST_CASE("using Windows short format outputs a short date and time separated by a space")
 {
 	TEST_TRUE(testDateTime.ToString(CDate::FMT_WIN_SHORT, CTime::FMT_WIN_SHORT) == TXT("01/02/2003 01:02"));
 }

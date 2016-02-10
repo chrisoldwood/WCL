@@ -27,7 +27,7 @@ class CView;
 class CDoc;
 
 /******************************************************************************
-** 
+**
 ** This is the application base class for SDI applications.
 **
 *******************************************************************************
@@ -67,7 +67,7 @@ protected:
 	//
 
 	//
-	// Startup and Shutdown template methods.
+	// Start-up and Shut-down template methods.
 	//
 	virtual	bool OnOpen();
 	virtual	bool OnClose();

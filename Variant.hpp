@@ -112,7 +112,7 @@ inline bool Variant::isArray() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Get the value type. This returns just the data type part of the undelying
+//! Get the value type. This returns just the data type part of the underlying
 //! vt member, i.e. it strips of any flags such as VT_ARRAY.
 
 inline VARTYPE Variant::valueType() const

@@ -81,7 +81,7 @@ const Seconds SECS_PER_DAY  = 60 * 60 * 24;
 ////////////////////////////////////////////////////////////////////////////////
 // General definitions.
 
-//! Specfifier used to export functions.
+//! Specifier used to export functions.
 #define EXPORT		__declspec(dllexport)
 
 //! Specifier used on Window callback functions.

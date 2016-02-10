@@ -24,7 +24,7 @@
 class CThreadPool;
 
 /******************************************************************************
-** 
+**
 ** A worker thread in a thread pool.
 **
 *******************************************************************************
@@ -86,7 +86,7 @@ protected:
 	void OnRunJob();
 	void OnStopThread();
 
-	// Inital thread function.
+	// Initial thread function.
 	static DWORD WINAPI ThreadFunction(LPVOID lpParam);
 };
 
