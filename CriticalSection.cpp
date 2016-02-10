@@ -58,7 +58,7 @@ CCriticalSection::~CCriticalSection()
 *******************************************************************************
 */
 
-void CCriticalSection::Aquire()
+void CCriticalSection::Acquire()
 {
 	::EnterCriticalSection(&m_oLock);
 }

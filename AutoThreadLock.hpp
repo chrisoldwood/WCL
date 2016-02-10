@@ -49,7 +49,7 @@ protected:
 inline CAutoThreadLock::CAutoThreadLock(IThreadLock& oLock)
 	: m_oLock(oLock)
 {
-	m_oLock.Aquire();
+	m_oLock.Acquire();
 }
 
 inline CAutoThreadLock::~CAutoThreadLock()

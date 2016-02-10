@@ -29,7 +29,7 @@ public:
 	//
 	// Methods.
 	//
-	virtual void Aquire() = 0;
+	virtual void Acquire() = 0;
 	virtual void Release() = 0;
 
 protected:
