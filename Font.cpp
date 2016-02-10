@@ -274,10 +274,10 @@ CString CFont::Format(CLogFont::FontFormat eFormat) const
 
 bool CFont::Parse(const tchar* pszFont, CFont& oFont)
 {
-	ASSERT(pszFont != NULL);
+	ASSERT(pszFont != nullptr);
 
 	// Quick check for a LogFont definition.
-	if (tstrchr(pszFont, TXT(',')) != NULL)
+	if (tstrchr(pszFont, TXT(',')) != nullptr)
 	{
 		CLogFont oLogFont;
 
@@ -295,14 +295,14 @@ bool CFont::Parse(const tchar* pszFont, CFont& oFont)
 		FontMapEntry* pEntry = g_aoFontMap;
 
 		// Search the font mapping table...
-		for (; pEntry->m_pszName != NULL; ++pEntry)
+		for (; pEntry->m_pszName != nullptr; ++pEntry)
 		{
 			if (tstricmp(pEntry->m_pszName, pszFont) == 0)
 				break;
 		}
 
 		// Invalid font name?
-		if (pEntry->m_pszName == NULL)
+		if (pEntry->m_pszName == nullptr)
 			return false;
 
 		// Create it.

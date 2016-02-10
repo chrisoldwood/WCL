@@ -53,7 +53,7 @@ protected:
 inline CAutoBool::CAutoBool(bool* pBool)
 	: m_pBool(pBool)
 {
-	ASSERT(m_pBool != NULL);
+	ASSERT(m_pBool != nullptr);
 
 #ifdef _DEBUG
 	m_bInitVal = *m_pBool;

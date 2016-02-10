@@ -34,9 +34,9 @@ static CModule* pThis = NULL;
 */
 
 CModule::CModule()
-	: m_hInstance(NULL)
+	: m_hInstance(nullptr)
 {
-	//ASSERT(pThis == NULL);
+	//ASSERT(pThis == nullptr);
 
 	pThis = this;
 }
@@ -57,7 +57,7 @@ CModule::CModule(HINSTANCE hInstance)
 	: m_hInstance(hInstance)
 {
 	ASSERT(m_hInstance != NULL);
-	//ASSERT(pThis == NULL);
+	//ASSERT(pThis == nullptr);
 
 	pThis = this;
 }
@@ -78,7 +78,7 @@ CModule::~CModule()
 {
 	//ASSERT(pThis == this);
 
-	pThis = NULL;
+	pThis = nullptr;
 }
 
 /******************************************************************************
@@ -95,7 +95,7 @@ CModule::~CModule()
 
 CModule& CModule::This()
 {
-	ASSERT(pThis != NULL);
+	ASSERT(pThis != nullptr);
 
 	return *pThis;
 }

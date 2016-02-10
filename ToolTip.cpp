@@ -114,7 +114,7 @@ void CToolTip::AddTool(uint nFlags, CWnd& oParent, uint nID, const CRect* prcRec
     oInfo.hwnd     = oParent.Handle();
     oInfo.uId      = nID;
 
-	if (prcRect != NULL)
+	if (prcRect != nullptr)
 		oInfo.rect = *prcRect;
 
     oInfo.lpszText = const_cast<tchar*>(pszText);

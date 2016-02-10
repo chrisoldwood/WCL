@@ -27,9 +27,9 @@
 */
 
 CMsgWnd::CMsgWnd()
-	: m_pCtrlMsgTable(NULL)
-	, m_pbMsgHandled(NULL)
-	, m_plMsgResult(NULL)
+	: m_pCtrlMsgTable(nullptr)
+	, m_pbMsgHandled(nullptr)
+	, m_plMsgResult(nullptr)
 {
 }
 
@@ -51,8 +51,8 @@ CMsgWnd::CMsgWnd()
 
 LRESULT CMsgWnd::WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
-	ASSERT(m_pbMsgHandled != NULL);
-	ASSERT(m_plMsgResult  != NULL);
+	ASSERT(m_pbMsgHandled != nullptr);
+	ASSERT(m_plMsgResult  != nullptr);
 
 	// Is in WM_USER range?
 	if ( (iMsg >= WM_USER) && (iMsg < WM_APP) )
@@ -439,7 +439,7 @@ void CMsgWnd::OnCtrlMsg(uint iID, uint iMsg, HWND hControl)
 	CMsgWnd* pWnd = static_cast<CMsgWnd*>(CWnd::s_WndMap.Find(hControl));
 
 	// Reflect message back to control.
-	if (pWnd != NULL)
+	if (pWnd != nullptr)
 		pWnd->OnReflectedCtrlMsg(iMsg);
 
 	CTRLMSG* pCtrlMsg = m_pCtrlMsgTable;
@@ -480,7 +480,7 @@ LRESULT CMsgWnd::OnCtrlMsg(NMHDR& rMsgHdr)
 	CMsgWnd* pWnd = static_cast<CMsgWnd*>(CWnd::s_WndMap.Find(rMsgHdr.hwndFrom));
 
 	// Reflect message back to control.
-	if (pWnd != NULL)
+	if (pWnd != nullptr)
 		pWnd->OnReflectedCtrlMsg(rMsgHdr);
 
 	LRESULT  lResult  = 0;
@@ -633,7 +633,7 @@ void CMsgWnd::OnCtlColour(uint nCtlClrMsg, HDC hDC, HWND hCtlWnd)
 	CMsgWnd* pWnd = static_cast<CMsgWnd*>(CWnd::s_WndMap.Find(hCtlWnd));
 
 	// Reflect message back to control first.
-	if (pWnd != NULL)
+	if (pWnd != nullptr)
 		hBrush = pWnd->OnReflectedCtlClr(nCtlClrMsg, hDC);
 
 	if (hBrush != NULL)

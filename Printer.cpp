@@ -40,8 +40,8 @@ CPrinter::CPrinter()
 	{
 		// Extract details.
 		m_strName   = tstrtok(szPrinter, TXT(","));
-		m_strDriver = tstrtok(NULL,      TXT(","));
-		m_strPort   = tstrtok(NULL,      TXT(","));
+		m_strDriver = tstrtok(nullptr,   TXT(","));
+		m_strPort   = tstrtok(nullptr,   TXT(","));
 	}
 }
 

@@ -44,7 +44,7 @@ void TraceLogger::Install()
 
 void TraceLogger::SetLogFile(const tchar* pszLogFile)
 {
-	ASSERT(pszLogFile != NULL);
+	ASSERT(pszLogFile != nullptr);
 	ASSERT(tstrlen(pszLogFile) <= MAX_PATH);
 
 	tstrncpy(g_szTraceLog, pszLogFile, MAX_PATH);
@@ -70,7 +70,7 @@ int TraceLogger::ReportHook(int /*nType*/, char* pszMessage, int* piRetVal)
 	FILE* fLogFile = _tfopen(g_szTraceLog, TXT("a"));
 
 	// Opened log file okay?
-	if (fLogFile != NULL)
+	if (fLogFile != nullptr)
 	{
 		// Start of new message?
 		if (g_bNewLine)

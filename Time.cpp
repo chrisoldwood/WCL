@@ -164,7 +164,7 @@ CTime CTime::Current()
 CString CTime::FieldSeparator()
 {
 	// Get the size of the buffer and allocate one.
-	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIME, NULL, 0);
+	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIME, nullptr, 0);
 
 	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::numBytes<tchar>(nChars+1)));
 
@@ -231,12 +231,12 @@ CString CTime::ToString(int nFormat) const
 		st.wSecond = static_cast<WORD>(iSecs);
 
 		// Calculate buffer size.
-		size_t nChars = ::GetTimeFormat(LOCALE_USER_DEFAULT, nTimeFmt, &st, NULL, nullptr, 0);
+		size_t nChars = ::GetTimeFormat(LOCALE_USER_DEFAULT, nTimeFmt, &st, nullptr, nullptr, 0);
 
 		tchar* pszValue = static_cast<tchar*>(alloca(Core::numBytes<tchar>(nChars)));
 
 		// Format the string.
-		::GetTimeFormat(LOCALE_USER_DEFAULT, nTimeFmt, &st, NULL, pszValue, static_cast<int>(nChars));
+		::GetTimeFormat(LOCALE_USER_DEFAULT, nTimeFmt, &st, nullptr, pszValue, static_cast<int>(nChars));
 
 		return pszValue;
 	}
@@ -259,7 +259,7 @@ CString CTime::ToString(int nFormat) const
 
 bool CTime::FromString(const tchar* pszTime)
 {
-	ASSERT(pszTime != NULL);
+	ASSERT(pszTime != nullptr);
 
 	size_t nLength = tstrlen(pszTime);
 
@@ -273,16 +273,16 @@ bool CTime::FromString(const tchar* pszTime)
 	tstrncpy(szTime, pszTime, ISO_FMT_MAX_LEN);
 
 	// Break up string into time components.
-	const tchar* pszHours = tstrtok(szTime, TXT(":"));
-	const tchar* pszMins  = tstrtok(NULL,   TXT(":"));
-	const tchar* pszSecs  = tstrtok(NULL,   TXT(":"));
+	const tchar* pszHours = tstrtok(szTime,  TXT(":"));
+	const tchar* pszMins  = tstrtok(nullptr, TXT(":"));
+	const tchar* pszSecs  = tstrtok(nullptr, TXT(":"));
 
 	// Got at least 2 string parts?
-	if ( (pszHours == NULL) || (pszMins == NULL) )
+	if ( (pszHours == nullptr) || (pszMins == nullptr) )
 		return false;
 
 	// Secs not specified?
-	if (pszSecs == NULL)
+	if (pszSecs == nullptr)
 		pszSecs = TXT("0");
 
 	// Convert to numbers.

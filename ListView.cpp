@@ -424,7 +424,7 @@ size_t CListView::StringWidth(size_t nChars) const
 
 size_t CListView::FindItem(const tchar* pszText, bool bPartial, size_t nStart) const
 {
-	ASSERT(pszText != NULL);
+	ASSERT(pszText != nullptr);
 
 	LVFINDINFO oInfo = { 0 };
 

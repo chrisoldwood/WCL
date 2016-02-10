@@ -103,5 +103,5 @@ CWnd* CWndMap::Find(HWND hWnd) const
 
 	Map::const_iterator it = m_oMap.find(hWnd);
 
-	return (it != m_oMap.end()) ? it->second : NULL;
+	return (it != m_oMap.end()) ? it->second : nullptr;
 }

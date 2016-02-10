@@ -35,7 +35,7 @@
 */
 
 CPopupWnd::CPopupWnd()
-	: m_lpfnOldWndProc(NULL)
+	: m_lpfnOldWndProc(nullptr)
 {
 }
 
@@ -62,8 +62,8 @@ void CPopupWnd::GetClassParams(WNDCLASS& rParams)
 	rParams.hIcon         = NULL;
 	rParams.hCursor       =::LoadCursor(NULL, IDC_ARROW);
 	rParams.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
-	rParams.lpszMenuName  = NULL;
-	rParams.lpszClassName = NULL;
+	rParams.lpszMenuName  = nullptr;
+	rParams.lpszClassName = nullptr;
 }
 
 /******************************************************************************
@@ -113,13 +113,13 @@ void CPopupWnd::GetCreateParams(WNDCREATE& rParams)
 {
 	// Fill in default WNDINIT members.
 	rParams.dwExStyle     = 0;
-	rParams.pszClassName  = NULL;
-	rParams.pszTitle      = NULL;
+	rParams.pszClassName  = nullptr;
+	rParams.pszTitle      = nullptr;
 	rParams.dwStyle       = 0;
 	rParams.rcPos.Set(CW_USEDEFAULT, 0, 0, 0);
 	rParams.hParent       = NULL;
 	rParams.hMenu         = NULL;
-	rParams.lpCreation    = NULL;
+	rParams.lpCreation    = nullptr;
 }
 
 /******************************************************************************
@@ -677,7 +677,7 @@ void CPopupWnd::OnShowSystemMenuHint()
 	CStatusBar* pStatusBar = CApp::This().m_rMainWnd.StatusBar();
 
 	// Display hint.
-	if (pStatusBar != NULL)
+	if (pStatusBar != nullptr)
 		pStatusBar->Hint(TXT("System Menu"));
 }
 
@@ -700,7 +700,7 @@ void CPopupWnd::OnShowDefaultMenuHint()
 	CStatusBar* pStatusBar = CApp::This().m_rMainWnd.StatusBar();
 
 	// Remove previous hint.
-	if (pStatusBar != NULL)
+	if (pStatusBar != nullptr)
 		pStatusBar->Hint(TXT(""));
 }
 

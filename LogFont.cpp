@@ -141,10 +141,10 @@ bool CLogFont::Select(const CWnd& rParent)
 	cf.Flags          = CF_FORCEFONTEXIST | CF_SCREENFONTS | CF_NOSCRIPTSEL;
 	cf.rgbColors      = 0;
 	cf.lCustData      = 0;
-	cf.lpfnHook       = NULL;
-	cf.lpTemplateName = NULL;
+	cf.lpfnHook       = nullptr;
+	cf.lpTemplateName = nullptr;
 	cf.hInstance      = NULL;
-	cf.lpszStyle      = NULL;
+	cf.lpszStyle      = nullptr;
 	cf.nFontType      = 0;
 	cf.nSizeMin       = 0;
 	cf.nSizeMax       = 0;
@@ -211,7 +211,7 @@ CString CLogFont::Format(FontFormat eFormat) const
 
 bool CLogFont::Parse(const tchar* pszFont, CLogFont& oLogFont)
 {
-	ASSERT(pszFont != NULL);
+	ASSERT(pszFont != nullptr);
 
 	try
 	{

@@ -52,7 +52,7 @@ const int SEP_INDENT = 1;
 */
 
 CToolBar::CToolBar(WCL::IMsgThread& thread, WCL::ICmdController& controller)
-	: m_pCtrlTable(NULL)
+	: m_pCtrlTable(nullptr)
 	, m_oToolTip()
 	, m_thread(thread)
 	, m_controller(controller)
@@ -141,7 +141,7 @@ void CToolBar::OnCreate(const CRect& /*rcClient*/)
 	m_oToolTip.Create(*this, TOOLTIP_ID, CRect());
 
 	// Any controls?
-	if (m_pCtrlTable == NULL)
+	if (m_pCtrlTable == nullptr)
 		return;
 
 	CPoint	ptOrigin(0, BORDER_SIZE+TOP_BORDER);
@@ -296,7 +296,7 @@ bool CToolBar::ProcessMsg(MSG& rMsg)
 
 			// Is still toolbar?
 			if (hWnd == m_hWnd)
-				OnShowHint(NULL);
+				OnShowHint(nullptr);
 			else
 				OnShowHint(s_WndMap.Find(hWnd));
 		}
@@ -315,7 +315,7 @@ bool CToolBar::ProcessMsg(MSG& rMsg)
 **
 ** Description:	Show the status bar hint for the toolbars' control.
 **
-** Parameters:	pWnd	The window to show the hint for or NULL to remove the
+** Parameters:	pWnd	The window to show the hint for or nullptr to remove the
 **						hint.
 **
 ** Returns:		Nothing.
@@ -327,11 +327,11 @@ void CToolBar::OnShowHint(const CWnd* pWnd) const
 {
 	// Get the status bar.
 	CStatusBar*	pStatusBar = CApp::This().m_rMainWnd.StatusBar();
-	if (pStatusBar == NULL)
+	if (pStatusBar == nullptr)
 		return;
 
 	// Show a hint?
-	if (pWnd != NULL)
+	if (pWnd != nullptr)
 		pStatusBar->Hint(m_controller.CmdHintStr(::GetDlgCtrlID(pWnd->Handle())));
 	else
 		pStatusBar->Hint(TXT(""));

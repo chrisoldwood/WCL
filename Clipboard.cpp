@@ -196,7 +196,7 @@ void CClipboard::Close()
 bool CClipboard::CopyText(HWND hOwner, const tchar* pszText)
 {
 	ASSERT(::IsWindow(hOwner));
-	ASSERT(pszText != NULL);
+	ASSERT(pszText != nullptr);
 
 	bool bCopied = false;
 
@@ -215,7 +215,7 @@ bool CClipboard::CopyText(HWND hOwner, const tchar* pszText)
 				tchar* pszData = static_cast<tchar*>(::GlobalLock(hData));
 
 				// Locked block?
-				if (pszData != NULL)
+				if (pszData != nullptr)
 				{
 					// Copy string to clipboard buffer.
 					tstrcpy(pszData, pszText);
@@ -305,7 +305,7 @@ bool CClipboard::PasteText(CString& strString)
 			const tchar* psz = static_cast<const tchar*>(::GlobalLock(hData));
 
 			// Locked block?
-			if (psz != NULL)
+			if (psz != nullptr)
 			{
 				// Copy string to return buffer.
 				strString = psz;
@@ -412,7 +412,7 @@ CString CClipboard::FormatName(uint nFormat)
 
 uint CClipboard::FormatHandle(const tchar* pszFormat)
 {
-	ASSERT(pszFormat != NULL);
+	ASSERT(pszFormat != nullptr);
 
 	// Search standard formats lookup table first.
 	for (FmtEntry* pEntry = s_oStdFormats; (pEntry->m_nFormat != CF_NONE); ++pEntry)

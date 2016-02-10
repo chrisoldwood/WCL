@@ -134,7 +134,7 @@ void CDecimalBox::RealValue(double dValue)
 		tchar* pszDecPt = tstrchr(szText, TXT('.'));
 
 		// Value has a decimal point?
-		if (pszDecPt != NULL)
+		if (pszDecPt != nullptr)
 		{
 			// Calculate the end of the string.
 			tchar* pszEOS = pszDecPt + tstrlen(pszDecPt) - 1;
@@ -239,20 +239,20 @@ bool CDecimalBox::FilterKey(tchar cChar)
 	if ( (cChar == TXT('+')) || (cChar == TXT('-')) )
 	{
 		// Caret not at start OR already have sign?
-		if ( (nSelStart > 0) || (tstrchr(szText, TXT('+')) != NULL) || (tstrchr(szText, TXT('-')) != NULL) )
+		if ( (nSelStart > 0) || (tstrchr(szText, TXT('+')) != nullptr) || (tstrchr(szText, TXT('-')) != nullptr) )
 			return true;
 	}
 
 	// Is a decimal point AND already have one?
-	if ( (cChar == TXT('.')) && (tstrchr(szText, TXT('.')) != NULL) )
+	if ( (cChar == TXT('.')) && (tstrchr(szText, TXT('.')) != nullptr) )
 		return true;
 
 	// Is a fraction separator AND already have one?
-	if ( (cChar == TXT('/')) && (tstrchr(szText, TXT('/')) != NULL) )
+	if ( (cChar == TXT('/')) && (tstrchr(szText, TXT('/')) != nullptr) )
 		return true;
 
 	// Is a fraction separator AND already have one?
-	if ( (cChar == TXT(' ')) && (tstrchr(szText, TXT(' ')) != NULL) )
+	if ( (cChar == TXT(' ')) && (tstrchr(szText, TXT(' ')) != nullptr) )
 		return true;
 
 	// Allowing decimal places AND is a digit?
@@ -263,7 +263,7 @@ bool CDecimalBox::FilterKey(tchar cChar)
 
 		// Is decimal point AND caret after it AND no selection
 		// AND max decimal places entered?
-		if ( (pszDecPt != NULL) && (nSelStart > (pszDecPt - szText)) && (nSelChars < 1)
+		if ( (pszDecPt != nullptr) && (nSelStart > (pszDecPt - szText)) && (nSelChars < 1)
 		  && (tstrlen(pszDecPt + 1) >= m_nDecDigits) )
 			return true;
 	}

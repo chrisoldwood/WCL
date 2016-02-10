@@ -97,7 +97,7 @@ void CMsgThread::Run()
 
 void CMsgThread::AddMsgFilter(IMsgFilter* pFilter)
 {
-	ASSERT(pFilter != NULL);
+	ASSERT(pFilter != nullptr);
 	ASSERT(std::find(m_oMsgFilters.begin(), m_oMsgFilters.end(), pFilter) == m_oMsgFilters.end());
 
 	m_oMsgFilters.push_back(pFilter);

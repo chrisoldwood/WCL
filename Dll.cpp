@@ -50,7 +50,7 @@ CDll* CDll::g_pThis = NULL;
 CDll::CDll()
 	: m_Module()
 {
-	ASSERT(g_pThis == NULL);
+	ASSERT(g_pThis == nullptr);
 
 	// Ensure DllMain.cpp is linked in.
 	g_bLinkDllMain = true;
@@ -77,7 +77,7 @@ CDll::~CDll()
 {
 	ASSERT(g_pThis == this);
 
-	g_pThis = NULL;
+	g_pThis = nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -85,7 +85,7 @@ CDll::~CDll()
 
 bool CDll::IsValid()
 {
-	return (g_pThis != NULL);
+	return (g_pThis != nullptr);
 }
 
 /******************************************************************************
@@ -102,7 +102,7 @@ bool CDll::IsValid()
 
 CDll& CDll::This()
 {
-	ASSERT(g_pThis != NULL);
+	ASSERT(g_pThis != nullptr);
 
 	return *g_pThis;
 }

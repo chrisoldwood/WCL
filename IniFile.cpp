@@ -320,7 +320,7 @@ void CIniFile::DeleteEntry(const tchar* pszSection, const tchar* pszEntry)
 	ASSERT(pszSection);
 	ASSERT(pszEntry);
 
-	::WritePrivateProfileString(pszSection, pszEntry, NULL, m_strPath);
+	::WritePrivateProfileString(pszSection, pszEntry, nullptr, m_strPath);
 }
 
 /******************************************************************************
@@ -340,9 +340,9 @@ void CIniFile::DeleteEntry(const tchar* pszSection, const tchar* pszEntry)
 
 CStrArray CIniFile::ReadStrings(const tchar* pszSection, const tchar* pszEntry, tchar cSep, const tchar* pszDefault) const
 {
-	ASSERT(pszSection != NULL);
-	ASSERT(pszEntry   != NULL);
-	ASSERT(pszDefault != NULL);
+	ASSERT(pszSection != nullptr);
+	ASSERT(pszEntry   != nullptr);
+	ASSERT(pszDefault != nullptr);
 
 	CStrArray astr;
 
@@ -372,8 +372,8 @@ CStrArray CIniFile::ReadStrings(const tchar* pszSection, const tchar* pszEntry, 
 
 void CIniFile::WriteStrings(const tchar* pszSection, const tchar* pszEntry, tchar cSep, const CStrArray& astrValues)
 {
-	ASSERT(pszSection != NULL);
-	ASSERT(pszEntry   != NULL);
+	ASSERT(pszSection != nullptr);
+	ASSERT(pszEntry   != nullptr);
 
 	CString str;
 
@@ -525,5 +525,5 @@ void CIniFile::DeleteSection(const tchar* pszSection)
 {
 	ASSERT(pszSection);
 
-	::WritePrivateProfileString(pszSection, NULL, NULL, m_strPath);
+	::WritePrivateProfileString(pszSection, nullptr, nullptr, m_strPath);
 }

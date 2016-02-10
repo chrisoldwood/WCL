@@ -335,7 +335,7 @@ WCL::StreamPos CFile::Size()
 
 bool CFile::QueryInfo(const tchar* pszPath, struct _stat& oInfo)
 {
-	ASSERT(pszPath != NULL);
+	ASSERT(pszPath != nullptr);
 
 	memset(&oInfo, 0, sizeof(oInfo));
 
@@ -384,8 +384,8 @@ ulong CFile::Size(const tchar* pszPath)
 
 bool CFile::Copy(const tchar* pszSrc, const tchar* pszDst, bool bOverwrite)
 {
-	ASSERT(pszSrc != NULL);
-	ASSERT(pszDst != NULL);
+	ASSERT(pszSrc != nullptr);
+	ASSERT(pszDst != nullptr);
 
 	return (::CopyFile(pszSrc, pszDst, !bOverwrite) != 0);
 }
@@ -405,8 +405,8 @@ bool CFile::Copy(const tchar* pszSrc, const tchar* pszDst, bool bOverwrite)
 
 bool CFile::Move(const tchar* pszSrc, const tchar* pszDst)
 {
-	ASSERT(pszSrc != NULL);
-	ASSERT(pszDst != NULL);
+	ASSERT(pszSrc != nullptr);
+	ASSERT(pszDst != nullptr);
 
 	return (::MoveFile(pszSrc, pszDst) != 0);
 }
@@ -425,7 +425,7 @@ bool CFile::Move(const tchar* pszSrc, const tchar* pszDst)
 
 bool CFile::Delete(const tchar* pszPath)
 {
-	ASSERT(pszPath != NULL);
+	ASSERT(pszPath != nullptr);
 
 	return (::DeleteFile(pszPath) != 0);
 }
@@ -445,7 +445,7 @@ bool CFile::Delete(const tchar* pszPath)
 
 bool CFile::CreateFolder(const tchar* pszPath, bool bCreatePath)
 {
-	ASSERT(pszPath != NULL);
+	ASSERT(pszPath != nullptr);
 
 	// Try and create it.
 	if (::CreateDirectory(pszPath, NULL) != 0)
@@ -489,7 +489,7 @@ bool CFile::CreateFolder(const tchar* pszPath, bool bCreatePath)
 
 bool CFile::DeleteFolder(const tchar* pszPath)
 {
-	ASSERT(pszPath != NULL);
+	ASSERT(pszPath != nullptr);
 
 	return (::RemoveDirectory(pszPath) != 0);
 }
@@ -510,15 +510,15 @@ bool CFile::DeleteFolder(const tchar* pszPath)
 
 bool CFile::CreateShortcut(const tchar* pszLink, const tchar* pszTarget, const tchar* pszDesc)
 {
-	ASSERT(pszLink   != NULL);
-	ASSERT(pszTarget != NULL);
+	ASSERT(pszLink   != nullptr);
+	ASSERT(pszTarget != nullptr);
 
 	// Initialise COM.
 	HRESULT hResult = ::CoInitialize(NULL);
 
 	if (SUCCEEDED(hResult))
 	{
-		IShellLink* pIShellLink = NULL;
+		IShellLink* pIShellLink = nullptr;
 
 		// Get a pointer to the IShellLink interface.
 		hResult = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, IID_IShellLink, reinterpret_cast<LPVOID*>(&pIShellLink));

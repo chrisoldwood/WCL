@@ -139,7 +139,7 @@ void CURLLabel::OnClick()
 	CString strURL = Title();
 
 	// Invokr shell to handle the comamnd.
-	::ShellExecute(NULL, NULL, m_strProtocol + strURL, NULL, NULL, SW_SHOW);
+	::ShellExecute(nullptr, nullptr, m_strProtocol + strURL, nullptr, nullptr, SW_SHOW);
 }
 
 /******************************************************************************

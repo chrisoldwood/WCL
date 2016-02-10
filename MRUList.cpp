@@ -139,7 +139,7 @@ void CMRUList::UpdateMenu(CMenu& rMenu, uint iCmdBase)
 
 void CMRUList::Load(CIniFile& rCfgFile, const tchar* pszSection)
 {
-	ASSERT(pszSection != NULL);
+	ASSERT(pszSection != nullptr);
 
 	// For all MRU items.
 	for (size_t i = 0; i < m_nMaxSize; ++i)
@@ -158,7 +158,7 @@ void CMRUList::Load(CIniFile& rCfgFile, const tchar* pszSection)
 
 void CMRUList::Save(CIniFile& rCfgFile, const tchar* pszSection)
 {
-	ASSERT(pszSection != NULL);
+	ASSERT(pszSection != nullptr);
 
 	// For all MRU items.
 	for (size_t i = 0; i < m_nMaxSize; ++i)

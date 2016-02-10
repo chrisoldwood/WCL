@@ -53,7 +53,7 @@ CPath::CPath()
 
 CPath::CPath(const tchar* pszPath)
 {
-	ASSERT(pszPath != NULL);
+	ASSERT(pszPath != nullptr);
 
 	Copy(pszPath);
 	Normalise(m_pszData);
@@ -73,8 +73,8 @@ CPath::CPath(const tstring& source)
 
 CPath::CPath(const tchar* pszDir, const tchar* pszFile)
 {
-	ASSERT(pszDir  != NULL);
-	ASSERT(pszFile != NULL);
+	ASSERT(pszDir  != nullptr);
+	ASSERT(pszFile != nullptr);
 
 	Copy(pszDir);
 	operator /=(pszFile);
@@ -317,7 +317,7 @@ CString CPath::Drive() const
 {
 	tchar szDrive[MAX_PATH+1] = { 0 };
 
-	_tsplitpath(m_pszData, szDrive, NULL, NULL, NULL);
+	_tsplitpath(m_pszData, szDrive, nullptr, nullptr, nullptr);
 
 	return CString(szDrive);
 }
@@ -341,7 +341,7 @@ CPath CPath::Root() const
 	tchar szDirectory[MAX_PATH+1] = { 0 };
 	CPath strRoot;
 
-	_tsplitpath(m_pszData, szDrive, szDirectory, NULL, NULL);
+	_tsplitpath(m_pszData, szDrive, szDirectory, nullptr, nullptr);
 
 	// Has a drive specifier?
 	if (tstrlen(szDrive) > 0)
@@ -403,7 +403,7 @@ CPath CPath::Directory() const
 	tchar szDrive[MAX_PATH+1] = { 0 };
 	tchar szDir[MAX_PATH+1] = { 0 };
 
-	_tsplitpath(m_pszData, szDrive, szDir, NULL, NULL);
+	_tsplitpath(m_pszData, szDrive, szDir, nullptr, nullptr);
 
 	tstrcat(szDrive, szDir);
 	Normalise(szDrive);
@@ -428,7 +428,7 @@ CString CPath::FileName() const
 	tchar szFileName[MAX_PATH+1] = { 0 };
 	tchar szExt[MAX_PATH+1] = { 0 };
 
-	_tsplitpath(m_pszData, NULL, NULL, szFileName, szExt);
+	_tsplitpath(m_pszData, nullptr, nullptr, szFileName, szExt);
 
 	tstrcat(szFileName, szExt);
 
@@ -451,7 +451,7 @@ CString CPath::FileTitle() const
 {
 	tchar szFileName[MAX_PATH+1] = { 0 };
 
-	_tsplitpath(m_pszData, NULL, NULL, szFileName, NULL);
+	_tsplitpath(m_pszData, nullptr, nullptr, szFileName, nullptr);
 
 	return CString(szFileName);
 }
@@ -472,7 +472,7 @@ CString CPath::FileExt() const
 {
 	tchar szExt[MAX_PATH+1] = { 0 };
 
-	_tsplitpath(m_pszData, NULL, NULL, NULL, szExt);
+	_tsplitpath(m_pszData, nullptr, nullptr, nullptr, szExt);
 
 	return CString(szExt);
 }

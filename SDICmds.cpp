@@ -210,7 +210,7 @@ bool CSDICmds::SaveFile()
 	// Get application object.
 	CSDIApp& oApp = CSDIApp::This();
 
-	ASSERT(oApp.m_pDoc != NULL);
+	ASSERT(oApp.m_pDoc != nullptr);
 
 	// File name specified yet?
 	if (oApp.m_pDoc->Untitled())
@@ -248,7 +248,7 @@ bool CSDICmds::SaveFileAs()
 	// Get application object.
 	CSDIApp& oApp = CSDIApp::This();
 
-	ASSERT(oApp.m_pDoc != NULL);
+	ASSERT(oApp.m_pDoc != nullptr);
 
 	CPath Path;
 
@@ -302,7 +302,7 @@ bool CSDICmds::CloseFile()
 	CSDIApp& oApp = CSDIApp::This();
 
 	// No file open?
-	if (oApp.m_pDoc == NULL)
+	if (oApp.m_pDoc == nullptr)
 		return true;
 
 	// File modified?
@@ -323,17 +323,17 @@ bool CSDICmds::CloseFile()
 	OnFileClosed(*oApp.m_pDoc);
 
 	// Detach the view from the frame window and doc.
-	oApp.FrameWnd().View(NULL);
-	oApp.m_pDoc->m_pView = NULL;
+	oApp.FrameWnd().View(nullptr);
+	oApp.m_pDoc->m_pView = nullptr;
 
 	// Destroy the open view.
 	oApp.m_pView->Destroy();
 	delete oApp.m_pView;
-	oApp.m_pView = NULL;
+	oApp.m_pView = nullptr;
 
 	// Destroy the open file.
 	delete oApp.m_pDoc;
-	oApp.m_pDoc = NULL;
+	oApp.m_pDoc = nullptr;
 
 	// Update the UI.
 	UpdateUI();

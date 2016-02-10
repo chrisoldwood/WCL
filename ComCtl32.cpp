@@ -85,7 +85,7 @@ bool CComCtl32::GetVersion(DWORD& dwMajor, DWORD& dwMinor)
 	// Get the DLLs version info function.
 	DLLGETVERSIONPROC pfnDllGetVersion = reinterpret_cast<DLLGETVERSIONPROC>(m_oDLL.GetProcAddress("DllGetVersion"));
 
-	if (pfnDllGetVersion != NULL)
+	if (pfnDllGetVersion != nullptr)
 	{
 		DLLVERSIONINFO oVerInfo = { 0 };
 
@@ -127,7 +127,7 @@ bool CComCtl32::Initialise(DWORD dwICC)
 	// Get the DLLs Initialise function.
 	INITCOMCTLSEXPROC pfnInitCommonControlsEx = reinterpret_cast<INITCOMCTLSEXPROC>(m_oDLL.GetProcAddress("InitCommonControlsEx"));
 
-	if (pfnInitCommonControlsEx != NULL)
+	if (pfnInitCommonControlsEx != nullptr)
 	{
 		INITCOMMONCONTROLSEX oInitInfo = { 0 };
 

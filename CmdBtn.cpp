@@ -216,7 +216,7 @@ void CCmdButton::OnMouseMove(const CPoint& /*ptCursor*/, WCL::KeyFlags /*iKeyFla
 	if (g_pActiveBtn != this)
 	{
 		// Hide border on previous button.
-		if (g_pActiveBtn != NULL)
+		if (g_pActiveBtn != nullptr)
 			g_pActiveBtn->Invalidate();
 
 		g_pActiveBtn = this;
@@ -270,7 +270,7 @@ void CCmdButton::OnTimer(WCL::TimerID iTimerID)
 			StopTimer(TIMER_ID);
 
 			m_bTimerOn = false;
-			g_pActiveBtn = NULL;
+			g_pActiveBtn = nullptr;
 
 			Invalidate();
 		}

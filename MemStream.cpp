@@ -32,7 +32,7 @@ const size_t ALLOC_SIZE = 1024;
 
 CMemStream::CMemStream(CBuffer& oBuffer)
 	: m_oBuffer(oBuffer)
-	, m_pBuffer(NULL)
+	, m_pBuffer(nullptr)
 	, m_lAllocSize(oBuffer.Size())
 	, m_lEOF(oBuffer.Size())
 	, m_lPos(0)
@@ -80,7 +80,7 @@ void CMemStream::Create()
 	// Get pointer to buffer.
 	m_pBuffer = static_cast<byte*>(m_oBuffer.Buffer());
 
-	ASSERT(m_pBuffer != NULL);
+	ASSERT(m_pBuffer != nullptr);
 
 	// Set to SOF.
 	m_lEOF  = 0;
@@ -107,7 +107,7 @@ void CMemStream::Open()
 	// Get pointer to buffer.
 	m_pBuffer = static_cast<byte*>(m_oBuffer.Buffer());
 
-	ASSERT(m_pBuffer != NULL);
+	ASSERT(m_pBuffer != nullptr);
 
 	// Set to SOF.
 	m_lPos  = 0;
@@ -136,7 +136,7 @@ void CMemStream::Close()
 	}
 
 	// Reset members.
-	m_pBuffer = NULL;
+	m_pBuffer = nullptr;
 	m_nMode   = GENERIC_NONE;
 }
 
@@ -157,11 +157,11 @@ void CMemStream::Close()
 
 void CMemStream::Read(void* pBuffer, size_t iNumBytes)
 {
-	ASSERT(m_pBuffer != NULL);
+	ASSERT(m_pBuffer != nullptr);
 	ASSERT(m_nMode & GENERIC_READ);
 
 	// Stream open?
-	if (m_pBuffer == NULL)
+	if (m_pBuffer == nullptr)
 		throw CMemStreamException(CMemStreamException::E_READ_FAILED);
 
 	// Enough bytes left to read?
@@ -190,11 +190,11 @@ void CMemStream::Read(void* pBuffer, size_t iNumBytes)
 
 void CMemStream::Write(const void* pBuffer, size_t iNumBytes)
 {
-	ASSERT(m_pBuffer != NULL);
+	ASSERT(m_pBuffer != nullptr);
 	ASSERT(m_nMode & GENERIC_WRITE);
 
 	// Stream open?
-	if (m_pBuffer == NULL)
+	if (m_pBuffer == nullptr)
 		throw CMemStreamException(CMemStreamException::E_WRITE_FAILED);
 
 	// Enough space in current block?
@@ -203,13 +203,13 @@ void CMemStream::Write(const void* pBuffer, size_t iNumBytes)
 		// Extend block by 1 page or iNumBytes, if larger.
 		m_lAllocSize += std::max(ALLOC_SIZE, iNumBytes);
 
-		m_pBuffer = NULL;
+		m_pBuffer = nullptr;
 
 		m_oBuffer.Size(m_lAllocSize);
 
 		m_pBuffer = static_cast<byte*>(m_oBuffer.Buffer());
 
-		ASSERT(m_pBuffer != NULL);
+		ASSERT(m_pBuffer != nullptr);
 	}
 
 	// Write bytes to the output buffer.
@@ -237,11 +237,11 @@ void CMemStream::Write(const void* pBuffer, size_t iNumBytes)
 
 WCL::StreamPos CMemStream::Seek(WCL::StreamPos lPos, SeekPos eFrom)
 {
-	ASSERT(m_pBuffer != NULL);
+	ASSERT(m_pBuffer != nullptr);
 	ASSERT(lPos <= std::numeric_limits<size_t>::max());
 
 	// Stream open?
-	if (m_pBuffer == NULL)
+	if (m_pBuffer == nullptr)
 		throw CMemStreamException(CMemStreamException::E_SEEK_FAILED);
 
 	// Calculate new position.
@@ -274,7 +274,7 @@ WCL::StreamPos CMemStream::Seek(WCL::StreamPos lPos, SeekPos eFrom)
 
 bool CMemStream::IsEOF()
 {
-	ASSERT(m_pBuffer != NULL);
+	ASSERT(m_pBuffer != nullptr);
 
 	return (m_lPos >= m_lEOF);
 }

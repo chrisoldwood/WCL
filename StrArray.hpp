@@ -172,7 +172,7 @@ inline void CStrArray::DeleteAll()
 
 inline size_t CStrArray::Find(const tchar* pszString, bool bIgnoreCase) const
 {
-	ASSERT(pszString != NULL);
+	ASSERT(pszString != nullptr);
 
 	for (CIter it = m_vStrings.begin(); it != m_vStrings.end(); ++it)
 	{

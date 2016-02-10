@@ -43,11 +43,11 @@ const tchar* CFrameWnd::CLASS_NAME = TXT("FrameWnd");
 
 CFrameWnd::CFrameWnd(uint iIconID)
 	: m_iIconID(iIconID)
-	, m_pAccel(NULL)
-	, m_pMenu(NULL)
-	, m_pToolBar(NULL)
-	, m_pStatusBar(NULL)
-	, m_pActiveDlg(NULL)
+	, m_pAccel(nullptr)
+	, m_pMenu(nullptr)
+	, m_pToolBar(nullptr)
+	, m_pStatusBar(nullptr)
+	, m_pActiveDlg(nullptr)
 	, m_finalPlacement()
 {
 	// Add to the main threads' msg filters.
@@ -501,11 +501,11 @@ void CFrameWnd::OnPaint(CDC& rDC)
 bool CFrameWnd::ProcessMsg(MSG& rMsg)
 {
 	// Try accelerator table first.
-	if ( (m_pAccel != NULL) && (m_pAccel->Translate(m_hWnd, rMsg)) )
+	if ( (m_pAccel != nullptr) && (m_pAccel->Translate(m_hWnd, rMsg)) )
 		return true;
 
 	// Try active modeless dialog next.
-	if ( (m_pActiveDlg != NULL) && (::IsDialogMessage(m_pActiveDlg->Handle(), &rMsg)) )
+	if ( (m_pActiveDlg != nullptr) && (::IsDialogMessage(m_pActiveDlg->Handle(), &rMsg)) )
 		return true;
 
 	return false;

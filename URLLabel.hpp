@@ -66,7 +66,7 @@ protected:
 
 inline void CURLLabel::Protocol(const tchar* pszProtocol)
 {
-	ASSERT(pszProtocol != NULL);
+	ASSERT(pszProtocol != nullptr);
 
 	m_strProtocol = pszProtocol;
 }

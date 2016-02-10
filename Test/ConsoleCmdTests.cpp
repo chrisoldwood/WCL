@@ -16,7 +16,7 @@
 
 static Core::CmdLineSwitch s_switches[] =
 {
-	{ 1, TXT("?"), NULL, Core::CmdLineSwitch::ONCE, Core::CmdLineSwitch::NONE, NULL, TXT("Test") },
+	{ 1, TXT("?"), nullptr, Core::CmdLineSwitch::ONCE, Core::CmdLineSwitch::NONE, nullptr, TXT("Test") },
 };
 static size_t s_switchCount = ARRAY_SIZE(s_switches);
 

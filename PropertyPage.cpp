@@ -69,7 +69,7 @@ WCL::DlgResult DIALOGPROC CPropertyPage::PropPageProc(HWND hWnd, UINT iMsg, WPAR
 	pDialog = static_cast<CPropertyPage*>(CWnd::s_WndMap.Find(hWnd));
 
 	// Do we have a mapping?
-	if (pDialog == NULL)
+	if (pDialog == nullptr)
 	{
 		// Time to initialise?
 		if (iMsg == WM_INITDIALOG)

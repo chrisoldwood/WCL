@@ -28,7 +28,7 @@
 */
 
 CSDIFrame::CSDIFrame(uint iIconID) : CFrameWnd(iIconID)
-	, m_pView(NULL)
+	, m_pView(nullptr)
 {
 }
 
@@ -120,7 +120,7 @@ void CSDIFrame::OnResize(int iFlag, const CSize& rNewSize)
 		CFrameWnd::OnResize(iFlag, rNewSize);
 		
 		// Resize view to fit client.
-		if (m_pView != NULL)
+		if (m_pView != nullptr)
 			m_pView->Move(ClientRect());
 	}
 }
@@ -142,7 +142,7 @@ void CSDIFrame::View(CView* pView)
 	m_pView = pView;
 
 	// Setting the view?
-	if (m_pView != NULL)
+	if (m_pView != nullptr)
 	{
 		CRect rcClient = ClientRect();
 
@@ -173,7 +173,7 @@ void CSDIFrame::UpdateTitle()
 	CString strTitle = oApp.m_strTitle;
 
 	// Append doc title, if available.
-	if (oApp.m_pDoc != NULL)
+	if (oApp.m_pDoc != nullptr)
 	{
 		strTitle += TXT(" - [");
 		strTitle += oApp.m_pDoc->Path();
@@ -199,7 +199,7 @@ void CSDIFrame::UpdateTitle()
 void CSDIFrame::OnDropFile(int nFile, const tchar* pszPath)
 {
 	ASSERT(nFile   >= 0);
-	ASSERT(pszPath != NULL);
+	ASSERT(pszPath != nullptr);
 
 	// Only load the first file.
 	if (nFile == 0)

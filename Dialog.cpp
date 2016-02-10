@@ -46,7 +46,7 @@ CDialog::CDialog(uint iRscID)
 	, m_vControls()
 	, m_vGravities()
 	, m_StartSize()
-	, m_pParentWnd(NULL)
+	, m_pParentWnd(nullptr)
 	, m_bNoSizeGrip(false)
 	, m_rcOldGrip(0, 0, 0, 0)
 {
@@ -512,7 +512,7 @@ void CDialog::OnResize(int /*iFlag*/, const CSize& rNewSize)
 void CDialog::ControlTable(CTRL* pCtrlTable)
 {
 	ASSERT(m_vControls.empty());
-	ASSERT(pCtrlTable != NULL);
+	ASSERT(pCtrlTable != nullptr);
 
 	size_t nCount = 0;
 
@@ -561,7 +561,7 @@ void CDialog::InitControls()
 void CDialog::GravityTable(CTLGRAVITY* pGravTable)
 {
 	ASSERT(m_vGravities.empty());
-	ASSERT(pGravTable != NULL);
+	ASSERT(pGravTable != nullptr);
 
 	size_t nCount = 0;
 

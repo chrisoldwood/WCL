@@ -36,7 +36,7 @@ const int ICON_SIZE = 16;
 */
 
 CStatusBarIcon::CStatusBarIcon()
-	: m_pBitmap(NULL)
+	: m_pBitmap(nullptr)
 	, m_nIndex(0)
 {
 }
@@ -116,7 +116,7 @@ void CStatusBarIcon::GetCreateParams(WNDCREATE& rParams)
 void CStatusBarIcon::OnPaint(CDC& rDC)
 {
 	// Icon to paint?
-	if (m_pBitmap != NULL)
+	if (m_pBitmap != nullptr)
 	{
 		int nSize = m_pBitmap->Size().cy;
 
@@ -147,10 +147,10 @@ void CStatusBarIcon::OnPaint(CDC& rDC)
 void CStatusBarIcon::ClearIcon(bool bForcePaint)
 {
 	// Ignore, if already cleared.
-	if (m_pBitmap == NULL)
+	if (m_pBitmap == nullptr)
 		return;
 
-	m_pBitmap = NULL;
+	m_pBitmap = nullptr;
 	m_nIndex  = 0;
 
 	Invalidate();

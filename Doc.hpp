@@ -94,7 +94,7 @@ inline const CPath& CDoc::Path() const
 
 inline void CDoc::Path(const tchar* pszPath)
 {
-	ASSERT(pszPath != NULL);
+	ASSERT(pszPath != nullptr);
 
 	m_Path = pszPath;
 }

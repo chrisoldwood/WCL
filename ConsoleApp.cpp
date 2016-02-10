@@ -57,7 +57,7 @@ ConsoleApp::~ConsoleApp()
 	// Remove the ctrl-c handler.
 	::SetConsoleCtrlHandler(ctrlHandler, FALSE);
 
-	g_this = NULL;
+	g_this = nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -182,7 +182,7 @@ void ConsoleApp::showManual(tostream& err) const
 
 	if (fullpath_mht.Exists())
 	{
-		::ShellExecute(NULL, NULL, fullpath_mht.c_str(), NULL, NULL, SW_SHOW);
+		::ShellExecute(nullptr, nullptr, fullpath_mht.c_str(), nullptr, nullptr, SW_SHOW);
 		return;
 	}
 
@@ -192,7 +192,7 @@ void ConsoleApp::showManual(tostream& err) const
 
 	if (fullpath_html.Exists())
 	{
-		::ShellExecute(NULL, NULL, fullpath_html, NULL, NULL, SW_SHOW);
+		::ShellExecute(nullptr, nullptr, fullpath_html, nullptr, nullptr, SW_SHOW);
 		return;
 	}
 

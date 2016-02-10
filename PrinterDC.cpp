@@ -97,7 +97,7 @@ bool CPrinterDC::Start(const tchar* pszTitle)
 	// Initialise.
 	DocInfo.cbSize      = sizeof(DOCINFO);
 	DocInfo.lpszDocName = pszTitle;
-	DocInfo.lpszOutput  = NULL;
+	DocInfo.lpszOutput  = nullptr;
 	
 	int iError = StartDoc(m_hDC, &DocInfo);
 
@@ -227,7 +227,7 @@ CRect CPrinterDC::PrintableArea() const
 	CRect	rcPage = PageArea();
 
 	// Get margin and adjust page.
-	if (Escape(m_hDC, GETPRINTINGOFFSET, 0, NULL, &ptOffset) > 0)
+	if (Escape(m_hDC, GETPRINTINGOFFSET, 0, nullptr, &ptOffset) > 0)
 	{
 		rcPage.left    += ptOffset.x;
 		rcPage.top     += ptOffset.y;

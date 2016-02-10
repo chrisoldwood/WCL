@@ -116,7 +116,7 @@ void CHintBar::Hint(uint iRscID)
 
 void CHintBar::Hint(const tchar* pszHint)
 {
-	ASSERT(pszHint != NULL);
+	ASSERT(pszHint != nullptr);
 
 	// Ignore, if same hint.
 	if (m_strHint == pszHint)

@@ -46,7 +46,7 @@ void RegKey::Create(HKEY hParentKey, const tchar* pszSubKey)
 {
 	ASSERT(m_hKey     == NULL);
 	ASSERT(hParentKey != NULL);
-	ASSERT(pszSubKey  != NULL);
+	ASSERT(pszSubKey  != nullptr);
 
 	LONG lResult = ::RegCreateKey(hParentKey, pszSubKey, &m_hKey);
 
@@ -61,7 +61,7 @@ void RegKey::Open(HKEY hParentKey, const tchar* pszSubKey, REGSAM dwAccess)
 {
 	ASSERT(m_hKey     == NULL);
 	ASSERT(hParentKey != NULL);
-	ASSERT(pszSubKey  != NULL);
+	ASSERT(pszSubKey  != nullptr);
 
 	const DWORD RESERVED = 0;
 
@@ -95,7 +95,7 @@ CString RegKey::ReadDefaultValue() const
 	LONG lSize = 0;
 
 	// Get the data type and size in bytes.
-	LONG lResult = ::RegQueryValue(m_hKey, NULL, NULL, &lSize);
+	LONG lResult = ::RegQueryValue(m_hKey, nullptr, nullptr, &lSize);
 
 	if (lResult != ERROR_SUCCESS)
 		throw RegistryException(lResult, TXT("Failed to read the default key value size"));
@@ -109,7 +109,7 @@ CString RegKey::ReadDefaultValue() const
 	memset(pszBuffer, 0, lSize);
 
 	// Fetch the data.
-	lResult = ::RegQueryValue(m_hKey, NULL, pszBuffer, &lSize);
+	lResult = ::RegQueryValue(m_hKey, nullptr, pszBuffer, &lSize);
 
 	if (lResult != ERROR_SUCCESS)
 		throw RegistryException(lResult, TXT("Failed to read the default key value"));
@@ -123,8 +123,8 @@ CString RegKey::ReadDefaultValue() const
 CString RegKey::ReadStringValue(const tchar* pszName, const tchar* pszDefault) const
 {
 	ASSERT(m_hKey     != NULL);
-	ASSERT(pszName    != NULL);
-	ASSERT(pszDefault != NULL);
+	ASSERT(pszName    != nullptr);
+	ASSERT(pszDefault != nullptr);
 
 	DWORD dwType = REG_NONE;
 	DWORD dwSize = 0;
@@ -157,7 +157,7 @@ CString RegKey::ReadStringValue(const tchar* pszName, const tchar* pszDefault) c
 void RegKey::WriteDefaultValue(const tchar* pszValue)
 {
 	ASSERT(m_hKey   != NULL);
-	ASSERT(pszValue != NULL);
+	ASSERT(pszValue != nullptr);
 
 	LONG lResult = ::RegSetValue(m_hKey, NULL, REG_SZ, pszValue, static_cast<DWORD>(tstrlen(pszValue)));
 
@@ -171,7 +171,7 @@ void RegKey::WriteDefaultValue(const tchar* pszValue)
 void RegKey::WriteStringValue(const tchar* pszName, const tchar* pszValue)
 {
 	ASSERT(m_hKey   != NULL);
-	ASSERT(pszValue != NULL);
+	ASSERT(pszValue != nullptr);
 
 	size_t nChars = tstrlen(pszValue);
 	size_t nBytes = Core::numBytes<tchar>(nChars) + sizeof(tchar);
@@ -188,7 +188,7 @@ void RegKey::WriteStringValue(const tchar* pszName, const tchar* pszValue)
 bool RegKey::Exists(HKEY hParentKey, const tchar* pszSubKey)
 {
 	ASSERT(hParentKey != NULL);
-	ASSERT(pszSubKey  != NULL);
+	ASSERT(pszSubKey  != nullptr);
 
 	const DWORD RESERVED = 0;
 
@@ -221,7 +221,7 @@ void RegKey::CreateSubKey(HKEY hParentKey, const tchar* pszSubKey)
 bool RegKey::Delete(HKEY hParentKey, const tchar* pszSubKey)
 {
 	ASSERT(hParentKey != NULL);
-	ASSERT(pszSubKey  != NULL);
+	ASSERT(pszSubKey  != nullptr);
 
 	LONG lResult = ::RegDeleteKey(hParentKey, pszSubKey);
 
@@ -253,7 +253,7 @@ bool RegKey::DeleteTree(HKEY hParentKey, const tchar* pszSubKey)
 CString RegKey::ReadKeyDefaultValue(HKEY hParentKey, const tchar* pszSubKey)
 {
 	ASSERT(hParentKey != NULL);
-	ASSERT(pszSubKey  != NULL);
+	ASSERT(pszSubKey  != nullptr);
 
 	RegKey oKey;
 
@@ -268,8 +268,8 @@ CString RegKey::ReadKeyDefaultValue(HKEY hParentKey, const tchar* pszSubKey)
 void RegKey::WriteKeyDefaultValue(HKEY hParentKey, const tchar* pszSubKey, const tchar* pszValue)
 {
 	ASSERT(hParentKey != NULL);
-	ASSERT(pszSubKey  != NULL);
-	ASSERT(pszValue   != NULL);
+	ASSERT(pszSubKey  != nullptr);
+	ASSERT(pszValue   != nullptr);
 
 	RegKey oKey;
 
@@ -314,9 +314,9 @@ CString RegKey::ReadKeyStringValue(HKEY hParentKey, const tchar* pszSubKey, cons
 void RegKey::WriteKeyStringValue(HKEY hParentKey, const tchar* pszSubKey, const tchar* pszName, const tchar* pszValue)
 {
 	ASSERT(hParentKey != NULL);
-	ASSERT(pszSubKey  != NULL);
-	ASSERT(pszName    != NULL);
-	ASSERT(pszValue   != NULL);
+	ASSERT(pszSubKey  != nullptr);
+	ASSERT(pszName    != nullptr);
+	ASSERT(pszValue   != nullptr);
 
 	RegKey oKey;
 

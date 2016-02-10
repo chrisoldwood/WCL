@@ -73,10 +73,10 @@ CDC::~CDC()
 
 void CDC::Border3D(const CRect& rcRect, bool bRaised, bool bThick)
 {
-	const CPen* pOuterTopPen = NULL;
-	const CPen* pInnerTopPen = NULL;
-	const CPen* pOuterBotPen = NULL;
-	const CPen* pInnerBotPen = NULL;
+	const CPen* pOuterTopPen = nullptr;
+	const CPen* pInnerTopPen = nullptr;
+	const CPen* pOuterBotPen = nullptr;
+	const CPen* pInnerBotPen = nullptr;
 	CRect rcBorder           = rcRect;
 
 	// Get application object.
@@ -204,7 +204,7 @@ void CDC::VertLine3D(int iX, int iSY, int iDY, bool bRaised)
 **				selected font.
 **
 ** Parameters:	oFont		The font to use for the calculation.
-**				pszText		The text, NULL terminated.
+**				pszText		The text, nul terminated.
 **
 ** Returns:		The dimensions.
 **
@@ -246,8 +246,8 @@ CSize CDC::TextExtents(const CFont& oFont, const tchar* pszText) const
 void CDC::MapMode(const CSize& rDeviceUnits, const CSize& rLogicalUnits)
 {
 	MapMode(MM_ANISOTROPIC);
-	SetWindowExtEx(m_hDC,   rLogicalUnits.cx, rLogicalUnits.cy, NULL);
-	SetViewportExtEx(m_hDC, rDeviceUnits.cx,  rDeviceUnits.cy, NULL);
+	SetWindowExtEx(m_hDC,   rLogicalUnits.cx, rLogicalUnits.cy, nullptr);
+	SetViewportExtEx(m_hDC, rDeviceUnits.cx,  rDeviceUnits.cy, nullptr);
 }
 
 /******************************************************************************

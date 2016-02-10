@@ -62,7 +62,7 @@ CApp::CApp(CFrameWnd& rFrameWnd, WCL::ICmdController& controller)
 	, m_LightPen(), m_LightestPen()
 	, m_DarkPen(),  m_DarkestPen()
 {
-	ASSERT(g_pThis == NULL);
+	ASSERT(g_pThis == nullptr);
 
 	g_pThis = this;
 
@@ -86,7 +86,7 @@ CApp::~CApp()
 {
 	ASSERT(g_pThis == this);
 
-	g_pThis = NULL;
+	g_pThis = nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -94,7 +94,7 @@ CApp::~CApp()
 
 bool CApp::IsValid()
 {
-	return (g_pThis != NULL);
+	return (g_pThis != nullptr);
 }
 
 /******************************************************************************
@@ -111,7 +111,7 @@ bool CApp::IsValid()
 
 CApp& CApp::This()
 {
-	ASSERT(g_pThis != NULL);
+	ASSERT(g_pThis != nullptr);
 
 	return *g_pThis;
 }
@@ -313,7 +313,7 @@ int CApp::FatalMsg(const tchar* pszMsg, ...) const
 
 void CALLBACK CApp::TimerProc(HWND /*hWnd*/, UINT /*uMsg*/, WCL::TimerID nTimerID, DWORD /*dwTime*/)
 {
-	ASSERT(g_pThis != NULL);
+	ASSERT(g_pThis != nullptr);
 
 	// Forward to instance method.
 	g_pThis->OnTimer(nTimerID);

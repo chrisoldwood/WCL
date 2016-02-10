@@ -114,7 +114,7 @@ CDateTime CDateTime::FromLocalTime(time_t tDateTime)
 
 bool CDateTime::FromString(const tchar* pszDateTime)
 {
-	ASSERT(pszDateTime != NULL);
+	ASSERT(pszDateTime != nullptr);
 
 	size_t nLength = tstrlen(pszDateTime);
 
@@ -129,7 +129,7 @@ bool CDateTime::FromString(const tchar* pszDateTime)
 
 	// Break up string.
 	const tchar* pszDate = tstrtok(szDateTime, TXT("T"));
-	const tchar* pszTime = tstrtok(NULL,       TXT("T"));
+	const tchar* pszTime = tstrtok(nullptr,    TXT("T"));
 
 	CDate oDate;
 	CTime oTime;

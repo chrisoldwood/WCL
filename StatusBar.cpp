@@ -48,7 +48,7 @@ const int PANEL_GAP_SIZE = 2;
 
 CStatusBar::CStatusBar(bool bSizeGrip)
 	: m_bSizeGrip(bSizeGrip)
-	, m_pActive(NULL)
+	, m_pActive(nullptr)
 	, m_apPanels()
 	, m_oHintBar()
 {
@@ -152,7 +152,7 @@ void CStatusBar::OnCreate(const CRect& rcClient)
 
 void CStatusBar::OnPaint(CDC& rDC)
 {
-	ASSERT(m_pParent != NULL);
+	ASSERT(m_pParent != nullptr);
 
 	// Ignore, if no size grip OR frame window is maximised.
 	if ( (!m_bSizeGrip) || (::IsZoomed(m_pParent->Handle())) )

@@ -97,7 +97,7 @@ void CTrayIcon::Add(const CWnd& oWnd, uint nTrayID, uint nMsgID, uint nRscID, co
 	ASSERT(m_nMsgID      == 0);
 	ASSERT(oWnd.Handle() != NULL);
 	ASSERT(nTrayID       != 0);
-	ASSERT((pszToolTip == NULL) || (tstrlen(pszToolTip) < MAX_TIP_LEN));
+	ASSERT((pszToolTip == nullptr) || (tstrlen(pszToolTip) < MAX_TIP_LEN));
 
 	// Save parameters.
 	m_hWnd    = oWnd.Handle();
@@ -113,7 +113,7 @@ void CTrayIcon::Add(const CWnd& oWnd, uint nTrayID, uint nMsgID, uint nRscID, co
 	if (m_nMsgID != 0)
 		nFlags |= NIF_MESSAGE;
 
-	if (pszToolTip != NULL)
+	if (pszToolTip != nullptr)
 		nFlags |= NIF_TIP;
 
 	NOTIFYICONDATA oData = { 0 };
@@ -126,7 +126,7 @@ void CTrayIcon::Add(const CWnd& oWnd, uint nTrayID, uint nMsgID, uint nRscID, co
 	oData.uCallbackMessage = m_nMsgID;
 	oData.hIcon            = oIcon.Handle();
 
-	if (pszToolTip != NULL)
+	if (pszToolTip != nullptr)
 		tstrncpy(oData.szTip, pszToolTip, MAX_TIP_LEN-1);
 
 	// Send message.
@@ -139,7 +139,7 @@ void CTrayIcon::Add(const CWnd& oWnd, uint nTrayID, uint nMsgID, uint nRscID, co
 ** Description:	Modifies the icon and/or the tool tip.
 **
 ** Parameters:	nRscID		The icon resource ID. (NULL to skip)
-**				pszToolTip	The tool tip for the icon. (NULL to skip)
+**				pszToolTip	The tool tip for the icon. (nullptr to skip)
 **
 ** Returns:		Nothing.
 **
@@ -150,8 +150,8 @@ void CTrayIcon::Modify(uint nRscID, const tchar* pszToolTip)
 {
 	ASSERT(m_hWnd    != NULL);
 	ASSERT(m_nTrayID != 0);
-	ASSERT(nRscID != 0 || pszToolTip != NULL);
-	ASSERT((pszToolTip == NULL) || (tstrlen(pszToolTip) < MAX_TIP_LEN));
+	ASSERT(nRscID != 0 || pszToolTip != nullptr);
+	ASSERT((pszToolTip == nullptr) || (tstrlen(pszToolTip) < MAX_TIP_LEN));
 
 	uint nFlags = 0;
 
@@ -159,7 +159,7 @@ void CTrayIcon::Modify(uint nRscID, const tchar* pszToolTip)
 	if (nRscID != 0)
 		nFlags |= NIF_ICON;
 
-	if (pszToolTip != NULL)
+	if (pszToolTip != nullptr)
 		nFlags |= NIF_TIP;
 
 	NOTIFYICONDATA oData = { 0 };
@@ -178,7 +178,7 @@ void CTrayIcon::Modify(uint nRscID, const tchar* pszToolTip)
 		oData.hIcon = oIcon.Handle();
 	}
 
-	if (pszToolTip != NULL)
+	if (pszToolTip != nullptr)
 		tstrncpy(oData.szTip, pszToolTip, MAX_TIP_LEN-1);
 
 	// Send message.

@@ -26,8 +26,8 @@
 
 CSDIApp::CSDIApp(CSDIFrame& rFrameWnd, CSDICmds& rCmdControl, size_t nMRUSize)
 	: CApp(rFrameWnd, rCmdControl)
-	, m_pDoc(NULL)
-	, m_pView(NULL)
+	, m_pDoc(nullptr)
+	, m_pView(nullptr)
 	, m_MRUList(nMRUSize)
 {
 }
@@ -46,8 +46,8 @@ CSDIApp::CSDIApp(CSDIFrame& rFrameWnd, CSDICmds& rCmdControl, size_t nMRUSize)
 
 CSDIApp::~CSDIApp()
 {
-	ASSERT(m_pDoc  == NULL);
-	ASSERT(m_pView == NULL);
+	ASSERT(m_pDoc  == nullptr);
+	ASSERT(m_pView == nullptr);
 }
 
 /******************************************************************************

@@ -200,7 +200,7 @@ CDate::DateOrder CDate::DateFormatOrder()
 	DateOrder eOrder = YEAR_MONTH_DAY;
 
 	// Get the size of the buffer and allocate one.
-	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IDATE, NULL, 0);
+	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IDATE, nullptr, 0);
 
 	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::numBytes<tchar>(nChars+1)));
 
@@ -233,7 +233,7 @@ CDate::DateOrder CDate::DateFormatOrder()
 CString CDate::FieldSeparator()
 {
 	// Get the size of the buffer and allocate one.
-	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDATE, NULL, 0);
+	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDATE, nullptr, 0);
 
 	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::numBytes<tchar>(nChars+1)));
 
@@ -266,7 +266,7 @@ CString CDate::DayOfWeekName(int nDay, bool bFullName)
 	int nLCType = (bFullName) ? (LOCALE_SDAYNAME1 + nDay) : (LOCALE_SABBREVDAYNAME1 + nDay);
 
 	// Get the size of the buffer and allocate one.
-	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, nLCType, NULL, 0);
+	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, nLCType, nullptr, 0);
 
 	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::numBytes<tchar>(nChars+1)));
 
@@ -299,7 +299,7 @@ CString CDate::MonthName(int nMonth, bool bFullName)
 	int nLCType = (bFullName) ? (LOCALE_SMONTHNAME1 + nMonth) : (LOCALE_SABBREVMONTHNAME1 + nMonth);
 
 	// Get the size of the buffer and allocate one.
-	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, nLCType, NULL, 0);
+	int nChars = ::GetLocaleInfo(LOCALE_USER_DEFAULT, nLCType, nullptr, 0);
 
 	tchar* pszBuffer = static_cast<tchar*>(alloca(Core::numBytes<tchar>(nChars+1)));
 
@@ -396,12 +396,12 @@ CString CDate::ToString(int nFormat) const
 		st.wDay   = static_cast<WORD>(iDay);
 
 		// Calculate buffer size.
-		size_t nChars = ::GetDateFormat(LOCALE_USER_DEFAULT, nDateFmt, &st, NULL, nullptr, 0);
+		size_t nChars = ::GetDateFormat(LOCALE_USER_DEFAULT, nDateFmt, &st, nullptr, nullptr, 0);
 
 		tchar* pszValue = static_cast<tchar*>(alloca(Core::numBytes<tchar>(nChars)));
 
 		// Format the string.
-		::GetDateFormat(LOCALE_USER_DEFAULT, nDateFmt, &st, NULL, pszValue, static_cast<int>(nChars));
+		::GetDateFormat(LOCALE_USER_DEFAULT, nDateFmt, &st, nullptr, pszValue, static_cast<int>(nChars));
 
 		return pszValue;
 	}
@@ -424,7 +424,7 @@ CString CDate::ToString(int nFormat) const
 
 bool CDate::FromString(const tchar* pszDate)
 {
-	ASSERT(pszDate != NULL);
+	ASSERT(pszDate != nullptr);
 
 	size_t nLength = tstrlen(pszDate);
 
@@ -438,12 +438,12 @@ bool CDate::FromString(const tchar* pszDate)
 	tstrncpy(szDate, pszDate, ISO_FMT_MAX_LEN);
 
 	// Break up string.
-	const tchar* pszYear  = tstrtok(szDate, TXT("-"));
-	const tchar* pszMonth = tstrtok(NULL,   TXT("-"));
-	const tchar* pszDay   = tstrtok(NULL,   TXT("-"));
+	const tchar* pszYear  = tstrtok(szDate,  TXT("-"));
+	const tchar* pszMonth = tstrtok(nullptr, TXT("-"));
+	const tchar* pszDay   = tstrtok(nullptr, TXT("-"));
 
 	// Got all 3 string parts?
-	if ( (pszDay == NULL) || (pszMonth == NULL) || (pszYear == NULL) )
+	if ( (pszDay == nullptr) || (pszMonth == nullptr) || (pszYear == nullptr) )
 		return false;
 
 	// Convert to numbers.

@@ -87,7 +87,7 @@ void CString::BufferSize(size_t nChars)
 
 		// Allocate new buffer.
 		pData = static_cast<StringData*>(malloc(nBytes + sizeof(StringData)));
-		ASSERT(pData != NULL);
+		ASSERT(pData != nullptr);
 
 		pData->m_nAllocSize = nChars;
 		pData->m_acData[0]  = TXT('\0');
@@ -113,7 +113,7 @@ void CString::Copy(const tchar* lpszBuffer, size_t nChars)
 {
 	ASSERT(lpszBuffer);
 
-	// NULL string?
+	// Empty string?
 	if (*lpszBuffer == TXT('\0'))
 	{
 		Free();
@@ -171,7 +171,7 @@ void CString::operator +=(const tchar* pszString)
 	ASSERT(m_pszData);
 	ASSERT(pszString);
 
-	// Ignore NULL strings.
+	// Ignore empty strings.
 	if (*pszString == TXT('\0'))
 		return;
 
@@ -441,7 +441,7 @@ size_t CString::Find(tchar cChar, size_t nStart) const
 
 	const tchar* psz = tstrchr(m_pszData + nStart, cChar);
 
-	return (psz == NULL) ? Core::npos : (psz - m_pszData);
+	return (psz == nullptr) ? Core::npos : (psz - m_pszData);
 }
 
 /******************************************************************************
@@ -464,7 +464,7 @@ size_t CString::Find(const tchar* pszStr, size_t nStart) const
 
 	const tchar* psz = tstrstr(m_pszData + nStart, pszStr);
 
-	return (psz == NULL) ? Core::npos : (psz - m_pszData);
+	return (psz == nullptr) ? Core::npos : (psz - m_pszData);
 }
 
 /******************************************************************************
@@ -632,7 +632,7 @@ CString CString::Right(size_t nCount) const
 
 void CString::Insert(size_t nPos, const tchar* pszString)
 {
-	ASSERT(pszString != NULL);
+	ASSERT(pszString != nullptr);
 	ASSERT(nPos <= tstrlen(m_pszData));
 
 	// Get extra text length.
@@ -759,7 +759,7 @@ void CString::Replace(tchar cOldChar, tchar cNewChar)
 
 void CString::Replace(tchar cChar, const tchar* pszString)
 {
-	ASSERT(pszString != NULL);
+	ASSERT(pszString != nullptr);
 
 	CString      str;
 	const tchar* psz = m_pszData;
@@ -793,8 +793,8 @@ void CString::Replace(tchar cChar, const tchar* pszString)
 
 void CString::Replace(const tchar* pszOldString, const tchar* pszNewString, bool bIgnoreCase)
 {
-	ASSERT(pszOldString != NULL);
-	ASSERT(pszNewString != NULL);
+	ASSERT(pszOldString != nullptr);
+	ASSERT(pszNewString != nullptr);
 
 	typedef int (*CompareFn)(const tchar*, const tchar*, size_t);
 

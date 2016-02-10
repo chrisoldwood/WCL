@@ -24,7 +24,7 @@
 */
 
 CSDIDoc::CSDIDoc()
-	: m_pView(NULL)
+	: m_pView(nullptr)
 {
 }
 
@@ -42,5 +42,5 @@ CSDIDoc::CSDIDoc()
 
 CSDIDoc::~CSDIDoc()
 {
-	ASSERT(m_pView == NULL);
+	ASSERT(m_pView == nullptr);
 }

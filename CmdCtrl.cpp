@@ -16,7 +16,7 @@
 //! Construction with the main command window.
 
 CCmdControl::CCmdControl(WCL::ICommandWnd& commandWnd)
-	: m_pCmdTable(NULL)
+	: m_pCmdTable(nullptr)
 	, m_bitmapId(0)
 	, m_CmdBitmap()
 	, m_commandWnd(commandWnd)
@@ -27,7 +27,7 @@ CCmdControl::CCmdControl(WCL::ICommandWnd& commandWnd)
 //! Construction with the main command window and bitmap resource ID.
 
 CCmdControl::CCmdControl(WCL::ICommandWnd& commandWnd, uint bitmapId)
-	: m_pCmdTable(NULL)
+	: m_pCmdTable(nullptr)
 	, m_bitmapId(bitmapId)
 	, m_CmdBitmap()
 	, m_commandWnd(commandWnd)
@@ -63,12 +63,12 @@ void CCmdControl::Execute(uint iCmdID)
 	CMD* pCmd = m_pCmdTable;
 
 	// Find command callback function.
-	while ( (pCmd != NULL) && (pCmd->m_eType != CmdNone)
+	while ( (pCmd != nullptr) && (pCmd->m_eType != CmdNone)
 		 && ( (iCmdID < pCmd->m_iFirstID) || (iCmdID > pCmd->m_iLastID) ) )
 	    ++pCmd;
 
 	// If found, Execute it.
-	if ( (pCmd != NULL) && (iCmdID >= pCmd->m_iFirstID) && (iCmdID <= pCmd->m_iLastID) )
+	if ( (pCmd != nullptr) && (iCmdID >= pCmd->m_iFirstID) && (iCmdID <= pCmd->m_iLastID) )
 	{
 		// Handler for a single command?
 		if (pCmd->m_eType == CmdSingle)
@@ -103,9 +103,9 @@ void CCmdControl::UpdateUI()
 	CMD* pCmd = m_pCmdTable;
 
 	// Call all command UI handlers.
-	while( (pCmd != NULL) && (pCmd->m_eType != CmdNone) )
+	while( (pCmd != nullptr) && (pCmd->m_eType != CmdNone) )
 	{
-		if (pCmd->m_lpfnUIHandler != NULL)
+		if (pCmd->m_lpfnUIHandler != nullptr)
 			(this->*pCmd->m_lpfnUIHandler)();
 
 	    ++pCmd;
@@ -153,12 +153,12 @@ int CCmdControl::CmdBmpIndex(uint iCmdID) const
 	CMD* pCmd = m_pCmdTable;
 
 	// Find command.
-	while ( (pCmd != NULL) && (pCmd->m_eType != CmdNone)
+	while ( (pCmd != nullptr) && (pCmd->m_eType != CmdNone)
 		 && ( (iCmdID < pCmd->m_iFirstID) || (iCmdID > pCmd->m_iLastID) ) )
 	    ++pCmd;
 
 	// If found, return it.
-	if ( (pCmd != NULL) && (iCmdID >= pCmd->m_iFirstID) && (iCmdID <= pCmd->m_iLastID) )
+	if ( (pCmd != nullptr) && (iCmdID >= pCmd->m_iFirstID) && (iCmdID <= pCmd->m_iLastID) )
 		return pCmd->m_iBmpIndex;
 
 	// Not found.

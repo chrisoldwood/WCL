@@ -150,8 +150,8 @@ CString CStrCvt::FormatError(DWORD dwError)
 
 	// Format string using default language.
 	DWORD dwResult = ::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-										NULL, dwError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-										reinterpret_cast<tchar*>(&pszError), 0, NULL);
+										nullptr, dwError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+										reinterpret_cast<tchar*>(&pszError), 0, nullptr);
 
 	// Copy message and free buffer.
 	if (dwResult != 0)
@@ -184,12 +184,12 @@ CString CStrCvt::FormatError(DWORD dwError)
 
 int CStrCvt::ParseInt(const tchar* pszString, int nFlags)
 {
-	ASSERT(pszString != NULL);
+	ASSERT(pszString != nullptr);
 	ASSERT((nFlags == PARSE_ANY_FORMAT) || (nFlags == PARSE_OCTAL_ONLY) || (nFlags == PARSE_DECIMAL_ONLY) || (nFlags == PARSE_HEX_ONLY));
 
 	errno = 0;
 
-	tchar* pcEndChar = NULL;
+	tchar* pcEndChar = nullptr;
 
 	int nValue = tstrtol(pszString, &pcEndChar, nFlags);
 	
@@ -206,12 +206,12 @@ int CStrCvt::ParseInt(const tchar* pszString, int nFlags)
 
 uint CStrCvt::ParseUInt(const tchar* pszString, int nFlags)
 {
-	ASSERT(pszString != NULL);
+	ASSERT(pszString != nullptr);
 	ASSERT((nFlags == PARSE_ANY_FORMAT) || (nFlags == PARSE_OCTAL_ONLY) || (nFlags == PARSE_DECIMAL_ONLY) || (nFlags == PARSE_HEX_ONLY));
 
 	errno = 0;
 
-	tchar* pcEndChar = NULL;
+	tchar* pcEndChar = nullptr;
 
 	uint nValue = tstrtoul(pszString, &pcEndChar, nFlags);
 	
@@ -263,11 +263,11 @@ long CStrCvt::ParseLong(const tchar* pszString, int nFlags)
 
 double CStrCvt::ParseDouble(const tchar* pszString, int /*nFlags*/)
 {
-	ASSERT(pszString != NULL);
+	ASSERT(pszString != nullptr);
 
 	errno = 0;
 
-	tchar* pcEndChar = NULL;
+	tchar* pcEndChar = nullptr;
 
 	double dValue = tstrtod(pszString, &pcEndChar);
 	

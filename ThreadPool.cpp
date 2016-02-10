@@ -128,7 +128,7 @@ void CThreadPool::Stop()
 
 void CThreadPool::AddJob(ThreadJobPtr& pJob)
 {
-	ASSERT(pJob.get() != NULL);
+	ASSERT(pJob.get() != nullptr);
 	ASSERT(m_eStatus == RUNNING);
 
 	// Lock queues.
@@ -155,7 +155,7 @@ void CThreadPool::AddJob(ThreadJobPtr& pJob)
 
 void CThreadPool::CancelJob(ThreadJobPtr& pJob)
 {
-	ASSERT(pJob.get() != NULL);
+	ASSERT(pJob.get() != nullptr);
 	ASSERT(m_eStatus == RUNNING);
 
 	// Template shorthands.

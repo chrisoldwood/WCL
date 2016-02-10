@@ -28,7 +28,7 @@
 
 CBuffer::CBuffer()
 	: m_nSize(0)
-	, m_pBuffer(NULL)
+	, m_pBuffer(nullptr)
 {
 }
 
@@ -94,7 +94,7 @@ CBuffer::CBuffer(HGLOBAL hGlobal)
 	// Get pointer to memory buffer.
 	void* pGlobal = ::GlobalLock(hGlobal);
 
-	ASSERT( (m_pBuffer != NULL) && (pGlobal != NULL) );
+	ASSERT( (m_pBuffer != nullptr) && (pGlobal != nullptr) );
 
 	// Copy from global buffer.
 	Set(pGlobal, m_nSize);
@@ -136,7 +136,7 @@ CBuffer::CBuffer(const CBuffer& oRHS)
 
 CBuffer::~CBuffer()
 {
-	if (m_pBuffer != NULL)
+	if (m_pBuffer != nullptr)
 		free(m_pBuffer);
 }
 
@@ -180,7 +180,7 @@ void CBuffer::Get(void* pData, size_t nSize, size_t nOffset) const
 	if (nSize == 0)
 		return;
 
-	ASSERT(m_pBuffer     != NULL);
+	ASSERT(m_pBuffer     != nullptr);
 	ASSERT(nOffset       <  m_nSize);
 	ASSERT(nOffset+nSize <= m_nSize);
 
@@ -208,7 +208,7 @@ void CBuffer::Set(const void* pData, size_t nSize, size_t nOffset)
 	if (nSize == 0)
 		return;
 
-	ASSERT(m_pBuffer     != NULL);
+	ASSERT(m_pBuffer     != nullptr);
 	ASSERT(nOffset       <  m_nSize);
 	ASSERT(nOffset+nSize <= m_nSize);
 
@@ -283,7 +283,7 @@ HGLOBAL CBuffer::ToGlobal() const
 	HGLOBAL hGlobal = ::GlobalAlloc(GMEM_MOVEABLE | GMEM_DDESHARE | GMEM_ZEROINIT, m_nSize);
 	void*   pGlobal = ::GlobalLock(hGlobal);
 
-	ASSERT(pGlobal != NULL);
+	ASSERT(pGlobal != nullptr);
 
 	// Copy to global buffer.
 	Get(pGlobal, m_nSize);
@@ -299,7 +299,7 @@ HGLOBAL CBuffer::ToGlobal() const
 
 CString CBuffer::ToString(TextFormat eFormat) const
 {
-	if (m_pBuffer != NULL)
+	if (m_pBuffer != nullptr)
 	{
 		// Treat buffer as containing ANSI chars?
 		if (eFormat == ANSI_TEXT)

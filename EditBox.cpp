@@ -24,7 +24,7 @@
 */
 
 CEditBox::CEditBox()
-	: m_pFilter(NULL)
+	: m_pFilter(nullptr)
 {
 }
 
@@ -43,7 +43,7 @@ CEditBox::CEditBox()
 CEditBox::~CEditBox()
 {
 	// Free character filter.
-	if (m_pFilter != NULL)
+	if (m_pFilter != nullptr)
 		delete[] m_pFilter;
 }
 
@@ -160,7 +160,7 @@ void CEditBox::SetFilterDefault(bool bAllow)
 
 void CEditBox::Filter(const tchar* pszFilter, bool bAllow)
 {
-	ASSERT(pszFilter != NULL);
+	ASSERT(pszFilter != nullptr);
 
 	AllocFilterMap();
 
@@ -210,7 +210,7 @@ void CEditBox::Filter(tchar cFilter, bool bAllow)
 void CEditBox::AllocFilterMap()
 {
 	// Not already allocated?
-	if (m_pFilter == NULL)
+	if (m_pFilter == nullptr)
 	{
 		// Allocate the filter map.
 		m_pFilter = new bool[256];
@@ -241,7 +241,7 @@ bool CEditBox::FilterKey(tchar cChar)
 	size_t nIndex = cChar;
 
 	// Filter set AND key disallowed?
-	return ( (m_pFilter != NULL) && (m_pFilter[nIndex] == false) );
+	return ( (m_pFilter != nullptr) && (m_pFilter[nIndex] == false) );
 }
 
 /******************************************************************************

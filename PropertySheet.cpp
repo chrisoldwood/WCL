@@ -120,8 +120,8 @@ int CPropertySheet::RunModal(CWnd& rParent)
 		oPage.pszTitle    = rPage.m_pszLabel;
 		oPage.pfnDlgProc  = CPropertyPage::PropPageProc;
 		oPage.lParam      = reinterpret_cast<LPARAM>(rPage.m_pPage);
-		oPage.pfnCallback = NULL;
-		oPage.pcRefParent = NULL;
+		oPage.pfnCallback = nullptr;
+		oPage.pcRefParent = nullptr;
 
 		// Create it.
 		m_vHandles[i] = ::CreatePropertySheetPage(&oPage);
@@ -141,7 +141,7 @@ int CPropertySheet::RunModal(CWnd& rParent)
 	oHeader.nPages      = static_cast<int>(m_vPages.size());
 	oHeader.nStartPage  = 0;
 	oHeader.phpage      = (!m_vHandles.empty()) ? &m_vHandles.front() : nullptr;
-	oHeader.pfnCallback = NULL;
+	oHeader.pfnCallback = nullptr;
 
 	// Create it.
 	WCL::DlgResult nResult = ::PropertySheet(&oHeader);
@@ -167,12 +167,12 @@ int CPropertySheet::RunModal(CWnd& rParent)
 void CPropertySheet::PageTable(PAGE_ENTRY* pPageTable)
 {
 	ASSERT(m_vPages.empty());
-	ASSERT(pPageTable != NULL);
+	ASSERT(pPageTable != nullptr);
 
 	size_t nPages = 0;
 
 	// Count the number of pages.
-	for (PAGE_ENTRY* pPage = pPageTable; (pPage->m_pPage != NULL); ++pPage)
+	for (PAGE_ENTRY* pPage = pPageTable; (pPage->m_pPage != nullptr); ++pPage)
 	    ++nPages;
 
 	m_vPages.resize(nPages);
