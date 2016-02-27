@@ -130,6 +130,7 @@ public:
 	void IconSpacing(uint iHorzSpacing, uint iVertSpacing);
 	size_t StringWidth(const tchar* pszString) const;
 	size_t StringWidth(size_t nChars) const;
+	int  Sort(PFNLVCOMPARE pfnCompare);
 	int  Sort(PFNLVCOMPARE pfnCompare, LPARAM lParamSort);
 
 	//! Calculate the mouse co-ordinates for the message, relative to the window.
@@ -332,6 +333,11 @@ inline void CListView::IconSpacing(uint iHorzSpacing, uint iVertSpacing)
 inline size_t CListView::StringWidth(const tchar* pszString) const
 {
 	return ListView_GetStringWidth(m_hWnd, pszString);
+}
+
+inline int CListView::Sort(PFNLVCOMPARE pfnCompare)
+{
+	return Sort(pfnCompare, 0);
 }
 
 inline int CListView::Sort(PFNLVCOMPARE pfnCompare, LPARAM lParamSort)
