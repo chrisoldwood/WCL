@@ -104,6 +104,8 @@ int CPropertySheet::RunModal(CWnd& rParent)
 	ASSERT(rParent.Handle()         != NULL);
 	ASSERT(CModule::This().Handle() != NULL);
 
+	m_vHandles.resize(m_vPages.size());
+
 	// Add the pages.
 	for (size_t i = 0; i < m_vPages.size(); ++i)
 	{
