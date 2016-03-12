@@ -7,6 +7,7 @@
 #include "FolderIterator.hpp"
 #include "WCL/Win32Exception.hpp"
 #include <Core/BadLogicException.hpp>
+#include <Core/FileSystem.hpp>
 
 namespace WCL
 {
@@ -191,6 +192,77 @@ void FolderIterator::Reset()
 #ifdef _DEBUG
 	memset(&m_oFindData, 0xDDDD, sizeof(m_oFindData));
 #endif
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Find all files in the folder.
+
+FileNames FindFilesInFolder(const tstring& folder)
+{
+	return FindFilesInFolder(folder, TXT("*.*"));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Find all files in the folder matching the file mask.
+
+FileNames FindFilesInFolder(const tstring& folder, const tstring& mask)
+{
+	WCL::FolderIterator end;
+	WCL::FolderIterator it(folder, mask, WCL::FolderIterator::FIND_FILES);
+
+	FileNames fileNames; 
+
+	for (; it != end; ++it)
+		fileNames.insert(*it);
+
+	return fileNames;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Find all folders in the folder.
+
+FolderNames FindFoldersInFolder(const tstring& folder)
+{
+	WCL::FolderIterator end;
+	WCL::FolderIterator it(folder, TXT("*.*"), WCL::FolderIterator::FIND_FOLDERS);
+
+	FolderNames folderNames; 
+
+	for (; it != end; ++it)
+		folderNames.insert(*it);
+
+	return folderNames;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Find all files in the folder and its subfolders that match the file mask.
+
+static void FindFilesInFolderRecursively(const tstring& folder, const tstring& mask, PathNames& pathNames)
+{
+	typedef FolderNames::const_iterator FolderNameCIter;
+	typedef FileNames::const_iterator FileNameCIter;
+
+	FolderNames folderName = FindFoldersInFolder(folder);
+
+	for (FolderNameCIter it = folderName.begin(); it != folderName.end(); ++it)
+		FindFilesInFolderRecursively(Core::combinePaths(folder, *it), mask, pathNames);
+
+	FileNames filesNames = FindFilesInFolder(folder, mask);
+
+	for (FileNameCIter it = filesNames.begin(); it != filesNames.end(); ++it)
+		pathNames.insert(Core::combinePaths(folder, *it));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Find all files in the folder and its subfolders that match the file mask.
+
+PathNames FindFilesInFolderRecursively(const tstring& folder, const tstring& mask)
+{
+	PathNames pathNames;
+
+	FindFilesInFolderRecursively(folder, mask, pathNames);
+
+	return pathNames;
 }
 
 //namespace WCL

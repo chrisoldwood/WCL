@@ -11,6 +11,8 @@
 #pragma once
 #endif
 
+#include <set>
+
 namespace WCL
 {
 
@@ -137,6 +139,35 @@ inline bool operator!=(const FolderIterator& LHS, const FolderIterator& RHS)
 {
 	return !operator==(LHS, RHS);
 }
+
+//! A collection of file names.
+typedef std::set<tstring> FileNames;
+
+////////////////////////////////////////////////////////////////////////////////
+// Find all files in the folder.
+
+FileNames FindFilesInFolder(const tstring& folder);
+
+////////////////////////////////////////////////////////////////////////////////
+// Find all files in the folder matching the file mask.
+
+FileNames FindFilesInFolder(const tstring& folder, const tstring& mask);
+
+//! A collection of folder names.
+typedef std::set<tstring> FolderNames;
+
+////////////////////////////////////////////////////////////////////////////////
+// Find all folders in the folder.
+
+FolderNames FindFoldersInFolder(const tstring& folder);
+
+//! A collection of path names.
+typedef std::set<tstring> PathNames;
+
+////////////////////////////////////////////////////////////////////////////////
+// Find all files in the folder and its subfolders that match the file mask.
+
+PathNames FindFilesInFolderRecursively(const tstring& folder, const tstring& mask);
 
 //namespace WCL
 }
