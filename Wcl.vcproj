@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="Wcl"
 	ProjectGUID="{9B0335B6-93BE-4604-8497-27431874D758}"
+	RootNamespace="Wcl"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -115,7 +116,6 @@
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
-				SmallerTypeCheck="true"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
 				ForceConformanceInForLoopScope="true"
