@@ -95,9 +95,7 @@ private:
 	//! End the enumeration of the folder.
 	void Reset();
 
-	// NotCopyable.
-	FolderIterator(const FolderIterator&);
-	FolderIterator& operator=(const FolderIterator&);
+	CORE_NOT_COPYABLE(FolderIterator);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

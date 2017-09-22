@@ -13,8 +13,8 @@ namespace WCL
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from the ID.
 
-UiCommandBase::UiCommandBase(uint id)
-	: m_id(id)
+UiCommandBase::UiCommandBase(uint cmdId)
+	: m_id(cmdId)
 {
 }
 

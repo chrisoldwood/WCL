@@ -22,7 +22,7 @@
 #include <malloc.h>
 #include <Core/InvalidArgException.hpp>
 
-#if __GNUC__
+#if (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 2)) // GCC 4.2+
 // missing initializer for member 'X'
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #endif

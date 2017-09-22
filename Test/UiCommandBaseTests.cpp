@@ -21,8 +21,8 @@ public:
 		: UiCommandBase(ID_TEST_COMMAND)
 	{ }
 
-	TestCommand(uint id)
-		: UiCommandBase(id)
+	TestCommand(uint cmdId)
+		: UiCommandBase(cmdId)
 	{ }
 };
 

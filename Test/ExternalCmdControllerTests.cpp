@@ -23,8 +23,8 @@ public:
 		, m_drawInvoked(false)
 	{ }
 
-	TestCommand(uint id)
-		: m_id(id)
+	TestCommand(uint cmdId)
+		: m_id(cmdId)
 		, m_commandInvoked(false)
 		, m_updateInvoked(false)
 		, m_drawInvoked(false)

@@ -49,10 +49,7 @@ protected:
 	HPEN	m_hPen;
 	bool	m_bOwner;
 
-private:
-	// NotCopyable.
-	CPen(const CPen&);
-	CPen& operator=(const CPen&);
+	CORE_NOT_COPYABLE(CPen);
 };
 
 /******************************************************************************

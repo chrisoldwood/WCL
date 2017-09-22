@@ -274,7 +274,7 @@ inline bool CListView::IsSelected(size_t nItem) const
 
 inline size_t CListView::Selection() const
 {
-	return ListView_GetNextItem(m_hWnd, -1, LVNI_SELECTED);
+	return ListView_GetNextItem(m_hWnd, (UINT)-1, LVNI_SELECTED);
 }
 
 inline size_t CListView::ItemCount() const
