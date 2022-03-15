@@ -11,7 +11,9 @@
 #include "Common.hpp"
 #include "MsgThread.hpp"
 #include <algorithm>
+#include "Exception.hpp"
 #include "IMsgFilter.hpp"
+#include "TraceLogger.hpp"
 #include "Win32Exception.hpp"
 #include <Core/RuntimeException.hpp>
 
@@ -138,44 +140,67 @@ void CMsgThread::RemoveMsgFilter(IMsgFilter* pFilter)
 
 bool CMsgThread::ProcessMsgQueue(bool bRepostQuitMsg)
 {
-	// Message waiting?
-	while (PeekMessage(&m_oMsg, NULL, WM_NULL, WM_NULL, PM_NOREMOVE))
+	try
 	{
-		// Is WM_QUIT?
-		if (!GetMessage(&m_oMsg, NULL, WM_NULL, WM_NULL))
+#ifdef _DEBUG
+		// Install TRACE/ASSERT logging function.
+		WCL::TraceLogger::Install();
+#endif
+
+		// Message waiting?
+		while (PeekMessage(&m_oMsg, NULL, WM_NULL, WM_NULL, PM_NOREMOVE))
 		{
-			m_nResult = static_cast<int>(m_oMsg.wParam);
-
-			if (bRepostQuitMsg)
-				::PostQuitMessage(m_nResult);
-
-			return false;
-		}
-
-		// Is standard message?
-		if ( (m_oMsg.hwnd != NULL) || (m_oMsg.message < WM_USER) )
-		{
-			// Template shorthands.
-			typedef CMsgFilters::const_iterator CIter;
-
-			bool bProcessed = false;
-
-			// Give message filters first crack at message.
-			for (CIter oIter = m_oMsgFilters.begin(); ((oIter != m_oMsgFilters.end()) && (!bProcessed)); ++oIter)
-				bProcessed = (*oIter)->ProcessMsg(m_oMsg);
-
-			// Still not processed?
-			if (!bProcessed)
+			// Is WM_QUIT?
+			if (!GetMessage(&m_oMsg, NULL, WM_NULL, WM_NULL))
 			{
-				TranslateMessage(&m_oMsg);
-				DispatchMessage(&m_oMsg);
+				m_nResult = static_cast<int>(m_oMsg.wParam);
+
+				if (bRepostQuitMsg)
+					::PostQuitMessage(m_nResult);
+
+				return false;
+			}
+
+			// Is standard message?
+			if ( (m_oMsg.hwnd != NULL) || (m_oMsg.message < WM_USER) )
+			{
+				// Template shorthands.
+				typedef CMsgFilters::const_iterator CIter;
+
+				bool bProcessed = false;
+
+				// Give message filters first crack at message.
+				for (CIter oIter = m_oMsgFilters.begin(); ((oIter != m_oMsgFilters.end()) && (!bProcessed)); ++oIter)
+					bProcessed = (*oIter)->ProcessMsg(m_oMsg);
+
+				// Still not processed?
+				if (!bProcessed)
+				{
+					TranslateMessage(&m_oMsg);
+					DispatchMessage(&m_oMsg);
+				}
+			}
+			// Is thread message.
+			else
+			{
+				OnThreadMsg(m_oMsg.message, m_oMsg.wParam, m_oMsg.lParam);
 			}
 		}
-		// Is thread message.
-		else
-		{
-			OnThreadMsg(m_oMsg.message, m_oMsg.wParam, m_oMsg.lParam);
-		}
+	}
+	catch (const Core::Exception& e)
+	{
+		WCL::ReportUnhandledException(TXT("Unexpected exception caught in ProcessMsgQueue()\n\n%s"), e.twhat());
+		return false;
+	}
+	catch (const std::exception& e)
+	{
+		WCL::ReportUnhandledException(TXT("Unexpected exception caught in ProcessMsgQueue()\n\n%hs"), e.what());
+		return false;
+	}
+	catch (...)
+	{
+		WCL::ReportUnhandledException(TXT("Unexpected unknown exception caught in ProcessMsgQueue()"));
+		return false;
 	}
 
 	return true;
