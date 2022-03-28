@@ -229,6 +229,12 @@ bool CPopupWnd::Create(DWORD dwExStyle, DWORD dwStyle)
 	return Create(WndCreate);
 }
 
+#if (__GNUC__ >= 8) // GCC 8+
+// error: format '%hs' expects argument of type 'short int*', but argument 3 has type 'const char*' [-Werror=format=]
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat"
+#endif
+
 /******************************************************************************
 ** Function:	PopupWndProc()
 **
@@ -277,24 +283,28 @@ LRESULT WINDOWPROC CPopupWnd::PopupWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, 
 	catch (const Core::Exception& e)
 	{
 		WCL::ReportUnhandledException(	TXT("Unexpected exception caught in PopupWndProc()\n\n")
-										TXT("Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X\n\n%s"),
+										TXT("Message: H=0x%p M=0x%08X W=0x%08X L=0x%08lX\n\n%s"),
 										hWnd, iMsg, wParam, lParam, e.twhat());
 	}
 	catch (const std::exception& e)
 	{
 		WCL::ReportUnhandledException(	TXT("Unexpected exception caught in PopupWndProc()\n\n")
-										TXT("Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X\n\n%hs"),
+										TXT("Message: H=0x%p M=0x%08X W=0x%08X L=0x%08lX\n\n%hs"),
 										hWnd, iMsg, wParam, lParam, e.what());
 	}
 	catch (...)
 	{
 		WCL::ReportUnhandledException(	TXT("Unexpected unknown exception caught in PopupWndProc()\n\n")
-										TXT("Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X"),
+										TXT("Message: H=0x%p M=0x%08X W=0x%08X L=0x%08lX"),
 										hWnd, iMsg, wParam, lParam);
 	}
 
 	return lMsgResult;
 }
+
+#if (__GNUC__ >= 8) // GCC 8+
+#pragma GCC diagnostic pop
+#endif
 
 /******************************************************************************
 ** Method:		WndProc()

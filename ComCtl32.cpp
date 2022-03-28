@@ -17,6 +17,10 @@
 // missing initializer for member 'X'
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #endif
+#if (__GNUC__ >= 8) // GCC 8+
+// error: cast between incompatible function types
+#pragma GCC diagnostic ignored "-Wcast-function-type"
+#endif
 
 /******************************************************************************
 **

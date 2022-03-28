@@ -24,7 +24,7 @@ namespace Core
 template<>
 tstring format(const CRect& value)
 {
-	return Core::fmt(TXT("%d,%d,%d,%d"), value.left, value.top, value.right, value.bottom);
+	return Core::fmt(TXT("%ld,%ld,%ld,%ld"), value.left, value.top, value.right, value.bottom);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

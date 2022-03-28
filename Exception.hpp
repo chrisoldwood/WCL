@@ -17,6 +17,7 @@ namespace WCL
 ////////////////////////////////////////////////////////////////////////////////
 // Report an unhandled exception.
 
+CORE_MSPRINTF(1, 2)
 void ReportUnhandledException(const tchar* pszMsg, ...);
 
 //namespace WCL

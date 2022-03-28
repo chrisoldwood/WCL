@@ -22,14 +22,14 @@ void ReportUnhandledException(const tchar* pszMsg, ...)
 	// Setup arguments.
 	va_list	args;
 	va_start(args, pszMsg);
-	
+
 	// Format message.
 	strMsg.FormatEx(pszMsg, args);
 
 	// Display message if an application.
 	if (CApp::IsValid())
 	{
-		CApp::This().FatalMsg(strMsg);
+		CApp::This().FatalMsg(TXT("%s"), strMsg.c_str());
 	}
 	else if (ConsoleApp::isValid())
 	{

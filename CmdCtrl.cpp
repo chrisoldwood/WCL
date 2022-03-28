@@ -12,6 +12,11 @@
 #include "CmdCtrl.hpp"
 #include "ICommandWnd.hpp"
 
+#if (__GNUC__ >= 8) // GCC 8+
+// error: cast between incompatible function types
+#pragma GCC diagnostic ignored "-Wcast-function-type"
+#endif
+
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction with the main command window.
 

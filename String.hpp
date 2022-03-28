@@ -97,12 +97,16 @@ public:
 	CString Right(size_t nCount) const;
 
 	//
-	// Formating.
+	// Formatting.
 	//
+    CORE_MSPRINTF(2, 3)
 	void Format(const tchar* pszFormat, ...);
+    CORE_MSPRINTF(2, 0)
 	void FormatEx(const tchar* pszFormat, va_list args);
 
+    CORE_MSPRINTF(1, 2)
 	static CString Fmt(const tchar* pszFormat, ...);
+    CORE_MSPRINTF(1, 0)
 	static CString FmtEx(const tchar* pszFormat, va_list args);
 
 	//
@@ -283,7 +287,7 @@ inline tchar* CString::Buffer() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Get the capacity of the buffer in chars, inc the null termiantor. This is
+//! Get the capacity of the buffer in chars, inc the null terminator. This is
 //! the same value that would be passed to BufferSize().
 
 inline size_t CString::Capacity() const

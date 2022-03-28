@@ -124,6 +124,12 @@ void CMsgThread::RemoveMsgFilter(IMsgFilter* pFilter)
 	m_oMsgFilters.remove(pFilter);
 }
 
+#if (__GNUC__ >= 8) // GCC 8+
+// error: format '%hs' expects argument of type 'short int*', but argument 3 has type 'const char*' [-Werror=format=]
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat"
+#endif
+
 /******************************************************************************
 ** Method:		ProcessMsgQueue()
 **
@@ -205,6 +211,10 @@ bool CMsgThread::ProcessMsgQueue(bool bRepostQuitMsg)
 
 	return true;
 }
+
+#if (__GNUC__ >= 8) // GCC 8+
+#pragma GCC diagnostic pop
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Wait for message or handle to be signalled. The return value indicates if

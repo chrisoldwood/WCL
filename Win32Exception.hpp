@@ -115,7 +115,7 @@ inline Win32Exception::Win32Exception()
 
 inline tstring Win32Exception::Format(const tchar* pszOperation, DWORD dwError)
 {
-	return Core::fmt(TXT("%s [0x%08X - %s]"), pszOperation, dwError, CStrCvt::FormatError(dwError).c_str());
+	return Core::fmt(TXT("%s [0x%08lX - %s]"), pszOperation, dwError, CStrCvt::FormatError(dwError).c_str());
 }
 
 //namespace WCL

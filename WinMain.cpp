@@ -17,6 +17,12 @@
 namespace WCL
 {
 
+#if (__GNUC__ >= 8) // GCC 8+
+// error: format '%hs' expects argument of type 'short int*', but argument 3 has type 'const char*' [-Werror=format=]
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat"
+#endif
+
 ////////////////////////////////////////////////////////////////////////////////
 //! The logical (WCL) entry point for a Windows application.
 
@@ -72,6 +78,10 @@ int winMain(HINSTANCE hInstance,
 
 	return nResult;
 }
+
+#if (__GNUC__ >= 8) // GCC 8+
+#pragma GCC diagnostic pop
+#endif
 
 //namespace WCL
 }

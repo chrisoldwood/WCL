@@ -33,7 +33,7 @@ ComException::ComException(HRESULT result)
 ComException::ComException(HRESULT result, const tchar* operation)
 	: m_result(result)
 {
-	m_details = Core::fmt(TXT("%s [0x%08X - %s]"), operation, result, CStrCvt::FormatError(result).c_str());
+	m_details = Core::fmt(TXT("%s [0x%08lX - %s]"), operation, result, CStrCvt::FormatError(result).c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -42,7 +42,7 @@ ComException::ComException(HRESULT result, const tchar* operation)
 ComException::ComException(HRESULT result, const tstring& operation)
 	: m_result(result)
 {
-	m_details = Core::fmt(TXT("%s [0x%08X - %s]"), operation.c_str(), result, CStrCvt::FormatError(result).c_str());
+	m_details = Core::fmt(TXT("%s [0x%08lX - %s]"), operation.c_str(), result, CStrCvt::FormatError(result).c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -66,9 +66,9 @@ void ComException::formatError(HRESULT result, IUnknown* object, const IID& iid,
 
 	// Format the error string.
 	if (!source.empty() || !description.empty())
-		m_details = Core::fmt(TXT("%s [0x%08X - %s] {%s : %s}"), operation, result, resultCode.c_str(), source.c_str(), description.c_str());
+		m_details = Core::fmt(TXT("%s [0x%08lX - %s] {%s : %s}"), operation, result, resultCode.c_str(), source.c_str(), description.c_str());
 	else
-		m_details = Core::fmt(TXT("%s [0x%08X - %s]"), operation, result, resultCode.c_str());
+		m_details = Core::fmt(TXT("%s [0x%08lX - %s]"), operation, result, resultCode.c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////

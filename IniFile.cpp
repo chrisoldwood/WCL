@@ -297,7 +297,7 @@ void CIniFile::WriteRect(const tchar* pszSection, const tchar* pszEntry, const C
 
 	CString str;
 
-	str.Format(TXT("%d,%d,%d,%d"), rcValue.left, rcValue.top, rcValue.right, rcValue.bottom);
+	str.Format(TXT("%ld,%ld,%ld,%ld"), rcValue.left, rcValue.top, rcValue.right, rcValue.bottom);
 
 	::WritePrivateProfileString(pszSection, pszEntry, str, m_strPath);
 }

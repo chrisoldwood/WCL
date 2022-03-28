@@ -174,19 +174,19 @@ CString CLogFont::Format(FontFormat eFormat) const
 	// Always contains FaceName & Height.
 	if (nFields >= FMT_MINIMAL)
 	{
-		strFont += CString::Fmt(TXT("%s,%d"), lfFaceName, lfHeight);
+		strFont += CString::Fmt(TXT("%s,%ld"), lfFaceName, lfHeight);
 	}
 
 	// Includes Weight, Italic, Underline & Strikeout?
 	if (nFields >= FMT_SHORT)
 	{
-		strFont += CString::Fmt(TXT(",%u,%u,%u,%u"), lfWeight, lfItalic, lfUnderline, lfStrikeOut);
+		strFont += CString::Fmt(TXT(",%lu,%u,%u,%u"), lfWeight, lfItalic, lfUnderline, lfStrikeOut);
 	}
 
 	// Includes all fields?
 	if (nFields >= FMT_FULL)
 	{
-		strFont += CString::Fmt(TXT(",%d,%d,%d,%u,%u,%u,%u,%u"), lfWidth, lfEscapement, lfOrientation,
+		strFont += CString::Fmt(TXT(",%ld,%ld,%ld,%u,%u,%u,%u,%u"), lfWidth, lfEscapement, lfOrientation,
 								lfCharSet, lfOutPrecision, lfClipPrecision, lfQuality, lfPitchAndFamily);
 	}
 

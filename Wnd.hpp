@@ -128,9 +128,13 @@ public:
     //
     // Message boxes.
     //
+    CORE_MSPRINTF(2, 3)
 	int AlertMsg(const tchar* pszMsg, ...) const;
+    CORE_MSPRINTF(2, 3)
 	int QueryMsg(const tchar* pszMsg, ...) const;
+    CORE_MSPRINTF(2, 3)
 	int NotifyMsg(const tchar* pszMsg, ...) const;
+    CORE_MSPRINTF(2, 3)
 	int FatalMsg(const tchar* pszMsg, ...) const;
 
 	// Handle <-> Window map.

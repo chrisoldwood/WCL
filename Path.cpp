@@ -144,7 +144,7 @@ DWORD CPath::Attributes() const
 	DWORD attributes = INVALID_FILE_ATTRIBUTES;
 
 	if ((attributes = ::GetFileAttributes(m_pszData)) == INVALID_FILE_ATTRIBUTES)
-		throw WCL::Win32Exception(::GetLastError(), Core::fmt(TXT("Failed to query the file attributes for:-\n\n"), m_pszData));
+		throw WCL::Win32Exception(::GetLastError(), Core::fmt(TXT("Failed to query the file attributes for:-\n\n%s"), m_pszData));
 
 	return attributes;
 }
@@ -155,7 +155,7 @@ DWORD CPath::Attributes() const
 void CPath::SetAttributes(DWORD attributes)
 {
 	if (::SetFileAttributes(m_pszData, attributes) == 0)
-		throw WCL::Win32Exception(::GetLastError(), Core::fmt(TXT("Failed to set the file attributes on:-\n\n"), m_pszData));
+		throw WCL::Win32Exception(::GetLastError(), Core::fmt(TXT("Failed to set the file attributes on:-\n\n%s"), m_pszData));
 }
 
 /******************************************************************************

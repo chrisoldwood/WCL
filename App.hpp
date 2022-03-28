@@ -67,9 +67,13 @@ public:
     // Message boxes.
     // For use when no window is available.
     //
+    CORE_MSPRINTF(2, 3)
 	int AlertMsg(const tchar* pszMsg, ...) const;
+    CORE_MSPRINTF(2, 3)
 	int QueryMsg(const tchar* pszMsg, ...) const;
+    CORE_MSPRINTF(2, 3)
 	int NotifyMsg(const tchar* pszMsg, ...) const;
+    CORE_MSPRINTF(2, 3)
 	int FatalMsg(const tchar* pszMsg, ...) const;
 
 	//

@@ -12,6 +12,11 @@
 #include "Dll.hpp"
 #include "TraceLogger.hpp"
 
+#if (__GNUC__ >= 8) // GCC 8+
+// error: format '%hs' expects argument of type 'short int*', but argument 3 has type 'const char*' [-Werror=format=]
+#pragma GCC diagnostic ignored "-Wformat"
+#endif
+
 #ifdef _MSC_VER
 // Linker directives.
 // NB: Required for building with VC++ Express.

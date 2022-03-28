@@ -183,7 +183,7 @@ void CMRUList::Read(const WCL::AppConfig& appConfig, const tstring& section)
 	for (size_t i = 0; i != m_nMaxSize; ++i)
 	{
 		// Read entry.
-		tstring key   = Core::fmt(TXT("%u"), i+1);
+		tstring key   = Core::fmt(TXT("%Iu"), i+1);
 		tstring value = appConfig.readString(section, key, TXT(""));
 
 		// Append if valid.
@@ -200,7 +200,7 @@ void CMRUList::Write(WCL::AppConfig& appConfig, const tstring& section)
 	// For all items...
 	for (size_t i = 0; i != m_Paths.Size(); ++i)
 	{
-		tstring key   = Core::fmt(TXT("%u"), i+1);
+		tstring key   = Core::fmt(TXT("%Iu"), i+1);
 		tstring value = m_Paths[i].c_str();
 
 		if (!value.empty())

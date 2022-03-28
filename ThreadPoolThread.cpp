@@ -55,6 +55,12 @@ ThreadPoolThread::~ThreadPoolThread()
 	::CloseHandle(m_hThread);
 }
 
+#if (__GNUC__ >= 8) // GCC 8+
+// error: format '%hs' expects argument of type 'short int*', but argument 3 has type 'const char*' [-Werror=format=]
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat"
+#endif
+
 /******************************************************************************
 ** Method:		ThreadFunction()
 **
@@ -105,6 +111,10 @@ DWORD WINAPI ThreadPoolThread::ThreadFunction(LPVOID lpParam)
 
 	return 0;
 }
+
+#if (__GNUC__ >= 8) // GCC 8+
+#pragma GCC diagnostic pop
+#endif
 
 /******************************************************************************
 ** Method:		Start()
@@ -228,6 +238,12 @@ void ThreadPoolThread::OnStartThread()
 {
 }
 
+#if (__GNUC__ >= 8) // GCC 8+
+// error: format '%hs' expects argument of type 'short int*', but argument 3 has type 'const char*' [-Werror=format=]
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat"
+#endif
+
 /******************************************************************************
 ** Method:		OnRunJob()
 **
@@ -276,6 +292,10 @@ void ThreadPoolThread::OnRunJob()
 	// Notify thread pool.
 	m_oPool.OnJobCompleted(pJob);
 }
+
+#if (__GNUC__ >= 8) // GCC 8+
+#pragma GCC diagnostic pop
+#endif
 
 /******************************************************************************
 ** Method:		OnStopThread()

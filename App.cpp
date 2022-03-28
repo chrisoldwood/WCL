@@ -142,14 +142,14 @@ bool CApp::Open()
 	// Get COMCTL32.DLL version.
 	if (!m_oComCtl32.IsLoaded() || !m_oComCtl32.GetVersion(dwMajor, dwMinor))
 	{
-		FatalMsg(TXT("This application requires at least v%u.%u of COMCTL32.DLL."), dwMinMajor, dwMinMinor);
+		FatalMsg(TXT("This application requires at least v%lu.%lu of COMCTL32.DLL."), dwMinMajor, dwMinMinor);
 		return false;
 	}
 
 	// Check COMCTL32.DLL version.
 	if ( (dwMajor < dwMinMajor) || ((dwMajor == dwMinMajor) && (dwMinor < dwMinMinor)) )
 	{
-		FatalMsg(TXT("This application requires at least v%u.%u of COMCTL32.DLL."), dwMinMajor, dwMinMinor);
+		FatalMsg(TXT("This application requires at least v%lu.%lu of COMCTL32.DLL."), dwMinMajor, dwMinMinor);
 		return false;
 	}
 

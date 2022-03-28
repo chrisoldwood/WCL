@@ -158,6 +158,12 @@ void CDialog::EndDialog(int nResult)
 	::EndDialog(m_hWnd, nResult);
 }
 
+#if (__GNUC__ >= 8) // GCC 8+
+// error: format '%hs' expects argument of type 'short int*', but argument 3 has type 'const char*' [-Werror=format=]
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat"
+#endif
+
 /******************************************************************************
 ** Function:	DialogProc()
 **
@@ -252,19 +258,19 @@ WCL::DlgResult DIALOGPROC CDialog::DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, 
 	catch (const Core::Exception& e)
 	{
 		WCL::ReportUnhandledException(	TXT("Unexpected exception caught in DlgProc()\n\n")
-										TXT("Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X\n\n%s"),
+										TXT("Message: H=0x%p M=0x%08X W=0x%08X L=0x%08lX\n\n%s"),
 										hWnd, iMsg, wParam, lParam, e.twhat());
 	}
 	catch (const std::exception& e)
 	{
 		WCL::ReportUnhandledException(	TXT("Unexpected exception caught in DlgProc()\n\n")
-										TXT("Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X\n\n%hs"),
+										TXT("Message: H=0x%p M=0x%08X W=0x%08X L=0x%08lX\n\n%hs"),
 										hWnd, iMsg, wParam, lParam, e.what());
 	}
 	catch (...)
 	{
 		WCL::ReportUnhandledException(	TXT("Unexpected unknown exception caught in DlgProc()\n\n")
-										TXT("Message: H=0x%p M=0x%08X W=0x%08X L=0x%08X"),
+										TXT("Message: H=0x%p M=0x%08X W=0x%08X L=0x%08lX"),
 										hWnd, iMsg, wParam, lParam);
 	}
 
@@ -274,6 +280,10 @@ WCL::DlgResult DIALOGPROC CDialog::DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, 
 	// Return if msg was handled.
 	return bMsgHandled;
 }
+
+#if (__GNUC__ >= 8) // GCC 8+
+#pragma GCC diagnostic pop
+#endif
 
 /******************************************************************************
 ** Method:		DialogProc()
