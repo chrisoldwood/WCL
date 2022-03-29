@@ -12,6 +12,7 @@
 #include "String.hpp"
 #include <stdio.h>
 #include <stdarg.h>
+#include "Buffer.hpp"
 #include "Module.hpp"
 #include "IInputStream.hpp"
 #include "IOutputStream.hpp"
@@ -263,55 +264,100 @@ void CString::operator +=(tchar cChar)
 #pragma GCC diagnostic pop
 #endif
 
-/******************************************************************************
-** Method:		operator>>()
-**
-** Description:	Load the string in from a stream. This reads the buffer size,
-**				allocates the space and reads the whole string.
-**
-** Parameters:	rStream		The stream to read from.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
+////////////////////////////////////////////////////////////////////////////////
+//! Read a string in from a binary input stream.
 
-void operator >>(WCL::IInputStream& rStream, CString& rString)
+template<>
+void CString::ReadString<char>(WCL::IInputStream& stream)
 {
 	uint32 numChars = 0;
 
-	rStream >> numChars;
+	stream >> numChars;
 
 	if (numChars != 0)
 	{
-		rString.BufferSize(numChars);
-		rStream.Read(rString.m_pszData, Core::numBytes<tchar>(numChars));
+		BufferSize(numChars);
+
+#ifdef ANSI_BUILD
+		stream.Read(m_pszData, Core::numBytes<char>(numChars));
+#else
+		CBuffer buffer(Core::numBytes<char>(numChars));
+		void* rawBuffer = buffer.Buffer();
+		stream.Read(rawBuffer, Core::numBytes<char>(numChars));
+
+		const char* charBuffer = static_cast<const char*>(rawBuffer);
+		Core::ansiToWide(charBuffer, charBuffer+numChars, m_pszData);
+#endif
 	}
 }
 
-/******************************************************************************
-** Method:		operator<<()
-**
-** Description:	Save the string out to a stream. This stores the size of the
-**				buffer followed by the buffer.
-**
-** Parameters:	rStream		The stream to write to.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
-
-void operator <<(WCL::IOutputStream& rStream, const CString& rString)
+template<>
+void CString::ReadString<wchar_t>(WCL::IInputStream& stream)
 {
-	uint32 numChars = rString.GetData()->m_nAllocSize;
+	uint32 numChars = 0;
 
-	rStream << numChars;
+	stream >> numChars;
 
 	if (numChars != 0)
 	{
-		rStream.Write(rString.m_pszData, Core::numBytes<tchar>(numChars));
+		BufferSize(numChars);
+
+#ifdef ANSI_BUILD
+		CBuffer buffer(Core::numBytes<wchar_t>(numChars));
+		void* rawBuffer = buffer.Buffer();
+		stream.Read(rawBuffer, Core::numBytes<wchar_t>(numChars));
+
+		const wchar_t* charBuffer = static_cast<const wchar_t*>(rawBuffer);
+		Core::wideToAnsi(charBuffer, charBuffer+numChars, m_pszData);
+#else
+		stream.Read(m_pszData, Core::numBytes<wchar_t>(numChars));
+#endif
 	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Write a string out to a binary output stream.
+
+template<>
+void CString::WriteString<char>(WCL::IOutputStream& stream) const
+{
+	uint32 numChars = GetData()->m_nAllocSize;
+
+	stream << numChars;
+
+	if (numChars != 0)
+	{
+		stream.Write(T2A(m_pszData), Core::numBytes<char>(numChars));
+	}
+}
+
+template<>
+void CString::WriteString<wchar_t>(WCL::IOutputStream& stream) const
+{
+	uint32 numChars = GetData()->m_nAllocSize;
+
+	stream << numChars;
+
+	if (numChars != 0)
+	{
+		stream.Write(T2W(m_pszData), Core::numBytes<wchar_t>(numChars));
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Read a string in from a binary input stream.
+
+void operator >>(WCL::IInputStream& stream, CString& string)
+{
+	string.ReadString<tchar>(stream);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Write a string out to a binary output stream.
+
+void operator <<(WCL::IOutputStream& stream, const CString& string)
+{
+	string.WriteString<tchar>(stream);
 }
 
 /******************************************************************************

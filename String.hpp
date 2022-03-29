@@ -140,6 +140,18 @@ public:
 	void operator +=(tchar cChar);
 	void operator +=(const tstring& string);
 
+	//
+	// Persistence.
+	//
+
+	//! Read a string in from a binary input stream.
+	template<typename CharT>
+	void ReadString(WCL::IInputStream& stream);
+
+	//! Write a string out to a binary output stream.
+	template<typename CharT>
+	void WriteString(WCL::IOutputStream& stream) const;
+
 protected:
 	/******************************************************************************
 	**
@@ -174,13 +186,6 @@ protected:
 	// NULL string.
 	static StringData strNULL;
 	static tchar*     pszNULL;
-
-	//
-	// Persistence.
-	// NB: We only define an ostream inserter for backwards compatibility.
-	//
-	friend void operator >>(WCL::IInputStream&  rStream, CString& rString);
-	friend void operator <<(WCL::IOutputStream& rStream, const CString& rString);
 };
 
 /******************************************************************************
@@ -430,5 +435,15 @@ inline CString operator+(const CString& strLHS, const CString& strRHS)
 
 	return str;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+//! Read a string in from a binary input stream.
+
+void operator >>(WCL::IInputStream& stream, CString& string);
+
+////////////////////////////////////////////////////////////////////////////////
+//! Write a string out to a binary output stream.
+
+void operator <<(WCL::IOutputStream& stream, const CString& string);
 
 #endif // WCL_STRING_HPP

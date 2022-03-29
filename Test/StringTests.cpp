@@ -10,6 +10,19 @@
 #include <WCL/StringIO.hpp>
 #include <WCL/MemStream.hpp>
 #include <WCL/Buffer.hpp>
+#include <Core/AnsiWide.hpp>
+
+#ifdef ANSI_BUILD
+typedef wchar_t		otherchar_t;
+#define O2T(string)	W2A(string)
+#define OTXT(x)		L ## x
+#define otherstrlen	wcslen
+#else
+typedef char		otherchar_t;
+#define O2T(string)	A2W(string)
+#define OTXT(x)		x
+#define otherstrlen	strlen
+#endif
 
 TEST_SET(String)
 {
@@ -96,6 +109,67 @@ TEST_CASE("a non-empty string can be inserted and extracted from a stream")
 
 	TEST_TRUE(value.Length() == testValue.Length());
 	TEST_TRUE(value == testValue);
+}
+TEST_CASE_END
+
+TEST_CASE("a string is serialized to a stream based on its buffer capacity, not length")
+{
+	CString testValue(TXT("A very very very long string"));
+	testValue = TXT("A short string");
+
+	TEST_FALSE(testValue.Length()+1 == testValue.Capacity());
+
+	CBuffer	   buffer;
+	CMemStream stream(buffer);
+	stream.Create();
+
+	stream << testValue;
+
+	stream.Close();
+
+	TEST_TRUE(buffer.Size() == (sizeof(uint32) + Core::numBytes<tchar>(testValue.Capacity())));
+}
+TEST_CASE_END
+
+TEST_CASE("a build dependent string can be written to a stream as the opposite string type")
+{
+	const otherchar_t* othercharString = OTXT("unit test");
+	const CString tcharString(O2T(othercharString));
+
+	CBuffer	   buffer;
+	CMemStream stream(buffer);
+	stream.Create();
+
+	tcharString.WriteString<otherchar_t>(stream);
+
+	stream.Close();
+
+	TEST_TRUE(buffer.Size() == (sizeof(uint32) + Core::numBytes<otherchar_t>(tcharString.Capacity())));
+	TEST_TRUE(memcmp(static_cast<const byte*>(buffer.Buffer()) + sizeof(uint32), othercharString, tcharString.Length()+1) == 0);
+}
+TEST_CASE_END
+
+TEST_CASE("a build dependent string can be read from a stream of the opposite string type")
+{
+	const otherchar_t* othercharString = OTXT("unit test");
+	const uint32 numChars =  otherstrlen(othercharString);
+	CString tcharString;
+
+	CBuffer    buffer;
+	CMemStream stream(buffer);
+	stream.Create();
+
+	stream << numChars+1;
+	stream.Write(othercharString, Core::numBytes<otherchar_t>(numChars+1));
+
+	stream.Close();
+	stream.Open();
+
+	tcharString.ReadString<otherchar_t>(stream);
+
+	stream.Close();
+
+	TEST_TRUE(tcharString == O2T(othercharString));
 }
 TEST_CASE_END
 
