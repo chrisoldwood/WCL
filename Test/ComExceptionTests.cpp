@@ -162,6 +162,8 @@ TEST_CASE("message contains full details when constructed from a complete IError
 	TEST_TRUE(exception.m_result == E_POINTER);
 	TEST_TRUE(str.find(TXT("TestSource")) != tstring::npos);
 	TEST_TRUE(str.find(TXT("TestDescription")) != tstring::npos);
+
+    DEBUG_USE_ONLY(hr);
 }
 TEST_CASE_END
 

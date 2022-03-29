@@ -153,6 +153,12 @@ void CString::Free()
 	m_pszData = pszNULL;
 }
 
+#if (defined NDEBUG) && (__GNUC__ >= 8) // GCC 8+
+// error: ... offset 0 from the object at '<unknown>' is out of the bounds of referenced subobject 'CString::StringData::m_acData'...
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+#endif
+
 /******************************************************************************
 ** Method:		Operator +=()
 **
@@ -252,6 +258,10 @@ void CString::operator +=(tchar cChar)
 		m_pszData[iStrLen+1] = TXT('\0');
 	}
 }
+
+#if (defined NDEBUG) && (__GNUC__ >= 8) // GCC 8+
+#pragma GCC diagnostic pop
+#endif
 
 /******************************************************************************
 ** Method:		operator>>()
