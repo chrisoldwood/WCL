@@ -131,6 +131,40 @@ TEST_CASE("a string is serialized to a stream based on its buffer capacity, not 
 }
 TEST_CASE_END
 
+TEST_CASE("a serialized string's length is in characters, not bytes")
+{
+	const CString testValue(TXT("unit test"));
+
+	CBuffer	   buffer;
+	CMemStream stream(buffer);
+	stream.Create();
+
+	stream << testValue;
+
+	stream.Close();
+
+	uint32 capacity = *(static_cast<const uint32*>(buffer.Buffer()));
+	TEST_TRUE(capacity == testValue.Capacity());
+}
+TEST_CASE_END
+
+TEST_CASE("a serialized string is written using the build's character type")
+{
+	const CString testValue(TXT("unit test"));
+
+	CBuffer	   buffer;
+	CMemStream stream(buffer);
+	stream.Create();
+
+	stream << testValue;
+
+	stream.Close();
+
+	const tchar* value = reinterpret_cast<const tchar*>(static_cast<const byte*>(buffer.Buffer()) + sizeof(uint32));
+	TEST_TRUE(tstrcmp(value, testValue) == 0);
+}
+TEST_CASE_END
+
 TEST_CASE("a build dependent string can be written to a stream as the opposite string type")
 {
 	const otherchar_t* othercharString = OTXT("unit test");
