@@ -65,7 +65,7 @@ TEST_CASE("primitive values can be inserted and extracted from a stream")
 }
 TEST_CASE_END
 
-TEST_CASE("string values can be inserted into a stream")
+TEST_CASE("c-style string values can be inserted into a stream")
 {
 	const char*    ANSI_STRING = "unit test";
 	const wchar_t* WIDE_STRING = L"unit test";

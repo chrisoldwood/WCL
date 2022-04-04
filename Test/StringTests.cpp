@@ -207,5 +207,33 @@ TEST_CASE("a build dependent string can be read from a stream of the opposite st
 }
 TEST_CASE_END
 
+TEST_CASE("a string serialized as a c-style string can be deserialized as a CString")
+{
+	const char* ansiString = "ANSI String";
+	const wchar_t* wideString = L"Wide String";
+
+	CBuffer    buffer;
+	CMemStream stream(buffer);
+	stream.Create();
+
+	stream << ansiString;
+	stream << wideString;
+
+	stream.Close();
+
+	CString value;
+
+	stream.Open();
+
+	value.ReadString<char>(stream);
+	TEST_TRUE(value == A2T(ansiString));
+
+	value.ReadString<wchar_t>(stream);
+	TEST_TRUE(value == W2T(wideString));
+
+	TEST_TRUE(stream.IsEOF());
+}
+TEST_CASE_END
+
 }
 TEST_SET_END
