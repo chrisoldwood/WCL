@@ -186,7 +186,7 @@ TEST_CASE_END
 TEST_CASE("a build dependent string can be read from a stream of the opposite string type")
 {
 	const otherchar_t* othercharString = OTXT("unit test");
-	const uint32 numChars =  otherstrlen(othercharString);
+	const uint32 numChars =  static_cast<uint32>(otherstrlen(othercharString));
 	CString tcharString;
 
 	CBuffer    buffer;

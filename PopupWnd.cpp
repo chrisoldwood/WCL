@@ -252,8 +252,8 @@ bool CPopupWnd::Create(DWORD dwExStyle, DWORD dwStyle)
 LRESULT WINDOWPROC CPopupWnd::PopupWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
 	// Store the return values for this message.
-	BOOL    bMsgHandled = false;
-	LRESULT lMsgResult  = 0;
+	WCL::DlgResult bMsgHandled = false;
+	LRESULT        lMsgResult  = 0;
 
 	try
 	{
@@ -270,8 +270,8 @@ LRESULT WINDOWPROC CPopupWnd::PopupWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, 
 		//
 
 		// Push the existing messages' return values onto the stack.
-		BOOL*	 pbMsgHandled = pWnd->MsgHandledBuffer(&bMsgHandled);
-		LRESULT* plMsgResult  = pWnd->MsgResultBuffer (&lMsgResult);
+		WCL::DlgResult*	pbMsgHandled = pWnd->MsgHandledBuffer(&bMsgHandled);
+		LRESULT*        plMsgResult  = pWnd->MsgResultBuffer (&lMsgResult);
 
 		// Call real message handler.
 		pWnd->WndProc(hWnd, iMsg, wParam, lParam);

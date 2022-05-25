@@ -120,21 +120,21 @@ protected:
 	//
 	// Access to message result members.
 	//
-	void MsgHandled(BOOL    bHandled);
+	void MsgHandled(WCL::DlgResult bHandled);
 	void MsgResult (LRESULT lResult);
 
 	//! Set the result for the message.
-	void SetMsgResult(BOOL bHandled, LRESULT lResult);
+	void SetMsgResult(WCL::DlgResult bHandled, LRESULT lResult);
 
-	BOOL*    MsgHandledBuffer(BOOL*    pbBuffer);
-	LRESULT* MsgResultBuffer (LRESULT* plBuffer);
+	WCL::DlgResult* MsgHandledBuffer(WCL::DlgResult* pbBuffer);
+	LRESULT*        MsgResultBuffer (LRESULT* plBuffer);
 
 private:
 	//
 	// Members.
 	//
-	BOOL*		m_pbMsgHandled;		// Was message handled?
-	LRESULT*	m_plMsgResult;		// Message result code.
+	WCL::DlgResult*	m_pbMsgHandled;		// Was message handled?
+	LRESULT*		m_plMsgResult;		// Message result code.
 
 	// NotCopyable.
 	CMsgWnd(const CMsgWnd&);
@@ -199,7 +199,7 @@ inline WNDPROC CMsgWnd::WindowProc(WNDPROC lpfnWndProc)
 	return reinterpret_cast<WNDPROC>(::SetWindowLongPtr(m_hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(lpfnWndProc)));
 }
 
-inline void CMsgWnd::MsgHandled(BOOL bHandled)
+inline void CMsgWnd::MsgHandled(WCL::DlgResult bHandled)
 {
 	ASSERT(m_pbMsgHandled != NULL);
 
@@ -217,7 +217,7 @@ inline void CMsgWnd::MsgResult(LRESULT lResult)
 //! Set the result for the message. This method replaces the need to make two
 //! calls - one to MsgHandled() and one to MsgResult() - with a single call.
 
-inline void CMsgWnd::SetMsgResult(BOOL bHandled, LRESULT lResult)
+inline void CMsgWnd::SetMsgResult(WCL::DlgResult bHandled, LRESULT lResult)
 {
 	ASSERT(m_pbMsgHandled != NULL);
 	ASSERT(m_plMsgResult  != NULL);
@@ -226,9 +226,9 @@ inline void CMsgWnd::SetMsgResult(BOOL bHandled, LRESULT lResult)
 	*m_plMsgResult  = lResult;
 }
 
-inline BOOL* CMsgWnd::MsgHandledBuffer(BOOL* pbBuffer)
+inline WCL::DlgResult* CMsgWnd::MsgHandledBuffer(WCL::DlgResult* pbBuffer)
 {
-	BOOL* pbOldBuffer = m_pbMsgHandled;
+	WCL::DlgResult* pbOldBuffer = m_pbMsgHandled;
 
 	m_pbMsgHandled = pbBuffer;
 

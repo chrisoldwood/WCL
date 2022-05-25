@@ -61,6 +61,14 @@ typedef UINT ControlID;
 #endif
 
 #ifdef _WIN64
+//! The handle or ID of an object.
+typedef UINT_PTR HandleOrID;
+#else
+//! The handle or ID of an object.
+typedef UINT HandleOrID;
+#endif
+
+#ifdef _WIN64
 //! The result type of a DLGPROC.
 typedef INT_PTR DlgResult;
 #else

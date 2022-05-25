@@ -321,7 +321,7 @@ void CString::ReadString<wchar_t>(WCL::IInputStream& stream)
 template<>
 void CString::WriteString<char>(WCL::IOutputStream& stream) const
 {
-	uint32 numChars = GetData()->m_nAllocSize;
+	uint32 numChars = static_cast<uint32>(GetData()->m_nAllocSize);
 
 	stream << numChars;
 
@@ -334,7 +334,7 @@ void CString::WriteString<char>(WCL::IOutputStream& stream) const
 template<>
 void CString::WriteString<wchar_t>(WCL::IOutputStream& stream) const
 {
-	uint32 numChars = GetData()->m_nAllocSize;
+	uint32 numChars = static_cast<uint32>(GetData()->m_nAllocSize);
 
 	stream << numChars;
 

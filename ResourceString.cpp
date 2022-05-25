@@ -26,7 +26,7 @@ tstring loadString(HMODULE module, uint resourceId)
 
 	for (;;)
 	{
-		const int bufsize = length+1;
+		const int bufsize = static_cast<int>(length+1);
 		const int copied  = ::LoadString(module, resourceId, buffer.get(), bufsize);
 
 		if (copied == 0)

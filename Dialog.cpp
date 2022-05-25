@@ -181,8 +181,8 @@ void CDialog::EndDialog(int nResult)
 WCL::DlgResult DIALOGPROC CDialog::DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
 	// Store the return values for this message.
-	BOOL     bMsgHandled = false;
-	LRESULT  lMsgResult  = 0;
+	WCL::DlgResult bMsgHandled = false;
+	LRESULT        lMsgResult  = 0;
 
 	try
 	{
@@ -208,8 +208,8 @@ WCL::DlgResult DIALOGPROC CDialog::DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, 
 				//
 
 				// Push the existing messages' return values onto the stack.
-				BOOL*	 pbMsgHandled = pDialog->MsgHandledBuffer(&bMsgHandled);
-				LRESULT* plMsgResult  = pDialog->MsgResultBuffer (&lMsgResult);
+				WCL::DlgResult*	pbMsgHandled = pDialog->MsgHandledBuffer(&bMsgHandled);
+				LRESULT*		plMsgResult  = pDialog->MsgResultBuffer (&lMsgResult);
 
 				// Save handle/result.
 				pDialog->m_hWnd = hWnd;
@@ -244,8 +244,8 @@ WCL::DlgResult DIALOGPROC CDialog::DlgProc(HWND hWnd, UINT iMsg, WPARAM wParam, 
 			//
 
 			// Push the existing messages' return values onto the stack.
-			BOOL*	 pbMsgHandled = pDialog->MsgHandledBuffer(&bMsgHandled);
-			LRESULT* plMsgResult  = pDialog->MsgResultBuffer (&lMsgResult);
+			WCL::DlgResult*	pbMsgHandled = pDialog->MsgHandledBuffer(&bMsgHandled);
+			LRESULT*        plMsgResult  = pDialog->MsgResultBuffer (&lMsgResult);
 
 			// Call real message handler.
 			pDialog->WndProc(hWnd, iMsg, wParam, lParam);
