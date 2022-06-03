@@ -110,7 +110,7 @@ public:
 	void DeleteColumn(size_t nColumn);
 	void DeleteAllColumns();
 	size_t ColumnWidth(size_t nColumn) const;
-	void ColumnWidth(size_t nColumn, uint nWidth);
+	void ColumnWidth(size_t nColumn, size_t nWidth);
 	void ColumnWidthAuto(size_t nColumn, bool bFitHeader = false);
 	tstring ColumnName(size_t nColumn);
 
@@ -315,7 +315,7 @@ inline size_t CListView::ColumnWidth(size_t nColumn) const
 	return ListView_GetColumnWidth(m_hWnd, nColumn);
 }
 
-inline void CListView::ColumnWidth(size_t nColumn, uint nWidth)
+inline void CListView::ColumnWidth(size_t nColumn, size_t nWidth)
 {
 	(void)ListView_SetColumnWidth(m_hWnd, nColumn, nWidth);
 }
