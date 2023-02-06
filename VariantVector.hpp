@@ -12,6 +12,7 @@
 #endif
 
 #include "ComException.hpp"
+#include "Variant.hpp"
 #include <Core/Scoped.hpp>
 
 namespace WCL
@@ -28,10 +29,13 @@ public:
 	VariantVector();
 
 	//! Construction of a fixed size array.
-	explicit VariantVector(size_t nSize, VARTYPE eVarType = VT_VARIANT);
+	explicit VariantVector(size_t nSize, VARTYPE eVarType);
 
-	//! Take ownership of an existing SAFEARRAY.
-	explicit VariantVector(SAFEARRAY* pSafeArray, VARTYPE eVarType = VT_VARIANT, bool bOwner = true);
+	//! Create a view on an existing SAFEARRAY, without taking ownership.
+	explicit VariantVector(const Variant& variant);
+
+	//! Create a view on an existing SAFEARRAY, taking ownership if neccesary.
+	explicit VariantVector(SAFEARRAY* pSafeArray, VARTYPE eVarType, bool bOwner);
 
 	//! Destructor.
 	~VariantVector();
@@ -92,6 +96,9 @@ private:
 	// Internal methods.
 	//
 
+	//! Attach an existing SAFEARRAY.
+	void Attach(SAFEARRAY* pSafeArray, VARTYPE eVarType, bool bOwner);
+
 	//! Unlock the underlying storage.
 	void Unlock();
 
@@ -146,7 +153,20 @@ inline VariantVector<T>::VariantVector(size_t nSize, VARTYPE eVarType)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Take ownership of an existing SAFEARRAY.
+//! Create a view on an existing SAFEARRAY, without taking ownership.
+
+template <typename T>
+inline VariantVector<T>::VariantVector(const Variant& variant)
+	: m_nSize(0)
+	, m_pSafeArray(nullptr)
+	, m_bOwner(false)
+	, m_pData(nullptr)
+{
+	Attach(V_ARRAY(&variant), variant.valueType(), false);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Create a view on an existing SAFEARRAY, taking ownership if neccesary.
 
 template <typename T>
 inline VariantVector<T>::VariantVector(SAFEARRAY* pSafeArray, VARTYPE eVarType, bool bOwner)
@@ -155,6 +175,18 @@ inline VariantVector<T>::VariantVector(SAFEARRAY* pSafeArray, VARTYPE eVarType, 
 	, m_bOwner(false)
 	, m_pData(nullptr)
 {
+	Attach(pSafeArray, eVarType, bOwner);
+}
+
+//! Attach an existing SAFEARRAY.
+template <typename T>
+inline void VariantVector<T>::Attach(SAFEARRAY* pSafeArray, VARTYPE eVarType, bool bOwner)
+{
+	ASSERT(m_nSize == 0);
+	ASSERT(m_pSafeArray == nullptr);
+	ASSERT(m_bOwner == false);
+	ASSERT(m_pData == nullptr);
+
 	// Temporarily manage input SAFEARRAY, if the new owner.
 	SafeArrayPtr safeArray(DestroySafeArray);
 
