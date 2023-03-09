@@ -28,7 +28,7 @@
 class CStreamException : public Core::Exception
 {
 public:
-	virtual ~CStreamException() throw() {}
+	virtual ~CStreamException() CORE_NO_THROW {}
 
 	//
 	// Exception codes (0 - 9).
