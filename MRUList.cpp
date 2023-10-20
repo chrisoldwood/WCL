@@ -105,7 +105,7 @@ void CMRUList::UpdateMenu(CMenu& rMenu, uint iCmdBase)
 		bool	bEnable = false;
 
 		// Create item number.
-		strText.Format(TXT("&%d "), i+1);
+		strText.Format(TXT("&%Iu "), i+1);
 
 		// Valid path for this item?
 		if ( (i < m_Paths.Size()) && (m_Paths[i] != TXT("")) )
@@ -147,7 +147,7 @@ void CMRUList::Load(CIniFile& rCfgFile, const tchar* pszSection)
 		CString strEntry, strValue;
 
 		// Create section entry name and read value.
-		strEntry.Format(TXT("%d"), i+1);
+		strEntry.Format(TXT("%Iu"), i+1);
 		strValue = rCfgFile.ReadString(pszSection, strEntry, TXT(""));
 
 		// Valid path?
@@ -166,7 +166,7 @@ void CMRUList::Save(CIniFile& rCfgFile, const tchar* pszSection)
 		CString strEntry;
 
 		// Create section entry name.
-		strEntry.Format(TXT("%d"), i+1);
+		strEntry.Format(TXT("%Iu"), i+1);
 
 		// Valid path for this item?
 		if ( (i < m_Paths.Size()) && (m_Paths[i] != TXT("")) )
