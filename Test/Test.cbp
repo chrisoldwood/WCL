@@ -50,6 +50,8 @@
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
 			<Add option="-m32" />
+			<Add option="-Wmissing-include-dirs" />
+			<Add option="-Wmissing-format-attribute" />
 			<Add option="-Werror" />
 			<Add option="-Winvalid-pch" />
 			<Add option="-Wformat-nonliteral" />
